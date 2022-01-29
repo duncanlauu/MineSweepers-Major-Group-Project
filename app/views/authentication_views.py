@@ -8,12 +8,12 @@ from django.urls import reverse
 from app.forms import LogInForm
 from .mixins import LoginProhibitedMixin
 
-
+# View modified from Clucker
 class LogInView(LoginProhibitedMixin, View):
     """View that handles log in."""
 
     http_method_names = ['get', 'post']
-    redirect_when_logged_in_url = 'feed'
+    redirect_when_logged_in_url = 'dummy'
 
     def get(self, request):
         """Display log in template."""

@@ -1,9 +1,10 @@
-"""Forms for the microblogs app."""
+"""Forms for the app."""
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from .models import User
 
+# Mixin modified from Clucker
 class NewPasswordMixin(forms.Form):
     """Form mixing for new_password and password_confirmation fields."""
 
@@ -27,6 +28,7 @@ class NewPasswordMixin(forms.Form):
         if new_password != password_confirmation:
             self.add_error('password_confirmation', 'Confirmation does not match password.')
 
+# Form modified from Clucker
 class LogInForm(forms.Form):
     """Form enabling registered users to log in."""
 
@@ -43,6 +45,7 @@ class LogInForm(forms.Form):
             user = authenticate(username=username, password=password)
         return user
 
+# Form modified from Clucker
 class SignUpForm(NewPasswordMixin, forms.ModelForm):
     """Form enabling unregistered users to sign up."""
 
