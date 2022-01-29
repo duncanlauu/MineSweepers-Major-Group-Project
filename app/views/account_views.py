@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from .mixins import LoginProhibitedMixin
 from app.forms import SignUpForm
 from .mixins import LoginProhibitedMixin
+from django.urls import reverse
 
 # View modified from Clucker
 class SignUpView(LoginProhibitedMixin, FormView):
