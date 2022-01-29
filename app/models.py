@@ -1,10 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
 # User class
-class User(models.Model):
-    username = models.CharField(max_length=50)
+class User(AbstractUser):
+    username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     first_name = models.CharField(max_length=50)
@@ -31,17 +32,18 @@ class Book(models.Model):
 class BookRatings(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(range = (0,10))
+    # rating = models.IntegerField(range = (0,10))
+    rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 #Meeting class
-class Meeting(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=70)
-    link = models.CharField(max_length=500)
+# class Meeting(models.Model):
+#     club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
+#     start_time = models.DateTimeField()
+#     end_time = models.DateTimeField()
+#     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
+#     location = models.CharField(max_length=70)
+#     link = models.CharField(max_length=500)
 
 #Vote class
 class Vote(models.Model):
@@ -49,13 +51,13 @@ class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    
+
 #Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book)
-    voting_time = models.ForeignKey(Vote)
-    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE) # added on_delete might be wrong
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # added on_delete might be wrong
+    # meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
 
 
@@ -65,7 +67,7 @@ class EventVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
-    
+
 #Club class
 class Club(models.Model):
     name = models.CharField(max_length=50)
@@ -79,4 +81,3 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books')
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
-
