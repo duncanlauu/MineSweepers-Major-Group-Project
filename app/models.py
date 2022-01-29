@@ -1,18 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# Create your models here.
+from django.core.validators import RegexValidator
 
 # User class
 class User(AbstractUser):
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(
+        max_length=50,
+        unique=True,
+        validators=[RegexValidator(
+            regex=r'\w{3,}',
+            message='Username must consist of at least three alphanumericals'
+        )]
+    )
     password = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     bio = models.TextField(max_length=500)
     location = models.CharField(max_length=70)
-    age = models.IntegerField() #only positive 
+    age = models.IntegerField() #only positive
     created_at = models.DateTimeField(auto_now_add=True)
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
