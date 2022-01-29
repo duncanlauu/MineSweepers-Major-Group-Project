@@ -12,7 +12,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50)
     bio = models.TextField(max_length=500)
     location = models.CharField(max_length=70)
-    age = models.IntegerField()
+    age = models.IntegerField() #only positive 
     created_at = models.DateTimeField(auto_now_add=True)
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
