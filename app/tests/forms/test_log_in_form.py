@@ -4,6 +4,7 @@ from django.test import TestCase
 from app.forms import LogInForm
 from app.models import User
 
+# Class modified from Clucker
 class LogInFormTestCase(TestCase):
     """Unit tests of the log in form."""
 
