@@ -38,17 +38,16 @@ class BookRatings(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     rating = models.IntegerField() # Add range constraint 0-10
-    rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 #Meeting class
-# class Meeting(models.Model):
-#     club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
-#     start_time = models.DateTimeField()
-#     end_time = models.DateTimeField()
-#     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-#     location = models.CharField(max_length=70)
-#     link = models.CharField(max_length=500)
+class Meeting(models.Model):
+    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE, related_name="clubevent")
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=70)
+    link = models.CharField(max_length=500)
 
 #Vote class
 class Vote(models.Model):
@@ -60,9 +59,9 @@ class Vote(models.Model):
 #Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE) # added on_delete might be wrong
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # added on_delete might be wrong
-    # meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
 
 
