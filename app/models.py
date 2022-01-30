@@ -1,17 +1,23 @@
 from django.db import models
-
-# Create your models here.
-
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 # User class
-class User(models.Model):
-    username = models.CharField(max_length=50)
+class User(AbstractUser):
+    username = models.CharField(
+        max_length=50,
+        unique=True,
+        validators=[RegexValidator(
+            regex=r'\w{3,}',
+            message='Username must consist of at least three alphanumericals'
+        )]
+    )
     password = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     bio = models.TextField(max_length=500)
     location = models.CharField(max_length=70)
-    age = models.IntegerField()
+    age = models.IntegerField() #Add constraint so it can only be positive
     created_at = models.DateTimeField(auto_now_add=True)
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
@@ -31,12 +37,12 @@ class Book(models.Model):
 class BookRatings(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(range = (0,10))
+    rating = models.IntegerField() # Add range constraint 0-10
     created_at = models.DateTimeField(auto_now_add=True)
 
 #Meeting class
 class Meeting(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
+    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE, related_name="clubevent")
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -49,12 +55,12 @@ class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    
+
 #Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book)
-    voting_time = models.ForeignKey(Vote)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
 
@@ -65,7 +71,7 @@ class EventVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
-    
+
 #Club class
 class Club(models.Model):
     name = models.CharField(max_length=50)
@@ -79,4 +85,3 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books')
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
-
