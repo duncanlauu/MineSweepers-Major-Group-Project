@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
-
 # User class
 class User(AbstractUser):
     username = models.CharField(
@@ -18,7 +17,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50)
     bio = models.TextField(max_length=500)
     location = models.CharField(max_length=70)
-    age = models.IntegerField() #only positive
+    age = models.IntegerField() #Add constraint so it can only be positive
     created_at = models.DateTimeField(auto_now_add=True)
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
@@ -38,7 +37,7 @@ class Book(models.Model):
 class BookRatings(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    # rating = models.IntegerField(range = (0,10))
+    rating = models.IntegerField() # Add range constraint 0-10
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 

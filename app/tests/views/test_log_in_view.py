@@ -30,8 +30,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertFalse(next)
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
-        # self.assert_no_menu(response)
 
+    # Implement once there is somewhere to redirect
     # def test_get_log_in_with_redirect(self):
     #     destination_url = reverse('user_list')
     #     self.url = reverse_with_next('log_in', destination_url)
@@ -101,8 +101,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTemplateUsed(response, 'dummy.html')
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
-        # self.assert_menu(response)
 
+    # Implement once there is somewhere to redirect
     # def test_succesful_log_in_with_redirect(self):
     #     redirect_url = reverse('user_list')
     #     form_input = { 'username': 'johndoe', 'password': 'Password123', 'next': redirect_url }
@@ -121,6 +121,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'dummy.html')
 
+    # Implement once there is somewhere to redirect
     # def test_post_log_in_with_incorrect_credentials_and_redirect(self):
     #     redirect_url = reverse('user_list')
     #     form_input = { 'username': 'johndoe', 'password': 'WrongPassword123', 'next': redirect_url }

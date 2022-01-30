@@ -4,6 +4,7 @@ from django.urls import reverse
 from app.models import User
 from app.tests.helpers import LogInTester
 
+# Class modified from Cluckers
 class LogOutViewTestCase(TestCase, LogInTester):
     """Tests of the log out view."""
 
