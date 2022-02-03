@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic.edit import FormView
 from django.contrib.auth import login
 from .mixins import LoginProhibitedMixin
@@ -30,7 +31,7 @@ class PasswordView(LoginRequiredMixin, FormView):
     def get_success_url(self):
         """Redirect the user after successful password change."""
 
-        # messages.add_message(self.request, messages.SUCCESS, "Password updated!")
+        messages.add_message(self.request, messages.SUCCESS, "Password updated!")
         return reverse('dummy')
 
 
