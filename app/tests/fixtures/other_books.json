@@ -1,0 +1,16 @@
+[
+    {
+        "model": "app.Book",
+        "pk": 1,
+        "fields": {
+            "ISBN": "978-0-321-87758-1",
+            "title": "Ender's Game",
+            "author": "Orson Scott Card",
+            "publication_date": "1985-10-01",
+            "publisher": "Orbit",
+            "image_links_large": "image_link_large",
+            "image_links_medium": "image_link_medium",
+            "image_links_small": "Image_link"
+        }
+    }
+]

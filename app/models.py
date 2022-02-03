@@ -52,22 +52,13 @@ class User(AbstractUser):
 #Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
-    title = models.CharField(max_length=50)
-    author = models.CharField(max_length=50)
-    publication_date = models.DateField()
+    title = models.CharField(max_length=50, blank=False, unique=True)
+    author = models.CharField(max_length=50, blank=False)
+    publication_date = models.DateField(blank =False, validators=[DateValidator])
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
-
-    def add_image_link_large(self, image_link):
-        self.image_links_large = image_link
-
-    def add_image_link_medium(self, image_link):
-        self.image_links_medium = image_link
-
-    def add_image_link_small(self, image_link):
-        self.image_links_small = image_link
 
 #Book Ratings class
 class BookRatings(models.Model):

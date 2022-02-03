@@ -200,6 +200,8 @@ class UserModelTest(TestCase):
         self.user.add_read_book(book)
         self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
 
+    
+
    
 
 
