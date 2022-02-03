@@ -53,7 +53,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
         """Form options."""
 
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'age']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'birthday']
         widgets = { 'bio': forms.Textarea() }
 
     def save(self):
@@ -68,6 +68,6 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
             last_name=self.cleaned_data.get('last_name'),
             bio=self.cleaned_data.get('bio'),
             location=self.cleaned_data.get('location'),
-            age=self.cleaned_data.get('age')
+            birthday=self.cleaned_data.get('birthday')
         )
         return user

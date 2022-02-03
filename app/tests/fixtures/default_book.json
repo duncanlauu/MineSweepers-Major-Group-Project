@@ -1,0 +1,16 @@
+[
+    {
+        "model": "app.Book",
+        "pk": 1,
+        "fields": {
+            "ISBN": "978-0-7356-6745-7",
+            "title": "Harry Potter and the Sorcerer's Stone",
+            "author": "J.K. Rowling",
+            "publication_date": "1997-06-26",
+            "publisher": "Scholastic",
+            "image_links_large": "image_link_large",
+            "image_links_medium": "image_link_medium",
+            "image_links_small": "Image_link"
+        }
+    }
+]

@@ -1,26 +1,53 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 # User class
+
+def DateValidator(date):
+        if date > datetime.date.today():
+            raise ValidationError("Date cannot be in the future")
 class User(AbstractUser):
     username = models.CharField(
         max_length=50,
         unique=True,
         validators=[RegexValidator(
-            regex=r'\w{3,}',
+            regex=r'^\w{3,}',
             message='Username must consist of at least three alphanumericals'
         )]
     )
-    password = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    bio = models.TextField(max_length=500)
-    location = models.CharField(max_length=70)
-    age = models.IntegerField() #Add constraint so it can only be positive
-    created_at = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(max_length=50, unique=True)
+    first_name = models.CharField(max_length=50, blank= False)
+    last_name = models.CharField(max_length=50, blank= False)
+    bio = models.CharField(max_length=500, blank= True)
+    location = models.CharField(max_length=70, blank= True)
+    birthday = models.DateField(blank =False, validators=[DateValidator])
+    created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
+
+    def add_liked_book(self, book):
+        self.liked_books.add(book)
+
+    def liked_books_count(self):
+        return self.liked_books.count()
+
+    def remove_liked_book(self, book):
+        self.liked_books.remove(book)
+
+    def add_read_book(self, book):
+        self.read_books.add(book)
+
+    def read_books_count(self):
+        return self.read_books.count()
+
+    def remove_read_book(self, book):
+        self.read_books.remove(book)
+
+
+    
+
 
 #Book class
 class Book(models.Model):
@@ -32,6 +59,15 @@ class Book(models.Model):
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
+
+    def add_image_link_large(self, image_link):
+        self.image_links_large = image_link
+
+    def add_image_link_medium(self, image_link):
+        self.image_links_medium = image_link
+
+    def add_image_link_small(self, image_link):
+        self.image_links_small = image_link
 
 #Book Ratings class
 class BookRatings(models.Model):
@@ -76,7 +112,7 @@ class EventVote(models.Model):
 class Club(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(User, related_name='members')
     admins = models.ManyToManyField(User, related_name='admins')
@@ -85,3 +121,47 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books')
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
+
+    def add_member(self, user):
+        self.members.add(user)
+
+    def remove_member(self, user):
+        self.members.remove(user)
+
+    def add_admin(self, user):
+        self.admins.add(user)
+
+    def remove_admin(self, user):
+        self.admins.remove(user)
+
+    def add_applicant(self, user):
+        self.applicants.add(user)
+
+    def remove_applicant(self, user):
+        self.applicants.remove(user)
+
+    def add_banned_user(self, user):
+        self.banned_users.add(user)
+
+    def remove_banned_user(self, user):
+        self.banned_users.remove(user)
+
+    def add_book(self, book):
+        self.books.add(book)
+
+    def remove_book(self, book):
+        self.books.remove(book)
+
+    def set_visibility(self, visibility):
+        self.visibility = visibility
+
+    def switch_visibility(self):
+        self.visibility = not self.visibility
+
+    def set_public(self, is_public):
+        self.public = is_public
+
+    def change_public(self):
+        self.public = not self.public
+
+
