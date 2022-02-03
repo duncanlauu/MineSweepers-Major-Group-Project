@@ -13,7 +13,7 @@ class LogInView(LoginProhibitedMixin, View):
     """View that handles log in."""
 
     http_method_names = ['get', 'post']
-    redirect_when_logged_in_url = 'dummy'
+    redirect_when_logged_in_url = 'dummy' #Change later
 
     def get(self, request):
         """Display log in template."""
@@ -30,7 +30,7 @@ class LogInView(LoginProhibitedMixin, View):
         if user is not None:
             login(request, user)
             return redirect(self.next)
-        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+        # messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
         return self.render()
 
     def render(self):
