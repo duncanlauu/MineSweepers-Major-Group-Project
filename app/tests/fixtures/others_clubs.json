@@ -1,0 +1,30 @@
+[
+    {
+      "model": "app.Club",
+      "pk": 2,
+      "fields": {
+          "name": "Jane's Club",
+          "description": "This is a club for people who like to read fantasy.",  
+          "created_at": "2013-04-14T20:04:00Z",
+          "owner": 2,
+          "members": [
+            1
+          ],
+          "admins": [
+            4
+          ],
+          "applicants": [
+            5
+          ],
+          "banned_users": [
+            3
+          ],
+          "books": [
+            "978-0-321-87758-1"
+          ],
+          "visibility": false,
+          "public": true
+      }
+    }
+  ]
+  

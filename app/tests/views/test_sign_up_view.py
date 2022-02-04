@@ -1,4 +1,5 @@
 """Tests of the sign up view."""
+import datetime
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from django.urls import reverse
@@ -22,7 +23,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'email': 'janedoe@example.org',
             'bio': 'My bio',
             'location': 'London, UK',
-            'age': '20',
+            'birthday': '2000-01-01',
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
@@ -73,7 +74,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(user.email, 'janedoe@example.org')
         self.assertEqual(user.bio, 'My bio')
         self.assertEqual(user.location, 'London, UK')
-        self.assertEqual(user.age, 20)
+        self.assertEqual(user.birthday, datetime.date(2000, 1, 1))
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())
