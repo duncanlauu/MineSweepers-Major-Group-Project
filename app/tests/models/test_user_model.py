@@ -15,6 +15,7 @@ class UserModelTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
+        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -163,41 +164,35 @@ class UserModelTest(TestCase):
 
 
     def test_add_liked_book(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
         self.assertEqual(self.user.liked_books.count(), 0)
-        self.user.add_liked_book(book)
+        self.user.add_liked_book(self.book)
         self.assertEqual(self.user.liked_books.count(), 1)
 
     def test_add_read_book(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
         self.assertEqual(self.user.read_books.count(), 0)
-        self.user.add_read_book(book)
+        self.user.add_read_book(self.book)
         self.assertEqual(self.user.read_books.count(), 1)
 
     def test_remove_liked_book(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.user.add_liked_book(book)
+        self.user.add_liked_book(self.book)
         self.assertEqual(self.user.liked_books.count(), 1)
-        self.user.remove_liked_book(book)
+        self.user.remove_liked_book(self.book)
         self.assertEqual(self.user.liked_books.count(), 0)
 
     def test_remove_read_book(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.user.add_read_book(book)
+        self.user.add_read_book(self.book)
         self.assertEqual(self.user.read_books.count(), 1)
-        self.user.remove_read_book(book)
+        self.user.remove_read_book(self.book)
         self.assertEqual(self.user.read_books.count(), 0)
 
     def test_liked_book_count(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
         self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
-        self.user.add_liked_book(book)
+        self.user.add_liked_book(self.book)
         self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
 
     def test_read_book_count(self):
-        book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
         self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
-        self.user.add_read_book(book)
+        self.user.add_read_book(self.book)
         self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
 
     

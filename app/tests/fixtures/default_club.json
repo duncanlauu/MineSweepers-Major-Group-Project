@@ -1,0 +1,30 @@
+[
+    {
+      "model": "app.Club",
+      "pk": 1,
+      "fields": {
+          "name": "Joe's Club",
+          "description": "This is a club for people who like to read science fiction.",  
+          "created_at": "2015-03-04T20:04:00Z",
+          "owner": 1,
+          "members": [
+            2
+          ],
+          "admins": [
+            3
+          ],
+          "applicants": [
+            4
+          ],
+          "banned_users": [
+            5
+          ],
+          "books": [
+            "978-0-7356-6745-7"
+          ],
+          "visibility": true,
+          "public": true
+      }
+    }
+  ]
+  

@@ -101,8 +101,8 @@ class EventVote(models.Model):
 
 #Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
+    name = models.CharField(max_length=50,blank=False)
+    description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(User, related_name='members')
@@ -119,11 +119,17 @@ class Club(models.Model):
     def remove_member(self, user):
         self.members.remove(user)
 
+    def member_count(self):
+        return self.members.count()
+
     def add_admin(self, user):
         self.admins.add(user)
 
     def remove_admin(self, user):
         self.admins.remove(user)
+
+    def admin_count(self):
+        return self.admins.count()
 
     def add_applicant(self, user):
         self.applicants.add(user)
@@ -131,11 +137,20 @@ class Club(models.Model):
     def remove_applicant(self, user):
         self.applicants.remove(user)
 
+    def applicant_count(self):
+        return self.applicants.count()
+
+    def total_people_count(self):
+        return self.members.count() + self.admins.count() + 1 
+
     def add_banned_user(self, user):
         self.banned_users.add(user)
 
     def remove_banned_user(self, user):
         self.banned_users.remove(user)
+
+    def banned_user_count(self):
+        return self.banned_users.count()
 
     def add_book(self, book):
         self.books.add(book)
@@ -143,16 +158,13 @@ class Club(models.Model):
     def remove_book(self, book):
         self.books.remove(book)
 
-    def set_visibility(self, visibility):
-        self.visibility = visibility
+    def book_count(self):
+        return self.books.count()
 
     def switch_visibility(self):
         self.visibility = not self.visibility
 
-    def set_public(self, is_public):
-        self.public = is_public
-
-    def change_public(self):
+    def switch_public(self):
         self.public = not self.public
 
 
