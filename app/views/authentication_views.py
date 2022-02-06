@@ -30,7 +30,7 @@ class LogInView(LoginProhibitedMixin, View):
         if user is not None:
             login(request, user)
             return redirect(self.next)
-        messages.add_message(request, messages.WARNING, "The credentials provided were invalid!")
+        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
         return self.render()
 
     def render(self):
