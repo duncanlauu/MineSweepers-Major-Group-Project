@@ -160,13 +160,7 @@ class ClubModelTestCase(TestCase):
         self.assertEqual(self.club.book_count(), self.club.books.count())
         self.club.add_book(self.book)
         self.assertEqual(self.club.book_count(), self.club.books.count())
-
     
-
-    
-
-    
-
     def _assert_club_is_valid(self):
         try:
             self.club.full_clean()
