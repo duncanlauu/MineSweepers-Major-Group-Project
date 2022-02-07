@@ -13,7 +13,7 @@ def create_club(request):
     if request.method == 'POST':
         form = CreateClubForm(request.POST)
         if form.is_valid():
-            form.save(current_user)
+            club = form.save(current_user)
             return redirect('home')
     else:
         form = CreateClubForm()

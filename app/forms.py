@@ -54,7 +54,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'birthday']
-        widgets = { 'bio': forms.Textarea() }
+        widgets = { 'bio': forms.Textarea(), 'birthday': forms.DateInput(attrs={'type': 'date'})}
 
     def save(self):
         """Create a new user."""
@@ -83,7 +83,7 @@ class CreateClubForm(forms.ModelForm):
 
         model = Club
         fields = ['name', 'description', 'visibility', 'public']
-        widgets = { 'description': forms.Textarea() }
+        widgets = { 'description': forms.Textarea(), 'visibility': forms.CheckboxInput(), 'public': forms.CheckboxInput()}
 
     def save(self,user):
         """Create a new club."""
@@ -96,4 +96,5 @@ class CreateClubForm(forms.ModelForm):
             visibility = self.cleaned_data.get('visibility'),
             public = self.cleaned_data.get('public')        
         )
+        
         return club
