@@ -3,11 +3,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 # User class
 
 def DateValidator(date):
         if date > datetime.date.today():
             raise ValidationError("Date cannot be in the future")
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=50,
@@ -61,15 +63,14 @@ class Book(models.Model):
     image_links_small = models.CharField(max_length=500)
 
 #Book Ratings class
-class BookRatings(models.Model):
+class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField() # Add range constraint 0-10
-    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
 
 #Meeting class
 class Meeting(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE, related_name="clubevent")
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -78,7 +79,6 @@ class Meeting(models.Model):
 
 #Vote class
 class Vote(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -86,15 +86,14 @@ class Vote(models.Model):
 #Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
 
 
 #EventVote class
 class EventVote(models.Model):
-    event_id = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
