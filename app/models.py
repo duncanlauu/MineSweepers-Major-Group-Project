@@ -18,11 +18,11 @@ class User(AbstractUser):
         )]
     )
     email = models.EmailField(max_length=50, unique=True)
-    first_name = models.CharField(max_length=50, blank= False)
-    last_name = models.CharField(max_length=50, blank= False)
-    bio = models.CharField(max_length=500, blank= True)
-    location = models.CharField(max_length=70, blank= True)
-    birthday = models.DateField(blank =False, validators=[DateValidator])
+    first_name = models.CharField(max_length=50, blank=False)
+    last_name = models.CharField(max_length=50, blank=False)
+    bio = models.CharField(max_length=500, blank=True)
+    location = models.CharField(max_length=70, blank=True)
+    birthday = models.DateField(blank=False, validators=[DateValidator])
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
