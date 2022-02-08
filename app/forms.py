@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
-from .models import User
+from .models import User, Club
 
 # Mixin modified from Clucker
 class NewPasswordMixin(forms.Form):
@@ -87,7 +87,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'birthday']
-        widgets = { 'bio': forms.Textarea() }
+        widgets = { 'bio': forms.Textarea(), 'birthday': forms.DateInput(attrs={'type': 'date'})}
 
     def save(self):
         """Create a new user."""
@@ -104,3 +104,30 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
             birthday=self.cleaned_data.get('birthday')
         )
         return user
+
+
+# Create Club form
+
+class CreateClubForm(forms.ModelForm):
+    """Form enabling users to create a club."""
+
+    class Meta:
+        """Form options."""
+
+        model = Club
+        fields = ['name', 'description', 'visibility', 'public']
+        widgets = { 'description': forms.Textarea(), 'visibility': forms.CheckboxInput(), 'public': forms.CheckboxInput()}
+
+    def save(self,user):
+        """Create a new club."""
+
+        super().save(commit=False)
+        club = Club.objects.create(
+            name = self.cleaned_data.get('name'),
+            description = self.cleaned_data.get('description'),
+            owner = user,
+            visibility = self.cleaned_data.get('visibility'),
+            public = self.cleaned_data.get('public')        
+        )
+        
+        return club
