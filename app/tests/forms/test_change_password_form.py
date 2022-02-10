@@ -1,30 +1,40 @@
+"""Unit tests of the change password form."""
+from app.forms import PasswordForm
+from app.models import User
+from django import forms
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
-from app.models import User
-from app.forms import PasswordForm
 
+# Tests taken and modified from clucker
 class PasswordFormTestCase(TestCase):
+    """Unit tests of the change password form."""
 
     fixtures = ['app/tests/fixtures/default_user.json']
 
-
     def setUp(self):
-        self.user = User.objects.get(username='johndoe')
+        self.user = User.objects.get(email='johndoe@example.org')
         self.form_input = {
             'password': 'Password123',
             'new_password': 'NewPassword123',
-            'password_confirmation': 'NewPassword123',
+            'password_confirmation': 'NewPassword123'
         }
 
-    def test_form_has_necessary_fields(self):
-        form = PasswordForm(user=self.user)
-        self.assertIn('password', form.fields)
-        self.assertIn('new_password', form.fields)
-        self.assertIn('password_confirmation', form.fields)
 
-    def test_valid_form(self):
+    def test_valid_password_form(self):
         form = PasswordForm(user=self.user, data=self.form_input)
         self.assertTrue(form.is_valid())
+
+    def test_form_has_necessary_fields(self):
+        form = PasswordForm()
+        self.assertIn('password', form.fields)
+        password_widget = form.fields['password'].widget
+        self.assertTrue(isinstance(password_widget, forms.PasswordInput))
+        self.assertIn('new_password', form.fields)
+        new_password_widget = form.fields['new_password'].widget
+        self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
+        self.assertIn('password_confirmation', form.fields)
+        password_confirmation_widget = form.fields['password_confirmation'].widget
+        self.assertTrue(isinstance(password_confirmation_widget, forms.PasswordInput))
 
     def test_password_must_contain_uppercase_character(self):
         self.form_input['new_password'] = 'password123'
@@ -48,6 +58,18 @@ class PasswordFormTestCase(TestCase):
         self.form_input['password_confirmation'] = 'WrongPassword123'
         form = PasswordForm(user=self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
+
+    def test_form_must_update_correctly(self):
+        user = User.objects.get(email='johndoe@example.org')
+        is_current_password_correct = check_password('Password123', user.password)
+        self.assertTrue(is_current_password_correct)
+        before_count = User.objects.count()
+        user.set_password(self.form_input['new_password'])
+        user.save()
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count)
+        is_new_password_correct = check_password('NewPassword123', user.password)
+        self.assertTrue(is_new_password_correct)
 
     def test_password_must_be_valid(self):
         self.form_input['password'] = 'WrongPassword123'
