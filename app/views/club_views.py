@@ -61,3 +61,4 @@ def ban_members(request, club_id, member_id):
         club.remove_member(member)
         club.add_banned_user(member)
     return render(request, "dummy.html")
+
