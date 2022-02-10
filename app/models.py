@@ -1,13 +1,25 @@
 import datetime
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-# User class
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
 
-def DateValidator(date):
+#It uses datetime.date which only uses the date
+def PastDateValidator(date):
         if date > datetime.date.today():
             raise ValidationError("Date cannot be in the future")
+
+
+#It uses datetime.datetime which includes hours too
+def FutureDateValidator(date):
+        if date < timezone.now():
+            raise ValidationError("Date cannot be in the past")
+
+
+# User class
 class User(AbstractUser):
     username = models.CharField(
         max_length=50,
@@ -22,7 +34,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank= False)
     bio = models.CharField(max_length=500, blank= True)
     location = models.CharField(max_length=70, blank= True)
-    birthday = models.DateField(blank =False, validators=[DateValidator], null=True)
+    birthday = models.DateField(validators=[PastDateValidator],blank =False, null =True)
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
@@ -54,47 +66,53 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
     title = models.CharField(max_length=50, blank=False, unique=True)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.DateField(blank =False, validators=[DateValidator])
+    publication_date = models.DateField(blank =False, validators=[PastDateValidator])
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
 
 #Book Ratings class
-class BookRatings(models.Model):
+class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField() # Add range constraint 0-10
-    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
 
 #Meeting class
 class Meeting(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE, related_name="clubevent")
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
+    end_time = models.DateTimeField(blank=False, validators=[FutureDateValidator])
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=70)
-    link = models.CharField(max_length=500)
+    location = models.CharField(max_length=70, blank=True)
+    link = models.CharField(max_length=500, unique=True, blank=True)
 
 #Vote class
 class Vote(models.Model):
-    club_event = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
+    end_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
+
+    def add_event_vote(self, event_vote):
+        self.event_vote.add(event_vote)
+
+    def remove_event_vote(self, event_vote):
+        self.event_vote.remove(event_vote)
+
+    def event_vote_count(self):
+        return self.event_vote.count()
 
 #Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) # on_delete CASCADE might be wrong
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    description = models.TextField(max_length=500)
+    description = models.CharField(max_length=500, blank=True)
 
 
 #EventVote class
 class EventVote(models.Model):
-    event_id = models.ForeignKey('ClubEvent', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 

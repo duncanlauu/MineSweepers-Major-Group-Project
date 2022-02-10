@@ -1,0 +1,13 @@
+[
+    {
+        "model": "app.Meeting",
+        "pk": 1,
+        "fields": {
+            "start_time": "2022-11-01T08:00:00.0+00:00",
+            "end_time": "2022-11-01T10:00:00.0+00:00",
+            "discussion_leader": 1,
+            "location": "The Great Hall",
+            "link": "https://www.google.com/"
+        }
+    }
+]
