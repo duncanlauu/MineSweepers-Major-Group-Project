@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'widget_tweaks',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,16 @@ EMAIL_HOST_PASSWORD = 'uqcdpcbpdmhahyad' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# Direct messages
+# Messaging implementation from: https://channels.readthedocs.io tutorial
+ASGI_APPLICATION = "bookclub.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
