@@ -108,7 +108,7 @@ class ClubEvent(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    description = models.TextField(max_length=500)
+    description = models.CharField(max_length=500, blank=True)
 
 
 #EventVote class
