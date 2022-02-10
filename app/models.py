@@ -34,7 +34,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank= False)
     bio = models.CharField(max_length=500, blank= True)
     location = models.CharField(max_length=70, blank= True)
-    birthday = models.DateField(validators=[PastDateValidator],blank =False)
+    birthday = models.DateField(validators=[PastDateValidator],blank =False, null =True)
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')

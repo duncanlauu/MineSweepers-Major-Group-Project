@@ -1,0 +1,6 @@
+{% extends 'base_content.html' %}
+{% block content %}
+	{% for club in clubs %}
+		{{ club.name }}
+	{% endfor %}
+{% endblock %}

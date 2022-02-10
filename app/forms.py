@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
-from .models import User
+from .models import User, Club
 
 # Mixin modified from Clucker
 class NewPasswordMixin(forms.Form):
@@ -46,6 +46,39 @@ class LogInForm(forms.Form):
         return user
 
 # Form modified from Clucker
+class PasswordForm(NewPasswordMixin):
+    """Form enabling users to change their password."""
+
+    password = forms.CharField(label='Current password', widget=forms.PasswordInput())
+
+    def __init__(self, user=None, **kwargs):
+        """Construct new form instance with a user instance."""
+
+        super().__init__(**kwargs)
+        self.user = user
+
+    def clean(self):
+        """Clean the data and generate messages for any errors."""
+
+        super().clean()
+        password = self.cleaned_data.get('password')
+        if self.user is not None:
+            user = authenticate(username=self.user.username, password=password)
+        else:
+            user = None
+        if user is None:
+            self.add_error('password', "Password is invalid")
+
+    def save(self):
+        """Save the user's new password."""
+
+        new_password = self.cleaned_data['new_password']
+        if self.user is not None:
+            self.user.set_password(new_password)
+            self.user.save()
+        return self.user
+
+# Form modified from Clucker
 class SignUpForm(NewPasswordMixin, forms.ModelForm):
     """Form enabling unregistered users to sign up."""
 
@@ -54,7 +87,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'birthday']
-        widgets = { 'bio': forms.Textarea() }
+        widgets = { 'bio': forms.Textarea(), 'birthday': forms.DateInput(attrs={'type': 'date'})}
 
     def save(self):
         """Create a new user."""
@@ -71,3 +104,30 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
             birthday=self.cleaned_data.get('birthday')
         )
         return user
+
+
+# Create Club form
+
+class CreateClubForm(forms.ModelForm):
+    """Form enabling users to create a club."""
+
+    class Meta:
+        """Form options."""
+
+        model = Club
+        fields = ['name', 'description', 'visibility', 'public']
+        widgets = { 'description': forms.Textarea(), 'visibility': forms.CheckboxInput(), 'public': forms.CheckboxInput()}
+
+    def save(self,user):
+        """Create a new club."""
+
+        super().save(commit=False)
+        club = Club.objects.create(
+            name = self.cleaned_data.get('name'),
+            description = self.cleaned_data.get('description'),
+            owner = user,
+            visibility = self.cleaned_data.get('visibility'),
+            public = self.cleaned_data.get('public')        
+        )
+        
+        return club

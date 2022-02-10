@@ -129,3 +129,11 @@ AUTH_USER_MODEL = 'app.User'
 
 # URL where @login_prohibited redirects to
 REDIRECT_URL_WHEN_LOGGED_IN = 'dummy' #Change later
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'bookgle.noreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'uqcdpcbpdmhahyad' #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
