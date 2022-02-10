@@ -1,4 +1,5 @@
 import datetime
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
@@ -80,11 +81,11 @@ class BookRating(models.Model):
 
 #Meeting class
 class Meeting(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
+    end_time = models.DateTimeField(blank=False, validators=[FutureDateValidator])
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=70)
-    link = models.CharField(max_length=500)
+    location = models.CharField(max_length=70, blank=True)
+    link = models.CharField(max_length=500, unique=True, blank=True)
 
 #Vote class
 class Vote(models.Model):
