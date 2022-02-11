@@ -58,7 +58,7 @@ class User(AbstractUser):
         self.read_books.remove(book)
 
 
-    
+
 
 
 #Book class
@@ -106,7 +106,7 @@ class Vote(models.Model):
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE) 
+    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     description = models.CharField(max_length=500, blank=True)
 
@@ -159,7 +159,7 @@ class Club(models.Model):
         return self.applicants.count()
 
     def total_people_count(self):
-        return self.members.count() + self.admins.count() + 1 
+        return self.members.count() + self.admins.count() + 1
 
     def add_banned_user(self, user):
         self.banned_users.add(user)
@@ -185,4 +185,14 @@ class Club(models.Model):
     def switch_public(self):
         self.public = not self.public
 
+# From messaging tutorial - fix later
+class Message(models.Model):
+    author = models.ForeignKey(User, related_name='author_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.author.username
+
+    def last_10_messages():
+        return Message.objects.order_by('-timestamp').all()[:10]
