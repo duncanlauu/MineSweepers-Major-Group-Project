@@ -23,12 +23,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', views.home, name='home'),
     path('', include('frontend.urls')),
+
     path('dm', include('app.urls')),
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
     path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('log_out/', views.log_out, name='log_out'),
     path('password/', views.PasswordView.as_view(), name='password'),
     path('dummy/', views.dummy, name='dummy'),
+    # path('', views.dummy, name='dummy'),
 
     # Reset User Password
     path("password_reset/", auth_views.PasswordResetView.as_view( template_name="password_reset_templates/password_reset.html", html_email_template_name='password_reset_templates/password_reset_html_email.html' ), name="password_reset"),
@@ -43,4 +45,7 @@ urlpatterns = [
 
     # Messaging
     path('chat/', include('app.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
 ]

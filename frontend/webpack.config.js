@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
+  devtool: "eval-cheap-source-map",
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "./static/frontend"),
@@ -15,6 +16,10 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        use: ['style-loader', 'css-loader'],
+        test: /\.css$/
       },
     ],
   },
