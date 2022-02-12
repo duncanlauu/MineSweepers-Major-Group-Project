@@ -20,10 +20,7 @@ class Chat extends React.Component {
             this.props.params.chatID
           );
         });
-		// WebSocketInstance.connect(this.props.match.params.chatID);
     WebSocketInstance.connect(this.props.params.chatID);
-		// console.log(this.props.params.chatID);
-
 	}
 
     constructor(props) {
@@ -64,6 +61,7 @@ class Chat extends React.Component {
         const messageObject = {
             from: this.props.username,
             content: this.state.message,
+            chatId: this.props.params.chatID,
         };
         WebSocketInstance.newChatMessage(messageObject);
         this.setState({ message: '' });
@@ -118,7 +116,17 @@ class Chat extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-		this.initialiseChat();
+      // console.log(newProps.params)
+      if (this.props.params.chatID !== newProps.params.chatID) {
+            WebSocketInstance.disconnect();
+            this.waitForSocketConnection(() => {
+                WebSocketInstance.fetchMessages(
+                  this.props.username,
+                  newProps.params.chatID
+                );
+              });
+              WebSocketInstance.connect(newProps.params.chatID);
+        }
     }
 
     render() {
