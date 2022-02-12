@@ -2,18 +2,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 import WebSocketInstance from '../websocket';
 import Hoc from '../hoc/hoc';
-
+import { Link, useParams } from 'react-router-dom';
 
 class Chat extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {message: ''}
 
+	state = { message: '' }
+  //
+  // function getChatID(){
+  //   return 1;
+  // }
+
+	initialiseChat() {
         this.waitForSocketConnection(() => {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
-          WebSocketInstance.fetchMessages(this.props.username);
+          WebSocketInstance.fetchMessages(
+            this.props.username,
+            1,
+            // this.props.match.params.chatID
+          );
         });
-    }
+		// WebSocketInstance.connect(this.props.match.params.chatID);
+    WebSocketInstance.connect(1);
+	}
+
+    constructor(props) {
+        super(props);
+        // const { chatID } = useParams();
+		this.initialiseChat();
+	}
 
     waitForSocketConnection(callback) {
         const component = this;
@@ -39,9 +55,7 @@ class Chat extends React.Component {
     }
 
     messageChangeHandler = (event) =>  {
-        this.setState({
-            message: event.target.value
-        })
+        this.setState({ message: event.target.value });
     }
 
     sendMessageHandler = (e) => {
@@ -51,9 +65,7 @@ class Chat extends React.Component {
             content: this.state.message,
         };
         WebSocketInstance.newChatMessage(messageObject);
-        this.setState({
-            message: ''
-        });
+        this.setState({ message: '' });
     }
 
     renderTimestamp = timestamp => {
@@ -75,6 +87,7 @@ class Chat extends React.Component {
 
     renderMessages = (messages) => {
         const currentUser = this.props.username;
+        // return <div>Yo</div>
         return messages.map((message, i, arr) => (
             <li
                 key={message.id}
@@ -103,6 +116,10 @@ class Chat extends React.Component {
         this.scrollToBottom();
     }
 
+    componentWillReceiveProps(newProps) {
+		this.initialiseChat();
+    }
+
     render() {
         const messages = this.state.messages;
         return (
@@ -117,7 +134,6 @@ class Chat extends React.Component {
                         ref={(el) => { this.messagesEnd = el; }}>
                     </div>
                     </ul>
-
                 </div>
                 <div className="message-input">
                     <form onSubmit={this.sendMessageHandler}>

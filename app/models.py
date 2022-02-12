@@ -207,8 +207,8 @@ class Chat(models.Model):
     participants = models.ManyToManyField(Contact, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
 
-    def last_10_messages(self):
-        return self.messages.order_by('-timestamp').all()[:10]
+    # def last_10_messages(self):
+    #     return self.messages.order_by('-timestamp').all()[:10]
 
     def __str__(self):
         return "{}".format(self.pk)

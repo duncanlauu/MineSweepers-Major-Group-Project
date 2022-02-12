@@ -6,13 +6,13 @@ import BaseRouter from './routes';
 import Sidepanel from './components/Sidepanel';
 import Profile from './components/Profile';
 import { Route, Routes } from "react-router-dom";
-import WebSocketInstance from './websocket';
+// import WebSocketInstance from './websocket';
 
 class App extends React.Component {
 
     componentDidMount() {
         this.props.onTryAutoSignup();
-        WebSocketInstance.connect();
+        // WebSocketInstance.connect();
     }
 
     render() {
