@@ -17,12 +17,13 @@ class Chat extends React.Component {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
           WebSocketInstance.fetchMessages(
             this.props.username,
-            1,
-            // this.props.match.params.chatID
+            this.props.params.chatID
           );
         });
 		// WebSocketInstance.connect(this.props.match.params.chatID);
-    WebSocketInstance.connect(1);
+    WebSocketInstance.connect(this.props.params.chatID);
+		// console.log(this.props.params.chatID);
+
 	}
 
     constructor(props) {
@@ -157,10 +158,14 @@ class Chat extends React.Component {
     };
 }
 
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
+
 const mapStateToProps = state => {
     return {
         username: state.username
     }
 }
 
-export default connect(mapStateToProps)(Chat);
+export default connect(mapStateToProps)(withParams(Chat));
