@@ -1,3 +1,5 @@
+# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
+
 from django.urls import path, re_path
 
 from .views import (

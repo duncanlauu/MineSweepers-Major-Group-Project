@@ -1,3 +1,5 @@
+# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
+
 from rest_framework import serializers
 
 from app.models import Chat

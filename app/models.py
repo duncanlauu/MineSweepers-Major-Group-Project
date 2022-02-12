@@ -185,7 +185,7 @@ class Club(models.Model):
     def switch_public(self):
         self.public = not self.public
 
-# From messaging tutorial - fix later
+# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Contact(models.Model):
     user = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
     friends = models.ManyToManyField('self', blank=True)

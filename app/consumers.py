@@ -1,4 +1,4 @@
-# Messaging implementation from: https://channels.readthedocs.io tutorial
+# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer

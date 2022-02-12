@@ -1,3 +1,4 @@
+// Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -35,23 +36,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(App);
-
-
-//
-// import React, { Component } from "react";
-// import { render } from "react-dom";
-//
-// export default class App extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//
-//   render() {
-//     return (
-//       <h1>The integration worked, you're not a total failure</h1>
-//     );
-//   }
-// }
-//
-// const appDiv = document.getElementById("app");
-// render(<App />, appDiv);

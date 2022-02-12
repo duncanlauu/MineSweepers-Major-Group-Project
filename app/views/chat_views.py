@@ -1,4 +1,4 @@
-# Messaging implementation from: https://channels.readthedocs.io tutorial
+# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 from django.shortcuts import render, get_object_or_404
 from app.models import User, Chat, Contact
 
