@@ -5,11 +5,14 @@ import * as actions from './store/actions/auth';
 import BaseRouter from './routes';
 import Sidepanel from './components/Sidepanel';
 import Profile from './components/Profile';
+import { Route, Routes } from "react-router-dom";
+import WebSocketInstance from './websocket';
 
 class App extends React.Component {
 
     componentDidMount() {
         this.props.onTryAutoSignup();
+        WebSocketInstance.connect();
     }
 
     render() {
@@ -19,7 +22,7 @@ class App extends React.Component {
                     <Sidepanel />
                     <div className="content">
                         <Profile />
-                        <BaseRouter />
+                          <BaseRouter />
                     </div>
                 </div>
             </Router>

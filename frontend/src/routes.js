@@ -1,14 +1,15 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import Hoc from './hoc/hoc';
 
 import Chat from "./components/Chat";
 
 const BaseRouter = () => (
-  <div>
+  <Hoc>
     <Routes>
-      <Route exact path="/:chatID/" component={Chat} />
+      <Route exact path="/:chatID/" element={<Chat />} />
     </Routes>
-  </div>
+  </Hoc>
 );
 
 export default BaseRouter;
