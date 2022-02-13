@@ -131,3 +131,16 @@ class CreateClubForm(forms.ModelForm):
         )
         
         return club
+
+
+class EditProfileForm(forms.ModelForm):
+    """Form enabling a club owner to edit their user information."""
+
+    bio = forms.CharField(label='Bio', widget=forms.Textarea(), required=True)
+    location = forms.CharField(label='Location', required=True)
+    class Meta:
+        """Form options."""
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'location', 'birthday']
+
+        widgets = {'birthday': forms.DateInput(attrs={'type': 'date'})}

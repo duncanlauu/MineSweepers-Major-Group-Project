@@ -86,11 +86,8 @@ class BookModelTest(TestCase):
     def test_image_links_small_cannot_be_over_500_characters_long(self):
         self.book.image_links_small = 'x' * 501
         self._assert_book_is_invalid()
-
     
 
-
-  
 
     def _assert_book_is_valid(self):
         try:

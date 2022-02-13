@@ -4,8 +4,12 @@ from django.views.generic.edit import FormView
 from django.contrib.auth import login
 from .mixins import LoginProhibitedMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.forms import SignUpForm, PasswordForm
+from app.forms import SignUpForm, PasswordForm, EditProfileForm
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+
 
 # View modified from Clucker
 class PasswordView(LoginRequiredMixin, FormView):
@@ -50,3 +54,16 @@ class SignUpView(LoginProhibitedMixin, FormView):
 
     def get_success_url(self):
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+
+
+#Edit User profile
+@login_required 
+def edit_profile(request):
+    form = EditProfileForm(request.POST, instance=request.user)
+    if form.is_valid():
+            form.save()
+            return redirect('dummy')
+    else:
+        messages.add_message(request, messages.ERROR, "Invalid Information")
+        form = EditProfileForm(instance=request.user)
+    return render(request,'edit_profile.html', {'form': form, })
