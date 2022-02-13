@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import Error404 from "./Error404/Error404";
 
 export default class App extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <h1>The integration worked, you're not a total failure</h1>
+      <Error404 />
     );
   }
 }
