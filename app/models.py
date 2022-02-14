@@ -6,6 +6,7 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
+from django.db.models import Q
 
 #It uses datetime.date which only uses the date
 def PastDateValidator(date):
@@ -17,6 +18,20 @@ def PastDateValidator(date):
 def FutureDateValidator(date):
         if date < timezone.now():
             raise ValidationError("Date cannot be in the past")
+
+
+#User Manager class
+class UserManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(username__icontains=query) |
+                         Q(first_name__icontains=query) |
+                         Q(last_name__icontains=query) |
+                         Q(email__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
 
 
 # User class
@@ -39,6 +54,8 @@ class User(AbstractUser):
     liked_books = models.ManyToManyField('Book', related_name='liked_books')
     read_books = models.ManyToManyField('Book', related_name='read_books')
 
+    objects= UserManager()
+
     def add_liked_book(self, book):
         self.liked_books.add(book)
 
@@ -58,7 +75,16 @@ class User(AbstractUser):
         self.read_books.remove(book)
 
 
-    
+# Book Manager class
+class BookManager(models.Manager):
+    def search(self, query):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(title__icontains=query) |
+                         Q(author__icontains=query) )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
 
 
 #Book class
@@ -71,6 +97,8 @@ class Book(models.Model):
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
+
+    objects = BookManager()
 
 #Book Ratings class
 class BookRating(models.Model):
@@ -116,6 +144,16 @@ class EventVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
+#Club Manager class
+class ClubManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(name__icontains=query) |
+                         Q(description__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
 
 #Club class
 class Club(models.Model):
@@ -130,6 +168,8 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books')
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
+
+    objects = ClubManager()
 
     def add_member(self, user):
         self.members.add(user)
