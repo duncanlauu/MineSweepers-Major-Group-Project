@@ -3,5 +3,6 @@ from .views import dino, index
 
 urlpatterns = [
     path('', index),
-    path('dino.html', dino)
+    path('dino.html', dino),
+    path('log_in/', index),
 ]
