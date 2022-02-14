@@ -66,4 +66,4 @@ def edit_profile(request):
     else:
         messages.add_message(request, messages.ERROR, "Invalid Information")
         form = EditProfileForm(instance=request.user)
-    return render(request,'edit_profile.html', {'form': form, })
+    return render(request,'edit_profile.html', {'form': form})
