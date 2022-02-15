@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from app import views
+from frontend import frontend_views
 
 urlpatterns = [
     # General URLs
@@ -24,8 +25,8 @@ urlpatterns = [
     # path('', views.home, name='home'),
     path('', include('frontend.urls')),
 
-    path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
-    path('log_in/', views.LogInView.as_view(), name='log_in'),
+    # path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
+    # path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('log_out/', views.log_out, name='log_out'),
     path('password/', views.PasswordView.as_view(), name='password'),
     path('dummy/', views.dummy, name='dummy'),
@@ -46,4 +47,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
+
 ]

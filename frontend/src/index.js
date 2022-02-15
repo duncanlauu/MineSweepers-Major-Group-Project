@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import 'antd/dist/antd.css';
 import reducer from './store/reducers/auth';
-import App from './App';
+import App from './components/App';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
