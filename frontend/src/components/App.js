@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./LoginPage";
+
+import Login from "./Login/Login"
+import ClubProfile from "./ClubProfile/ClubProfile";
+import Error404 from "./Error404/Error404";
+import LandingPage from "./LandingPage/LandingPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -12,8 +16,10 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path = '/'><p>This is the home page</p></Route>
-          <Route path = '/log_in/' element={<LoginPage />}></Route>
+          <Route path = '/' element={<LandingPage />}></Route>
+          <Route path = '/log_in/' element={<Login />}></Route>
+          <Route path = '/error/' element={<Error404 />}></Route>
+          <Route path = '/club_profile/' element={<ClubProfile />}></Route>
         </Routes>
       </BrowserRouter>
     );
@@ -22,5 +28,3 @@ export default class App extends Component {
 
 const appDiv = document.getElementById("app");
 render(<App />, appDiv);
-
-//           <Route path = '/log_in' component={LoginPage}/>
