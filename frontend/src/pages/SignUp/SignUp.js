@@ -20,7 +20,7 @@ export default class SignUpPage extends Component {
        </Row>
 
 
-        <Container> 
+        <Container fluid> 
         <Row style={{ marginTop: "6rem" }}>
         <Col />
         <Col>
