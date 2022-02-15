@@ -42,6 +42,9 @@ urlpatterns = [
     path('create_club/', views.create_club, name='create_club'),
     path('club_list/', views.club_list, name='club_list'),
     path('user_club_list/', views.user_club_list, name='user_club_list'),
+    path('accept_applicant/<int:club_id>/<int:applicant_id>', views.accept_applicant, name='accept_applicant'),
+    path('reject_applicant/<int:club_id>/<int:applicant_id>', views.reject_applicant, name='reject_applicant'),
+    path('ban_member/<int:club_id>/<int:member_id>', views.ban_member, name='ban_member'),
 
     # Messaging
     path('api-auth/', include('rest_framework.urls')),
