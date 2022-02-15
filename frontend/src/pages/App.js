@@ -3,6 +3,8 @@ import { render } from "react-dom";
 import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
+
 
 
 export default class App extends Component {
@@ -12,7 +14,11 @@ export default class App extends Component {
 
   render() {
     return (
-      <LandingPage />
+      <div>
+        {/* <LandingPage /> */}
+        <SignUp />
+        {/* <Login /> */}
+      </div>
     );
   }
 }
