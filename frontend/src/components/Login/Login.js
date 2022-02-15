@@ -1,11 +1,18 @@
 import React from 'react'
-import { Col, Container, FormGroup, Input, Label, Row, Button } from 'reactstrap'
+import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
 import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const Login = () => {
   return (
     <div>
+        <Row>
+          <Navbar color="light" expand="md" light>
+            <NavbarBrand href="/">
+              <h1> bookgle </h1>
+            </NavbarBrand>
+          </Navbar>
+       </Row>
         <Container fluid>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
