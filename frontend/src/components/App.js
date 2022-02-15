@@ -74,16 +74,6 @@ class App extends React.Component {
               <Route path = '/dummy2/' element={<Dummy />}></Route>
             </Routes>
           </BrowserRouter>
-
-            /*<BrowserRouter>
-                <div id="frame">
-                    <Sidepanel />
-                    <div className="content">
-                        <Profile />
-                          <BaseRouter />
-                    </div>
-                </div>
-            </BrowserRouter>*/
         );
     };
 }
