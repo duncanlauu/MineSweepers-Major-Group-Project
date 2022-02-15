@@ -17,7 +17,7 @@ export const ProfileHeader = styled.div`
     margin: 2rem;
 `
 
-export const BookProfile = styled.div`
+export const BookProfile = styled.button`
     background-color: #F3F3F3;
     height: 7rem;
     width: 30rem;

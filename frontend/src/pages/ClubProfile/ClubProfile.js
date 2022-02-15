@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button, Badge } from 'reactstrap';
 import { BookProfile, ProfileContainer, ProfileHeader } from './ClubProfileElements';
 import Gravatar from 'react-gravatar';
 
@@ -45,6 +45,75 @@ function ProfileBody() {
     );
 }
 
+function ClubMembers() {
+    return (
+        <>
+        <Container fluid style={{ margin: "1rem" }}>
+            <Row>
+                <h3 style={{ fontFamily:"Source Sans Pro", marginTop:"2rem", fontWeight:"600" }}>Members</h3>
+            </Row>
+            <Row>
+                <BookProfile>
+                    <Col xs={4}>
+                        <Gravatar email='blah@blah.com' size={80} style={{margin:"1rem"}}></Gravatar>
+                    </Col>
+                    <Col xs={8}>
+                        <h4 style={{fontFamily:"Source Sans Pro",marginTop:"1rem", lineHeight: "10px", fontWeight:"600"}}>Jimothy Halpert</h4>
+                        <Badge style={{ backgroundColor: "#653FFD" }} pill>Owner</Badge><br />
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...</span>
+                    </Col> 
+                </BookProfile>
+            </Row>
+        </Container>
+        <Container fluid style={{ margin: "1rem" }}>
+            <Row>
+                <BookProfile>
+                    <Col xs={4}>
+                        <Gravatar email='blah@blah.com' size={80} style={{margin:"1rem"}}></Gravatar>
+                    </Col>
+                    <Col xs={8}>
+                        <h4 style={{fontFamily:"Source Sans Pro",marginTop:"1rem", lineHeight: "10px", fontWeight:"600"}}>Pamela Beesly</h4>
+                        <Badge style={{ backgroundColor: "#653FFD" }} pill>Admin</Badge><br />
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...</span>
+                    </Col> 
+                </BookProfile>
+            </Row>
+        </Container>
+        <Container fluid style={{ margin: "1rem" }}>
+            <Row>
+                <BookProfile>
+                    <Col xs={4}>
+                        <Gravatar email='blah@blah.com' size={80} style={{margin:"1rem"}}></Gravatar>
+                    </Col>
+                    <Col xs={8}>
+                        <h4 style={{fontFamily:"Source Sans Pro",marginTop:"1rem", lineHeight: "10px", fontWeight:"600"}}>Kevin Malone</h4>
+                        <Badge style={{ backgroundColor: "#653FFD" }} pill>Member</Badge><br />
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...</span>
+                    </Col> 
+                </BookProfile>
+            </Row>
+        </Container>
+        <hr />
+        <Container fluid style={{ margin: "1rem" }}>
+            <Row>
+                <BookProfile>
+                    <Col xs={4}>
+                        <Gravatar email='blah@blah.com' size={80} style={{margin:"1rem"}}></Gravatar>
+                    </Col>
+                    <Col xs={8}>
+                        <h4 style={{fontFamily:"Source Sans Pro",marginTop:"1rem", lineHeight: "10px", fontWeight:"600"}}>Dwight Schrute</h4>
+                        <Badge style={{ backgroundColor: "#653FFD" }} pill>Reading List</Badge>
+                        <Badge style={{ backgroundColor: "#653FFD", marginLeft:"1rem" }} pill>Accept</Badge>
+                        <br />
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...</span>
+                    </Col> 
+                </BookProfile>
+            </Row>
+        </Container>
+        </>
+    );
+}
+
 const ClubProfile = () => {
   return (
     <div>
@@ -56,7 +125,7 @@ const ClubProfile = () => {
                         <ProfileHeader>
                             Lorem Ipsum
                         </ProfileHeader>
-                        <ProfileBody></ProfileBody>
+                        <ProfileBody />
                     </ProfileContainer>
                 </Col>
                 <Col />
