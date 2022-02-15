@@ -24,7 +24,6 @@ urlpatterns = [
     # path('', views.home, name='home'),
     path('', include('frontend.urls')),
 
-    # path('dm', include('app.urls')),
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
     path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('log_out/', views.log_out, name='log_out'),
@@ -44,7 +43,6 @@ urlpatterns = [
     path('user_club_list/', views.user_club_list, name='user_club_list'),
 
     # Messaging
-    path('chat/', include('app.api.urls', namespace='chat')),
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),

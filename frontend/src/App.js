@@ -7,13 +7,11 @@ import BaseRouter from './routes';
 import Sidepanel from './components/Sidepanel';
 import Profile from './components/Profile';
 import { Route, Routes } from "react-router-dom";
-// import WebSocketInstance from './websocket';
 
 class App extends React.Component {
 
     componentDidMount() {
         this.props.onTryAutoSignup();
-        // WebSocketInstance.connect();
     }
 
     render() {
@@ -38,5 +36,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(App);
-
-// export default App;

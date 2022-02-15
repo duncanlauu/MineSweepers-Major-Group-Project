@@ -1,6 +1,5 @@
 from django.contrib import admin
 from app.models import User, Club, Book
-from app.models import Contact, Chat, Message
 
 # Register your models here.
 
@@ -28,7 +27,3 @@ class BookAdmin(admin.ModelAdmin):
     list_display = [
         'ISBN', 'title', 'author', 'publisher'
     ]
-
-admin.site.register(Chat)
-admin.site.register(Contact)
-admin.site.register(Message)

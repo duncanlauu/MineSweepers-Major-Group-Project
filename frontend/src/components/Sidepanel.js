@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Spin, Icon } from 'antd';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
-import Contact from './Contact';
 
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -17,23 +16,14 @@ class Sidepanel extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (newProps.token !== null && newProps.username !== null) {
-            this.getUserChats(newProps.token, newProps.username);
+
         }
     }
 
     componentDidMount() {
         if (this.props.token !== null && this.props.username !== null) {
-            this.getUserChats(this.props.token, this.props.username);
-        }
-    }
 
-    getUserChats = (token, username) => {
-        axios.defaults.headers = {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`
-        };
-        axios.get(`http://127.0.0.1:8000/chat/?username=${username}`)
-        .then(res => this.setState({ chats: res.data }));
+        }
     }
 
     changeForm = () => {
@@ -58,16 +48,6 @@ class Sidepanel extends React.Component {
     }
 
     render() {
-        const activeChats = this.state.chats.map(c => {
-            return (
-                <Contact
-                    key={c.id}
-                    name="Harvey Specter"
-                    picURL="http://emilcarlsson.se/assets/louislitt.png"
-                    status="busy"
-                    chatURL={`/${c.id}`} />
-            )
-        })
         return (
             <div id="sidepanel">
             <div id="profile">
@@ -129,21 +109,6 @@ class Sidepanel extends React.Component {
             <div id="search">
                 <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
                 <input type="text" placeholder="Search contacts..." />
-            </div>
-            <div id="contacts">
-                <ul>
-                    {activeChats}
-                    {/* <Contact
-                        name="Louis Litt"
-                        picURL="http://emilcarlsson.se/assets/harveyspecter.png"
-                        status="online"
-                        chatURL="/louis" /> */}
-                    {/* <Contact
-                        name="Harvey Specter"
-                        picURL="http://emilcarlsson.se/assets/louislitt.png"
-                        status="busy"
-                        chatURL="/harvey" /> */}
-                </ul>
             </div>
             <div id="bottom-bar">
                 <button id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
