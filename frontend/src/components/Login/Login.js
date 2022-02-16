@@ -12,24 +12,24 @@ import * as actions from '../../store/actions/auth';
 
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
+
 class Login extends React.Component {
 
     state = {
-        chats: [],
         loginForm: true,
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.token !== null && newProps.username !== null) {
+    // componentWillReceiveProps(newProps) {
+    //     if (newProps.token !== null && newProps.username !== null) {
 
-        }
-    }
+    //     }
+    // }
 
-    componentDidMount() {
-        if (this.props.token !== null && this.props.username !== null) {
+    // componentDidMount() {
+    //     if (this.props.token !== null && this.props.username !== null) {
 
-        }
-    }
+    //     }
+    // }
 
     authenticate = (e) => {
         e.preventDefault();
@@ -68,8 +68,8 @@ class Login extends React.Component {
                               <div>{
                               this.props.isAuthenticated ?
 
-                              <div>AAAA</div> : <div>BBBB</div>
-}</div> 
+                              <div>User is logged in</div> : <div>User is not logged in</div>
+                                }</div> 
                               <LoginContainer>
                                   <form method="POST" onSubmit={this.authenticate}>
                                       <FormGroup>
