@@ -66,5 +66,6 @@ urlpatterns = [
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/user/', include('app.urls', namespace='app')) # endpoint for the registration. This is where the API (React) will point.
 
 ]
