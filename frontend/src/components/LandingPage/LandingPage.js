@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
 import { LogoText, RoundedButton, WelcomeText } from './LandingPageElements'
 
@@ -11,8 +12,12 @@ const LandingPage = () => {
                     <Col>
                         <WelcomeText>Welcome to</WelcomeText><br />
                         <LogoText>bookgle</LogoText><br />
-                        <RoundedButton>LOG IN</RoundedButton><br />
-                        <RoundedButton>SIGN UP</RoundedButton>
+                        <Link to="/log_in">
+                          <RoundedButton>LOG IN</RoundedButton><br />
+                        </Link>
+                        <Link to="/sign_up">
+                          <RoundedButton>SIGN UP</RoundedButton>
+                        </Link>
                     </Col>
                 </Row>
         </Container>
