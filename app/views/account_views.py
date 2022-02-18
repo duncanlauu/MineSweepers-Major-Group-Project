@@ -1,13 +1,21 @@
+from app.forms import PasswordForm, SignUpForm
 from django.conf import settings
 from django.contrib import messages
-from django.views.generic.edit import FormView
 from django.contrib.auth import login
-from .mixins import LoginProhibitedMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.forms import SignUpForm, PasswordForm
 from django.urls import reverse
+from django.views.generic.edit import FormView
+from ..serializers import RegisterUserSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+
+from .mixins import LoginProhibitedMixin
+from rest_framework.views import APIView
 
 # View modified from Clucker
+
+
 class PasswordView(LoginRequiredMixin, FormView):
     """View that handles password change requests."""
 
@@ -31,7 +39,8 @@ class PasswordView(LoginRequiredMixin, FormView):
     def get_success_url(self):
         """Redirect the user after successful password change."""
 
-        messages.add_message(self.request, messages.SUCCESS, "Password updated!")
+        messages.add_message(
+            self.request, messages.SUCCESS, "Password updated!")
         return reverse('dummy')
 
 
@@ -50,3 +59,17 @@ class SignUpView(LoginProhibitedMixin, FormView):
 
     def get_success_url(self):
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+
+
+# from https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3
+
+class CreateUser(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        reg_serializer = RegisterUserSerializer(data=request.data)
+        if reg_serializer.is_valid():
+            newuser = reg_serializer.save()
+            if newuser:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST) # need to send back more information when something goes wrong. Data missing? Email/ username already in use?
