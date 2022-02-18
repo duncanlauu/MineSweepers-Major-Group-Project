@@ -2,12 +2,13 @@ import React from 'react'
 import { Container, Col, Row } from 'reactstrap'
 import { ClubListItem, Heading2Text, HeadingText, ParaText, RecommendationContainer, RecommendationInfo, FeedContainer } from './HomePageElements'
 import Gravatar from 'react-gravatar'
+import Nav from '../Navbar/Nav'
 
 const HomePage = () => {
     return (
         <Container fluid>
         <Row style={{ marginBottom:"3rem" }}>
-
+            <Nav />
         </Row>
         <Row>
             <Col></Col>
