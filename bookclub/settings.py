@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework.authtoken',
     'frontend',
+    'app.recommender_system',
 ]
 
 MIDDLEWARE = [

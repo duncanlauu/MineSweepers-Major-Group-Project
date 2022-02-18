@@ -1,3 +1,4 @@
+import logging
 import time
 from operator import itemgetter
 
@@ -118,7 +119,7 @@ def get_top_n_test(trainset, algo):
     # assert top_n == top_n_actual
     # Print the recommended items for the test user
     for item, rating in top_n:
-        print(f'{item} with rating {rating}')
+        logging.debug(f'{item} with rating {rating}')
 
 
 def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
@@ -126,7 +127,7 @@ def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
     top_n_for_k = get_top_n_for_k(uids=[276726, 276736, 276729, 276704, 276709, 276721, 276723], trainset=trainset,
                                   n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup)
     end = time.time()
-    print(end - start)
+    logging.debug(f'Finished predicting top n for k in {end - start} seconds')
 
     # NOTE: The assertions only worked for one particular training, now they're incorrect
     top_n_for_k_actual = [('8826703132', 9.163503814330383),
@@ -144,28 +145,27 @@ def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
 
     # Print the recommended items for the test users
     for item, r in top_n_for_k:
-        print(f'{item} with rating {r}')
+        logging.debug(f'{item} with rating {r}')
 
 
 def get_top_n_global_test(trainset, preds):
     start = time.time()
     top_n_global = get_global_top_n(preds=preds, global_mean=trainset.global_mean)
     end = time.time()
-    print(end - start)
+    logging.debug(f'Finished getting top n global in {end - start} seconds')
 
-    # NOTE: The assertions only worked for one particular training, now they're incorrect
-    top_n_global_actual = [('059035342X', (8.576249337877952, 8.887809431106904, 313)),
-                           ('043935806X', (8.529369544084746, 8.980002213023297, 206)),
-                           ('0439139597', (8.508138723705766, 9.170235422709002, 137)),
-                           ('0446310786', (8.49070836411972, 8.906428980030183, 214)),
-                           ('0439136350', (8.418126255853283, 8.997601440095801, 141)),
-                           ('0439136369', (8.415772747581926, 9.028334026913198, 133)),
-                           ('0345339738', (8.352494625103933, 9.328375636834584, 77)),
-                           ('0439064872', (8.346898555398766, 8.741518824884182, 189)),
-                           ('0590353403', (8.331892923582547, 8.946032988718024, 119)),
-                           ('0439064864', (8.318261314030325, 8.887463748918416, 126))]
+    top_n_global_actual = [('059035342X', (8.57566569051786, 8.887039314941672, 313)),
+                           ('043935806X', (8.537592461084829, 8.992216837304975, 206)),
+                           ('0439139597', (8.51892220676936, 9.188890061293469, 137)),
+                           ('0446310786', (8.485446873096608, 8.898708848342064, 214)),
+                           ('0439136369', (8.423540884872493, 9.041942868933516, 133)),
+                           ('0439136350', (8.408893680563828, 8.981820939069145, 141)),
+                           ('0345339738', (8.353972379453296, 9.331772552676625, 77)),
+                           ('0439064872', (8.352168593094497, 8.749577242313105, 189)),
+                           ('0590353403', (8.336995228565169, 8.955422944946545, 119)),
+                           ('0439064864', (8.31292882861366, 8.877899132218683, 126))]
     # Print the global top 10
     for item, (wr, r, n) in top_n_global:
-        print(f'{item} with weighted rating {wr}, rating {r} and num {n}')
+        logging.debug(f'{item} with weighted rating {wr}, rating {r} and num {n}')
 
-    # assert top_n_global == top_n_global_actual
+    assert top_n_global == top_n_global_actual

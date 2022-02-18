@@ -1,8 +1,9 @@
+import logging
 import time
 from operator import itemgetter
 from random import shuffle
 
-from books_recommender import get_top_n
+from app.recommender_system.books_recommender import get_top_n
 
 
 def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
@@ -63,20 +64,20 @@ def get_top_n_users_test(algo, trainset):
     start = time.time()
     top_n = get_top_n_users_by_favourite_books(uid=276726, algo=algo, trainset=trainset)
     end = time.time()
-    print(end - start)
+    logging.debug(f'Finished getting top n users using favourite books in {end - start} seconds')
 
     # Print the top 10 users
     for (user, diff) in top_n:
-        print(f'{user} with difference {diff}')
+        logging.debug(f'{user} with difference {diff}')
 
     start = time.time()
     top_n = get_top_n_users_double_random(uid=276726, algo=algo, trainset=trainset)
     end = time.time()
-    print(end - start)
+    logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
 
     # Print the top 10 users
     for (user, diff) in top_n:
-        print(f'{user} with difference {diff}')
+        logging.debug(f'{user} with difference {diff}')
 
 
 def get_diff_for_list_of_users(uid1, uids, algo, items):
