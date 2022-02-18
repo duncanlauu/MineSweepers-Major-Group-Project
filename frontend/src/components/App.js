@@ -54,6 +54,7 @@ import * as actions from '../store/actions/auth';
 import BaseRouter from '../routes';
 import Sidepanel from './Sidepanel';
 import Profile from './Profile';
+import HomePage from "./HomePage/HomePage";
 
 
 class App extends React.Component {
@@ -72,6 +73,7 @@ class App extends React.Component {
               <Route path = '/club_profile/' element={<ClubProfile />}></Route>
               <Route path = '/sign_up/' element={<SignUp />}></Route>
               <Route path = '/dummy2/' element={<Dummy />}></Route>
+              <Route path = '/home/' element={<HomePage />}></Route>
             </Routes>
           </BrowserRouter>
         );
