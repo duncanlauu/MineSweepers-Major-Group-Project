@@ -4,8 +4,6 @@ import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from '.
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
-import { Spin, Icon } from 'antd';
-import { connect } from 'react-redux';
 import { useNavigate } from "react-router";
 
 
@@ -40,7 +38,7 @@ export default function SignIn() {
                 localStorage.setItem('refresh_token', response.data.refresh)
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token. 
                     'JWT ' + localStorage.getItem('access_token')
-                navigate("/") // change to redirect to dashboard
+                navigate("/home") // change to redirect to dashboard
                 // console.log(response);
                 // console.log(response.data);
             })

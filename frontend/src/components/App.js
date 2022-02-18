@@ -8,6 +8,7 @@ import ClubProfile from "./ClubProfile/ClubProfile";
 import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
+import Home from "./Home/Home";
 
 export default class App extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class App extends Component {
           {/* <Header /> */}
           <Routes>
             <Route path='/' element={<LandingPage />}></Route>
+            <Route path='/home' element={<Home />}></Route>
             <Route path='/log_in/' element={<Login />}></Route>
             <Route path='/log_out/' element={<Logout />}></Route>
             <Route path='/error/' element={<Error404 />}></Route>
