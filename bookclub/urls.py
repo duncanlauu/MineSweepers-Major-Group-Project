@@ -32,7 +32,7 @@ urlpatterns = [
 
     # path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
     # path('log_in/', views.LogInView.as_view(), name='log_in'),
-    path('log_out/', views.log_out, name='log_out'),
+    # path('log_out/', views.log_out, name='log_out'),
     path('password/', views.PasswordView.as_view(), name='password'),
     path('dummy/', views.dummy, name='dummy'),
     # path('', views.dummy, name='dummy'),
@@ -66,6 +66,7 @@ urlpatterns = [
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/user/', include('app.urls', namespace='app')) # endpoint for the registration. This is where the API (React) will point.
+    path('api/', include('app.urls', namespace='app')) # endpoint for the registration. This is where the API (React) will point.
 
+    # create seperate app for api communication for data?
 ]

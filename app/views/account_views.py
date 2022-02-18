@@ -60,8 +60,8 @@ class SignUpView(LoginProhibitedMixin, FormView):
     def get_success_url(self):
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
 
-# https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3
 
+# from https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3
 
 class CreateUser(APIView):
     permission_classes = [AllowAny]
@@ -72,4 +72,4 @@ class CreateUser(APIView):
             newuser = reg_serializer.save()
             if newuser:
                 return Response(status=status.HTTP_201_CREATED)
-        return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST) # need to send back more information when something goes wrong. Data missing? Email/ username already in use?

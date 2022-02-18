@@ -202,8 +202,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # JWT Authentication
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1), # 1 minute for testing reasons. Put back to 5!
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), 
     # Dont give new refresh token when new access token is generated
     'ROTATE_REFRESH_TOKENS': False,
     # Blacklist the keys after they have been utlizied.
