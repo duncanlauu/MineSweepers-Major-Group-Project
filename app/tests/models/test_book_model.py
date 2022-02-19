@@ -4,8 +4,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from app.models import User, Book
 
+
 class BookModelTest(TestCase):
-    """Test the User model"""
+    """Test the Book model"""
 
     fixtures = [
         'app/tests/fixtures/default_book.json',
@@ -13,7 +14,8 @@ class BookModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
+        self.book = Book.objects.get(
+            title="Harry Potter and the Sorcerer's Stone")
 
     def test_ISBN_primary_key(self):
         self.assertEqual(self.book.ISBN, self.book.pk)
@@ -28,11 +30,6 @@ class BookModelTest(TestCase):
 
     def test_title_cannot_be_over_50_characters_long(self):
         self.book.title = 'x' * 51
-        self._assert_book_is_invalid()
-
-    def test_title_must_be_unique(self):
-        second_book = Book.objects.get(title="Ender's Game")
-        self.book.title = second_book.title
         self._assert_book_is_invalid()
 
     def test_author_cannot_be_blank(self):
@@ -52,7 +49,7 @@ class BookModelTest(TestCase):
         self._assert_book_is_invalid()
 
     def test_publication_date_must_be_in_the_past(self):
-        self.book.publication_date = datetime.date.today() + datetime.timedelta(days=1)
+        self.book.publication_date = datetime.date.today().year + 1
         self._assert_book_is_invalid()
 
     def test_publisher_can_be_50_characters_long(self):
@@ -87,10 +84,17 @@ class BookModelTest(TestCase):
         self.book.image_links_small = 'x' * 501
         self._assert_book_is_invalid()
 
-    
+    def test_genre_cannot_be_blank(self):
+        self.book.genre = ''
+        self._assert_book_is_invalid()
 
+    def test_genre_can_be_50_characters_long(self):
+        self.book.genre = 'x' * 50
+        self._assert_book_is_valid()
 
-  
+    def test_genre_cannot_be_over_50_characters_long(self):
+        self.book.genre = 'x' * 51
+        self._assert_book_is_invalid()
 
     def _assert_book_is_valid(self):
         try:
@@ -100,5 +104,4 @@ class BookModelTest(TestCase):
 
     def _assert_book_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.book.full_clean()    
-    
+            self.book.full_clean()
