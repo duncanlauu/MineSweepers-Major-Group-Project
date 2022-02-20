@@ -5,25 +5,47 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from app.serializers import ClubSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
-@login_required
-def create_club(request):
-    current_user = request.user
-    if request.method == 'POST':
-        form = CreateClubForm(request.POST)
-        if form.is_valid():
-            club = form.save(current_user)
-            return redirect('home')
-    else:
-        form = CreateClubForm()
-    return render(request, 'create_club.html', {'form': form})
+# @login_required
+# def create_club(request):
+#     current_user = request.user
+#     if request.method == 'POST':
+#         form = CreateClubForm(request.POST)
+#         if form.is_valid():
+#             club = form.save(current_user)
+#             return redirect('home')
+#     else:
+#         form = CreateClubForm()
+#     return render(request, 'create_club.html', {'form': form})
 
 
-@login_required
-def club_list(request):
-    clubs = Club.objects.filter(visibility=True)
-    return render(request, 'club_list.html', {'clubs': clubs})
+# @login_required
+# def club_list(request):
+#     clubs = Club.objects.filter(visibility=True)
+#     return render(request, 'club_list.html', {'clubs': clubs})
+
+
+class Clubs(APIView):
+
+    permission_classes = [permissions.isAuthenticated]
+
+    def get(self, request, format=None):
+        clubs = Club.objects.filter(visibility=True)
+        serializer = ClubSerializer(clubs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        serializer =  ClubSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @login_required
