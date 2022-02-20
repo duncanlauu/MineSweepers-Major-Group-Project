@@ -48,6 +48,34 @@ class Clubs(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class SingleClub(APIView):
+
+    permission_classes = [permissions.isAuthenticated]
+
+    def get(self, request, format=None):
+        try:
+            club = Club.objects.get(pk=request.query_params['id'])
+            serializer = ClubSerializer(club)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Club.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, format=None):
+        club = Club.objects.get(pk=request.query_params['id'])
+        serializer = ClubSerializer(club, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, format=None):
+        club = Club.objects.get(pk=request.query_params['id'])
+        club.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 @login_required
 def user_club_list(request):
     current_user = request.user.id
