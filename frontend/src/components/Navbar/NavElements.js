@@ -10,3 +10,9 @@ export const NavMenu = styled.div`
         margin-right: 1rem;
     }
 `
+
+export const SearchContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`
