@@ -38,6 +38,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
     read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
+    friends = models.ManyToManyField("User")
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -58,6 +59,11 @@ class User(AbstractUser):
         self.read_books.remove(book)
 
 
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
+    accepted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 
