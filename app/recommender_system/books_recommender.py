@@ -49,16 +49,16 @@ def get_prediction_to_sum_of_ratings(pred, sum_of_ratings):
         sum_of_ratings[pred.iid] = (pred.est, 1)
 
 
-def get_global_top_between_m_and_n(preds, c, m=0, n=10):
-    sum_of_ratings = {}
-    for pred in preds:
-        get_prediction_to_sum_of_ratings(pred, sum_of_ratings)
-
-    return get_the_correct_slice_with_weighted_average(m, n, sum_of_ratings, c)
+def get_global_top_n(dataset, global_mean, n=10):
+    return get_global_top_between_m_and_n(dataset, global_mean, 0, n)
 
 
-def get_global_top_n(preds, global_mean, n=10):
-    return get_global_top_between_m_and_n(preds, global_mean, 0, n)
+def get_global_top_between_m_and_n(dataset, global_mean, m=0, n=10):
+    df = dataset[['ISBN', 'Book-Rating']].groupby('ISBN').agg(['mean', 'count'])
+    df['weighted'] = df.apply(lambda row: get_weighted_rating(row[0], row[1], global_mean), axis=1)
+    df = df.sort_values(by=['weighted'], ascending=False)
+    records = list(map(tuple, df.to_records()))
+    return records[m: n]
 
 
 def get_the_correct_slice(m, n, sum_of_ratings):
@@ -76,7 +76,7 @@ def get_the_correct_slice_with_weighted_average(m, n, sum_of_ratings, global_mea
 def get_weighted_average_from_sum(sum_of_ratings, global_mean):
     average_of_ratings = []
     for iid, (rat, num) in sum_of_ratings.items():
-        average_of_ratings.append((iid, (get_weighted_rating(rat, num, global_mean), rat / num, num)))
+        average_of_ratings.append((iid, rat / num, num, get_weighted_rating(rat / num, num, global_mean)))
     return average_of_ratings
 
 
@@ -94,11 +94,10 @@ def get_sorted_list_from_dict_of_averages(average_of_ratings):
 
 
 # True Bayesian estimate as used by IMDB for the Top 250 Movies
-# r is rating, num is the number of votes, m is the minimum number of votes and c is the global mean
 # https://www.quora.com/How-does-IMDbs-rating-system-work
 def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_votes=100):
-    return rating / (number_of_votes + minimum_number_of_votes) + minimum_number_of_votes * global_mean / (
-            number_of_votes + minimum_number_of_votes)
+    return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
+           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
 def get_top_n_test(trainset, algo):
@@ -148,24 +147,24 @@ def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
         logging.debug(f'{item} with rating {r}')
 
 
-def get_top_n_global_test(trainset, preds):
+def get_top_n_global_test(trainset, dataset):
     start = time.time()
-    top_n_global = get_global_top_n(preds=preds, global_mean=trainset.global_mean)
+    top_n_global = get_global_top_n(dataset=dataset, global_mean=trainset.global_mean)
     end = time.time()
     logging.debug(f'Finished getting top n global in {end - start} seconds')
 
-    top_n_global_actual = [('059035342X', (8.57566569051786, 8.887039314941672, 313)),
-                           ('043935806X', (8.537592461084829, 8.992216837304975, 206)),
-                           ('0439139597', (8.51892220676936, 9.188890061293469, 137)),
-                           ('0446310786', (8.485446873096608, 8.898708848342064, 214)),
-                           ('0439136369', (8.423540884872493, 9.041942868933516, 133)),
-                           ('0439136350', (8.408893680563828, 8.981820939069145, 141)),
-                           ('0345339738', (8.353972379453296, 9.331772552676625, 77)),
-                           ('0439064872', (8.352168593094497, 8.749577242313105, 189)),
-                           ('0590353403', (8.336995228565169, 8.955422944946545, 119)),
-                           ('0439064864', (8.31292882861366, 8.877899132218683, 126))]
+    top_n_global_actual = [('059035342X', 8.939297124600639, 313, 8.615270277499112),
+                           ('043935806X', 9.033980582524272, 206, 8.565707923552722),
+                           ('0439139597', 9.262773722627736, 137, 8.561631327456258),
+                           ('0446310786', 8.94392523364486, 214, 8.516263135691506),
+                           ('0439136369', 9.082706766917294, 133, 8.4468095476701),
+                           ('0439136350', 9.035460992907801, 141, 8.440276450652004),
+                           ('0345339738', 9.402597402597403, 77, 8.38478318987081),
+                           ('0439064872', 8.783068783068783, 189, 8.374071365422605),
+                           ('0590353403', 8.983193277310924, 119, 8.352085043868188),
+                           ('0439064864', 8.920634920634921, 126, 8.336754976137758)]
     # Print the global top 10
-    for item, (wr, r, n) in top_n_global:
-        logging.debug(f'{item} with weighted rating {wr}, rating {r} and num {n}')
+    for item, r, n, wr in top_n_global:
+        logging.debug(f'{item} with rating {r}, num {n} and weighted rating {wr}')
 
     assert top_n_global == top_n_global_actual
