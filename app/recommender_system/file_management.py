@@ -48,7 +48,15 @@ def get_dataset_from_dataframe(dataframe):
 
 
 def append_database_to_file_dataset(file_dataframe):
-    database_dataframe = DataFrame(list(BookRating.objects.all().values('user', 'book', 'rating')))
+    user_list = list(BookRating.objects.all().values('user', 'book', 'rating'))
+    # make sure the uids don't clash
+    # The uids in the file range from 8 to 278854
+    # We can map them all by adding an offset
+    # I arbitrarily chose 1000000 (we won't have that many users)
+    # We probably won't have 10k either but 1mil is a nice number
+    offset = 1000000
+    file_dataframe['User-ID'] = file_dataframe['User-ID'] + offset
+    database_dataframe = DataFrame(user_list)
     database_dataframe.rename(columns={'user': 'User-ID', 'book': 'ISBN', 'rating': 'Book-Rating'})
     logging.debug(database_dataframe)
     combined = concat([file_dataframe, database_dataframe])
@@ -65,4 +73,5 @@ def get_trainset_from_dataset(data):
 def get_combined_data(file_path):
     file_dataframe = get_dataframe_from_file(file_path)
     combined = append_database_to_file_dataset(file_dataframe)
+    logging.debug(combined)
     return combined

@@ -31,10 +31,10 @@ def recommender_system_tests():
     loaded_predictions, loaded_algo = load_trained_model(file_name)
 
     # logging.debug('original algo prediction')
-    # p = algo.predict(uid=276726, iid='0155061224', r_ui=5)
+    # p = algo.predict(uid=1276726, iid='0155061224', r_ui=5)
     # logging.debug(f'Pred by original algo uid={p.uid}, iid={p.iid}, r_ui={p.r_ui}, est={p.est}, {p.details}')
     logging.debug('Loaded algo prediction')
-    p = loaded_algo.predict(uid=276726, iid='0155061224', r_ui=5)
+    p = loaded_algo.predict(uid=1276726, iid='0155061224', r_ui=5)
     logging.debug(f'Pred by loaded algo uid={p.uid}, iid={p.iid}, r_ui={p.r_ui}, est={p.est}, {p.details}')
 
     predictions_uid_and_iid_lookup = set()
