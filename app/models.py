@@ -58,11 +58,16 @@ class User(AbstractUser):
     def remove_read_book(self, book):
         self.read_books.remove(book)
 
+    def add_friend(self, user):
+        self.friends.add(user)
+
+    def remove_friend(self, user):
+        self.friends.remove(user)
+
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
-    accepted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
