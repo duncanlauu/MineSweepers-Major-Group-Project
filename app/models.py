@@ -184,3 +184,13 @@ class Club(models.Model):
 
     def switch_public(self):
         self.public = not self.public
+
+    def remove_user_from_club(self, user):
+        self.members.remove(user)
+        self.admins.remove(user)
+        self.applicants.remove(user)
+        self.banned_users.remove(user)
+
+    def transfer_ownership(self, user):
+        self.add_admin(self.owner)
+        self.owner = user
