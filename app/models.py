@@ -64,13 +64,14 @@ class User(AbstractUser):
 #Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
-    title = models.CharField(max_length=50, blank=False, unique=True)
+    title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.DateField(blank =False, validators=[PastDateValidator])
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
+    genre = models.CharField(max_length=50, blank=False)
 
 #Book Ratings class
 class BookRating(models.Model):
