@@ -23,6 +23,20 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.location = validated_data.get('location', instance.location)
+        instance.birth_date = validated_data.get('birth_date', instance.birth_date)
+        instance.liked_books = validated_data.get('liked_books', instance.liked_books)
+        instance.read_books = validated_data.get('read_books', instance.read_books)
+        instance.clubs = validated_data.get('clubs', instance.clubs)
+        instance.save()
+        return instance
+
 class ClubSerializer(serializers.ModelSerializer):
 
     class Meta:
