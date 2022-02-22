@@ -3,6 +3,18 @@ import time
 from operator import itemgetter
 
 
+def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
+    """Get the top n books for a user for a given genre"""
+
+    return get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, 0, n)
+
+
+def get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, m=0, n=10):
+    """Get the top books between m and n for a user for a given genre"""
+
+    pass
+
+
 def get_top_n(uid, trainset, algo, n=10):
     """Get the top n books for a user"""
 
