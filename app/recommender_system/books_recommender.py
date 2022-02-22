@@ -4,11 +4,14 @@ from operator import itemgetter
 
 
 def get_top_n(uid, trainset, algo, n=10):
+    """Get the top n books for a user"""
+
     return get_top_between_m_and_n(uid, trainset, algo, 0, n)
 
 
-# A function for generating top n items for a given user
 def get_top_between_m_and_n(uid, trainset, algo, m=0, n=10):
+    """Get the top books between m and n for a user"""
+
     items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
     ratings = []
     for iid in items:
@@ -25,10 +28,14 @@ def get_top_between_m_and_n(uid, trainset, algo, m=0, n=10):
 
 
 def get_top_n_for_k(uids, trainset, algo, pred_lookup, n=10):
+    """Get the top n books for k users"""
+
     return get_top_between_m_and_n_for_k(uids, trainset, algo, pred_lookup, 0, n)
 
 
 def get_top_between_m_and_n_for_k(uids, trainset, algo, preds, m=0, n=10):
+    """Get the top books between m and n for k users"""
+
     items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
     sum_of_ratings = {}
 
@@ -43,6 +50,8 @@ def get_top_between_m_and_n_for_k(uids, trainset, algo, preds, m=0, n=10):
 
 
 def get_prediction_to_sum_of_ratings(pred, sum_of_ratings):
+    """Helper function to sum all estimated ratings for an item"""
+
     if pred.iid in sum_of_ratings:
         sum_of_ratings[pred.iid] = (sum_of_ratings[pred.iid][0] + pred.est, sum_of_ratings[pred.iid][1] + 1)
     else:
@@ -50,10 +59,14 @@ def get_prediction_to_sum_of_ratings(pred, sum_of_ratings):
 
 
 def get_global_top_n(dataset, global_mean, n=10):
+    """Get global top n books"""
+
     return get_global_top_between_m_and_n(dataset, global_mean, 0, n)
 
 
 def get_global_top_between_m_and_n(dataset, global_mean, m=0, n=10):
+    """Get global top books between m and n"""
+
     df = dataset[['ISBN', 'Book-Rating']].groupby('ISBN').agg(['mean', 'count'])
     df['weighted'] = df.apply(lambda row: get_weighted_rating(row[0], row[1], global_mean), axis=1)
     df = df.sort_values(by=['weighted'], ascending=False)
@@ -62,18 +75,24 @@ def get_global_top_between_m_and_n(dataset, global_mean, m=0, n=10):
 
 
 def get_the_correct_slice(m, n, sum_of_ratings):
+    """Get the correct slice between m and n from the sum of ratings"""
+
     average_of_ratings = get_average_from_sum(sum_of_ratings)
     sorted_list_of_ratings = get_sorted_list_from_dict_of_averages(average_of_ratings)
     return sorted_list_of_ratings[m:n]
 
 
 def get_the_correct_slice_with_weighted_average(m, n, sum_of_ratings, global_mean):
+    """Get the correct slice between m and n from the sum of ratings using weighted average"""
+
     average_of_ratings = get_weighted_average_from_sum(sum_of_ratings, global_mean)
     sorted_list_of_ratings = get_sorted_list_from_dict_of_averages(average_of_ratings)
     return sorted_list_of_ratings[m:n]
 
 
 def get_weighted_average_from_sum(sum_of_ratings, global_mean):
+    """Get weighted average from sum of ratings"""
+
     average_of_ratings = []
     for iid, (rat, num) in sum_of_ratings.items():
         average_of_ratings.append((iid, rat / num, num, get_weighted_rating(rat / num, num, global_mean)))
@@ -81,6 +100,8 @@ def get_weighted_average_from_sum(sum_of_ratings, global_mean):
 
 
 def get_average_from_sum(sum_of_ratings):
+    """Get average from sum of ratings"""
+
     average_of_ratings = []
     for iid, (rat, num) in sum_of_ratings.items():
         average_of_ratings.append((iid, rat / num))
@@ -88,20 +109,28 @@ def get_average_from_sum(sum_of_ratings):
 
 
 def get_sorted_list_from_dict_of_averages(average_of_ratings):
+    """Get sorted list from dictionary of item: average rating"""
+
     average_of_ratings.sort(key=itemgetter(1))
     average_of_ratings.reverse()
     return average_of_ratings
 
 
-# True Bayesian estimate as used by IMDB for the Top 250 Movies
-# https://www.quora.com/How-does-IMDbs-rating-system-work
 def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_votes=100):
+    """Get weighted rating
+
+    True Bayesian estimate as used by IMDB for the Top 250 Movies
+    https://www.quora.com/How-does-IMDbs-rating-system-work
+
+    """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
-           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+        minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
 def get_top_n_test(trainset, algo):
-    top_n = get_top_n(uid=276726, trainset=trainset, n=10, algo=algo)
+    """A test for getting the top n books for a user"""
+
+    top_n = get_top_n(uid=1276726, trainset=trainset, n=10, algo=algo)
 
     # NOTE: The assertions only worked for one particular training, now they're incorrect
     top_n_actual = [('8826703132', 9.172681633546379),
@@ -122,8 +151,10 @@ def get_top_n_test(trainset, algo):
 
 
 def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
+    """A test for getting the top n books for k users"""
+
     start = time.time()
-    top_n_for_k = get_top_n_for_k(uids=[276726, 276736, 276729, 276704, 276709, 276721, 276723], trainset=trainset,
+    top_n_for_k = get_top_n_for_k(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723], trainset=trainset,
                                   n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup)
     end = time.time()
     logging.debug(f'Finished predicting top n for k in {end - start} seconds')
@@ -148,6 +179,8 @@ def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
 
 
 def get_top_n_global_test(trainset, dataset):
+    """A test for getting the top n books globally"""
+
     start = time.time()
     top_n_global = get_global_top_n(dataset=dataset, global_mean=trainset.global_mean)
     end = time.time()

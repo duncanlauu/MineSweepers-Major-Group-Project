@@ -9,6 +9,12 @@ from app.models import Book, User, BookRating
 
 
 def seed_books():
+    """Seed all the books from the csv file with genres
+
+    NOTE: Takes about 13 minutes on Mikolaj's computer
+
+    """
+
     # Load data from csv file
     filepath = 'app/csv_files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
@@ -33,6 +39,12 @@ def seed_books():
 
 
 def seed_users(number=150):
+    """Seed all the users
+
+    NOTE: Takes about a minute on Mikolaj's computer
+
+    """
+
     user_counter = 0
     faker = Faker('en_GB')
     books = list(Book.objects.all())
@@ -48,6 +60,8 @@ def seed_users(number=150):
 
 
 def create_user(faker, books):
+    """Create a user with random data from faker and randomly liked and read books"""
+
     username = faker.user_name()
     email = faker.email()
     first_name = faker.first_name()
@@ -67,23 +81,30 @@ def create_user(faker, books):
         password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
-    read_books = get_n_books_from(n=35, books=books)
-    liked_books = get_n_books_from(n=15, books=read_books)
+    read_books = get_n_random_books_from(n=35, books=books)
+    liked_books = get_n_random_books_from(n=15, books=read_books)
     user.read_books.set(read_books)
     user.liked_books.set(liked_books)
 
 
-def get_n_books_from(n, books):
+def get_n_random_books_from(n, books):
+    """Get n random books from a list"""
+
     copy = books
     random.shuffle(copy)
     return copy[0:n]
 
 
 def seed_ratings():
+    """Seed a random number of ratings for each user"""
+
+    min_num_of_ratings = 2
+    max_num_of_ratings = 20
+
     users = User.objects.all()
     for user in users:
         read_books = user.read_books.all()
-        rated_books = get_n_books_from(random.randint(2, 20), list(read_books))
+        rated_books = get_n_random_books_from(random.randint(min_num_of_ratings, max_num_of_ratings), list(read_books))
         for book in rated_books:
             BookRating.objects.create(
                 user=user,
@@ -95,6 +116,8 @@ def seed_ratings():
 
 
 def time_function(func):
+    """A function to time runtime of another function"""
+
     start = time.time()
     func()
     end = time.time()
@@ -102,6 +125,8 @@ def time_function(func):
 
 
 class Command(BaseCommand):
+    """A seeder class for seeding books, users and user ratings"""
+
     def handle(self, *args, **options):
         time_function(seed_books)
         time_function(seed_users)

@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand
-from app.models import Book, User, BookRating
+from app.models import Book, User
 
 
 class Command(BaseCommand):
+    """A class for unseeding all objects from the database"""
 
     def handle(self, *args, **options):
-        User.objects.all().delete()
+        # Do not remove superusers
+        User.objects.filter(is_superuser=False, is_staff=False).delete()
         Book.objects.all().delete()

@@ -8,6 +8,13 @@ from app.recommender_system.file_management import *
 
 
 def recommender_system_tests():
+    """Run all the tests for the recommending system
+
+    First load the trained model, then run
+    get_top_n_test, get_top_n_for_k_test, get_top_n_global_test and get_top_n_users_test
+
+    """
+
     logging.basicConfig(level=logging.DEBUG)
 
     # path to dataset file
@@ -20,7 +27,7 @@ def recommender_system_tests():
 
     # If you've trained the model, keep the lines below commented out
     # You can load instead of rerunning the training.
-    # If not, you need to uncomment the following lines: 24-26, 30
+    # If not, you need to uncomment the following 3 lines and the line calling dump_trained_model
     # algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
     # train_model(algo, trainset)
     # predictions = fit_model(algo, trainset)
@@ -49,7 +56,3 @@ def recommender_system_tests():
     get_top_n_global_test(trainset=trainset, dataset=dataframe)
 
     # get_top_n_users_test(trainset=trainset, algo=loaded_algo)
-
-
-if __name__ == '__main__':
-    recommender_system_tests()

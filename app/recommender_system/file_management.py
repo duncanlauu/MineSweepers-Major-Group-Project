@@ -8,31 +8,18 @@ from surprise.dump import load, dump
 from app.models import BookRating
 
 
-def load_trained_model(file_name):
-    loaded_predictions, loaded_algo = load(file_name)
-    return loaded_predictions, loaded_algo
+def get_combined_data(file_path):
+    """Get the combined data from the database and a file"""
 
-
-def dump_trained_model(file_name, algo, predictions):
-    dump(file_name, predictions=predictions, algo=algo)
-
-
-def train_model(algo, trainset):
-    start = time.time()
-    algo.fit(trainset)
-    end = time.time()
-    logging.debug(f'Finished training in {end - start} seconds')
-
-
-def fit_model(algo, trainset):
-    start = time.time()
-    predictions = algo.test(trainset.build_testset())
-    end = time.time()
-    logging.debug(f'Finished fitting in {end - start} seconds')
-    return predictions
+    file_dataframe = get_dataframe_from_file(file_path)
+    combined = append_database_to_file_dataset(file_dataframe)
+    logging.debug(combined)
+    return combined
 
 
 def get_dataframe_from_file(file_path):
+    """Get dataframe from a file given (and log what it looks like)"""
+
     # Read the data from the csv (remember about the encoding used)
     file_dataframe = read_csv(file_path, sep=';', encoding='unicode_escape')
     # Filter out the 0s (We think 0 means no rating given)
@@ -41,13 +28,9 @@ def get_dataframe_from_file(file_path):
     return file_dataframe
 
 
-def get_dataset_from_dataframe(dataframe):
-    reader = Reader(rating_scale=(1, 10))
-    dataset = Dataset.load_from_df(dataframe[['User-ID', 'ISBN', 'Book-Rating']], reader)
-    return dataset
-
-
 def append_database_to_file_dataset(file_dataframe):
+    """Append the ratings from the database to the ones in the csv"""
+
     user_list = list(BookRating.objects.all().values('user', 'book', 'rating'))
     # make sure the uids don't clash
     # The uids in the file range from 8 to 278854
@@ -63,15 +46,50 @@ def append_database_to_file_dataset(file_dataframe):
     return combined
 
 
+def get_dataset_from_dataframe(dataframe):
+    """Get dataset from a dataframe"""
+
+    reader = Reader(rating_scale=(1, 10))
+    dataset = Dataset.load_from_df(dataframe[['User-ID', 'ISBN', 'Book-Rating']], reader)
+    return dataset
+
+
 def get_trainset_from_dataset(data):
+    """Get the trainset from the dataset (and log the number of users and items)"""
+
     trainset = data.build_full_trainset()
     logging.debug(f'Number of users: {trainset.n_users}')
     logging.debug(f'Number of items: {trainset.n_items}')
     return trainset
 
 
-def get_combined_data(file_path):
-    file_dataframe = get_dataframe_from_file(file_path)
-    combined = append_database_to_file_dataset(file_dataframe)
-    logging.debug(combined)
-    return combined
+def train_model(algo, trainset):
+    """Train the model (and log the time taken)"""
+
+    start = time.time()
+    algo.fit(trainset)
+    end = time.time()
+    logging.debug(f'Finished training in {end - start} seconds')
+
+
+def test_model(algo, trainset):
+    """Test the model (and log the time taken)"""
+
+    start = time.time()
+    predictions = algo.test(trainset.build_testset())
+    end = time.time()
+    logging.debug(f'Finished testing in {end - start} seconds')
+    return predictions
+
+
+def dump_trained_model(file_name, algo, predictions):
+    """Dump the trained model to a file"""
+
+    dump(file_name, predictions=predictions, algo=algo)
+
+
+def load_trained_model(file_name):
+    """Load the trained model from a file"""
+
+    loaded_predictions, loaded_algo = load(file_name)
+    return loaded_predictions, loaded_algo
