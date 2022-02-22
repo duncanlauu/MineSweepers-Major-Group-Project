@@ -4,6 +4,7 @@ Note that genres are treated as case-insensitive
 """
 
 from app.models import Book
+from django.db.models import F, Func, Count
 
 
 def get_genre(isbn):
@@ -24,21 +25,26 @@ def get_books_from_similar_genre(genre):
     return list(Book.objects.filter(genre__icontains=genre))  # TODO: distinguish between 'fiction' and 'nonfiction' for example
 
 
-def get_books_count_per_genre():
-    """Get a dictionary of genre to its corresponding number of books"""
-    result = {}
-    genres = set([g.lower() for g in Book.objects.values_list(
-        'genre', flat=True).distinct()])
-    for genre in genres:
-        print(genre)
-        result[genre] = len(get_books_from_iexact_genre(genre))
+def get_books_count_per_genre_queryset():
+    """Get a queryset of genre to its corresponding number of books excluding 'N/A' genres"""
+    return (Book.objects.values('genre')
+            .exclude(genre='N/A')
+            .annotate(genres_lowercase=(Func(F('genre'), function='LOWER')))
+            .values('genres_lowercase')
+            .annotate(total=Count('genres_lowercase')))
+
+
+def get_books_count_per_genre_dictionary():
+    """Get a dictionary of genre to its corresponding number of books excluding 'N/A' genres"""
+    qs = get_books_count_per_genre_queryset()
+    result = {row['genres_lowercase']: row['total'] for row in qs}
     return result
 
+
 def get_top_n_genres(n=10):
-    """Get top n genres based on its corresponding number of books"""
-    ordered_genres = sorted(get_books_count_per_genre().items(), key=lambda e: e[1])
-    if len(ordered_genres) >= n:
-        return ordered_genres[:n]
-    else:
-        # If n is larger than number of genres, return whole sorted 
-        return ordered_genres
+    """Get top n genres based on its corresponding number of books excluding 'N/A' genres"""
+    ordered_qs = get_books_count_per_genre_queryset().order_by('-total')
+    if len(ordered_qs) >= n:
+        return [ordered_qs[i]['genres_lowercase'] for i in range(n)]
+    else:  # If n is larger than number of genres, return whole sorted
+        return [row['genres_lowercase'] for row in ordered_qs]
