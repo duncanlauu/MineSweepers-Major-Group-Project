@@ -64,6 +64,22 @@ class User(AbstractUser):
     def remove_friend(self, user):
         self.friends.remove(user)
 
+    # TODO: check if the friend request exists (refactor)
+    def send_friend_request(self, receiver):
+        request_exists = FriendRequest.objects.filter(sender=self, receiver=receiver).exists()
+        if not request_exists:
+            FriendRequest.objects.create(sender=self, receiver=receiver)
+
+    def accept_friend_request(self, friend):
+        self.add_friend(friend)
+        friend.add_friend(self)
+        FriendRequest.objects.filter(sender=friend, receiver=self).delete()
+
+    def reject_friend_request(self, other_user):
+        FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
+
+    def cancel_friend_request(self, other_user):
+        FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)

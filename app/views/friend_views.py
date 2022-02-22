@@ -37,7 +37,9 @@ class FriendsView(APIView):
             user = request.user
             other_user_id = request.data['other_user_id']
             other_user = User.objects.get(pk=other_user_id)
+            # need to remove friends for both users
             user.remove_friend(other_user)
+            other_user.remove_friend(user)
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
