@@ -4,7 +4,6 @@ import logging
 import time
 from operator import itemgetter
 
-from app.models import Book
 from app.recommender_system.genre_algo import get_books_from_iexact_genre
 
 
@@ -151,7 +150,7 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
 
     """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
-           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+        minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
 def get_top_n_for_a_genre_test(trainset, algo, genre):
