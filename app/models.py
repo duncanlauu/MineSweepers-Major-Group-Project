@@ -36,8 +36,8 @@ class User(AbstractUser):
     location = models.CharField(max_length=70, blank= True)
     birthday = models.DateField(validators=[PastDateValidator],blank =False, null =True)
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
-    liked_books = models.ManyToManyField('Book', related_name='liked_books')
-    read_books = models.ManyToManyField('Book', related_name='read_books')
+    liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
+    read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -64,13 +64,14 @@ class User(AbstractUser):
 #Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
-    title = models.CharField(max_length=50, blank=False, unique=True)
+    title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.DateField(blank =False, validators=[PastDateValidator])
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
+    genre = models.CharField(max_length=50, blank=False)
 
 #Book Ratings class
 class BookRating(models.Model):
