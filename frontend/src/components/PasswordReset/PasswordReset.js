@@ -1,0 +1,102 @@
+import React, { useState } from 'react'
+import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
+import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './PasswordResetElements'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+
+import axiosInstance from '../../axios'
+import { useNavigate } from "react-router";
+
+
+// https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
+export default function SignIn() {
+    const navigate = useNavigate();
+    const initialFormData = Object.freeze({
+        email: '',
+    });
+
+    const [formData, updateFormData] = useState(initialFormData)
+
+    const handleChange = (e) => {
+        updateFormData({
+            ...formData,
+            [e.target.name]: e.target.value.trim(),
+        });
+    };
+
+    const handleSubmit = (e) => {
+    //   e.preventDefault()
+    //   const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
+    // const email = formData.email
+    // const body = JSON.stringify({ email });
+    //
+    // try {
+    //     axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
+    //
+    //     console.log("YO")
+    // } catch (err) {
+    //     console.log("NAH")
+    // }
+
+        e.preventDefault()
+        console.log(formData)
+
+        axiosInstance
+            .post(`/users/reset_password/`, {
+                email: formData.email,
+            })
+            .then((response) => {
+              console.log(response)
+                // localStorage.setItem('access_token', response.data.access) // receiving the tokens from the api
+                // localStorage.setItem('refresh_token', response.data.refresh)
+                // axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
+                //     'JWT ' + localStorage.getItem('access_token')
+                navigate("/home") // change to redirect to dashboard
+                // console.log(response);
+                // console.log(response.data);
+            })
+    }
+
+    return (
+        <div>
+            <Row>
+                <Navbar color="light" expand="md" light>
+                    <NavbarBrand href="/">
+                        <h1> bookgle </h1>
+                    </NavbarBrand>
+                </Navbar>
+            </Row>
+            <Container fluid>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
+                    <Col>
+                        <HeadingText>Password Reset</HeadingText><br />
+                        <ParaText>Enter you email address:<FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
+
+                        <LoginContainer>
+                            <form>
+                                <FormGroup>
+                                    <Label>Email</Label>
+                                    <Input
+                                        name="email"
+                                        onChange={handleChange}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Col sm={{ size: 10, offset: 4 }}>
+                                        <Button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#653FFD", width: "7rem" }}>Send Reset Email</Button>
+                                    </Col>
+                                </FormGroup>
+                            </form>
+                        </LoginContainer>
+                    </Col>
+                    <Col />
+                </Row>
+            </Container>
+        </div>
+    )
+}

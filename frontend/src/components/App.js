@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { render } from "react-dom";
 
 import Login from "./Login/Login"
+import PasswordReset from "./PasswordReset/PasswordReset"
 import Logout from "./Logout/Logout"
 import ClubProfile from "./ClubProfile/ClubProfile";
 import Error404 from "./Error404/Error404";
@@ -28,6 +29,7 @@ export default class App extends Component {
             <Route path='/error/' element={<Error404 />}></Route>
             <Route path='/club_profile/' element={<ClubProfile />}></Route>
             <Route path='/sign_up/' element={<SignUp />}></Route>
+            <Route path='/password_reset/' element={<PasswordReset />}></Route>
           </Routes>
           {/* <Footer /> */}
         </React.StrictMode>
