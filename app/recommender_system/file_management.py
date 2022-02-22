@@ -1,3 +1,5 @@
+"""Functionality for managing the data, models and files"""
+
 import logging
 import time
 
@@ -40,7 +42,7 @@ def append_database_to_file_dataset(file_dataframe):
     offset = 1000000
     file_dataframe['User-ID'] = file_dataframe['User-ID'] + offset
     database_dataframe = DataFrame(user_list)
-    database_dataframe.rename(columns={'user': 'User-ID', 'book': 'ISBN', 'rating': 'Book-Rating'})
+    database_dataframe = database_dataframe.rename(columns={'user': 'User-ID', 'book': 'ISBN', 'rating': 'Book-Rating'})
     logging.debug(database_dataframe)
     combined = concat([file_dataframe, database_dataframe])
     return combined

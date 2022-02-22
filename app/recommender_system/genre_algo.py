@@ -1,5 +1,5 @@
-"""
-Genre-Related Algorithms
+"""Genre-Related Algorithms
+
 Note that genres are treated as case-insensitive
 """
 
@@ -22,7 +22,8 @@ def get_books_from_iexact_genre(genre):
 
 def get_books_from_similar_genre(genre):
     """Get all books that contain a case-insensitive keyword in their genres"""
-    return list(Book.objects.filter(genre__icontains=genre))  # TODO: distinguish between 'fiction' and 'nonfiction' for example
+    # TODO: distinguish between 'fiction' and 'nonfiction' for example
+    return list(Book.objects.filter(genre__icontains=genre))
 
 
 def get_books_count_per_genre_queryset():

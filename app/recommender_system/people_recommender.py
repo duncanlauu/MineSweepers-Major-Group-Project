@@ -1,3 +1,5 @@
+"""Functionality for recommending people to people"""
+
 import logging
 import time
 from operator import itemgetter
@@ -18,7 +20,8 @@ def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
     """
 
     users = get_actual_users(trainset)
-    users.remove(trainset.to_inner_uid(uid))
+    if trainset.to_inner_uid(uid) in users:
+        users.remove(trainset.to_inner_uid(uid))
     max_number_of_items = int(100000 / len(users))
     users_with_diffs = []
 
@@ -38,7 +41,7 @@ def get_top_n_users_double_random(uid, trainset, algo, n=10):
 
     The number of books for which we compare the similarity between the users is
     calculated as 100000 / the number of users, because I discovered that a 100000
-    comparisons takes about 1 second on my computer and we don't want to spend too
+    comparisons takes a couple of seconds on my computer and we don't want to spend too
     much time doing that
 
     """
@@ -87,31 +90,12 @@ def get_random_n_users(trainset, n=100):
     return users[0:n]
 
 
-def get_top_n_users_test(algo, trainset):
-    """A test for getting top n users for a user
+def get_actual_users(trainset):
+    """Get the users from the database for whom we have ratings in the trainset"""
 
-    It runs the following methods
-    get_top_n_users_by_favourite_books, get_top_n_users_double_random
-
-    """
-
-    start = time.time()
-    top_n = get_top_n_users_by_favourite_books(uid=1276726, algo=algo, trainset=trainset)
-    end = time.time()
-    logging.debug(f'Finished getting top n users using favourite books in {end - start} seconds')
-
-    # Print the top 10 users
-    for (user, diff) in top_n:
-        logging.debug(f'{user} with difference {diff}')
-
-    start = time.time()
-    top_n = get_top_n_users_double_random(uid=276726, algo=algo, trainset=trainset)
-    end = time.time()
-    logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
-
-    # Print the top 10 users
-    for (user, diff) in top_n:
-        logging.debug(f'{user} with difference {diff}')
+    database_users = (user.id for user in list(User.objects.all()))
+    all_trainset_users = trainset.all_users()
+    return list(set(all_trainset_users).intersection(database_users))
 
 
 def get_diff_for_list_of_users(uid1, uids, algo, items):
@@ -126,6 +110,50 @@ def get_diff_for_list_of_users(uid1, uids, algo, items):
     return diff
 
 
+def get_top_n_users_test(algo, trainset):
+    """A test for getting top n users for a user
+
+    It runs the following methods
+    get_top_n_users_by_favourite_books, get_top_n_users_double_random
+
+    """
+
+    start = time.time()
+    top_n = get_top_n_users_by_favourite_books(uid=1276726, algo=algo, trainset=trainset)
+    end = time.time()
+    logging.debug(f'Finished getting top n users using favourite books in {end - start} seconds')
+
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_actual = [(334, 116.88831650788215),
+                    (295, 118.31907524126018),
+                    (230, 121.51060517962556),
+                    (293, 124.20817889349061),
+                    (330, 124.50022665248169),
+                    (353, 144.86118662058908),
+                    (317, 147.43585085788217),
+                    (238, 161.26199843032222),
+                    (309, 163.22160539275706),
+                    (228, 164.6446862996973)]
+
+    assert top_n == top_n_actual
+
+    # Print the top 10 users
+    for (user, diff) in top_n:
+        logging.debug(f'{user} with difference {diff}')
+
+    start = time.time()
+    top_n = get_top_n_users_double_random(uid=276726, algo=algo, trainset=trainset)
+    end = time.time()
+    logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
+
+    # NOTE: This is random so I cannot write any tests for it
+
+    # Print the top 10 users
+    for (user, diff) in top_n:
+        logging.debug(f'{user} with difference {diff}')
+
+
+# TODO test this functionality when we have clubs data
 def get_best_fitting_n_clubs(uid, algo, trainset, clubs, n=10):
     """Get the top n clubs for a user"""
 
@@ -137,11 +165,3 @@ def get_best_fitting_n_clubs(uid, algo, trainset, clubs, n=10):
 
     clubs_with_diffs.sort(key=itemgetter(1))
     return clubs_with_diffs[0:n]
-
-
-def get_actual_users(trainset):
-    """Get the users from the database for whom we have ratings in the trainset"""
-
-    database_users = [User.objects.all().values()]
-    all_trainset_users = trainset.all_users
-    return list(set(all_trainset_users).intersection(database_users))

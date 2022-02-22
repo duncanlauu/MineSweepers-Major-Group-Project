@@ -1,6 +1,11 @@
+"""Functionality for recommending books to people"""
+
 import logging
 import time
 from operator import itemgetter
+
+from app.models import Book
+from app.recommender_system.genre_algo import get_books_from_iexact_genre
 
 
 def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
@@ -12,7 +17,28 @@ def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
 def get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, m=0, n=10):
     """Get the top books between m and n for a user for a given genre"""
 
-    pass
+    books = get_books_from_iexact_genre(genre)
+    items_with_the_genre = (book.ISBN for book in books)
+    rated_items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
+    # Make sure the books are in the system (are rated at least once)
+    items = list(set(rated_items).intersection(items_with_the_genre))
+
+    return get_top_n_of_items(algo, items, m, n, uid)
+
+
+def get_top_n_of_items(algo, items, m, n, uid):
+    """Get the top books between m and n for a user from given items"""
+
+    ratings = []
+    for iid in items:
+        pred = algo.predict(uid=uid, iid=iid)
+        # Do not take the rated items into consideration
+        if 'actual_k' not in pred.details:
+            ratings.append((pred.iid, pred.est))
+    # Sort by the estimated rating
+    ratings.sort(key=itemgetter(1))
+    ratings.reverse()
+    return ratings[m:n]
 
 
 def get_top_n(uid, trainset, algo, n=10):
@@ -25,18 +51,7 @@ def get_top_between_m_and_n(uid, trainset, algo, m=0, n=10):
     """Get the top books between m and n for a user"""
 
     items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
-    ratings = []
-    for iid in items:
-        pred = algo.predict(uid=uid, iid=iid)
-        # Do not take the rated items into consideration
-        if 'actual_k' not in pred.details:
-            ratings.append((pred.iid, pred.est))
-
-    # Sort by the estimated rating
-    ratings.sort(key=itemgetter(1))
-    ratings.reverse()
-
-    return ratings[m:n]
+    return get_top_n_of_items(algo, items, m, n, uid)
 
 
 def get_top_n_for_k(uids, trainset, algo, pred_lookup, n=10):
@@ -136,58 +151,89 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
 
     """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
-        minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+
+
+def get_top_n_for_a_genre_test(trainset, algo, genre):
+    """A test for getting the top n books for a user for a given genre"""
+
+    start = time.time()
+    top_n = get_top_n_for_a_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
+    end = time.time()
+    logging.debug(f'Finished predicting top n for a user for a genre in {end - start} seconds')
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_actual = [('0743454529', 8.927703926596612),
+                    ('067168390X', 8.89856331456661),
+                    ('0345361792', 8.847939111939935),
+                    ('0618002235', 8.844335177040977),
+                    ('193156146X', 8.741249467435024),
+                    ('0142001740', 8.740715762702006),
+                    ('3551551693', 8.711227192982351),
+                    ('0060915544', 8.663857353082424),
+                    ('843760494X', 8.655268551146117),
+                    ('0345342968', 8.621137430160628)]
+
+    assert top_n == top_n_actual
+
+    # Print the recommended items for the test user
+    for item, rating in top_n:
+        logging.debug(f'{item} with rating {rating}')
 
 
 def get_top_n_test(trainset, algo):
     """A test for getting the top n books for a user"""
 
+    start = time.time()
     top_n = get_top_n(uid=1276726, trainset=trainset, n=10, algo=algo)
+    end = time.time()
+    logging.debug(f'Finished predicting top n for a user in {end - start} seconds')
 
-    # NOTE: The assertions only worked for one particular training, now they're incorrect
-    top_n_actual = [('8826703132', 9.172681633546379),
-                    ('0439425220', 8.990698999060877),
-                    ('0140143505', 8.915475327025979),
-                    ('0743454529', 8.905900583624907),
-                    ('0618002235', 8.905387608423752),
-                    ('067168390X', 8.885429080832147),
-                    ('0345339738', 8.869378107558395),
-                    ('0380813815', 8.796321235724662),
-                    ('3499224615', 8.780329429250468),
-                    ('0439136369', 8.764665303001076)]
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_actual = [('0439425220', 9.174304401932348),
+                    ('8826703132', 9.067001081905996),
+                    ('3499224615', 9.00934986241683),
+                    ('0394800893', 8.933664753678935),
+                    ('0743454529', 8.927703926596612),
+                    ('0345339738', 8.90310403011183),
+                    ('067168390X', 8.89856331456661),
+                    ('0060935464', 8.879682449533949),
+                    ('0836218620', 8.871357572619774),
+                    ('0836213319', 8.853826897087968)]
 
-    # assert top_n == top_n_actual
     # Print the recommended items for the test user
     for item, rating in top_n:
         logging.debug(f'{item} with rating {rating}')
+
+    assert top_n == top_n_actual
 
 
 def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
     """A test for getting the top n books for k users"""
 
     start = time.time()
-    top_n_for_k = get_top_n_for_k(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723], trainset=trainset,
+    top_n_for_k = get_top_n_for_k(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723],
+                                  trainset=trainset,
                                   n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup)
     end = time.time()
     logging.debug(f'Finished predicting top n for k in {end - start} seconds')
 
-    # NOTE: The assertions only worked for one particular training, now they're incorrect
-    top_n_for_k_actual = [('8826703132', 9.163503814330383),
-                          ('0743454529', 9.138916247696736),
-                          ('0439425220', 9.114199075251523),
-                          ('0618002235', 8.990996794401715),
-                          ('067168390X', 8.982717279841225),
-                          ('0140143505', 8.978727419284954),
-                          ('0836213319', 8.967651348689216),
-                          ('0836220889', 8.920685808903562),
-                          ('0345339738', 8.914973877309004),
-                          ('0140620222', 8.8414492533041)]
-
-    # assert top_n_for_k == top_n_for_k_actual
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_for_k_actual = [('0439425220', 9.234270187349702),
+                          ('8826703132', 9.196513791031593),
+                          ('0743454529', 9.173717919771407),
+                          ('0836213319', 9.024095539721182),
+                          ('067168390X', 8.999592624889639),
+                          ('0439136369', 8.949199389557576),
+                          ('0618002235', 8.937516408956757),
+                          ('0140143505', 8.923299395269382),
+                          ('3499224615', 8.918117789066516),
+                          ('0345339738', 8.8733494964531)]
 
     # Print the recommended items for the test users
     for item, r in top_n_for_k:
         logging.debug(f'{item} with rating {r}')
+
+    assert top_n_for_k == top_n_for_k_actual
 
 
 def get_top_n_global_test(trainset, dataset):
@@ -212,4 +258,8 @@ def get_top_n_global_test(trainset, dataset):
     for item, r, n, wr in top_n_global:
         logging.debug(f'{item} with rating {r}, num {n} and weighted rating {wr}')
 
-    assert top_n_global == top_n_global_actual
+    for i in range(0, len(top_n_global)):
+        assert top_n_global[i][0] == top_n_global_actual[i][0]
+        assert top_n_global[i][1] == top_n_global_actual[i][1]
+        assert top_n_global[i][2] == top_n_global_actual[i][2]
+        # The weighted rating is different because the global mean is different
