@@ -1,12 +1,17 @@
 import React from 'react'
-import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, ModalFooter, Input } from 'reactstrap'
+import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input } from 'reactstrap'
 import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
+import { BiUserCircle } from "@react-icons/all-files/bi/BiUserCircle"
+import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
+import { GrGroup } from "@react-icons/all-files/gr/GrGroup"
+import { AiOutlineBook } from '@react-icons/all-files/ai/AiOutlineBook'
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline'
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { NavMenu, SearchContainer } from './NavElements';
+import { NavMenu, SearchContainer, SearchResult, SearchText } from './NavElements';
+import Gravatar from 'react-gravatar';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -42,6 +47,16 @@ class Nav extends React.Component {
                         </Box>
                     </Button>
                     <NavMenu>
+                        <Button 
+                            type='button'
+                            style={{
+                                backgroundColor:"#653FFD",
+                                fontFamily:"Source Sans Pro",
+                                fontWeight:"500",
+                                alignItems:"center",
+                                justifyContent:"space-around"
+                            }}
+                            ><AiOutlinePlus style={{ backgroundColor:"#4F30CC", borderRadius:"2px", height:"2rem", width:"2rem", marginRight: "1rem" }}/>New Club</Button>
                         <ChatBubbleOutline fontSize='large' />
                         <NotificationsNoneIcon fontSize='large' />
                         <SettingsIcon fontSize='large'/>
@@ -75,13 +90,44 @@ class Nav extends React.Component {
                         />
                     </SearchContainer>
                 </ModalHeader>
-                    <ModalBody>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <ModalBody style={{ overflowY:"scroll" }}>
+                        {/* User Search Results */}
+                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
+                            <BiUserCircle />
+                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Users</span>
+                        </Box>
+                        <SearchResult>
+                            <Gravatar email='blah@blah.com' />
+                            <SearchText>
+                                Pamela M. Beesly<br />
+                                <span style={{ fontWeight:"500", fontSize:"small" }}>pambeesly@dundermifflin.org</span>
+                            </SearchText>
+                        </SearchResult>
+                        {/* Club Search Results */}
+                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
+                            <GrGroup />
+                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Clubs</span>
+                        </Box>
+                        <SearchResult>
+                            <Gravatar email='blah@blah.com' />
+                            <SearchText>
+                                SlytherintoLibraries<br />
+                                <span style={{ fontWeight:"500", fontSize:"small" }}>21 Members</span>
+                            </SearchText>
+                        </SearchResult>
+                        {/* Club Search Results */}
+                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
+                            <AiOutlineBook />
+                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Books</span>
+                        </Box>
+                        <SearchResult>
+                            <Gravatar email='blah@blah.com' />
+                            <SearchText>
+                                Bob the Builder<br />
+                                <span style={{ fontWeight:"500", fontSize:"small" }}>Keith Chapman</span>
+                            </SearchText>
+                        </SearchResult>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
                 </Modal>
             </div>
         );
