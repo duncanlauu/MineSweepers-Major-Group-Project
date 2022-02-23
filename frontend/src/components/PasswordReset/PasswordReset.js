@@ -27,9 +27,9 @@ export default function SignIn() {
 
         e.preventDefault()
         console.log(formData)
-        axiosInstance.defaults.baseURL = '/auth/';
+        // axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
-            .post(`users/reset_password/`, {
+            .post(`/auth/users/reset_password/`, {
                 email: formData.email,
             })
             .then((response) => {

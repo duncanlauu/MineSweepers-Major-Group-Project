@@ -28,42 +28,26 @@ export default function SignIn() {
     };
 
     const handleSubmit = (e) => {
-    //   e.preventDefault()
-    //   const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-    // const email = formData.email
-    // const body = JSON.stringify({ email });
-    //
-    // try {
-    //     axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
-    //
-    //     console.log("YO")
-    // } catch (err) {
-    //     console.log("NAH")
-    // }
-
-
 
         e.preventDefault()
         console.log(formData)
+        console.log(params)
         // uid = useParams()["uid"]
         // console.log(params["uid"]);
         // users/reset_password_confirm/"
-        axiosInstance.defaults.baseURL = '/auth/';
+        // axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
-            .post(`users/reset_password_confirm/`, {
+            .post(`/auth/users/reset_password_confirm/`, {
                uid: params["uid"],
                token: params["token"],
                new_password: formData.new_password,
-
+               re_new_password: formData.re_new_password,
 
             })
             .then((response) => {
               console.log(response)
-                navigate("/home") // should go to a webiste that says password reset email sent
+                navigate("/log_in/") // should go to a webiste that says password reset succesful and ask you to log in
+                //or maybe even log you out if you are logged in
             })
     }
 

@@ -1,4 +1,3 @@
-# from djoser import email
 from django.contrib.auth.tokens import default_token_generator
 from templated_mail.mail import BaseEmailMessage
 
@@ -6,8 +5,6 @@ from djoser import utils
 from djoser.conf import settings
 
 
-# class PasswordResetEmail(email.PasswordResetEmail):
-#     template_name = 'password_reset_html_email.html'
 
 class PasswordResetEmail(BaseEmailMessage):
     template_name = "email/password_reset.html"

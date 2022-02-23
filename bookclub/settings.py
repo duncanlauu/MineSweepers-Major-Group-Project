@@ -247,6 +247,7 @@ DJOSER = {
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "password_reset_confirm/{uid}/{token}", # the reset link
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
     # 'SERIALIZERS': {
     #     'token_create': 'apps.accounts.serializers.CustomTokenCreateSerializer',
     # },
