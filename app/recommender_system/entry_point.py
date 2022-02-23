@@ -8,7 +8,7 @@ import os
 from surprise import SVD
 
 from app.recommender_system.books_recommender import get_top_n_test, get_top_n_for_k_test, get_top_n_global_test, \
-    get_top_n_for_a_genre_test
+    get_top_n_for_a_genre_test, get_top_n_for_k_for_a_genre_test, get_top_n_global_for_a_genre_test
 from app.recommender_system.people_recommender import get_top_n_users_test
 from app.recommender_system.file_management import *
 
@@ -56,11 +56,16 @@ def recommender_system_tests():
 
     get_top_n_test(trainset=trainset, algo=loaded_algo)
 
-    get_top_n_for_a_genre_test(trainset=trainset, algo=loaded_algo, genre='fiction')
-
     get_top_n_for_k_test(trainset=trainset, algo=loaded_algo,
                          pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup)
 
     get_top_n_global_test(trainset=trainset, dataset=dataframe)
 
     get_top_n_users_test(trainset=trainset, algo=loaded_algo)
+
+    get_top_n_for_a_genre_test(trainset=trainset, algo=loaded_algo, genre='fiction')
+
+    get_top_n_for_k_for_a_genre_test(trainset=trainset, algo=loaded_algo,
+                                     pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup, genre='fiction')
+
+    get_top_n_global_for_a_genre_test(trainset=trainset, dataset=dataframe, genre='fiction')

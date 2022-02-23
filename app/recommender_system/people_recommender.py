@@ -7,6 +7,7 @@ from random import shuffle
 
 from app.models import User
 from app.recommender_system.books_recommender import get_top_n
+from app.recommender_system.genre_algo import get_isbns_for_a_genre
 
 
 def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
@@ -23,17 +24,10 @@ def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
     if trainset.to_inner_uid(uid) in users:
         users.remove(trainset.to_inner_uid(uid))
     max_number_of_items = int(100000 / len(users))
-    users_with_diffs = []
 
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
 
-    for user in users:
-        diff = get_difference_for_two_users(uid1=uid, uid2=user, algo=algo, items=items)
-        users_with_diffs.append((user, diff))
-
-    users_with_diffs.sort(key=itemgetter(1))
-
-    return users_with_diffs[0:n]
+    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
 
 
 def get_top_n_users_double_random(uid, trainset, algo, n=10):
@@ -46,20 +40,43 @@ def get_top_n_users_double_random(uid, trainset, algo, n=10):
 
     """
 
-    users = get_random_n_users(trainset, 100)
+    users = get_actual_users(trainset)
     if uid in users:
         users.remove(trainset.to_inner_uid(uid))
-    users_with_diffs = []
     max_number_of_items = int(100000 / len(users))
 
     items = get_random_n_items(trainset, max_number_of_items)
 
+    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
+
+
+def get_top_n_users_for_a_genre(uid, trainset, algo, genre, n=10):
+    """Get the top n users for a user using items from a given genre
+
+    The number of books for which we compare the similarity between the users is
+    calculated as 100000 / the number of users, because I discovered that a 100000
+    comparisons takes a couple of seconds on my computer and we don't want to spend too
+    much time doing that
+    """
+
+    users = get_random_n_users(trainset, 100)
+    if uid in users:
+        users.remove(trainset.to_inner_uid(uid))
+    max_number_of_items = int(100000 / len(users))
+
+    all_items = get_isbns_for_a_genre(genre, trainset)
+    items = get_random_n_items_from_a_list(all_items, max_number_of_items)
+
+    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
+
+
+def get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users):
+    """Get top n users for a set of users and a set of items"""
+    users_with_diffs = []
     for user in users:
         diff = get_difference_for_two_users(uid1=uid, uid2=user, algo=algo, items=items)
         users_with_diffs.append((user, diff))
-
     users_with_diffs.sort(key=itemgetter(1))
-
     return users_with_diffs[0:n]
 
 
@@ -78,6 +95,12 @@ def get_random_n_items(trainset, n=100):
     """Get random n items"""
 
     items = list(trainset.all_items())
+    return get_random_n_items_from_a_list(items, n)
+
+
+def get_random_n_items_from_a_list(items, n):
+    """Get random n items from a list"""
+
     shuffle(items)
     return items[0:n]
 
@@ -110,7 +133,7 @@ def get_diff_for_list_of_users(uid1, uids, algo, items):
     return diff
 
 
-def get_top_n_users_test(algo, trainset):
+def get_top_n_users_test(algo, trainset, genre='fiction'):
     """A test for getting top n users for a user
 
     It runs the following methods
@@ -146,7 +169,18 @@ def get_top_n_users_test(algo, trainset):
     end = time.time()
     logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
 
-    # NOTE: This is random so I cannot write any tests for it
+    # NOTE: The item choice and the user choice are random so I cannot write any tests for it
+
+    # Print the top 10 users
+    for (user, diff) in top_n:
+        logging.debug(f'{user} with difference {diff}')
+
+    start = time.time()
+    top_n = get_top_n_users_for_a_genre(uid=1276726, algo=algo, trainset=trainset, genre=genre)
+    end = time.time()
+    logging.debug(f'Finished getting top n users for a genre in {end - start} seconds')
+
+    # NOTE: The item choice is random so I cannot write any tests for it
 
     # Print the top 10 users
     for (user, diff) in top_n:

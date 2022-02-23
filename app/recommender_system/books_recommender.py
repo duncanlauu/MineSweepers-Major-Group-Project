@@ -4,7 +4,7 @@ import logging
 import time
 from operator import itemgetter
 
-from app.recommender_system.genre_algo import get_books_from_iexact_genre
+from app.recommender_system.genre_algo import get_books_from_iexact_genre, get_isbns_for_a_genre
 
 
 def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
@@ -16,16 +16,12 @@ def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
 def get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, m=0, n=10):
     """Get the top books between m and n for a user for a given genre"""
 
-    books = get_books_from_iexact_genre(genre)
-    items_with_the_genre = (book.ISBN for book in books)
-    rated_items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
-    # Make sure the books are in the system (are rated at least once)
-    items = list(set(rated_items).intersection(items_with_the_genre))
+    items = get_isbns_for_a_genre(genre, trainset)
 
-    return get_top_n_of_items(algo, items, m, n, uid)
+    return get_top_between_m_and_n_of_items(algo, items, m, n, uid)
 
 
-def get_top_n_of_items(algo, items, m, n, uid):
+def get_top_between_m_and_n_of_items(algo, items, m, n, uid):
     """Get the top books between m and n for a user from given items"""
 
     ratings = []
@@ -50,7 +46,7 @@ def get_top_between_m_and_n(uid, trainset, algo, m=0, n=10):
     """Get the top books between m and n for a user"""
 
     items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
-    return get_top_n_of_items(algo, items, m, n, uid)
+    return get_top_between_m_and_n_of_items(algo, items, m, n, uid)
 
 
 def get_top_n_for_k(uids, trainset, algo, pred_lookup, n=10):
@@ -63,15 +59,32 @@ def get_top_between_m_and_n_for_k(uids, trainset, algo, preds, m=0, n=10):
     """Get the top books between m and n for k users"""
 
     items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
-    sum_of_ratings = {}
+    return get_top_between_m_and_n_of_items_for_k_users(algo, items, m, n, preds, uids)
 
+
+def get_top_n_for_k_for_genre(uids, trainset, algo, pred_lookup, genre, n=10):
+    """Get the top n books for k users for a genre"""
+
+    return get_top_between_m_and_n_for_k_for_genre(uids, trainset, algo, pred_lookup, genre, 0, n)
+
+
+def get_top_between_m_and_n_for_k_for_genre(uids, trainset, algo, preds, genre, m=0, n=10):
+    """Get the top books between m and n for k users for a genre"""
+
+    items = get_isbns_for_a_genre(genre, trainset)
+    return get_top_between_m_and_n_of_items_for_k_users(algo, items, m, n, preds, uids)
+
+
+def get_top_between_m_and_n_of_items_for_k_users(algo, items, m, n, preds, uids):
+    """Get the top books between m and n for k users from given items"""
+
+    sum_of_ratings = {}
     for iid in items:
         for uid in uids:
             # Do not take the rated items into consideration
             if (uid, iid) not in preds:
                 pred = algo.predict(uid=uid, iid=iid)
                 get_prediction_to_sum_of_ratings(pred, sum_of_ratings)
-
     return get_the_correct_slice(m, n, sum_of_ratings)
 
 
@@ -93,11 +106,34 @@ def get_global_top_n(dataset, global_mean, n=10):
 def get_global_top_between_m_and_n(dataset, global_mean, m=0, n=10):
     """Get global top books between m and n"""
 
-    df = dataset[['ISBN', 'Book-Rating']].groupby('ISBN').agg(['mean', 'count'])
+    df = dataset[['ISBN', 'Book-Rating']]
+    return get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n)
+
+
+def get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n):
+    """Get global top between m and n for a dataframe"""
+
+    df = df.groupby('ISBN').agg(['mean', 'count'])
     df['weighted'] = df.apply(lambda row: get_weighted_rating(row[0], row[1], global_mean), axis=1)
     df = df.sort_values(by=['weighted'], ascending=False)
     records = list(map(tuple, df.to_records()))
     return records[m: n]
+
+
+def get_global_top_n_for_genre(dataset, global_mean, genre, n=10):
+    """Get global top n books for a given genre"""
+
+    return get_global_top_between_m_and_n_for_genre(dataset, global_mean, genre, 0, n)
+
+
+def get_global_top_between_m_and_n_for_genre(dataset, global_mean, genre, m=0, n=10):
+    """Get global top books between m and n for a given genre"""
+
+    books = get_books_from_iexact_genre(genre)
+    items_with_the_genre = (book.ISBN for book in books)
+    df = dataset[['ISBN', 'Book-Rating']]
+    df = df[df['ISBN'].isin(items_with_the_genre)]
+    return get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n)
 
 
 def get_the_correct_slice(m, n, sum_of_ratings):
@@ -151,32 +187,6 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
     """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
         minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
-
-
-def get_top_n_for_a_genre_test(trainset, algo, genre):
-    """A test for getting the top n books for a user for a given genre"""
-
-    start = time.time()
-    top_n = get_top_n_for_a_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
-    end = time.time()
-    logging.debug(f'Finished predicting top n for a user for a genre in {end - start} seconds')
-    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
-    top_n_actual = [('0743454529', 8.927703926596612),
-                    ('067168390X', 8.89856331456661),
-                    ('0345361792', 8.847939111939935),
-                    ('0618002235', 8.844335177040977),
-                    ('193156146X', 8.741249467435024),
-                    ('0142001740', 8.740715762702006),
-                    ('3551551693', 8.711227192982351),
-                    ('0060915544', 8.663857353082424),
-                    ('843760494X', 8.655268551146117),
-                    ('0345342968', 8.621137430160628)]
-
-    assert top_n == top_n_actual
-
-    # Print the recommended items for the test user
-    for item, rating in top_n:
-        logging.debug(f'{item} with rating {rating}')
 
 
 def get_top_n_test(trainset, algo):
@@ -253,6 +263,90 @@ def get_top_n_global_test(trainset, dataset):
                            ('0439064872', 8.783068783068783, 189, 8.374071365422605),
                            ('0590353403', 8.983193277310924, 119, 8.352085043868188),
                            ('0439064864', 8.920634920634921, 126, 8.336754976137758)]
+    # Print the global top 10
+    for item, r, n, wr in top_n_global:
+        logging.debug(f'{item} with rating {r}, num {n} and weighted rating {wr}')
+
+    for i in range(0, len(top_n_global)):
+        assert top_n_global[i][0] == top_n_global_actual[i][0]
+        assert top_n_global[i][1] == top_n_global_actual[i][1]
+        assert top_n_global[i][2] == top_n_global_actual[i][2]
+        # The weighted rating is different because the global mean is different
+
+
+def get_top_n_for_a_genre_test(trainset, algo, genre):
+    """A test for getting the top n books for a user for a given genre"""
+
+    start = time.time()
+    top_n = get_top_n_for_a_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
+    end = time.time()
+    logging.debug(f'Finished predicting top n for a user for a genre in {end - start} seconds')
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_actual = [('0743454529', 8.927703926596612),
+                    ('067168390X', 8.89856331456661),
+                    ('0345361792', 8.847939111939935),
+                    ('0618002235', 8.844335177040977),
+                    ('193156146X', 8.741249467435024),
+                    ('0142001740', 8.740715762702006),
+                    ('3551551693', 8.711227192982351),
+                    ('0060915544', 8.663857353082424),
+                    ('843760494X', 8.655268551146117),
+                    ('0345342968', 8.621137430160628)]
+
+    assert top_n == top_n_actual
+
+    # Print the recommended items for the test user
+    for item, rating in top_n:
+        logging.debug(f'{item} with rating {rating}')
+
+
+def get_top_n_for_k_for_a_genre_test(trainset, algo, pred_uid_and_iid_lookup, genre):
+    """A test for getting the top n books for k users for a given genre"""
+
+    start = time.time()
+    top_n_for_k = get_top_n_for_k_for_genre(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723],
+                                            trainset=trainset,
+                                            n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup, genre=genre)
+    end = time.time()
+    logging.debug(f'Finished predicting top n for k for a genre in {end - start} seconds')
+
+    # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
+    top_n_for_k_actual = [('0743454529', 9.173717919771407),
+                          ('067168390X', 8.999592624889639),
+                          ('0618002235', 8.937516408956757),
+                          ('0553274325', 8.799500394931796),
+                          ('1880418568', 8.761974107494297),
+                          ('0446310786', 8.708666770562576),
+                          ('006092988X', 8.669059087099374),
+                          ('0312169787', 8.659066585889624),
+                          ('193156146X', 8.656619899787543),
+                          ('1576738167', 8.645236142697513)]
+
+    # Print the recommended items for the test users
+    for item, r in top_n_for_k:
+        logging.debug(f'{item} with rating {r}')
+
+    assert top_n_for_k == top_n_for_k_actual
+
+
+def get_top_n_global_for_a_genre_test(trainset, dataset, genre):
+    """A test for getting the top n books globally for a given genre"""
+
+    start = time.time()
+    top_n_global = get_global_top_n_for_genre(dataset=dataset, global_mean=trainset.global_mean, genre=genre)
+    end = time.time()
+    logging.debug(f'Finished getting top n global for a genre in {end - start} seconds')
+
+    top_n_global_actual = [('0446310786', 8.94392523364486, 214, 8.51372237363088),
+                           ('0345339681', 8.73913043478261, 161, 8.30003381348696),
+                           ('0385504209', 8.435318275154003, 487, 8.29183786255553),
+                           ('0812550706', 8.837606837606838, 117, 8.264095969217035),
+                           ('0345361792', 8.607734806629834, 181, 8.246650623914935),
+                           ('0142001740', 8.452768729641694, 307, 8.241545025356503),
+                           ('0345342968', 8.628048780487806, 164, 8.23601827772764),
+                           ('0441172717', 8.973333333333333, 75, 8.184621858971981),
+                           ('0345348036', 8.837837837837839, 74, 8.122464513333888),
+                           ('0316666343', 8.185289957567186, 707, 8.111906846741135)]
     # Print the global top 10
     for item, r, n, wr in top_n_global:
         logging.debug(f'{item} with rating {r}, num {n} and weighted rating {wr}')

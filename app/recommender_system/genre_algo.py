@@ -49,3 +49,14 @@ def get_top_n_genres(n=10):
         return [ordered_qs[i]['genres_lowercase'] for i in range(n)]
     else:  # If n is larger than number of genres, return whole sorted
         return [row['genres_lowercase'] for row in ordered_qs]
+
+
+def get_isbns_for_a_genre(genre, trainset):
+    """Get all the rated books for a given genre"""
+
+    books = get_books_from_iexact_genre(genre)
+    items_with_the_genre = (book.ISBN for book in books)
+    rated_items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
+    # Make sure the books are in the system (are rated at least once)
+    items = list(set(rated_items).intersection(items_with_the_genre))
+    return items
