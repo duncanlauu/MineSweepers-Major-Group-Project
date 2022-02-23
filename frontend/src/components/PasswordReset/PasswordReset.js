@@ -24,39 +24,17 @@ export default function SignIn() {
     };
 
     const handleSubmit = (e) => {
-    //   e.preventDefault()
-    //   const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-    // const email = formData.email
-    // const body = JSON.stringify({ email });
-    //
-    // try {
-    //     axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
-    //
-    //     console.log("YO")
-    // } catch (err) {
-    //     console.log("NAH")
-    // }
 
         e.preventDefault()
         console.log(formData)
-
+        axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
-            .post(`/users/reset_password/`, {
+            .post(`users/reset_password/`, {
                 email: formData.email,
             })
             .then((response) => {
               console.log(response)
-                // localStorage.setItem('access_token', response.data.access) // receiving the tokens from the api
-                // localStorage.setItem('refresh_token', response.data.refresh)
-                // axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
-                //     'JWT ' + localStorage.getItem('access_token')
-                navigate("/home") // change to redirect to dashboard
-                // console.log(response);
-                // console.log(response.data);
+                navigate("/home") // should go to a webiste that says password reset email sent
             })
     }
 

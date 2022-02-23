@@ -237,15 +237,22 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+
+DOMAIN = '127.0.0.1:8000'
+SITE_NAME = 'bookgle'
+
 DJOSER = {
     "USER_ID_FIELD": "username",
     "LOGIN_FIELD": "email",
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_URL": "reset_password/{uid}/{token}", # the reset link
+    "PASSWORD_RESET_CONFIRM_URL": "password_reset_confirm/{uid}/{token}", # the reset link
     # 'SERIALIZERS': {
     #     'token_create': 'apps.accounts.serializers.CustomTokenCreateSerializer',
     # },
+    'EMAIL': {
+        'password_reset': 'app.views.email.PasswordResetEmail',
+    }
 }
 
 CSRF_COOKIE_SECURE = True

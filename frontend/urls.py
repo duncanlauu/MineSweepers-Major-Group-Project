@@ -11,5 +11,6 @@ urlpatterns = [
     path('club_profile/', index, name="clubprofile"),  # /<int:club_id>
     path('error/', dino, name="error"),
     path('password_reset/', index, name="password_reset"),
+    path('password_reset_confirm/<uidb64>/<token>', index, name="password_reset_confirm"),
 
 ]
