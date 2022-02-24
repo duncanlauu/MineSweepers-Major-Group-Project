@@ -1,6 +1,6 @@
 import datetime
-from pickle import TRUE
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
@@ -71,8 +71,10 @@ class User(AbstractUser):
         self.friends.remove(user)
 
     def send_friend_request(self, other_user):
+        # outcoming_request_exists = FriendRequest.objects.filter(sender=self, receiver=other_user).exists()
+        # incoming_request_exists = FriendRequest.objects.filter(sender=other_user, receiver=self).exists()
         request_exists = FriendRequest.objects.filter(
-            sender=self, receiver=other_user).exists()
+            Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).exists()
         is_friend = other_user in self.friends.all()
         if not request_exists and not is_friend:
             FriendRequest.objects.create(sender=self, receiver=other_user)
@@ -84,8 +86,6 @@ class User(AbstractUser):
             self.add_friend(other_user)
             other_user.add_friend(self)
             FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
-            # only one record will be created when a friend request is sent
-            # FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
         
     def reject_friend_request(self, other_user):
         FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
@@ -108,10 +108,26 @@ class Post(models.Model):
     comment = models.ForeignKey("Comment", blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.CharField(max_length=2000)
-    votes = models.IntegerField()
+    upvotes = models.IntegerField()
+    downvotes = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image_link = models.CharField(max_length=500)
-    book_link = models.CharField(max_length=500)
+    image_link = models.CharField(max_length=500, blank=True)
+    book_link = models.CharField(max_length=500, blank=True)
+
+    def upvote_post(self):
+        return
+
+    def downvote_post(self):
+        return
+
+    def add_comment(self):
+        return
+
+    def add_image_link(self):
+        return
+
+    def add_book_link(self):
+        return
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -120,6 +136,15 @@ class Comment(models.Model):
     downvotes = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     reply = models.ForeignKey("Comment", related_name="replies", on_delete=models.CASCADE)
+
+    def upvote_comment(self):
+        return
+
+    def downvote_comment(self):
+        return
+
+    def add_reply(self):
+        return
 
 # Book class
 class Book(models.Model):
