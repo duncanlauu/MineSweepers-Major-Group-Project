@@ -84,7 +84,8 @@ class User(AbstractUser):
             self.add_friend(other_user)
             other_user.add_friend(self)
             FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
-            FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
+            # only one record will be created when a friend request is sent
+            # FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
         
     def reject_friend_request(self, other_user):
         FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
@@ -101,6 +102,22 @@ class FriendRequest(models.Model):
         User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    club = models.ForeignKey("Club", related_name="club_post", blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=500)
+    content = models.CharField(max_length=2000)
+    votes = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    image_link = models.CharField(max_length=500)
+    book_link = models.CharField(max_length=500)
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.CharField(max_length=1500)
+    votes = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    reply = models.ForeignKey("Comment", related_name="replies", on_delete=models.CASCADE)
 
 # Book class
 class Book(models.Model):
