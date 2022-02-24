@@ -105,6 +105,7 @@ class FriendRequest(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey("Club", related_name="club_post", blank=True, on_delete=models.CASCADE)
+    comment = models.ForeignKey("Comment", blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.CharField(max_length=2000)
     votes = models.IntegerField()
@@ -115,7 +116,8 @@ class Post(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=1500)
-    votes = models.IntegerField()
+    upvotes = models.IntegerField()
+    downvotes = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     reply = models.ForeignKey("Comment", related_name="replies", on_delete=models.CASCADE)
 
