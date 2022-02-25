@@ -11,7 +11,7 @@ class FriendsView(APIView):
     
     def get(self, request):
         """Get list of friends of current user"""
-        friends = request.user.friends.all()
+        friends = request.user.friends.values()
         return Response({'friends': friends}, status=status.HTTP_200_OK)
 
     def delete(self, request):
