@@ -7,11 +7,11 @@ from app.models import User
 
 class FriendsView(APIView):
     """API View of friends of user"""
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def get(self, request):
         """Get list of friends of current user"""
-        friends = request.user.friends.all()
+        friends = request.user.friends.values()
         return Response({'friends': friends}, status=status.HTTP_200_OK)
 
     def delete(self, request):

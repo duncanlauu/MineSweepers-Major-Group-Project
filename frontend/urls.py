@@ -10,5 +10,6 @@ urlpatterns = [
     path('sign_up/', index, name="signup"),
     path('club_profile/', index, name="clubprofile"),  # /<int:club_id>
     path('error/', dino, name="error"),
+    path('friends_page/', index, name="friends_page"),
     
 ]
