@@ -28,10 +28,19 @@ const HomePage = () => {
                     <RecommendationInfo />
                 </RecommendationContainer><br />
                 <Heading2Text>Clubs</Heading2Text><br />
-                <ul>
-                <ClubListItem />
-                <ClubListItem />
-                <ClubListItem />
+                <ul style={{ display:"flex", flexDirection:"row" }}>
+                <ClubListItem>
+                    <Gravatar email='blah@blah.com' />
+                    <span>Club 1</span>
+                </ClubListItem>
+                <ClubListItem>
+                    <Gravatar email='blah@blah.com' />
+                    <span>Club 2</span>
+                </ClubListItem>
+                <ClubListItem>
+                    <Gravatar email='blah@blah.com' />
+                    <span>Club 3</span>
+                </ClubListItem>
                 </ul>
             </Col>
             <Col></Col>

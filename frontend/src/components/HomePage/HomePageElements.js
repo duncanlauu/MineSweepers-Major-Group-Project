@@ -42,10 +42,13 @@ export const RecommendationInfo = styled.div`
 `
 
 export const ClubListItem = styled.li`
-    display: inline-table;
     margin-right: 2rem;
     height: 10rem;
     width: 10rem;
     border-radius: 5px;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `
