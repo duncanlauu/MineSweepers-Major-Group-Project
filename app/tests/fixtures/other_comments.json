@@ -1,0 +1,14 @@
+[
+  {
+    "model": "app.Comment",
+    "pk": 2,
+    "fields": {
+      "author": 1,
+      "post": 2,
+      "content": "This is another test comment.",
+      "upvotes": 0,
+      "downvotes": 0,
+      "created_at": "2013-03-16T17:41:28+00:00"
+    }
+  }
+]

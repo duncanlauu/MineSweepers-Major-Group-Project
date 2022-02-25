@@ -105,7 +105,6 @@ class FriendRequest(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey("Club", related_name="club_post", blank=True, on_delete=models.CASCADE)
-    comment = models.ForeignKey("Comment", blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.CharField(max_length=2000)
     upvotes = models.IntegerField()
@@ -115,36 +114,57 @@ class Post(models.Model):
     book_link = models.CharField(max_length=500, blank=True)
 
     def upvote_post(self):
-        return
+        self.upvotes += 1
+        self.save()
 
     def downvote_post(self):
-        return
+        self.downvotes += 1
+        self.save()
 
-    def add_comment(self):
-        return
+    def add_comment(self, comment):
+        self.comment_set.add(comment)
 
-    def add_image_link(self):
-        return
+    def add_image_link(self, link):
+        self.image_link = link
+        self.save()
 
-    def add_book_link(self):
-        return
+    def add_book_link(self, link):
+        self.book_link = link
+        self.save()
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.CharField(max_length=1500)
     upvotes = models.IntegerField()
     downvotes = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    reply = models.ForeignKey("Comment", related_name="replies", on_delete=models.CASCADE)
+    # reply = models.ForeignKey('self', related_name="replies", blank=True, on_delete=models.CASCADE)
 
     def upvote_comment(self):
-        return
+        self.upvotes += 1
+        self.save()
 
     def downvote_comment(self):
-        return
+        self.downvotes += 1
+        self.save()
 
-    def add_reply(self):
-        return
+class Reply(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    content = models.CharField(max_length=1500)
+    upvotes = models.IntegerField()
+    downvotes = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def upvote_reply(self):
+        self.upvotes += 1
+        self.save()
+
+    def downvote_reply(self):
+        self.downvotes += 1
+        self.save()
 
 # Book class
 class Book(models.Model):
