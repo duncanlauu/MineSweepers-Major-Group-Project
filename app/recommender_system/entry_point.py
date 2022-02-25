@@ -54,19 +54,20 @@ def recommender_system_tests():
     for prediction in loaded_predictions:
         predictions_uid_and_iid_lookup.add((prediction.uid, prediction.iid))
 
-    # get_top_n_test(trainset=trainset, algo=loaded_algo)
-    #
-    # get_top_n_for_k_test(trainset=trainset, algo=loaded_algo,
-    #                      pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup)
-    #
-    # get_top_n_global_test(trainset=trainset, dataset=dataframe)
-    #
-    # get_top_n_users_test(trainset=trainset, algo=loaded_algo)
-    #
-    # get_top_n_for_a_genre_test(trainset=trainset, algo=loaded_algo, genre='fiction')
-    #
-    # get_top_n_for_k_for_a_genre_test(trainset=trainset, algo=loaded_algo,
-    #                                  pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup, genre='fiction')
-    #
-    # get_top_n_global_for_a_genre_test(trainset=trainset, dataset=dataframe, genre='fiction')
+    get_top_n_test(trainset=trainset, algo=loaded_algo)
+
+    get_top_n_for_k_test(trainset=trainset, algo=loaded_algo,
+                         pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup)
+
+    get_top_n_global_test(trainset=trainset, dataset=dataframe)
+
+    get_top_n_users_test(trainset=trainset, algo=loaded_algo)
+
+    get_top_n_for_a_genre_test(trainset=trainset, algo=loaded_algo, genre='fiction')
+
+    get_top_n_for_k_for_a_genre_test(trainset=trainset, algo=loaded_algo,
+                                     pred_uid_and_iid_lookup=predictions_uid_and_iid_lookup, genre='fiction')
+
+    get_top_n_global_for_a_genre_test(trainset=trainset, dataset=dataframe, genre='fiction')
+
     get_top_n_clubs_test(loaded_algo, trainset, 'fiction')
