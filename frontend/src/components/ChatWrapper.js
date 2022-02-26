@@ -3,15 +3,19 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import Chat from './Chat';
+import Profile from './Profile';
 
 export default function ChatWrapper() {
 
     let params = useParams()
 
     return (
-        <div>
+      <div id="frame">
+        <div className="content">
+          <Profile />
           <Chat chatID={params.chatID} />
         </div>
+      </div>
     );
 }
 

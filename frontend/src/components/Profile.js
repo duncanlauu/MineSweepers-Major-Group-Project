@@ -29,10 +29,12 @@ class Profile extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        username: state.username
-    }
-}
+export default Profile
 
-export default connect(mapStateToProps)(Profile);
+// const mapStateToProps = state => {
+//     return {
+//         username: state.username
+//     }
+// }
+//
+// export default connect(mapStateToProps)(Profile);
