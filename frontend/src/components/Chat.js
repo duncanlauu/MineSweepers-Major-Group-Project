@@ -8,26 +8,24 @@ import { Link, useParams } from 'react-router-dom';
 class Chat extends React.Component {
 
 	state = { message: '' }
-  //
-  // function getChatID(){
-  //   return 1;
-  // }
 
 	initialiseChat() {
+		let username = "admin"
         this.waitForSocketConnection(() => {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
           WebSocketInstance.fetchMessages(
-            this.props.username,
-            this.props.params.chatID
+            username,
+            this.props.chatID
           );
         });
-		console.log("initialise Chat: " + this.props.params.chatID)
-    WebSocketInstance.connect(this.props.params.chatID);
+		console.log("initialise Chat: " + this.props.chatID)
+    WebSocketInstance.connect(this.props.chatID);
 	}
 
     constructor(props) {
         super(props);
-        // const { chatID } = useParams();
+
+				console.log(this.props.chatID)
 		this.initialiseChat();
 	}
 
@@ -61,9 +59,9 @@ class Chat extends React.Component {
     sendMessageHandler = (e) => {
         e.preventDefault();
         const messageObject = {
-            from: this.props.username,
+            from: "admin", //broken
             content: this.state.message,
-            chatId: this.props.params.chatID,
+            chatId: this.props.chatID,
         };
         WebSocketInstance.newChatMessage(messageObject);
         this.setState({ message: '' });
@@ -87,7 +85,8 @@ class Chat extends React.Component {
     }
 
     renderMessages = (messages) => {
-        const currentUser = this.props.username;
+			const currentUser = "admin";
+        // const currentUser = this.props.username; correct
         // return <div>Yo</div>
         return messages.map((message, i, arr) => (
             <li
@@ -181,4 +180,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(withParams(Chat));
+export default Chat
+
+// export default connect(mapStateToProps)(withParams(Chat));
