@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import Chat from './Chat';
 import Profile from './Profile';
+import Sidepanel from './Sidepanel';
 
 export default function ChatWrapper() {
 
@@ -11,6 +12,7 @@ export default function ChatWrapper() {
 
     return (
       <div id="frame">
+        <Sidepanel />
         <div className="content">
           <Profile />
           <Chat chatID={params.chatID} />

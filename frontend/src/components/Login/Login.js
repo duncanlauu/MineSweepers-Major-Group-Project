@@ -36,11 +36,11 @@ export default function SignIn() {
             .then((response) => {
                 localStorage.setItem('access_token', response.data.access) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', response.data.refresh)
-                axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token. 
+                axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
                 navigate("/home") // change to redirect to dashboard
-                // console.log(response);
-                // console.log(response.data);
+                console.log(response);
+                console.log(response.data);
             })
     }
 
@@ -92,4 +92,3 @@ export default function SignIn() {
         </div>
     )
 }
-

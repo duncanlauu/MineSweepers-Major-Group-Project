@@ -32,7 +32,7 @@ class Sidepanel extends React.Component {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`
         };
-        axios.get(`http://127.0.0.1:8000/chat/?username=${username}`)
+        axios.get(`http://127.0.0.1:8000/api/chat/?username=${"admin"}`) //broken
         .then(res => this.setState({ chats: res.data }));
     }
 
@@ -171,4 +171,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidepanel);
+// export default connect(mapStateToProps, mapDispatchToProps)(Sidepanel);
+export default Sidepanel
