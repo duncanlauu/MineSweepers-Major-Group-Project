@@ -9,3 +9,4 @@ class Command(BaseCommand):
         # Do not remove superusers
         User.objects.filter(is_superuser=False, is_staff=False).delete()
         Book.objects.all().delete()
+        User.objects.filter(is_superuser=False, is_staff=False).delete()
