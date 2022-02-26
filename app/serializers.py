@@ -1,6 +1,6 @@
 from unittest import mock
 from rest_framework import serializers
-from .models import User
+from .models import User, Chat
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,3 +22,8 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = ('__all__')
