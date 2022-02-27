@@ -12,6 +12,8 @@ from rest_framework import status
 
 from .mixins import LoginProhibitedMixin
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # View modified from Clucker
 
@@ -73,3 +75,13 @@ class CreateUser(APIView):
             if newuser:
                 return Response(status=status.HTTP_201_CREATED)
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST) # need to send back more information when something goes wrong. Data missing? Email/ username already in use?
+
+
+# @api_view(['GET'])
+# def current_user(request):
+#     print(request)
+#     print(request.user)
+#     user = request.user
+#     return Response({
+#       'username' : user.username,
+#     })

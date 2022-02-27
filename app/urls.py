@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.account_views import CreateUser
+from .views.account_views import CreateUser, current_user
 from .views.authentication_views import BlacklistTokenView
 from .views.chat_views import (
     ChatListView,
@@ -20,5 +20,6 @@ urlpatterns = [
     path('chat/create/', ChatCreateView.as_view()),
     path('chat/<pk>', ChatDetailView.as_view()),
     path('chat/<pk>/update/', ChatUpdateView.as_view()),
-    path('chat/goo<pk>/delete/', ChatDeleteView.as_view())
+    path('chat/goo<pk>/delete/', ChatDeleteView.as_view()),
+    path('current_user/', current_user)
 ]
