@@ -21,7 +21,9 @@ def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
 
     """
 
+    print(User.objects.count())
     users = get_actual_users(trainset)
+    print(len(users))
     if trainset.to_inner_uid(uid) in users:
         users.remove(trainset.to_inner_uid(uid))
     max_number_of_items = int(100000 / len(users))

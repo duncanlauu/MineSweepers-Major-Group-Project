@@ -164,19 +164,23 @@ class RecommenderAPI(APIView):
             top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, genre, n)
             clear_previous_global_recommendations(genre)
             save_global_book_recommendations(top_n, genre)
-        # elif action == 'top_n_users_top_books':
-        #     uid = request.query_params['uid']
-        #     top_n = get_top_n_users_by_favourite_books(uid, self.trainset, self.algo, n)
-        #     save_user_recommendations(top_n, uid, method='top_books')
-        # elif action == 'top_n_users_random_books':
-        #     uid = request.query_params['uid']
-        #     top_n = get_top_n_users_double_random(uid, self.trainset, self.algo, n)
-        #     save_user_recommendations(top_n, uid, method='random_books')
-        # elif action == 'top_n_users_genre_books':
-        #     uid = request.query_params['uid']
-        #     genre = request.query_params['genre']
-        #     top_n = get_top_n_users_for_a_genre(uid, self.trainset, self.algo, genre, n)
-        #     save_user_recommendations(top_n, uid, method='genre_books ' + genre)
+        elif action == 'top_n_users_top_books':
+            uid = kwargs['id']
+            top_n = get_top_n_users_by_favourite_books(uid, self.trainset, self.algo, n)
+            print(top_n)
+            clear_previous_user_recommendations(uid, 'top_books')
+            save_user_recommendations(top_n, uid, method='top_books')
+        elif action == 'top_n_users_random_books':
+            uid = kwargs['id']
+            top_n = get_top_n_users_double_random(uid, self.trainset, self.algo, n)
+            clear_previous_user_recommendations(uid, 'random_books')
+            save_user_recommendations(top_n, uid, method='random_books')
+        elif action == 'top_n_users_genre_books':
+            uid = kwargs['id']
+            genre = kwargs['genre']
+            top_n = get_top_n_users_for_a_genre(uid, self.trainset, self.algo, genre, n)
+            clear_previous_user_recommendations(uid, 'genre_books ' + genre)
+            save_user_recommendations(top_n, uid, method='genre_books ' + genre)
         # elif action == 'top_n_clubs_top_user_books':
         #     uid = request.query_params['uid']
         #     clubs = list(Club.objects.all())
@@ -252,12 +256,16 @@ def clear_previous_global_recommendations(genre='Unspecified'):
 def save_user_recommendations(top_n, uid, method='Unspecified'):
     for user, diff in top_n:
         ur = UserRecommendation.objects.create(
-            user=uid,
-            recommended_user=user,
+            user=User.objects.get(pk=uid),
+            recommended_user=User.objects.get(pk=user),
             diff=diff,
             method=method
         )
         ur.save()
+
+
+def clear_previous_user_recommendations(uid, method='Unspecified'):
+    UserRecommendation.objects.filter(user=uid, method=method).delete()
 
 
 def save_club_recommendations(top_n, uid, method='Unspecified'):
