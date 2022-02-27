@@ -3,7 +3,7 @@ import time
 
 from faker import Faker
 from django.core.management.base import BaseCommand
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from pandas import read_csv
 from app.models import Book, User, BookRating, Club
 
@@ -61,8 +61,9 @@ def seed_users(number=150):
     books = list(Book.objects.all())
     while user_counter < number:
         try:
-            create_user(faker, books)
-            user_counter += 1
+            with transaction.atomic():
+                create_user(faker, books)
+                user_counter += 1
         except IntegrityError:
             print("This username was already taken")
         if user_counter % 10 == 0:

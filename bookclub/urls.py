@@ -39,8 +39,10 @@ urlpatterns = [
     # path('', views.dummy, name='dummy'),
 
     # Reset User Password
-    path("password_reset/", auth_views.PasswordResetView.as_view(template_name="password_reset_templates/password_reset.html",
-         html_email_template_name='password_reset_templates/password_reset_html_email.html'), name="password_reset"),
+    path("password_reset/",
+         auth_views.PasswordResetView.as_view(template_name="password_reset_templates/password_reset.html",
+                                              html_email_template_name='password_reset_templates/password_reset_html_email.html'),
+         name="password_reset"),
     path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(
         template_name="password_reset_templates/password_reset_done.html"), name="password_reset_done"),
     path("password_reset_confirm/<uidb64>/<token>", auth_views.PasswordResetConfirmView.as_view(
@@ -59,7 +61,6 @@ urlpatterns = [
     path('ban_member/<int:club_id>/<int:member_id>', views.ban_member, name='ban_member'),
     path('transfer_ownership/<int:club_id>/<int:new_owner_id>', views.transfer_ownership, name='transfer_ownership'),
 
-
     # Messaging
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
@@ -68,9 +69,17 @@ urlpatterns = [
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('app.urls', namespace='app')), # endpoint for the registration. This is where the API (React) will point.
+    path('api/', include('app.urls', namespace='app')),
+    # endpoint for the registration. This is where the API (React) will point.
 
+    # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),
-    path('recommender/<int:n>/<int:uid>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n')
+    path('recommender/<int:n>/<int:id>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n'),
+    path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>', RecommenderAPI.as_view(),
+         name='recommender_top_n_for_genre'),
+    path('recommender/<int:n>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n_global'),
+    path('recommender/<int:n>/<str:action>/<str:genre>', RecommenderAPI.as_view(),
+         name='recommender_top_n_global_for_genre'),
+
     # create seperate app for api communication for data?
 ]

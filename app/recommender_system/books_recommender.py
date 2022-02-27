@@ -8,13 +8,13 @@ from app.recommender_system.file_management import get_all_related_users
 from app.recommender_system.genre_algo import get_books_from_iexact_genre, get_isbns_for_a_genre
 
 
-def get_top_n_for_a_genre(uid, trainset, algo, genre, n=10):
+def get_top_n_for_genre(uid, trainset, algo, genre, n=10):
     """Get the top n books for a user for a given genre"""
 
-    return get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, 0, n)
+    return get_top_between_m_and_n_for_genre(uid, trainset, algo, genre, 0, n)
 
 
-def get_top_between_m_and_n_for_a_genre(uid, trainset, algo, genre, m=0, n=10):
+def get_top_between_m_and_n_for_genre(uid, trainset, algo, genre, m=0, n=10):
     """Get the top books between m and n for a user for a given genre"""
 
     items = get_isbns_for_a_genre(genre, trainset)
@@ -134,10 +134,10 @@ def get_global_top_between_m_and_n(dataset, global_mean, m=0, n=10):
     """Get global top books between m and n"""
 
     df = dataset[['ISBN', 'Book-Rating']]
-    return get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n)
+    return get_top_between_m_and_n_weighted_for_dataframe(df, global_mean, m, n)
 
 
-def get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n):
+def get_top_between_m_and_n_weighted_for_dataframe(df, global_mean, m, n):
     """Get global top between m and n for a dataframe"""
 
     df = df.groupby('ISBN').agg(['mean', 'count'])
@@ -160,7 +160,7 @@ def get_global_top_between_m_and_n_for_genre(dataset, global_mean, genre, m=0, n
     items_with_the_genre = (book.ISBN for book in books)
     df = dataset[['ISBN', 'Book-Rating']]
     df = df[df['ISBN'].isin(items_with_the_genre)]
-    return get_top_between_m_and_n_weighted_for_a_dataframe(df, global_mean, m, n)
+    return get_top_between_m_and_n_weighted_for_dataframe(df, global_mean, m, n)
 
 
 def get_the_correct_slice(m, n, sum_of_ratings):
@@ -301,11 +301,11 @@ def get_top_n_global_test(trainset, dataset):
         # The weighted rating is different because the global mean is different
 
 
-def get_top_n_for_a_genre_test(trainset, algo, genre):
+def get_top_n_for_genre_test(trainset, algo, genre):
     """A test for getting the top n books for a user for a given genre"""
 
     start = time.time()
-    top_n = get_top_n_for_a_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
+    top_n = get_top_n_for_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
     end = time.time()
     logging.debug(f'Finished predicting top n for a user for a genre in {end - start} seconds')
     # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
@@ -327,7 +327,7 @@ def get_top_n_for_a_genre_test(trainset, algo, genre):
         logging.debug(f'{item} with rating {rating}')
 
 
-def get_top_n_for_k_for_a_genre_test(trainset, algo, pred_uid_and_iid_lookup, genre):
+def get_top_n_for_k_for_genre_test(trainset, algo, pred_uid_and_iid_lookup, genre):
     """A test for getting the top n books for k users for a given genre"""
 
     start = time.time()
@@ -356,7 +356,7 @@ def get_top_n_for_k_for_a_genre_test(trainset, algo, pred_uid_and_iid_lookup, ge
     # assert top_n_for_k == top_n_for_k_actual
 
 
-def get_top_n_global_for_a_genre_test(trainset, dataset, genre):
+def get_top_n_global_for_genre_test(trainset, dataset, genre):
     """A test for getting the top n books globally for a given genre"""
 
     start = time.time()

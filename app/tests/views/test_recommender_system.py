@@ -2,11 +2,12 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from app.management.commands.seed import seed_books
-from app.models import Club, BookRecommendation, Book
-from app.recommender_system.books_recommender import get_top_n
+from app.management.commands.seed import seed_books, seed_users, seed_clubs, seed_ratings
+from app.models import Club, BookRecommendation, Book, BookRecommendationForClub, GlobalBookRecommendation
+from app.recommender_system.books_recommender import get_top_n, get_top_n_for_genre, get_top_n_for_club, \
+    get_top_n_for_club_for_genre, get_global_top_n, get_global_top_n_for_genre
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
-    get_trainset_from_dataset, load_trained_model
+    get_trainset_from_dataset, load_trained_model, generate_pred_set
 
 
 class RecommenderAPITestCase(APITestCase):
@@ -17,176 +18,188 @@ class RecommenderAPITestCase(APITestCase):
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_recommender_club.json']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def setUp(self):
+        seed_books()
+        seed_users()
+        seed_ratings()
+        seed_clubs()
         self.file_path = 'app/files/BX-Book-Ratings.csv'
         self.dataframe = get_combined_data(self.file_path)
         self.data = get_dataset_from_dataframe(self.dataframe)
         self.trainset = get_trainset_from_dataset(self.data)
         self.pred, self.algo = load_trained_model('app/files/dump_file')
         self.n = 10
-
-    def setUp(self):
-        seed_books()
         self.club = Club.objects.get(name="Joe's Club")
         self.uid = 1276726
-        self.args = {'n': self.n}
         self.client = APIClient()
+        self.genre = 'fiction'
 
-    def test_post_top_n(self):
-        self.args['uid'] = self.uid
-        self.args['action'] = 'top_n'
-        url = reverse('recommender_top_n', kwargs=self.args)
+    # Unfortunately, the seeding takes about 2-3 minutes each time and I want to test the recommender
+    # system thoroughly so I'll need to run non-atomic tests. I will create one test which runs
+    # all the tests so that the seeding is done only once. Right now I have 26 tests which require seeding
+    # and I don't want to wait an hour to run the tests every time.
+    def test_everything(self):
+        # self._post_top_n_test()
+        # self._post_top_n_for_genre_test()
+        # self._post_top_n_for_club_test()
+        # self._post_top_n_for_club_for_genre_test()
+        # self._post_top_n_global_test()
+        self._post_top_n_global_for_genre_test()
+
+    def _post_top_n_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
+        url = reverse('recommender_top_n', kwargs=args)
         num_of_recommendations_before = BookRecommendation.objects.count()
         response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         top_n = get_top_n(self.uid, self.trainset, self.algo, self.n)
-        self.assertEqual(response.data, top_n)
         num_of_recommendations_after = BookRecommendation.objects.count()
-        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
-    # def test_post_top_n_for_genre(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_for_club(self):
-    #     self.args['club'] = self.club.id
-    #     self.args['action'] = 'top_n_for_club'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_for_club_for_genre(self):
-    #     self.args['club'] = self.club.id
-    #     self.args['action'] = 'top_n_for_club_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_global(self):
-    #     self.args['action'] = 'top_n_global'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_global_for_genre(self):
-    #     self.args['action'] = 'top_n_global_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
+    def _post_top_n_for_genre_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_for_genre', 'genre': self.genre}
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = BookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
+        num_of_recommendations_after = BookRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+
+    def _post_top_n_for_club_test(self):
+        args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club'}
+        pred_lookup = generate_pred_set(self.pred)
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = BookRecommendationForClub.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, self.n)
+        num_of_recommendations_after = BookRecommendationForClub.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+
+    def _post_top_n_for_club_for_genre_test(self):
+        args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': self.genre}
+        pred_lookup = generate_pred_set(self.pred)
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = BookRecommendationForClub.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup, self.genre, self.n)
+        num_of_recommendations_after = BookRecommendationForClub.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+
+    def _post_top_n_global_test(self):
+        args = {'n': self.n, 'action': 'top_n_global'}
+        url = reverse('recommender_top_n_global', kwargs=args)
+        num_of_recommendations_before = GlobalBookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, self.n)
+        num_of_recommendations_after = GlobalBookRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+
+    def _post_top_n_global_for_genre_test(self):
+        args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': self.genre}
+        url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+        num_of_recommendations_before = GlobalBookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, self.n)
+        num_of_recommendations_after = GlobalBookRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+
     # def test_post_top_n_users_top_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_top_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_users_random_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_random_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_users_genre_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_genre_books'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_clubs_top_user_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_top_user_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_clubs_random_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_random_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_clubs_genre_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_genre_books'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_top_n_clubs_top_club_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_top_club_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_for_genre(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_for_club(self):
-    #     self.args['club'] = self.club.id
-    #     self.args['action'] = 'top_n_for_club'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_for_club_for_genre(self):
-    #     self.args['club'] = self.club.id
-    #     self.args['action'] = 'top_n_for_club_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_global(self):
-    #     self.args['action'] = 'top_n_global'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_global_for_genre(self):
-    #     self.args['action'] = 'top_n_global_for_genre'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_users_top_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_top_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_users_random_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_random_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_users_genre_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_users_genre_books'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_clubs_top_user_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_top_user_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_clubs_random_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_random_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_clubs_genre_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_genre_books'
-    #     self.args['genre'] = 'fiction'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_top_n_clubs_top_club_books(self):
-    #     self.args['uid'] = self.uid
-    #     self.args['action'] = 'top_n_clubs_top_club_books'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_with_wrong_action(self):
-    #     self.args['action'] = 'wrong_action'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_with_wrong_action(self):
-    #     self.args['action'] = 'wrong_action'
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_get_with_no_action(self):
-    #     url = reverse('recommender', kwargs=self.args)
-    #
-    # def test_post_with_no_action(self):
-    #     url = reverse('recommender', kwargs=self.args)
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_top_books'}
+    #     url = reverse('recommender', kwargs=args)
 
+    # def test_post_top_n_users_random_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_random_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_top_n_users_genre_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_genre_books', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_top_n_clubs_top_user_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_user_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_top_n_clubs_random_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_random_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_top_n_clubs_genre_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_top_n_clubs_top_club_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_club_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_for_genre(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_for_genre', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_for_club(self):
+    #     args = {'n': self.n, 'club': self.club.id, 'action': 'top_n_for_club'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_for_club_for_genre(self):
+    #     args = {'n': self.n, 'club': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_global(self):
+    #     args = {'n': self.n, 'action': 'top_n_global'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_global_for_genre(self):
+    #     args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_users_top_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_top_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_users_random_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_random_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_users_genre_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_genre_books', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_clubs_top_user_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_user_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_clubs_random_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_random_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_clubs_genre_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': 'fiction'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_top_n_clubs_top_club_books(self):
+    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_club_books'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_with_wrong_action(self):
+    #     args = {'action': 'wrong_action'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_post_with_wrong_action(self):
+    #     args = {'action': 'wrong_action'}
+    #     url = reverse('recommender', kwargs=args)
+
+    # def test_get_with_no_action(self):
+    #     url = reverse('recommender', kwargs={})
+
+    # def test_post_with_no_action(self):
+    #     url = reverse('recommender', kwargs={})
+
+    # def test_post_retrain(self):
+    #     url = reverse('recommender', kwargs={'action': 'retrain'})
+
+    def _assert_correct(self, num_of_recommendations_after, num_of_recommendations_before, response, top_n):
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, top_n)

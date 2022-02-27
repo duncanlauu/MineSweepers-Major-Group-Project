@@ -1,15 +1,14 @@
-import os
-
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.views import APIView
+from surprise import SVD
 
 from app.models import BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, UserRecommendation, \
     Club, ClubRecommendation, User, Book
 from app.recommender_system.books_recommender import get_top_n, get_top_n_for_club, get_global_top_n, \
-    get_top_n_for_a_genre, get_top_n_for_club_for_genre, get_global_top_n_for_genre
+    get_top_n_for_genre, get_top_n_for_club_for_genre, get_global_top_n_for_genre
 from app.recommender_system.file_management import load_trained_model, get_combined_data, get_dataset_from_dataframe, \
-    get_trainset_from_dataset, generate_pred_set
+    get_trainset_from_dataset, generate_pred_set, train_model, dump_trained_model, test_model
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, get_top_n_users_double_random, \
     get_top_n_users_for_a_genre, get_top_n_clubs_using_random_items, get_top_n_clubs_using_top_items_for_a_user, \
     get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
@@ -18,14 +17,29 @@ from app.serializers import BookRecommendationSerializer, ClubRecommendationSeri
 
 
 class RecommenderAPI(APIView):
+    """This class is responsible for handling all requests to the recommender system
+
+    The basic idea is that a post request calls the recommender system to calculate the recommended items and
+    save the recommendations to the database, whereas the get requests retrieve the recommendations from the database.
+    """
     # Not sure about this
     # permission_classes = [permissions.IsAuthenticated]
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.csv_file_path = 'app/files/BX-Book-Ratings.csv'
+        self.dump_file_name = 'app/files/dump_file'
+        self.dataframe = None
+        self.data = None
+        self.trainset = None
+        self.pred = None
+        self.algo = None
 
     def get(self, request, *args, **kwargs):
         n = request.query_params['n']
         action = request.query_params['action']
         if action == 'top_n':
-            uid = request.query_params['uid']
+            uid = request.query_params['id']
             ratings = list(BookRecommendation.objects.filter(user=uid, genre='Unspecified').order_by('-rating'))[:n]
             serializer = BookRecommendationSerializer(ratings, many=True)
         # elif action == 'top_n_for_genre':
@@ -84,60 +98,72 @@ class RecommenderAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        if 'dataframe' in kwargs:
-            dataframe = kwargs['dataframe']
-        else:
-            # For loading the file, the filepath is 'app/files/BX-Book-Ratings.csv'
-            file_path = 'app/files/BX-Book-Ratings.csv'
-            dataframe = get_combined_data(file_path)
-
-        if 'data' in kwargs:
-            data = kwargs['data']
-        else:
-            data = get_dataset_from_dataframe(dataframe)
-
-        if 'trainset' in kwargs:
-            trainset = kwargs['trainset']
-        else:
-            trainset = get_trainset_from_dataset(data)
-
-        if 'pred' in kwargs:
-            pred = kwargs['pred']
-            algo = kwargs['algo']
-        else:
-            # For loading the model, the filename is 'app/files/dump_file'
-            pred, algo = load_trained_model('app/files/dump_file')
-
-        n = kwargs['n']
         action = kwargs['action']
 
+        if 'dataframe' in kwargs:
+            self.dataframe = kwargs['dataframe']
+        elif self.dataframe is None:
+            self.dataframe = get_combined_data(self.csv_file_path)
+
+        if 'data' in kwargs:
+            self.data = kwargs['data']
+        elif self.data is None:
+            self.data = get_dataset_from_dataframe(self.dataframe)
+
+        if 'trainset' in kwargs:
+            self.trainset = kwargs['trainset']
+        elif self.trainset is None:
+            self.trainset = get_trainset_from_dataset(self.data)
+
+        if action == 'retrain':
+            self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+            train_model(self.algo, self.trainset)
+            self.pred = test_model(self.algo, self.trainset)
+            dump_trained_model(self.dump_file_name, self.algo, self.pred)
+            return Response(status=status.HTTP_200_OK)
+
+        if 'pred' in kwargs:
+            self.pred = kwargs['pred']
+            self.algo = kwargs['algo']
+        elif self.pred is None:
+            # For loading the model, the filename is 'app/files/dump_file'
+            self.pred, self.algo = load_trained_model(self.dump_file_name)
+        n = kwargs['n']
+
         if action == 'top_n':
-            uid = kwargs['uid']
-            top_n = get_top_n(uid, trainset, algo, n)
+            uid = kwargs['id']
+            top_n = get_top_n(uid, self.trainset, self.algo, n)
+            clear_previous_book_recommendations(uid)
             save_book_recommendations(top_n, uid)
-        # elif action == 'top_n_for_genre':
-        #     uid = kwargs['uid']
-        #     genre = kwargs['genre']
-        #     top_n = get_top_n_for_a_genre(uid, self.trainset, self.algo, genre, n)
-        #     save_book_recommendations(top_n, uid, genre)
-        # elif action == 'top_n_for_club':
-        #     club = kwargs['club']
-        #     pred_lookup = generate_pred_set(self.pred)
-        #     top_n = get_top_n_for_club(club, self.trainset, self.algo, pred_lookup, n)
-        #     save_book_recommendations_for_club(top_n, club)
-        # elif action == 'top_n_for_club_for_genre':
-        #     club = kwargs['club']
-        #     genre = kwargs['genre']
-        #     pred_lookup = generate_pred_set(self.pred)
-        #     top_n = get_top_n_for_club_for_genre(club, self.trainset, self.algo, pred_lookup, genre, n)
-        #     save_book_recommendations_for_club(top_n, club, genre)
-        # elif action == 'top_n_global':
-        #     top_n = get_global_top_n(self.data, self.trainset.global_mean, n)
-        #     save_global_book_recommendations(top_n)
-        # elif action == 'top_n_global_for_genre':
-        #     genre = request.query_params['genre']
-        #     top_n = get_global_top_n_for_genre(self.data, self.trainset.global_mean, genre, n)
-        #     save_global_book_recommendations(top_n, genre)
+        elif action == 'top_n_for_genre':
+            uid = kwargs['id']
+            genre = kwargs['genre']
+            top_n = get_top_n_for_genre(uid, self.trainset, self.algo, genre, n)
+            clear_previous_book_recommendations(uid, genre)
+            save_book_recommendations(top_n, uid, genre)
+        elif action == 'top_n_for_club':
+            print(kwargs)
+            club = kwargs['id']
+            pred_lookup = generate_pred_set(self.pred)
+            top_n = get_top_n_for_club(club, self.trainset, self.algo, pred_lookup, n)
+            clear_previous_book_recommendations_for_club(club)
+            save_book_recommendations_for_club(top_n, club)
+        elif action == 'top_n_for_club_for_genre':
+            club = kwargs['id']
+            genre = kwargs['genre']
+            pred_lookup = generate_pred_set(self.pred)
+            top_n = get_top_n_for_club_for_genre(club, self.trainset, self.algo, pred_lookup, genre, n)
+            clear_previous_book_recommendations_for_club(club, genre)
+            save_book_recommendations_for_club(top_n, club, genre)
+        elif action == 'top_n_global':
+            top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, n)
+            clear_previous_global_recommendations()
+            save_global_book_recommendations(top_n)
+        elif action == 'top_n_global_for_genre':
+            genre = kwargs['genre']
+            top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, genre, n)
+            clear_previous_global_recommendations(genre)
+            save_global_book_recommendations(top_n, genre)
         # elif action == 'top_n_users_top_books':
         #     uid = request.query_params['uid']
         #     top_n = get_top_n_users_by_favourite_books(uid, self.trainset, self.algo, n)
@@ -188,27 +214,39 @@ def save_book_recommendations(top_n, uid, genre='Unspecified'):
         br.save()
 
 
+def clear_previous_book_recommendations(uid, genre='Unspecified'):
+    BookRecommendation.objects.filter(user=uid, genre=genre).delete()
+
+
 def save_book_recommendations_for_club(top_n, club, genre='Unspecified'):
     for isbn, rat in top_n:
         br = BookRecommendationForClub.objects.create(
-            club=club,
-            book=isbn,
+            club=Club.objects.get(pk=club),
+            book=Book.objects.get(ISBN=isbn),
             rating=rat,
             genre=genre
         )
         br.save()
 
 
+def clear_previous_book_recommendations_for_club(club, genre='Unspecified'):
+    BookRecommendationForClub.objects.filter(club=club, genre=genre).delete()
+
+
 def save_global_book_recommendations(top_n, genre='Unspecified'):
     for isbn, r, n, wr in top_n:
         br = GlobalBookRecommendation.objects.create(
-            book=isbn,
+            book=Book.objects.get(ISBN=isbn),
             weighted_rating=wr,
             number_of_ratings=n,
             flat_rating=r,
             genre=genre
         )
         br.save()
+
+
+def clear_previous_global_recommendations(genre='Unspecified'):
+    GlobalBookRecommendation.objects.filter(genre=genre).delete()
 
 
 def save_user_recommendations(top_n, uid, method='Unspecified'):

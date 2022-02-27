@@ -7,7 +7,7 @@ from pandas import read_csv, DataFrame, concat
 from surprise import Reader, Dataset
 from surprise.dump import load, dump
 
-from app.models import BookRating, Book
+from app.models import BookRating, Book, Club
 
 
 def filter_out_for_books_we_have_in_the_database(df):
@@ -117,6 +117,7 @@ def generate_pred_set(predictions):
 def get_all_related_users(club):
     """Get all related users to a club"""
 
+    club = Club.objects.get(pk=club)
     users = list(club.members.all())
     users.extend(club.admins.all())
     users.append(club.owner)
