@@ -7,7 +7,14 @@ from pandas import read_csv, DataFrame, concat
 from surprise import Reader, Dataset
 from surprise.dump import load, dump
 
-from app.models import BookRating
+from app.models import BookRating, Book
+
+
+def filter_out_for_books_we_have_in_the_database(df):
+    """Filter out all the books that are not in the database"""
+
+    all_database_isbns = set(book.ISBN for book in Book.objects.all())
+    return df[df['ISBN'].isin(all_database_isbns)]
 
 
 def get_combined_data(file_path):
@@ -26,6 +33,7 @@ def get_dataframe_from_file(file_path):
     file_dataframe = read_csv(file_path, sep=';', encoding='unicode_escape')
     # Filter out the 0s (We think 0 means no rating given)
     file_dataframe = file_dataframe[file_dataframe['Book-Rating'] != 0]
+    file_dataframe = filter_out_for_books_we_have_in_the_database(file_dataframe)
     logging.debug(file_dataframe)
     return file_dataframe
 
@@ -95,3 +103,21 @@ def load_trained_model(file_name):
 
     loaded_predictions, loaded_algo = load(file_name)
     return loaded_predictions, loaded_algo
+
+
+def generate_pred_set(predictions):
+    """Generate a prediction lookup set"""
+
+    predictions_uid_and_iid_lookup = set()
+    for prediction in predictions:
+        predictions_uid_and_iid_lookup.add((prediction.uid, prediction.iid))
+    return predictions_uid_and_iid_lookup
+
+
+def get_all_related_users(club):
+    """Get all related users to a club"""
+
+    users = list(club.members.all())
+    users.extend(club.admins.all())
+    users.append(club.owner)
+    return users

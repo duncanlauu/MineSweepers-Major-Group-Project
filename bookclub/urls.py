@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from app import views
+from app.views.recommender_views import RecommenderAPI
 from frontend import frontend_views
 
 from rest_framework_simplejwt.views import (
@@ -67,7 +68,9 @@ urlpatterns = [
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('app.urls', namespace='app')) # endpoint for the registration. This is where the API (React) will point.
+    path('api/', include('app.urls', namespace='app')), # endpoint for the registration. This is where the API (React) will point.
 
+    path('recommender/', RecommenderAPI.as_view(), name='recommender'),
+    path('recommender/<int:n>/<int:uid>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n')
     # create seperate app for api communication for data?
 ]

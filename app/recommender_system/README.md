@@ -3,7 +3,7 @@
 + Recommending top n books for a user
   + For all items
   + For a given genre
-+ Recommending top n books for k users
++ Recommending top n books for a club
   + For all items
   + For a given genre
 + Recommending top n books globally using weighted average that takes into consideration the number of ratings

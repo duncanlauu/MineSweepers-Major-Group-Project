@@ -1,6 +1,6 @@
 from unittest import mock
 from rest_framework import serializers
-from .models import User
+from .models import User, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,5 +20,49 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
+        instance.save()
+        return instance
+
+
+class BookRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookRecommendation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+
+class UserRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRecommendation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+
+class ClubRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClubRecommendation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+
+class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalBookRecommendation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
         instance.save()
         return instance
