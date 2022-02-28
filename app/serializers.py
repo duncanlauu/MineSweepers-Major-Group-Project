@@ -44,7 +44,7 @@ class ClubSerializer(serializers.ModelSerializer):
         fields: '__all__'
 
     def create(self, validated_data):
-        owner = self.context['request'].user
+        owner = self.context['request'].user # check with jwt
         instance = self.Meta.model(**validated_data)
         instance.save()
         return instance
