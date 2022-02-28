@@ -9,6 +9,7 @@ import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
 import Home from "./Home/Home";
+import Hello from "./Hello/Hello"
 
 export default class App extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ export default class App extends Component {
             <Route path='/error/' element={<Error404 />}></Route>
             <Route path='/club_profile/' element={<ClubProfile />}></Route>
             <Route path='/sign_up/' element={<SignUp />}></Route>
+            <Route path='/hello/' element={<Hello />}></Route>
           </Routes>
           {/* <Footer /> */}
         </React.StrictMode>

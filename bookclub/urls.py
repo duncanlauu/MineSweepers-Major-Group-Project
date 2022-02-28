@@ -28,7 +28,7 @@ urlpatterns = [
     # General URLs
     path('admin/', admin.site.urls),
     # path('', views.home, name='home'),
-    path('', include('frontend.urls')),
+    
 
     # path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
     # path('log_in/', views.LogInView.as_view(), name='log_in'),
@@ -67,7 +67,9 @@ urlpatterns = [
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('app.urls', namespace='app')) # endpoint for the registration. This is where the API (React) will point.
+    path('api/', include('app.urls', namespace='app')), # endpoint for the registration. This is where the API (React) will point.
 
     # create seperate app for api communication for data?
+
+    path('', include('frontend.urls')),
 ]

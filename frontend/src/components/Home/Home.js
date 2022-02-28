@@ -9,6 +9,7 @@ export default function Home() {
             <Link to="/log_out">
                 <Button>LOG OUT</Button><br />
             </Link>
+            <h3>Logged in User</h3>
         </div>
     )
 }
