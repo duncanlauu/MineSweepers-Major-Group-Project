@@ -6,12 +6,12 @@ from rest_framework.test import APIClient, APITestCase
 from surprise import SVD
 
 from app.management.commands.seed import seed_books, seed_users, seed_clubs, seed_ratings
-from app.models import Club, BookRecommendation, Book, BookRecommendationForClub, GlobalBookRecommendation, \
+from app.models import Club, BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, \
     UserRecommendation, User, ClubRecommendation
 from app.recommender_system.books_recommender import get_top_n, get_top_n_for_genre, get_top_n_for_club, \
     get_top_n_for_club_for_genre, get_global_top_n, get_global_top_n_for_genre
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
-    get_trainset_from_dataset, load_trained_model, generate_pred_set, train_model, test_model, dump_trained_model
+    get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, get_top_n_users_double_random, \
     get_top_n_users_for_a_genre, get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_using_random_items, \
     get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
@@ -29,7 +29,6 @@ class RecommenderAPITestCase(APITestCase):
         seed_users()
         seed_ratings()
         seed_clubs()
-        logging.basicConfig(level=logging.DEBUG)
         self.csv_file_path = 'app/files/BX-Book-Ratings.csv'
         self.dump_file_path = 'app/files/dump_file'
         self.dataframe = get_combined_data(self.csv_file_path)
