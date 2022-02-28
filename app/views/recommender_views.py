@@ -167,7 +167,6 @@ class RecommenderAPI(APIView):
         elif action == 'top_n_users_top_books':
             uid = kwargs['id']
             top_n = get_top_n_users_by_favourite_books(uid, self.trainset, self.algo, n)
-            print(top_n)
             clear_previous_user_recommendations(uid, 'top_books')
             save_user_recommendations(top_n, uid, method='top_books')
         elif action == 'top_n_users_random_books':

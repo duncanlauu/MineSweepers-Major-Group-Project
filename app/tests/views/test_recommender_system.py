@@ -70,7 +70,6 @@ class RecommenderAPITestCase(APITestCase):
         # self._post_top_n_global_test()
         # self._post_top_n_global_for_genre_test()
         self._post_top_n_users_top_books_test()
-        # To test the random stuff seed the random thing?
         self._post_top_n_users_random_books_test()
         self._post_top_n_users_genre_books_test()
 
