@@ -22,6 +22,38 @@ class PostModelTestCase(TestCase):
         self.user = User.objects.get(username='jakedoe')
         self.post = Post.objects.get(pk=1)
 
+    def test_post_title_cannot_be_blank(self):
+        self.post.title = ''
+        self._assert_post_is_invalid()
+
+    def test_post_content_cannot_be_blank(self):
+        self.post.content = ''
+        self._assert_post_is_invalid()
+
+    def test_title_can_be_100_characters_long(self):
+        self.post.title = "x" * 100
+        self._assert_post_is_valid()
+
+    def test_title_cannot_be_over_100_characters_long(self):
+        self.post.title = "x" * 101
+        self._assert_post_is_invalid()
+
+    def test_content_can_be_500_characters_long(self):
+        self.post.content = "x" * 500
+        self._assert_post_is_valid()
+
+    def test_content_cannot_be_over_500_characters_long(self):
+        self.post.content = "x" * 501
+        self._assert_post_is_invalid()
+
+    def test_post_author_cannot_be_none(self):
+        self.post.author = None
+        self._assert_post_is_invalid()
+
+    def test_post_without_club_is_valid(self):
+        self.post.club = None
+        self._assert_post_is_valid()
+
     def test_upvote_post(self):
         upvote_count_before = self.post.upvotes
         self.post.upvote_post()
@@ -42,11 +74,22 @@ class PostModelTestCase(TestCase):
         comment_count_after = self.post.comment_set.count()
         self.assertEqual(comment_count_before + 1, comment_count_after)
 
-    def test_valid_post_without_club(self):
-        pass
-
     def test_add_image_link(self):
-        pass
+        image_link = "abc"
+        self.post.add_image_link(image_link)
+        self.assertEqual(self.post.image_link, image_link)
 
     def test_add_book_link(self):
-        pass
+        book_link = "abc"
+        self.post.add_book_link(book_link)
+        self.assertEqual(self.post.book_link, book_link)
+
+    def _assert_post_is_valid(self):
+        try:
+            self.post.full_clean()
+        except (ValidationError):
+            self.fail('Test post should be valid')
+
+    def _assert_post_is_invalid(self):
+        with self.assertRaises(ValidationError):
+            self.post.full_clean()

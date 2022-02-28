@@ -104,11 +104,11 @@ class FriendRequest(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    club = models.ForeignKey("Club", related_name="club_post", blank=True, on_delete=models.CASCADE)
-    title = models.CharField(max_length=500)
-    content = models.CharField(max_length=2000)
-    upvotes = models.IntegerField()
-    downvotes = models.IntegerField()
+    club = models.ForeignKey("Club", on_delete=models.SET_NULL, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=False)
+    content = models.CharField(max_length=500, blank=False)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     image_link = models.CharField(max_length=500, blank=True)
     book_link = models.CharField(max_length=500, blank=True)
