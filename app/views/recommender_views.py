@@ -100,20 +100,9 @@ class RecommenderAPI(APIView):
     def post(self, request, *args, **kwargs):
         action = kwargs['action']
 
-        if 'dataframe' in kwargs:
-            self.dataframe = kwargs['dataframe']
-        elif self.dataframe is None:
-            self.dataframe = get_combined_data(self.csv_file_path)
-
-        if 'data' in kwargs:
-            self.data = kwargs['data']
-        elif self.data is None:
-            self.data = get_dataset_from_dataframe(self.dataframe)
-
-        if 'trainset' in kwargs:
-            self.trainset = kwargs['trainset']
-        elif self.trainset is None:
-            self.trainset = get_trainset_from_dataset(self.data)
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
 
         if action == 'retrain':
             self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
@@ -122,12 +111,8 @@ class RecommenderAPI(APIView):
             dump_trained_model(self.dump_file_name, self.algo, self.pred)
             return Response(status=status.HTTP_200_OK)
 
-        if 'pred' in kwargs:
-            self.pred = kwargs['pred']
-            self.algo = kwargs['algo']
-        elif self.pred is None:
-            # For loading the model, the filename is 'app/files/dump_file'
-            self.pred, self.algo = load_trained_model(self.dump_file_name)
+        # For loading the model, the filename is 'app/files/dump_file'
+        self.pred, self.algo = load_trained_model(self.dump_file_name)
         n = kwargs['n']
 
         if action == 'top_n':
@@ -142,7 +127,6 @@ class RecommenderAPI(APIView):
             clear_previous_book_recommendations(uid, genre)
             save_book_recommendations(top_n, uid, genre)
         elif action == 'top_n_for_club':
-            print(kwargs)
             club = kwargs['id']
             pred_lookup = generate_pred_set(self.pred)
             top_n = get_top_n_for_club(club, self.trainset, self.algo, pred_lookup, n)
@@ -180,27 +164,31 @@ class RecommenderAPI(APIView):
             top_n = get_top_n_users_for_a_genre(uid, self.trainset, self.algo, genre, n)
             clear_previous_user_recommendations(uid, 'genre_books ' + genre)
             save_user_recommendations(top_n, uid, method='genre_books ' + genre)
-        # elif action == 'top_n_clubs_top_user_books':
-        #     uid = request.query_params['uid']
-        #     clubs = list(Club.objects.all())
-        #     top_n = get_top_n_clubs_using_top_items_for_a_user(uid, self.algo, self.trainset, clubs, n)
-        #     save_club_recommendations(uid, top_n, method='top_user_books')
-        # elif action == 'top_n_clubs_random_books':
-        #     uid = request.query_params['uid']
-        #     clubs = list(Club.objects.all())
-        #     top_n = get_top_n_clubs_using_random_items(uid, self.algo, self.trainset, clubs, n)
-        #     save_club_recommendations(uid, top_n, method='random_books')
-        # elif action == 'top_n_clubs_genre_books':
-        #     uid = request.query_params['uid']
-        #     genre = request.query_params['genre']
-        #     clubs = list(Club.objects.all())
-        #     top_n = get_top_n_clubs_for_a_genre(uid, self.algo, self.trainset, clubs, genre, n)
-        #     save_club_recommendations(uid, top_n, method='genre_books ' + genre)
-        # elif action == 'top_n_clubs_top_club_books':
-        #     uid = request.query_params['uid']
-        #     clubs = list(Club.objects.all())
-        #     top_n = get_top_n_clubs_using_clubs_books(uid, self.algo, clubs, n)
-        #     save_club_recommendations(uid, top_n, method='top_club_books')
+        elif action == 'top_n_clubs_top_user_books':
+            uid = kwargs['id']
+            clubs = list(Club.objects.all())
+            top_n = get_top_n_clubs_using_top_items_for_a_user(uid, self.algo, self.trainset, clubs, n)
+            clear_previous_club_recommendations(uid, 'top_user_books')
+            save_club_recommendations(top_n, uid, method='top_user_books')
+        elif action == 'top_n_clubs_random_books':
+            uid = kwargs['id']
+            clubs = list(Club.objects.all())
+            top_n = get_top_n_clubs_using_random_items(uid, self.algo, self.trainset, clubs, n)
+            clear_previous_club_recommendations(uid, 'random_books')
+            save_club_recommendations(top_n, uid, method='random_books')
+        elif action == 'top_n_clubs_genre_books':
+            uid = kwargs['id']
+            genre = kwargs['genre']
+            clubs = list(Club.objects.all())
+            top_n = get_top_n_clubs_for_a_genre(uid, self.algo, self.trainset, clubs, genre, n)
+            clear_previous_club_recommendations(uid, 'genre_books ' + genre)
+            save_club_recommendations(top_n, uid, method='genre_books ' + genre)
+        elif action == 'top_n_clubs_top_club_books':
+            uid = kwargs['id']
+            clubs = list(Club.objects.all())
+            top_n = get_top_n_clubs_using_clubs_books(uid, self.algo, clubs, n)
+            clear_previous_club_recommendations(uid, 'top_club_books')
+            save_club_recommendations(top_n, uid, method='top_club_books')
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(data=top_n, status=status.HTTP_200_OK)
@@ -270,9 +258,13 @@ def clear_previous_user_recommendations(uid, method='Unspecified'):
 def save_club_recommendations(top_n, uid, method='Unspecified'):
     for club, diff in top_n:
         cr = ClubRecommendation.objects.create(
-            user=uid,
-            club=club,
+            user=User.objects.get(pk=uid),
+            club=Club.objects.get(pk=club),
             diff=diff,
             method=method
         )
         cr.save()
+
+
+def clear_previous_club_recommendations(uid, method='Unspecified'):
+    ClubRecommendation.objects.filter(user=uid, method=method).delete()

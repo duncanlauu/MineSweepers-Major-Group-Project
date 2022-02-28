@@ -7,13 +7,14 @@ from surprise import SVD
 
 from app.management.commands.seed import seed_books, seed_users, seed_clubs, seed_ratings
 from app.models import Club, BookRecommendation, Book, BookRecommendationForClub, GlobalBookRecommendation, \
-    UserRecommendation, User
+    UserRecommendation, User, ClubRecommendation
 from app.recommender_system.books_recommender import get_top_n, get_top_n_for_genre, get_top_n_for_club, \
     get_top_n_for_club_for_genre, get_global_top_n, get_global_top_n_for_genre
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, load_trained_model, generate_pred_set, train_model, test_model, dump_trained_model
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, get_top_n_users_double_random, \
-    get_top_n_users_for_a_genre
+    get_top_n_users_for_a_genre, get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_using_random_items, \
+    get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
 
 
 class RecommenderAPITestCase(APITestCase):
@@ -63,15 +64,19 @@ class RecommenderAPITestCase(APITestCase):
     # all the tests so that the seeding is done only once. Right now I have 26 tests which require seeding
     # and I don't want to wait an hour to run the tests every time.
     def test_everything(self):
-        # self._post_top_n_test()
-        # self._post_top_n_for_genre_test()
-        # self._post_top_n_for_club_test()
-        # self._post_top_n_for_club_for_genre_test()
-        # self._post_top_n_global_test()
-        # self._post_top_n_global_for_genre_test()
+        self._post_top_n_test()
+        self._post_top_n_for_genre_test()
+        self._post_top_n_for_club_test()
+        self._post_top_n_for_club_for_genre_test()
+        self._post_top_n_global_test()
+        self._post_top_n_global_for_genre_test()
         self._post_top_n_users_top_books_test()
         self._post_top_n_users_random_books_test()
         self._post_top_n_users_genre_books_test()
+        self._post_top_n_clubs_top_user_books_test()
+        self._post_top_n_clubs_random_books_test()
+        self._post_top_n_clubs_genre_books_test()
+        self._post_top_n_clubs_top_club_books_test()
 
     def _post_top_n_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
@@ -135,7 +140,6 @@ class RecommenderAPITestCase(APITestCase):
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_by_favourite_books(self.uid, self.trainset, self.algo, self.n)
-        print(f'That\'s the second one {top_n}')
         num_of_recommendations_after = UserRecommendation.objects.count()
         self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
@@ -157,21 +161,45 @@ class RecommenderAPITestCase(APITestCase):
         num_of_recommendations_after = UserRecommendation.objects.count()
         self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
-    # def test_post_top_n_clubs_top_user_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_user_books'}
-    #     url = reverse('recommender', kwargs=args)
+    def _post_top_n_clubs_top_user_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_user_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
-    # def test_post_top_n_clubs_random_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_random_books'}
-    #     url = reverse('recommender', kwargs=args)
+    def _post_top_n_clubs_random_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_random_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_random_items(self.uid, self.algo, self.trainset, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
-    # def test_post_top_n_clubs_genre_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
+    def _post_top_n_clubs_genre_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': self.genre}
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_for_a_genre(self.uid, self.algo, self.trainset, clubs, self.genre, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
-    # def test_post_top_n_clubs_top_club_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_club_books'}
-    #     url = reverse('recommender', kwargs=args)
+    def _post_top_n_clubs_top_club_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_club_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_clubs_books(self.uid, self.algo, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
 
     # def test_get_top_n(self):
     #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n'}

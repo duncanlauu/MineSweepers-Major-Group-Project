@@ -117,7 +117,8 @@ def generate_pred_set(predictions):
 def get_all_related_users(club):
     """Get all related users to a club"""
 
-    club = Club.objects.get(pk=club)
+    if not isinstance(club, Club):
+        club = Club.objects.get(pk=club)
     users = list(club.members.all())
     users.extend(club.admins.all())
     users.append(club.owner)
