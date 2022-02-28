@@ -30,10 +30,9 @@ class GetCurrentUserView(RetrieveAPIView):
         # There is nothing to validate or save here. Instead, we just want the
         # serializer to handle turning our `User` object into something that
         # can be JSONified and sent to the client.
-        print("JWT: ", request.META)
-        # serializer = self.serializer_class(request.user)
-
-        return Response( status=status.HTTP_200_OK) #serializer.data,
+        serializer = self.serializer_class(request.user)
+        # or get the user id from the request and get the user info from the DB
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # # https://thinkster.io/tutorials/django-json-api/authentication
 

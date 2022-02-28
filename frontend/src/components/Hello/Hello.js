@@ -1,5 +1,5 @@
-import axiosInstance from '../../axios'
-import React, { Component, useState, useEffect } from "react";
+import axiosInstance from "../../axios"
+import React, { useState, useEffect } from "react";
 
 export default function Hello(props) {
 
