@@ -5,6 +5,7 @@ import { Spin, Icon } from 'antd';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
 import Contact from './Contact';
+import axiosInstance from '../axios'
 
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -28,12 +29,23 @@ class Sidepanel extends React.Component {
     }
 
     getUserChats = (token, username) => {
-        axios.defaults.headers = {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`
-        };
-        axios.get(`http://127.0.0.1:8000/api/chat/?username=${"admin"}`) //broken
-        .then(res => this.setState({ chats: res.data }));
+// very bad needs to be changed
+      axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
+  				const user = response.data;
+  				console.log(response.data)
+
+          axios.defaults.headers = {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`
+          };
+          axios.get(`http://127.0.0.1:8000/api/chat/?username=${user.username}`) //broken
+          .then(res => this.setState({ chats: res.data }));
+
+
+  		}).catch(error => {
+  				console.log("Error: ", JSON.stringify(error, null, 4));
+  				throw error;
+  		})
     }
 
     changeForm = () => {
@@ -49,7 +61,7 @@ class Sidepanel extends React.Component {
                     name="Harvey Specter"
                     picURL="http://emilcarlsson.se/assets/louislitt.png"
                     status="busy"
-                    chatURL={`/${c.id}`} />
+                    chatURL={`/chat/${c.id}`} />
             )
         })
         return (

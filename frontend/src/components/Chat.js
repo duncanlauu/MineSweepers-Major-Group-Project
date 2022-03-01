@@ -183,16 +183,6 @@ class Chat extends React.Component {
     };
 }
 
-// function withParams(Component) {
-//   return props => <Component {...props} params={useParams()} />;
-// }
-//
-// const mapStateToProps = state => {
-//     return {
-//         username: state.username
-//     }
-// }
-
 export default Chat
 
 // export default connect(mapStateToProps)(withParams(Chat));
