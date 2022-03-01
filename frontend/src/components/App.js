@@ -9,6 +9,7 @@ import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
 import Home from "./Home/Home";
+import Hello from "./Hello/Hello"
 import Chat from "./Chat.js"
 import Chatv2 from "./Chatv2.js"
 import ChatWrapper from "./ChatWrapper.js"
@@ -31,6 +32,7 @@ export default class App extends Component {
             <Route path='/error/' element={<Error404 />}></Route>
             <Route path='/club_profile/' element={<ClubProfile />}></Route>
             <Route path='/sign_up/' element={<SignUp />}></Route>
+            <Route path='/hello/' element={<Hello />}></Route>
             <Route path="/chat/:chatID/" element={<ChatWrapper />}></Route>
             <Route path="/chatv2/:chatID/" element={<Chatv2 />}></Route>
           </Routes>
