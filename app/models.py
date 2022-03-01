@@ -115,47 +115,43 @@ class Post(models.Model):
 
     def upvote_post(self):
         self.upvotes += 1
-        self.save()
 
     def downvote_post(self):
         self.downvotes += 1
-        self.save()
 
     def add_comment(self, comment):
         self.comment_set.add(comment)
 
     def add_image_link(self, link):
         self.image_link = link
-        self.save()
 
     def add_book_link(self, link):
         self.book_link = link
-        self.save()
 
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content = models.CharField(max_length=1500)
-    upvotes = models.IntegerField()
-    downvotes = models.IntegerField()
+    content = models.CharField(max_length=500, blank=False)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    # reply = models.ForeignKey('self', related_name="replies", blank=True, on_delete=models.CASCADE)
 
     def upvote_comment(self):
         self.upvotes += 1
-        self.save()
 
     def downvote_comment(self):
         self.downvotes += 1
-        self.save()
+
+    def add_reply(self, reply):
+        self.reply_set.add(reply)
 
 class Reply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    content = models.CharField(max_length=1500)
-    upvotes = models.IntegerField()
-    downvotes = models.IntegerField()
+    content = models.CharField(max_length=500, blank=False)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def upvote_reply(self):
