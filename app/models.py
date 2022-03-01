@@ -106,7 +106,7 @@ class FriendRequest(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     club = models.ForeignKey(
         "Club", on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=100, blank=False)
@@ -117,6 +117,9 @@ class Post(models.Model):
     image_link = models.CharField(max_length=500, blank=True)
     book_link = models.CharField(max_length=500, blank=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def upvote_post(self):
         self.upvotes += 1
 
@@ -126,11 +129,18 @@ class Post(models.Model):
     def add_comment(self, comment):
         self.comment_set.add(comment)
 
-    def add_image_link(self, link):
+    def modify_image_link(self, link):  # TODO: test
         self.image_link = link
 
-    def add_book_link(self, link):
+    def modify_book_link(self, link):  # TODO: test
         self.book_link = link
+
+    def modify_content(self, new_content):  # TODO: test
+        self.content = new_content  
+    
+    def modify_title(self, new_title):  # TODO: test
+        self.title = new_title
+
 
 
 class Response(models.Model):
