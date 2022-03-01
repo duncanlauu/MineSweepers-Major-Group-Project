@@ -45,13 +45,13 @@ class ReplyModelTestCase(TestCase):
 
     def test_upvote_reply(self):
         upvote_count_before = self.reply.upvotes
-        self.reply.upvote_reply()
+        self.reply.upvote()
         upvote_count_after = self.reply.upvotes
         self.assertEqual(upvote_count_before + 1, upvote_count_after)
 
     def test_downvote_reply(self):
         downvote_count_before = self.reply.downvotes
-        self.reply.downvote_reply()
+        self.reply.downvote()
         downvote_count_after = self.reply.downvotes
         self.assertEqual(downvote_count_before + 1, downvote_count_after)
 

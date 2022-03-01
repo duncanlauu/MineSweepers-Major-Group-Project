@@ -8,6 +8,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
 # It uses datetime.date which only uses the date
+
+
 def PastDateValidator(date):
     if date > datetime.date.today():
         raise ValidationError("Date cannot be in the future")
@@ -71,8 +73,6 @@ class User(AbstractUser):
         self.friends.remove(user)
 
     def send_friend_request(self, other_user):
-        # outcoming_request_exists = FriendRequest.objects.filter(sender=self, receiver=other_user).exists()
-        # incoming_request_exists = FriendRequest.objects.filter(sender=other_user, receiver=self).exists()
         request_exists = FriendRequest.objects.filter(
             Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).exists()
         is_friend = other_user in self.friends.all()
@@ -80,13 +80,15 @@ class User(AbstractUser):
             FriendRequest.objects.create(sender=self, receiver=other_user)
 
     def accept_friend_request(self, other_user):
-        request_exists = self.incoming_friend_requests.filter(sender=other_user).exists()
+        request_exists = self.incoming_friend_requests.filter(
+            sender=other_user).exists()
         is_friend = other_user in self.friends.all()
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
-            FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
-        
+            FriendRequest.objects.filter(
+                sender=other_user, receiver=self).delete()
+
     def reject_friend_request(self, other_user):
         FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
 
@@ -102,9 +104,11 @@ class FriendRequest(models.Model):
         User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    club = models.ForeignKey("Club", on_delete=models.SET_NULL, blank=True, null=True)
+    club = models.ForeignKey(
+        "Club", on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=100, blank=False)
     content = models.CharField(max_length=500, blank=False)
     upvotes = models.IntegerField(default=0)
@@ -129,38 +133,33 @@ class Post(models.Model):
         self.book_link = link
 
 
-class Comment(models.Model):
+class Response(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, blank=False)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def upvote_comment(self):
+    def upvote(self):
         self.upvotes += 1
 
-    def downvote_comment(self):
+    def downvote(self):
         self.downvotes += 1
+
+    class Meta:
+        abstract = True
+
+
+class Comment(Response):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     def add_reply(self, reply):
         self.reply_set.add(reply)
 
-class Reply(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Reply(Response):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    def upvote_reply(self):
-        self.upvotes += 1
-        self.save()
-
-    def downvote_reply(self):
-        self.downvotes += 1
-        self.save()
 
 # Book class
 class Book(models.Model):
@@ -175,6 +174,8 @@ class Book(models.Model):
     image_links_small = models.CharField(max_length=500)
 
 # Book Ratings class
+
+
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -184,6 +185,8 @@ class BookRating(models.Model):
         auto_now_add=True)  # ? not sure how to test this
 
 # Meeting class
+
+
 class Meeting(models.Model):
     start_time = models.DateTimeField(
         blank=False, validators=[FutureDateValidator])
@@ -194,6 +197,8 @@ class Meeting(models.Model):
     link = models.CharField(max_length=500, unique=True, blank=True)
 
 # Vote class
+
+
 class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
     start_time = models.DateTimeField(
@@ -211,6 +216,8 @@ class Vote(models.Model):
         return self.event_vote.count()
 
 # Club event class
+
+
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)

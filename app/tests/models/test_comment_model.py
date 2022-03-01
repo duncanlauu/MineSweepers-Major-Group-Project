@@ -45,13 +45,13 @@ class CommentModelTestCase(TestCase):
 
     def test_upvote_comment(self):
         upvote_count_before = self.comment.upvotes
-        self.comment.upvote_comment()
+        self.comment.upvote()
         upvote_count_after = self.comment.upvotes
         self.assertEqual(upvote_count_before + 1, upvote_count_after)
 
     def test_downvote_comment(self):
         downvote_count_before = self.comment.downvotes
-        self.comment.downvote_comment()
+        self.comment.downvote()
         downvote_count_after = self.comment.downvotes
         self.assertEqual(downvote_count_before + 1, downvote_count_after)
 
