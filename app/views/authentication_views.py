@@ -31,7 +31,6 @@ class GetCurrentUserView(RetrieveAPIView):
         # serializer to handle turning our `User` object into something that
         # can be JSONified and sent to the client.
         serializer = self.serializer_class(request.user)
-        # or get the user id from the request and get the user info from the DB
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # # https://thinkster.io/tutorials/django-json-api/authentication
