@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import permissions, status
+from rest_framework import status
 from rest_framework.views import APIView
 from surprise import SVD
 
@@ -22,18 +22,6 @@ class RecommenderAPI(APIView):
     The basic idea is that a post request calls the recommender system to calculate the recommended items and
     save the recommendations to the database, whereas the get requests retrieve the recommendations from the database.
     """
-    # Not sure about this
-    # permission_classes = [permissions.IsAuthenticated]
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.csv_file_path = 'app/files/BX-Book-Ratings.csv'
-        self.dump_file_name = 'app/files/dump_file'
-        self.dataframe = None
-        self.data = None
-        self.trainset = None
-        self.pred = None
-        self.algo = None
 
     def get(self, request, *args, **kwargs):
         if 'action' not in kwargs:
@@ -119,92 +107,94 @@ class RecommenderAPI(APIView):
             return Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
         action = kwargs['action']
 
-        try:
-            self.dataframe = get_combined_data(self.csv_file_path)
-            self.data = get_dataset_from_dataframe(self.dataframe)
-            self.trainset = get_trainset_from_dataset(self.data)
+        csv_file_path = 'app/files/BX-Book-Ratings.csv'
+        dump_file_name = 'app/files/dump_file'
+        dataframe = get_combined_data(csv_file_path)
+        data = get_dataset_from_dataframe(dataframe)
+        trainset = get_trainset_from_dataset(data)
 
+        try:
             if action == 'retrain':
-                self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-                train_model(self.algo, self.trainset)
-                self.pred = test_model(self.algo, self.trainset)
-                dump_trained_model(self.dump_file_name, self.algo, self.pred)
+                algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+                train_model(algo, trainset)
+                pred = test_model(algo, trainset)
+                dump_trained_model(dump_file_name, algo, pred)
                 return Response(data='Model has been trained', status=status.HTTP_200_OK)
 
             # For loading the model, the filename is 'app/files/dump_file'
-            self.pred, self.algo = load_trained_model(self.dump_file_name)
+            pred, algo = load_trained_model(dump_file_name)
 
             if action == 'top_n':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clear_previous_book_recommendations(uid)
-                top_n = get_top_n(uid, self.trainset, self.algo, n)
+                top_n = get_top_n(uid, trainset, algo, n)
                 save_book_recommendations(top_n, uid)
             elif action == 'top_n_for_genre':
                 uid = kwargs['id']
                 n = kwargs['n']
                 genre = kwargs['genre']
                 clear_previous_book_recommendations(uid, genre)
-                top_n = get_top_n_for_genre(uid, self.trainset, self.algo, genre, n)
+                top_n = get_top_n_for_genre(uid, trainset, algo, genre, n)
                 save_book_recommendations(top_n, uid, genre)
             elif action == 'top_n_for_club':
                 club = kwargs['id']
                 n = kwargs['n']
-                pred_lookup = generate_pred_set(self.pred)
+                pred_lookup = generate_pred_set(pred)
                 clear_previous_book_recommendations_for_club(club)
-                top_n = get_top_n_for_club(club, self.trainset, self.algo, pred_lookup, n)
+                top_n = get_top_n_for_club(club, trainset, algo, pred_lookup, n)
                 save_book_recommendations_for_club(top_n, club)
             elif action == 'top_n_for_club_for_genre':
                 club = kwargs['id']
                 n = kwargs['n']
                 genre = kwargs['genre']
-                pred_lookup = generate_pred_set(self.pred)
+                pred_lookup = generate_pred_set(pred)
                 clear_previous_book_recommendations_for_club(club, genre)
-                top_n = get_top_n_for_club_for_genre(club, self.trainset, self.algo, pred_lookup, genre, n)
+                top_n = get_top_n_for_club_for_genre(club, trainset, algo, pred_lookup, genre, n)
                 save_book_recommendations_for_club(top_n, club, genre)
             elif action == 'top_n_global':
                 n = kwargs['n']
                 clear_previous_global_recommendations()
-                top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, n)
+                top_n = get_global_top_n(dataframe, trainset.global_mean, n)
                 save_global_book_recommendations(top_n)
             elif action == 'top_n_global_for_genre':
                 n = kwargs['n']
                 genre = kwargs['genre']
                 clear_previous_global_recommendations(genre)
-                top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, genre, n)
+                top_n = get_global_top_n_for_genre(dataframe, trainset.global_mean, genre, n)
                 save_global_book_recommendations(top_n, genre)
             elif action == 'top_n_users_top_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clear_previous_user_recommendations(uid, 'top_books')
-                top_n = get_top_n_users_by_favourite_books(uid, self.trainset, self.algo, n)
+                top_n = get_top_n_users_by_favourite_books(uid, trainset, algo, n)
                 save_user_recommendations(top_n, uid, method='top_books')
             elif action == 'top_n_users_random_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clear_previous_user_recommendations(uid, 'random_books')
-                top_n = get_top_n_users_double_random(uid, self.trainset, self.algo, n)
+                top_n = get_top_n_users_double_random(uid, trainset, algo, n)
                 save_user_recommendations(top_n, uid, method='random_books')
             elif action == 'top_n_users_genre_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 genre = kwargs['genre']
                 clear_previous_user_recommendations(uid, 'genre_books ' + genre)
-                top_n = get_top_n_users_for_a_genre(uid, self.trainset, self.algo, genre, n)
+                top_n = get_top_n_users_for_a_genre(uid, trainset, algo, genre, n)
                 save_user_recommendations(top_n, uid, method='genre_books ' + genre)
             elif action == 'top_n_clubs_top_user_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clubs = list(Club.objects.all())
                 clear_previous_club_recommendations(uid, 'top_user_books')
-                top_n = get_top_n_clubs_using_top_items_for_a_user(uid, self.algo, self.trainset, clubs, n)
+                top_n = get_top_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, n)
                 save_club_recommendations(top_n, uid, method='top_user_books')
             elif action == 'top_n_clubs_random_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clubs = list(Club.objects.all())
                 clear_previous_club_recommendations(uid, 'random_books')
-                top_n = get_top_n_clubs_using_random_items(uid, self.algo, self.trainset, clubs, n)
+                top_n = get_top_n_clubs_using_random_items(uid, algo, trainset, clubs, n)
                 save_club_recommendations(top_n, uid, method='random_books')
             elif action == 'top_n_clubs_genre_books':
                 uid = kwargs['id']
@@ -212,14 +202,14 @@ class RecommenderAPI(APIView):
                 genre = kwargs['genre']
                 clear_previous_club_recommendations(uid, 'genre_books ' + genre)
                 clubs = list(Club.objects.all())
-                top_n = get_top_n_clubs_for_a_genre(uid, self.algo, self.trainset, clubs, genre, n)
+                top_n = get_top_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, n)
                 save_club_recommendations(top_n, uid, method='genre_books ' + genre)
             elif action == 'top_n_clubs_top_club_books':
                 uid = kwargs['id']
                 n = kwargs['n']
                 clubs = list(Club.objects.all())
                 clear_previous_club_recommendations(uid, 'top_club_books')
-                top_n = get_top_n_clubs_using_clubs_books(uid, self.algo, clubs, n)
+                top_n = get_top_n_clubs_using_clubs_books(uid, algo, clubs, n)
                 save_club_recommendations(top_n, uid, method='top_club_books')
             else:
                 return Response(data='You need to provide a correct action', status=status.HTTP_404_NOT_FOUND)
