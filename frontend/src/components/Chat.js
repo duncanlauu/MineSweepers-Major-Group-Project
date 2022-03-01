@@ -17,9 +17,7 @@ class Chat extends React.Component {
 				const user = response.data;
 				console.log(response.data)
 
-				// let username = user.username
 				this.currentUser = user.username
-				// console.log(username)
 				this.waitForSocketConnection(() => {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
           WebSocketInstance.fetchMessages(
@@ -38,7 +36,7 @@ class Chat extends React.Component {
     constructor(props) {
         super(props);
 
-				console.log(this.props.chatID)
+				console.log(this.props)
 				this.initialiseChat();
 	}
 
@@ -58,30 +56,21 @@ class Chat extends React.Component {
     }
 
     addMessage(message) {
+			if(!(JSON.stringify(message) === JSON.stringify(this.state.messages[this.state.messages.length - 1]))){ //fix duplicate messages when sending, horrible implementation
         this.setState({ messages: [...this.state.messages, message] });
+			}
     }
 
     setMessages(messages) {
         this.setState({ messages: messages.reverse()});
     }
 
-		getUser() {
-			axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
-					const user = response.data;
-					console.log(response.data)
-					// setUser(user);
-					return user;
-			}).catch(error => {
-					console.log("Error: ", JSON.stringify(error, null, 4));
-					throw error;
-			})
-		}
-
     messageChangeHandler = (event) =>  {
         this.setState({ message: event.target.value });
     }
 
     sendMessageHandler = (e) => {
+
         e.preventDefault();
         const messageObject = {
             from: this.currentUser, //broken
@@ -110,11 +99,8 @@ class Chat extends React.Component {
     }
 
     renderMessages = (messages) => {
-			// console.log("renderMessages")
-			// console.log(this.user.username)
-			const currentUser = "admin";
-        // const currentUser = this.props.username; correct
-        // return <div>Yo</div>
+			console.log("renderMessages")
+			console.log(messages)
         return messages.map((message, i, arr) => (
             <li
                 key={message.id}
@@ -150,7 +136,7 @@ class Chat extends React.Component {
             	WebSocketInstance.disconnect();
             	this.waitForSocketConnection(() => {
                 	WebSocketInstance.fetchMessages(
-                  	this.props.username,
+                  	this.currentUser,
                   	newProps.params.chatID
                 	);
               	});
@@ -197,15 +183,15 @@ class Chat extends React.Component {
     };
 }
 
-function withParams(Component) {
-  return props => <Component {...props} params={useParams()} />;
-}
-
-const mapStateToProps = state => {
-    return {
-        username: state.username
-    }
-}
+// function withParams(Component) {
+//   return props => <Component {...props} params={useParams()} />;
+// }
+//
+// const mapStateToProps = state => {
+//     return {
+//         username: state.username
+//     }
+// }
 
 export default Chat
 

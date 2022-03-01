@@ -10,6 +10,7 @@ export default function ChatWrapper() {
 
     let params = useParams()
 
+
     return (
       <div id="frame">
         <Sidepanel />
@@ -20,8 +21,3 @@ export default function ChatWrapper() {
       </div>
     );
 }
-
-// export default ChatWrapper;
-
-
-  // <Chat chatId={id} />

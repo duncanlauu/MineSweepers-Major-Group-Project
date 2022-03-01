@@ -46,6 +46,7 @@ class WebSocketService {
       this.callbacks[command](parsedData.messages);
     }
     if (command === 'new_message') {
+      // this.callbacks[command](parsedData.messages);
       this.callbacks[command](parsedData.message);
     }
   }
