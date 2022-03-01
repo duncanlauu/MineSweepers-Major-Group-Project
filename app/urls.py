@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.urls import path
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.static_views import HelloWorldView
@@ -10,6 +11,14 @@ from .views.chat_views import (
     ChatUpdateView,
     ChatDeleteView
 )
+=======
+from django.urls import path, include
+from .views.account_views import CreateUser
+from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.static_views import HelloWorldView
+from .views.authentication_views import BlacklistTokenView
+from django.contrib.auth import views as auth_views
+>>>>>>> develop
 
 app_name = 'app'
 
@@ -20,9 +29,14 @@ urlpatterns = [
     path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
     path('hello/', HelloWorldView.as_view(), name='hello_world'),
+<<<<<<< HEAD
     path('chat/', ChatListView.as_view()),
     path('chat/create/', ChatCreateView.as_view()),
     path('chat/<pk>', ChatDetailView.as_view()),
     path('chat/<pk>/update/', ChatUpdateView.as_view()),
     path('chat/goo<pk>/delete/', ChatDeleteView.as_view()),
+=======
+    # Reset User Password
+    path('auth/', include('djoser.urls')),
+>>>>>>> develop
 ]

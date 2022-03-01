@@ -15,6 +15,7 @@ def dummy(request):
     return render(request, 'dummy.html')
 
 class UserView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
