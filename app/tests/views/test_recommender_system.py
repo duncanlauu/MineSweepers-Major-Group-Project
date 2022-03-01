@@ -11,7 +11,7 @@ from app.models import Club, BookRecommendation, BookRecommendationForClub, Glob
 from app.recommender_system.books_recommender import get_top_n, get_top_n_for_genre, get_top_n_for_club, \
     get_top_n_for_club_for_genre, get_global_top_n, get_global_top_n_for_genre
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
-    get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model
+    get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, get_top_n_users_double_random, \
     get_top_n_users_for_a_genre, get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_using_random_items, \
     get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
@@ -76,6 +76,24 @@ class RecommenderAPITestCase(APITestCase):
         self._post_top_n_clubs_random_books_test()
         self._post_top_n_clubs_genre_books_test()
         self._post_top_n_clubs_top_club_books_test()
+        self._post_with_no_action_test()
+        self._post_retrain_test()
+        self._post_with_wrong_action_test()
+        self._get_top_n_test()
+        self._get_top_n_for_genre_test()
+        self._get_top_n_for_club_test()
+        self._get_top_n_for_club_for_genre_test()
+        self._get_top_n_global_test()
+        self._get_top_n_global_for_genre_test()
+        self._get_top_n_users_top_books_test()
+        self._get_top_n_users_random_books_test()
+        self._get_top_n_users_genre_books_test()
+        self._get_top_n_clubs_top_user_books_test()
+        self._get_top_n_clubs_random_books_test()
+        self._get_top_n_clubs_genre_books_test()
+        self._get_top_n_clubs_top_club_books_test()
+        self._get_with_no_action_test()
+        self._get_with_wrong_action_test()
 
     def _post_top_n_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
@@ -84,7 +102,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = BookRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_for_genre_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_for_genre', 'genre': self.genre}
@@ -93,7 +112,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_for_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
         num_of_recommendations_after = BookRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_for_club_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club'}
@@ -103,7 +123,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, self.n)
         num_of_recommendations_after = BookRecommendationForClub.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_for_club_for_genre_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': self.genre}
@@ -113,7 +134,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup, self.genre, self.n)
         num_of_recommendations_after = BookRecommendationForClub.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_global_test(self):
         args = {'n': self.n, 'action': 'top_n_global'}
@@ -122,7 +144,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, self.n)
         num_of_recommendations_after = GlobalBookRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_global_for_genre_test(self):
         args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': self.genre}
@@ -131,7 +154,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, self.n)
         num_of_recommendations_after = GlobalBookRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_users_top_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_top_books'}
@@ -140,7 +164,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_users_by_favourite_books(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_users_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_random_books'}
@@ -149,7 +174,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_users_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_genre_books', 'genre': self.genre}
@@ -158,7 +184,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.post(url)
         top_n = get_top_n_users_for_a_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_clubs_top_user_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_user_books'}
@@ -168,7 +195,8 @@ class RecommenderAPITestCase(APITestCase):
         clubs = list(Club.objects.all())
         top_n = get_top_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, self.n)
         num_of_recommendations_after = ClubRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_clubs_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_random_books'}
@@ -178,7 +206,8 @@ class RecommenderAPITestCase(APITestCase):
         clubs = list(Club.objects.all())
         top_n = get_top_n_clubs_using_random_items(self.uid, self.algo, self.trainset, clubs, self.n)
         num_of_recommendations_after = ClubRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_clubs_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': self.genre}
@@ -188,7 +217,8 @@ class RecommenderAPITestCase(APITestCase):
         clubs = list(Club.objects.all())
         top_n = get_top_n_clubs_for_a_genre(self.uid, self.algo, self.trainset, clubs, self.genre, self.n)
         num_of_recommendations_after = ClubRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_top_n_clubs_top_club_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_club_books'}
@@ -198,78 +228,311 @@ class RecommenderAPITestCase(APITestCase):
         clubs = list(Club.objects.all())
         top_n = get_top_n_clubs_using_clubs_books(self.uid, self.algo, clubs, self.n)
         num_of_recommendations_after = ClubRecommendation.objects.count()
-        self._assert_correct(num_of_recommendations_after, num_of_recommendations_before, response, top_n)
-
-    # def test_get_top_n(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_for_genre(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_for_genre', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_for_club(self):
-    #     args = {'n': self.n, 'club': self.club.id, 'action': 'top_n_for_club'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_for_club_for_genre(self):
-    #     args = {'n': self.n, 'club': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_global(self):
-    #     args = {'n': self.n, 'action': 'top_n_global'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_global_for_genre(self):
-    #     args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_users_top_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_top_books'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_users_random_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_random_books'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_users_genre_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_users_genre_books', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_clubs_top_user_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_user_books'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_clubs_random_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_random_books'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_clubs_genre_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': 'fiction'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_top_n_clubs_top_club_books(self):
-    #     args = {'n': self.n, 'uid': self.uid, 'action': 'top_n_clubs_top_club_books'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_with_wrong_action(self):
-    #     args = {'action': 'wrong_action'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_post_with_wrong_action(self):
-    #     args = {'action': 'wrong_action'}
-    #     url = reverse('recommender', kwargs=args)
-
-    # def test_get_with_no_action(self):
-    #     url = reverse('recommender', kwargs={})
-
-    # def test_post_with_no_action(self):
-    #     url = reverse('recommender', kwargs={})
-
-    # def test_post_retrain(self):
-    #     url = reverse('recommender', kwargs={'action': 'retrain'})
-
-    def _assert_correct(self, num_of_recommendations_after, num_of_recommendations_before, response, top_n):
+        self._assert_correct(response, top_n)
         self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
+
+    def _post_with_no_action_test(self):
+        url = reverse('recommender', kwargs={})
+        response = self.client.post(url)
+        self.assertEqual(response.data, 'You need to provide an action')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _post_retrain_test(self):
+        url = reverse('recommender_action', kwargs={'action': 'retrain'})
+        response = self.client.post(url)
+        self.assertEqual(response.data, 'Model has been trained')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.pred, self.algo = load_trained_model(self.dump_file_path)
+
+    def _post_with_wrong_action_test(self):
+        args = {'action': 'wrong_action'}
+        url = reverse('recommender_action', kwargs=args)
+        response = self.client.post(url)
+        self.assertEqual(response.data, 'You need to provide a correct action')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _post_with_wrong_parameters_test(self):
+        args = {'action': 'top_n_users_top_books'}
+        url = reverse('recommender_action', kwargs=args)
+        response = self.client.post(url)
+        self.assertEqual(response.data, 'You need to provide correct parameters')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _get_top_n_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = BookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n(self.uid, self.trainset, self.algo, self.n)
+        num_of_recommendations_after = BookRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['rating'], top_n[i][1])
+
+    def _get_top_n_for_genre_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_for_genre', 'genre': 'fiction'}
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = BookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
+        num_of_recommendations_after = BookRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['rating'], top_n[i][1])
+
+    def _get_top_n_for_club_test(self):
+        args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club'}
+        pred_lookup = generate_pred_set(self.pred)
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = BookRecommendationForClub.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, self.n)
+        num_of_recommendations_after = BookRecommendationForClub.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        recommendations = list(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['club'], self.club.id)
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['rating'], top_n[i][1])
+
+    def _get_top_n_for_club_for_genre_test(self):
+        args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': self.genre}
+        pred_lookup = generate_pred_set(self.pred)
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = BookRecommendationForClub.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup, self.genre, self.n)
+        num_of_recommendations_after = BookRecommendationForClub.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['club'], self.club.id)
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['rating'], top_n[i][1])
+
+    def _get_top_n_global_test(self):
+        args = {'n': self.n, 'action': 'top_n_global'}
+        url = reverse('recommender_top_n_global', kwargs=args)
+        num_of_recommendations_before = GlobalBookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, self.n)
+        num_of_recommendations_after = GlobalBookRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
+            self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
+            self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
+
+    def _get_top_n_global_for_genre_test(self):
+        args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': self.genre}
+        url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+        num_of_recommendations_before = GlobalBookRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, self.n)
+        num_of_recommendations_after = GlobalBookRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
+            self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
+            self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
+            self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
+
+    def _get_top_n_users_top_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_top_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = UserRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_users_by_favourite_books(self.uid, self.trainset, self.algo, self.n)
+        num_of_recommendations_after = UserRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['recommended_user'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_users_random_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_random_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = UserRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
+        num_of_recommendations_after = UserRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['recommended_user'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_users_genre_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_genre_books', 'genre': self.genre}
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = UserRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n = get_top_n_users_for_a_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
+        num_of_recommendations_after = UserRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['recommended_user'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_clubs_top_user_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_user_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_clubs_random_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_random_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_random_items(self.uid, self.algo, self.trainset, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_clubs_genre_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': self.genre}
+        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_for_a_genre(self.uid, self.algo, self.trainset, clubs, self.genre, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_top_n_clubs_top_club_books_test(self):
+        args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_club_books'}
+        url = reverse('recommender_top_n', kwargs=args)
+        num_of_recommendations_before = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        clubs = list(Club.objects.all())
+        top_n = get_top_n_clubs_using_clubs_books(self.uid, self.algo, clubs, self.n)
+        num_of_recommendations_after = ClubRecommendation.objects.count()
+        self._assert_correct(response, top_n)
+        # After the previous post clear n items and insert new n items so the number of elements doesn't change
+        self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, 0)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        recommendations = list(response.data)
+        self.assertEqual(len(top_n), len(recommendations))
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['user'], self.uid)
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
+            self.assertEqual(recommendations[i]['diff'], top_n[i][1])
+
+    def _get_with_wrong_action_test(self):
+        args = {'action': 'wrong_action'}
+        url = reverse('recommender_action', kwargs=args)
+        response = self.client.get(url)
+        self.assertEqual(response.data, 'You need to provide a correct action')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _get_with_no_action_test(self):
+        url = reverse('recommender', kwargs={})
+        response = self.client.get(url)
+        self.assertEqual(response.data, 'You need to provide an action')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _get_with_wrong_parameters_test(self):
+        args = {'action': 'top_n_users_top_books'}
+        url = reverse('recommender_action', kwargs=args)
+        response = self.client.get(url)
+        self.assertEqual(response.data, 'You need to provide correct parameters')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def _assert_correct(self, response, top_n):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, top_n)

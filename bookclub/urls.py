@@ -74,6 +74,7 @@ urlpatterns = [
 
     # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),
+    path('recommender/<str:action>', RecommenderAPI.as_view(), name='recommender_action'),
     path('recommender/<int:n>/<int:id>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n'),
     path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>', RecommenderAPI.as_view(),
          name='recommender_top_n_for_genre'),

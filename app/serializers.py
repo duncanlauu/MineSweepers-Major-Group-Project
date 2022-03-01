@@ -1,6 +1,7 @@
 from unittest import mock
 from rest_framework import serializers
-from .models import User, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation
+from .models import User, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
+    BookRecommendationForClub
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,6 +28,17 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class BookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRecommendation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+
+class BookRecommendationForClubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookRecommendationForClub
         fields = '__all__'
 
     def create(self, validated_data):
