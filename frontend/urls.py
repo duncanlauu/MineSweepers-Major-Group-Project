@@ -11,7 +11,7 @@ urlpatterns = [
     path('club_profile/', index, name="clubprofile"),  # /<int:club_id>
     path('error/', dino, name="error"),
     path('chat/<chatID>', index, name="chat"),
-    path('chatv2/<chatID>', index, name="chatv2")
+    path('chatv2/<chatID>', index, name="chatv2"),
 
     # path('home/', index, name="home"),
     # path('dino.html', dino),
@@ -21,5 +21,5 @@ urlpatterns = [
     # path('club_profile/', index, name="clubprofile"),  # /<int:club_id>
     # path('hello/', index, name="hello"),
     # path('error/', dino, name="error"),
-    # re_path(r'^.*/$', index)  # for all other urls
+    re_path(r'^.*/$', index)  # for all other urls
 ]

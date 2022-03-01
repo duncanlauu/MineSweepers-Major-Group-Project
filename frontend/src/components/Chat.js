@@ -4,29 +4,42 @@ import { connect } from 'react-redux';
 import WebSocketInstance from '../websocket';
 import Hoc from '../hoc/hoc';
 import { Link, useParams } from 'react-router-dom';
+import axiosInstance from '../axios'
 
 class Chat extends React.Component {
 
 	state = { message: '' }
 
+	currentUser = null;
+
 	initialiseChat() {
-		let username = "admin"
-        this.waitForSocketConnection(() => {
+		axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
+				const user = response.data;
+				console.log(response.data)
+
+				// let username = user.username
+				this.currentUser = user.username
+				// console.log(username)
+				this.waitForSocketConnection(() => {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
           WebSocketInstance.fetchMessages(
-            username,
+            this.currentUser,
             this.props.chatID
           );
         });
 		console.log("initialise Chat: " + this.props.chatID)
     WebSocketInstance.connect(this.props.chatID);
+		}).catch(error => {
+				console.log("Error: ", JSON.stringify(error, null, 4));
+				throw error;
+		})
 	}
 
     constructor(props) {
         super(props);
 
 				console.log(this.props.chatID)
-		this.initialiseChat();
+				this.initialiseChat();
 	}
 
     waitForSocketConnection(callback) {
@@ -52,6 +65,18 @@ class Chat extends React.Component {
         this.setState({ messages: messages.reverse()});
     }
 
+		getUser() {
+			axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
+					const user = response.data;
+					console.log(response.data)
+					// setUser(user);
+					return user;
+			}).catch(error => {
+					console.log("Error: ", JSON.stringify(error, null, 4));
+					throw error;
+			})
+		}
+
     messageChangeHandler = (event) =>  {
         this.setState({ message: event.target.value });
     }
@@ -59,7 +84,7 @@ class Chat extends React.Component {
     sendMessageHandler = (e) => {
         e.preventDefault();
         const messageObject = {
-            from: "admin", //broken
+            from: this.currentUser, //broken
             content: this.state.message,
             chatId: this.props.chatID,
         };
@@ -85,6 +110,8 @@ class Chat extends React.Component {
     }
 
     renderMessages = (messages) => {
+			// console.log("renderMessages")
+			// console.log(this.user.username)
 			const currentUser = "admin";
         // const currentUser = this.props.username; correct
         // return <div>Yo</div>
@@ -92,7 +119,7 @@ class Chat extends React.Component {
             <li
                 key={message.id}
                 style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
-                className={message.author === currentUser ? 'sent' : 'replies'}>
+                className={message.author === this.currentUser ? 'sent' : 'replies'}>
                 <img src="http://emilcarlsson.se/assets/mikeross.png" />
                 <p>{message.content}
                     <br />

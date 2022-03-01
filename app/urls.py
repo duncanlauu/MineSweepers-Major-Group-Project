@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.static_views import HelloWorldView
-from .views.account_views import CreateUser, current_user
+from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
 from .views.chat_views import (
     ChatListView,
