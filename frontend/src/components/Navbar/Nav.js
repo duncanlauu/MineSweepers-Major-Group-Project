@@ -55,7 +55,7 @@ class Nav extends React.Component {
                                 fontWeight:"500",
                                 alignItems:"center",
                                 justifyContent:"space-around",
-                                marginRight:"1rem"
+                                marginRight:"1rem",
                             }}
                             ><AiOutlinePlus style={{ backgroundColor:"#4F30CC", borderRadius:"2px", height:"2rem", width:"2rem", marginRight: "1rem" }}/>New Club</Button>
                         <ChatBubbleOutline fontSize='large' />

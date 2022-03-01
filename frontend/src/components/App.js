@@ -55,6 +55,8 @@ import BaseRouter from '../routes';
 import Sidepanel from './Sidepanel';
 import Profile from './Profile';
 import HomePage from "./HomePage/HomePage";
+import Notifications from "./Notifications/Notifications";
+import UserSettings from "./UserSettings/UserSettings";
 
 
 class App extends React.Component {
@@ -74,6 +76,8 @@ class App extends React.Component {
               <Route path = '/sign_up/' element={<SignUp />}></Route>
               <Route path = '/dummy2/' element={<Dummy />}></Route>
               <Route path = '/home/' element={<HomePage />}></Route>
+              <Route path = '/notifications/' element={<Notifications />}></Route>
+              <Route path = '/settings/' element={<UserSettings />}></Route>
             </Routes>
           </BrowserRouter>
         );
