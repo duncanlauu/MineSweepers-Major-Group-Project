@@ -77,7 +77,10 @@ class PostView(APIView):
                     post.upvote_post()
                 elif request.data['action'] == 'downvote':
                     post.downvote_post()
-                elif request.data['action'] == 'comment'
+                elif request.data['action'] == 'comment':
+                    post.
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, post_id):
+        pass

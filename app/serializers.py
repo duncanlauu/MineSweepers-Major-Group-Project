@@ -1,6 +1,6 @@
 from unittest import mock
 from rest_framework import serializers
-from .models import Post, User
+from .models import Post, User, Comment, Reply
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -48,5 +48,5 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Reply
         fields = '__all__'
