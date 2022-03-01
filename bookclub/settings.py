@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework.authtoken',
     'frontend',
+    'djoser',
     # for blacklisting used authentication tokens
     'rest_framework_simplejwt.token_blacklist',
 ]
@@ -62,7 +63,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -204,6 +205,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     # Give new refresh token when new access token is generated
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=12),
+    # Dont give new refresh token when new access token is generated
     'ROTATE_REFRESH_TOKENS': True,
     # Blacklist the keys after they have been utlizied.
     'BLACKLIST_AFTER_ROTATION': True,
@@ -234,3 +237,24 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+DOMAIN = '127.0.0.1:8000'
+SITE_NAME = 'bookgle'
+
+DJOSER = {
+    "USER_ID_FIELD": "username",
+    "LOGIN_FIELD": "email",
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password_reset_confirm/{uid}/{token}", # the reset link
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    # 'SERIALIZERS': {
+    #     'token_create': 'apps.accounts.serializers.CustomTokenCreateSerializer',
+    # },
+    'EMAIL': {
+        'password_reset': 'app.views.email.PasswordResetEmail',
+    }
+}
+
+CSRF_COOKIE_SECURE = True

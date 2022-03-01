@@ -37,16 +37,6 @@ urlpatterns = [
     path('dummy/', views.dummy, name='dummy'),
     # path('', views.dummy, name='dummy'),
 
-    # Reset User Password
-    path("password_reset/", auth_views.PasswordResetView.as_view(template_name="password_reset_templates/password_reset.html",
-         html_email_template_name='password_reset_templates/password_reset_html_email.html'), name="password_reset"),
-    path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(
-        template_name="password_reset_templates/password_reset_done.html"), name="password_reset_done"),
-    path("password_reset_confirm/<uidb64>/<token>", auth_views.PasswordResetConfirmView.as_view(
-        template_name="password_reset_templates/password_reset_confirm.html"), name="password_reset_confirm"),
-    path("password_reset_complete/", auth_views.PasswordResetCompleteView.as_view(
-        template_name="password_reset_templates/password_reset_complete.html"), name="password_reset_complete"),
-
     # Clubs URL
     path('create_club/', views.create_club, name='create_club'),
     path('club_list/', views.club_list, name='club_list'),
