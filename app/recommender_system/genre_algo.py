@@ -5,6 +5,34 @@ Note that genres are treated as case-insensitive
 
 from app.models import Book
 from django.db.models import F, Func, Count
+import requests
+
+
+def _simple_get_google_api_genre(isbn):
+    """Get genre of book from ISBN using the Google Books API"""
+    r = requests.get(
+        f'https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&fields=items/volumeInfo/categories')
+    if r.status_code != requests.codes.ok:
+        return "ERROR"
+    if len(r.json()) == 0:
+        return "N/A"
+    # If multiple books are returned, pick first one
+    categories_ls = r.json()['items'][0]['volumeInfo']['categories']
+    # If multiple categories are returned, pick first one
+    return categories_ls[0]
+
+
+def get_google_api_genre(isbn, timeout=50):
+    """
+    Get genre of book from ISBN using the Google Books API
+    There is a limit to the number of requests per minute to the Google Books API
+    This function will keep trying to request until there is a successful response or reach timeout
+    """
+    for i in range(timeout):
+        r = _simple_get_google_api_genre(isbn)
+        if r != 'ERROR':
+            return r
+    return 'TIMEOUT'
 
 
 def get_genre(isbn):
@@ -58,32 +86,39 @@ def _is_subgenre_of(subgenre, genre):
         return False
 
 
-def _get_top_n_merged_genres_recurse(n, genres, merged_count):
-    """Recursive function helper for get_top_n_merged_genres"""
-    for i in range(len(genres)):
-        for j in range(i + 1, len(genres)):
+def _merge_genres(genres):
+    """Merge similar genres in a given list of genres"""
+    i = 0
+    while i < len(genres):
+        j = i + 1
+        while j < len(genres):
             if _is_subgenre_of(genres[j], genres[i]) and genres[i] != genres[j]:
                 genres.pop(j)
-                genres.append(_get_top_n_raw_genres(n+1 + merged_count)[-1])
-                merged_count += 1
-                return True, genres, merged_count
-            if _is_subgenre_of(genres[i], genres[j]) and genres[i] != genres[j]:
+                j -= 1
+            elif _is_subgenre_of(genres[i], genres[j]) and genres[i] != genres[j]:
                 genres.pop(i)
-                genres.append(_get_top_n_raw_genres(n+1 + merged_count)[-1])
-                merged_count += 1
-                return True, genres, merged_count
-    return False, genres, merged_count
+                i -= 1
+                break
+            j += 1
+        i += 1
 
 
-def get_top_n_merged_genres(n=25):
+def get_top_n_merged_genres(n=25, safety_offset=2):
     """Get a list of the top n genres after merging similar genres"""
-    merged_count = 0
-    is_updated = True
-    genres = _get_top_n_raw_genres(n)
-    while is_updated:
-        is_updated, genres, merged_count = _get_top_n_merged_genres_recurse(
-            n, genres, merged_count)
-    return genres
+    genres = _get_top_n_raw_genres(round(n * safety_offset))
+    genres_processed_count = len(genres)
+    need_more_genres = True
+    while need_more_genres:
+        need_more_genres = False
+        _merge_genres(genres)
+        if len(genres) < n:
+            need_more_genres = True
+            more_genres_count = max(
+                round(n * safety_offset) - n, n - len(genres))
+            genres += _get_top_n_raw_genres(genres_processed_count + more_genres_count)[
+                genres_processed_count:]
+            genres_processed_count += more_genres_count
+    return genres[:n]
 
 
 def get_top_n_merged_genres_with_books(n=25):
