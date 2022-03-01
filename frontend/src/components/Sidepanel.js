@@ -29,27 +29,23 @@ class Sidepanel extends React.Component {
     }
 
     getUserChats = (token, username) => {
-// very bad needs to be changed
-      axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
-  				const user = response.data;
-  				console.log(response.data)
+        // very bad needs to be changed
+        axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
+            const user = response.data;
+            console.log(response.data)
 
-          axios.defaults.headers = {
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`
-          };
-          axios.get(`http://127.0.0.1:8000/api/chat/?username=${user.username}`) //broken
-          .then(res => this.setState({ chats: res.data }));
+            axios.defaults.headers = {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`
+            };
+            axios.get(`http://127.0.0.1:8000/api/chat/?username=${user.username}`) //broken
+                .then(res => this.setState({ chats: res.data }));
 
 
-  		}).catch(error => {
-  				console.log("Error: ", JSON.stringify(error, null, 4));
-  				throw error;
-  		})
-    }
-
-    changeForm = () => {
-        this.setState({ loginForm: !this.state.loginForm });
+        }).catch(error => {
+            console.log("Error: ", JSON.stringify(error, null, 4));
+            throw error;
+        })
     }
 
 
@@ -66,34 +62,34 @@ class Sidepanel extends React.Component {
         })
         return (
             <div id="sidepanel">
-            <div id="profile">
-                <div className="wrap">
-                <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="" />
-                <p>Mike Ross</p>
-                <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                <div id="status-options">
+                <div id="profile">
+                    <div className="wrap">
+                        <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="" />
+                        <p>Mike Ross</p>
+                        <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                        <div id="status-options">
+                            <ul>
+                                <li id="status-online" className="active"><span className="status-circle"></span> <p>Online</p></li>
+                                <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
+                                <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
+                                <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="search">
+                    <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
+                    <input type="text" placeholder="Search contacts..." />
+                </div>
+                <div id="contacts">
                     <ul>
-                    <li id="status-online" className="active"><span className="status-circle"></span> <p>Online</p></li>
-                    <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
-                    <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
-                    <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
+                        {activeChats}
                     </ul>
                 </div>
+                <div id="bottom-bar">
+                    <button id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+                    <button id="settings"><i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
                 </div>
-            </div>
-            <div id="search">
-                <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
-            </div>
-            <div id="contacts">
-                <ul>
-                    {activeChats}
-                </ul>
-            </div>
-            <div id="bottom-bar">
-                <button id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                <button id="settings"><i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-            </div>
             </div>
         );
     };
