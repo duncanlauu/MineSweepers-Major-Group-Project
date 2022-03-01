@@ -1,6 +1,7 @@
 import datetime
 from pickle import TRUE
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
@@ -72,7 +73,7 @@ class User(AbstractUser):
 
     def send_friend_request(self, other_user):
         request_exists = FriendRequest.objects.filter(
-            sender=self, receiver=other_user).exists()
+            Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).exists()
         is_friend = other_user in self.friends.all()
         if not request_exists and not is_friend:
             FriendRequest.objects.create(sender=self, receiver=other_user)
@@ -83,8 +84,7 @@ class User(AbstractUser):
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
-            FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
-            FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
+            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
         
     def reject_friend_request(self, other_user):
         FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
