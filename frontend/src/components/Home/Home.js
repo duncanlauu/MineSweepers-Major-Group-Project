@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap';
 import useGetUser from '../../helpers';
+import React from 'react'
 
 export default function Home() {
 
