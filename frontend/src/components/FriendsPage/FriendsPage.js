@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import { Container, Row, Col, Navbar, NavbarBrand, Button } from 'reactstrap'
 import { FriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
 import axiosInstance from '../../axios'
+import { useNavigate } from "react-router";
 import FriendList from "../FriendList/FriendList";
 import FriendRequests from "./FriendRequests";
 
@@ -11,23 +13,13 @@ import FriendRequests from "./FriendRequests";
 
 export default function FriendsPage() {
 
+  const navigate = useNavigate(); // for test purpose if axios works
 
-  const [myFriendRequests, getFriendRequests] = useState("");
+  // const [myFriendRequests, setFriendRequests] = useState("");
 
-  useEffect(() => {
-    getAllFriendRequests();
-  }, []);
-
-
-  const getAllFriendRequests = () => {
-    axiosInstance
-      .get(`friend_requests/`)
-      .then((res) => {
-        const allFriendRequests = res.data;
-        getFriendRequests(allFriendRequests)
-      })
-      .catch(error => console.error(error));
-  }
+  // useEffect(() => {
+  //   getAllFriendRequests();
+  // }, []);
 
   return (
     <div id="ParentDiv">
@@ -83,14 +75,14 @@ export default function FriendsPage() {
                   Posts
                 </Button> */}
 
-            <Button onClick={getAllFriendRequests} style={{ marginLeft: "1rem" }}>
+            {/* <Button onClick={getAllFriendRequests} style={{ marginLeft: "1rem" }}>
               List F.Requests
-            </Button>
+            </Button> */}
 
 
             <FriendsRequestContainer>
               <p> Here are your friend requests</p>
-              <FriendRequests myFriendRequests={myFriendRequests} />
+              <FriendRequests />
             </FriendsRequestContainer>
 
 
