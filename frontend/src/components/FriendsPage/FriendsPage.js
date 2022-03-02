@@ -1,48 +1,62 @@
 import React, {Component, useState, useEffect} from "react";
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Navbar, NavbarBrand, Button} from 'reactstrap'
-import { FriendsListContainer, UserDetailsContainer } from "./FriendsPageElements";
+import { FriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
 import FriendList from "../FriendList/FriendList";
+import FriendRequests from "./FriendRequests";
+
 
 
 export default function FriendsPage() {
   
   const navigate = useNavigate(); // for test purpose if axios works
     
-  const [myFriends, getFriends] = useState('0');
+  const [myFriends, getFriends] = useState("");
+  const [myFriendRequests, getFriendRequests] = useState("");
 
-  // useEffect(() => {
-  //   getAllFriends();
-  // }, []);
-
-  // const handleClick = (e) => {
-
-  //   axiosInstance
-  //     .get(`friends/`)
-  //     .then((res) => {
-  //       navigate("/log_in/") 
-  //       const output = res.data.created_at;
-  //       getFriends(output)
-  //     })
-  //     .catch(error => console.error(error));
-  // }
+  useEffect(() => {
+    getAllFriends();
+    getAllFriendRequests();
+  }, []);
 
 
   const getAllFriends = () => {
-
     axiosInstance
       .get(`friends/`)
       .then((res) => {
-        navigate("/log_in/") // for test purpose - does api get request fail?
-        const allFriends = res.data;
+        //navigate("/log_in/") // for test purpose - does api get request fail?
+        const allFriends = res.data.friends;
         getFriends(allFriends)
       })
       .catch(error => console.error(error));
   }
+
+  // const deleteFriend = () => {
+  //   axiosInstance
+  //     .delete(`friends/${id}`)
+  //     .then((res) => {
+  //       //navigate("/log_in/") // for test purpose - does api get request fail?
+  //       console.log(res)
+  //     })
+  //     .catch(error => console.error(error));
+  // }
+
+  const getAllFriendRequests = () => {
+    axiosInstance
+      .get(`friend_requests/`)
+      .then((res) => {
+        //navigate("/log_in/") // for test purpose - does api get request fail?
+        const allFriendRequests = res.data;
+        getFriendRequests(allFriendRequests)
+      })
+      .catch(error => console.error(error));
+  }
+
+  
 
   
     return (
@@ -83,7 +97,7 @@ export default function FriendsPage() {
             <Col>
 
                 <h1> Friends Page </h1>
-                <p> Tabs instead of buttons. Will be fixed </p>
+                {/* <p> Tabs instead of buttons. Will be fixed </p>
 
                 <Button>
                   Profile
@@ -94,18 +108,29 @@ export default function FriendsPage() {
                 <Button onClick={getAllFriends} style={{marginLeft: "1rem"}}>
                   List friends
                 </Button>
+
                 <Button style={{marginLeft: "1rem"}}>
                   Posts
-                </Button>
-                
-                <p> {myFriends.username} </p>
-                
+                </Button> */}
 
-                <FriendList myFriends={myFriends}/>
+                <Button onClick={getAllFriendRequests} style={{marginLeft: "1rem"}}>
+                  List F.Requests
+                </Button>
+
+                
+               <FriendsRequestContainer>
+                <p> Here are your friend requests</p>
+                <FriendRequests myFriendRequests={myFriendRequests}/>
+               </FriendsRequestContainer>
+                
 
                 <FriendsListContainer>
-                  <p> Here are all your friends listed.</p>
+                  <FriendList myFriends={myFriends}/>
                 </FriendsListContainer>
+
+                
+
+                
 
             </Col>
             <Col/>

@@ -3,7 +3,15 @@ import styled from "styled-components";
 
 export const FriendsListContainer = styled.div`
 background-color: #FFF;
-height: 34rem;
+height: 54rem;
+width: 40rem;
+border-radius: 10px;
+margin-top: 1rem;
+`
+
+export const FriendsRequestContainer = styled.div`
+background-color: #FFF;
+height: 10rem;
 width: 40rem;
 border-radius: 10px;
 margin-top: 1rem;
