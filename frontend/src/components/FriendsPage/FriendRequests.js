@@ -1,7 +1,7 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react"
 import { Row, Col, Button } from "reactstrap"
 import axiosInstance from '../../axios'
-
 
 export default function FriendRequests(props) {
     console.log(props)
@@ -21,21 +21,62 @@ export default function FriendRequests(props) {
             .catch(error => console.error(error));
     }
 
-    const displayFriendRequests = (props) => {
+    const rejectFriendRequest = (sender, e) => {
+        axiosInstance
+            .delete("friend_requests/", {
+                data: { 
+                    other_user_id : sender, 
+                    action : "reject"
+                }
+            })
+    }
+
+    const acceptFriendRequest = (sender, e) => {
+        axiosInstance
+            .delete("friend_requests/", {
+                data: { 
+                    other_user_id : sender, 
+                    action : "accept"
+                }
+            })
+    }
+
+    // not used at this point.
+    // const cancelFriendRequest = (sender, e) => {
+    //     axiosInstance
+    //         .delete("friend_requests/", {
+    //             data: { 
+    //                 other_user_id : sender,  
+    //                 action : "cancel"
+    //             }
+    //         })
+    // }
+
+    
+    const displayFriendRequests = (e) => {
         if (myFriendRequests.length > 0) {
             return (
                 myFriendRequests.map((friendRequest, index) => {
                     console.log(friendRequest);
                     return (
-                        <div className="friendRequest" key={friendRequest.id}>
+                        <div className="friendRequest" key={friendRequest.sender}>
                             <Row>
                                 <Col>
-                                    <p> test </p>
+                                    <h3 className="friend_id"> {friendRequest.sender} </h3>
                                 </Col>
                                 <Col>
-                                    <Button>
-                                        <p> test </p>
-                                    </Button>
+                                    <Row>
+                                        <Col>
+                                            <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}>
+                                                <p> Accept </p>
+                                            </Button>                                        
+                                        </Col>
+                                        <Col>
+                                            <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}>
+                                                <p> Reject </p>
+                                            </Button>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </div>
