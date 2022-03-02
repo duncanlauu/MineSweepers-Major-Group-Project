@@ -1,11 +1,9 @@
 import React, { Component, useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
 import { Container, Row, Col, Navbar, NavbarBrand, Button } from 'reactstrap'
 import { FriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
 import axiosInstance from '../../axios'
-import { useNavigate } from "react-router";
 import FriendList from "../FriendList/FriendList";
 import FriendRequests from "./FriendRequests";
 
@@ -13,51 +11,23 @@ import FriendRequests from "./FriendRequests";
 
 export default function FriendsPage() {
 
-  const navigate = useNavigate(); // for test purpose if axios works
 
-  const [myFriends, getFriends] = useState("");
   const [myFriendRequests, getFriendRequests] = useState("");
 
   useEffect(() => {
-    getAllFriends();
     getAllFriendRequests();
   }, []);
 
-
-  const getAllFriends = () => {
-    axiosInstance
-      .get(`friends/`)
-      .then((res) => {
-        //navigate("/log_in/") // for test purpose - does api get request fail?
-        const allFriends = res.data.friends;
-        getFriends(allFriends)
-      })
-      .catch(error => console.error(error));
-  }
-
-  // const deleteFriend = () => {
-  //   axiosInstance
-  //     .delete(`friends/${id}`)
-  //     .then((res) => {
-  //       //navigate("/log_in/") // for test purpose - does api get request fail?
-  //       console.log(res)
-  //     })
-  //     .catch(error => console.error(error));
-  // }
 
   const getAllFriendRequests = () => {
     axiosInstance
       .get(`friend_requests/`)
       .then((res) => {
-        //navigate("/log_in/") // for test purpose - does api get request fail?
         const allFriendRequests = res.data;
         getFriendRequests(allFriendRequests)
       })
       .catch(error => console.error(error));
   }
-
-
-
 
   return (
     <div id="ParentDiv">
@@ -125,7 +95,7 @@ export default function FriendsPage() {
 
 
             <FriendsListContainer>
-              <FriendList myFriends={myFriends} />
+              <FriendList />
             </FriendsListContainer>
           </Col>
           <Col />

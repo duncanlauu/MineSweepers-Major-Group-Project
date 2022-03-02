@@ -1,42 +1,55 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Row, Col, Button } from "reactstrap"
 
 import axiosInstance from '../../axios'
 
 export default function FriendList(props) {
 
-    // console.log(props)
-    // return(<></>)
+    const [myFriends, setFriends] = useState("")
 
+    useEffect(() => {
+        getAllFriends();
+    }, []);
 
-    const deleteFriend = (id) => {
+    const getAllFriends = () => {
+        axiosInstance
+            .get(`friends/`)
+            .then((res) => {
+                const allFriends = res.data.friends;
+                setFriends(allFriends)
+            })
+            .catch(error => console.error(error));
+    }
+
+    const deleteFriend = (id, e) => {
         axiosInstance
             .delete(`friend/${id}`)
             .then((res) => {
-                //navigate("/log_in/") // for test purpose - does api get request fail?
                 console.log(res)
+                removeFromPage(e) // remove friend with id from myFriends state
             })
             .catch(error => console.error(error));
-        displayFriends()
     }
 
+    const removeFromPage = (e) => {
+        const id = parseInt(e.target.getAttribute("name"))
+        setFriends(myFriends.filter(item => item.id !== id));
+    }
 
-    const displayFriends = (props) => {
-        const { menu, myFriends } = props;
-
+    const displayFriends = (e) => {
         if (myFriends.length > 0) {
             return (
                 myFriends.map((friend, index) => {
                     console.log(friend);
                     return (
-                        <div className="friend" key={friend.id}>
+                        <div className="friend" key={friend.id} >
                             <Row>
                                 <Col>
                                     <h3 className="friend_username"> {friend.username} </h3>
                                     <p className="friend_email"> {friend.email} </p>
                                 </Col>
                                 <Col>
-                                    <Button onClick={(e) => deleteFriend(friend.id)}>
+                                    <Button name={friend.id} onClick={(e) => deleteFriend(friend.id, e)}>
                                         {friend.id}
                                     </Button>
                                 </Col>
@@ -50,6 +63,7 @@ export default function FriendList(props) {
 
         }
     }
+
     return (
         <>
             {displayFriends(props)}
