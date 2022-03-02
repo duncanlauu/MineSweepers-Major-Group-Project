@@ -74,15 +74,25 @@ class PostModelTestCase(TestCase):
         comment_count_after = self.post.comment_set.count()
         self.assertEqual(comment_count_before + 1, comment_count_after)
 
-    def test_add_image_link(self):
+    def test_modify_image_link(self):
         image_link = "abc"
-        self.post.add_image_link(image_link)
+        self.post.modify_image_link(image_link)
         self.assertEqual(self.post.image_link, image_link)
 
-    def test_add_book_link(self):
+    def test_modify_book_link(self):
         book_link = "abc"
-        self.post.add_book_link(book_link)
+        self.post.modify_book_link(book_link)
         self.assertEqual(self.post.book_link, book_link)
+
+    def test_modify_title(self):
+        title = "abc"
+        self.post.modify_title(title)
+        self.assertEqual(self.post.title, title)
+
+    def test_modify_content(self):
+        content = "abc"
+        self.post.modify_content(content)
+        self.assertEqual(self.post.content, content)
 
     def _assert_post_is_valid(self):
         try:

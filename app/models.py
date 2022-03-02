@@ -129,16 +129,16 @@ class Post(models.Model):
     def add_comment(self, comment):
         self.comment_set.add(comment)
 
-    def modify_image_link(self, link):  # TODO: test
+    def modify_image_link(self, link):
         self.image_link = link
 
-    def modify_book_link(self, link):  # TODO: test
+    def modify_book_link(self, link):
         self.book_link = link
 
-    def modify_content(self, new_content):  # TODO: test
-        self.content = new_content  
+    def modify_content(self, new_content):
+        self.content = new_content
     
-    def modify_title(self, new_title):  # TODO: test
+    def modify_title(self, new_title):
         self.title = new_title
 
 
