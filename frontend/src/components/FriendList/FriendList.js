@@ -1,9 +1,9 @@
 import React from "react"
-import {Row, Col, Button} from "reactstrap"
+import { Row, Col, Button } from "reactstrap"
 
 import axiosInstance from '../../axios'
 
-export default function FriendList(props){
+export default function FriendList(props) {
 
     // console.log(props)
     // return(<></>)
@@ -11,23 +11,24 @@ export default function FriendList(props){
 
     const deleteFriend = (id) => {
         axiosInstance
-          .delete(`friends/${id}`)
-          .then((res) => {
-            //navigate("/log_in/") // for test purpose - does api get request fail?
-            console.log(res)
-          })
-          .catch(error => console.error(error));
-      }
+            .delete(`friend/${id}`)
+            .then((res) => {
+                //navigate("/log_in/") // for test purpose - does api get request fail?
+                console.log(res)
+            })
+            .catch(error => console.error(error));
+        displayFriends()
+    }
 
 
     const displayFriends = (props) => {
-        const {menu, myFriends} = props;
+        const { menu, myFriends } = props;
 
-        if(myFriends.length > 0) {
-            return(
+        if (myFriends.length > 0) {
+            return (
                 myFriends.map((friend, index) => {
                     console.log(friend);
-                    return(
+                    return (
                         <div className="friend" key={friend.id}>
                             <Row>
                                 <Col>
@@ -35,8 +36,8 @@ export default function FriendList(props){
                                     <p className="friend_email"> {friend.email} </p>
                                 </Col>
                                 <Col>
-                                    <Button> 
-                                        {friend.id} 
+                                    <Button onClick={(e) => deleteFriend(friend.id)}>
+                                        {friend.id}
                                     </Button>
                                 </Col>
                             </Row>
@@ -46,11 +47,11 @@ export default function FriendList(props){
             )
         } else {
             return (<h3> You don't have any friend connections yet. </h3>)
-            
+
         }
     }
-    return(
-        <> 
+    return (
+        <>
             {displayFriends(props)}
         </>
     )
