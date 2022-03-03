@@ -38,8 +38,6 @@ class Chat extends React.Component {
 
     constructor(props) {
         super(props);
-        // console.log(this.props.chatID)
-        console.log("state after constructor; ", this.state)
     }
 
     waitForSocketConnection(callback) {
@@ -143,6 +141,8 @@ class Chat extends React.Component {
     }
 
     static getDerivedStateFromProps(newProps, prevState) {
+        console.log(newProps.chatID);
+
         if (newProps.chatID !== prevState.chatID) {
             return { chatID: newProps.chatID };
         } else {

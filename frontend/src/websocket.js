@@ -26,10 +26,10 @@ class WebSocketService {
     this.socketRef.onerror = e => {
       console.log(e.message);
     };
-    this.socketRef.onclose = () => {
-      console.log("WebSocket closed let's reopen");
-      this.connect();
-    };
+    // this.socketRef.onclose = () => {
+    //   console.log("WebSocket closed let's reopen");
+    //   this.connect();
+    // };
   }
 
   disconnect() {
