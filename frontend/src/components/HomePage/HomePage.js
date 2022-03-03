@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Col, Row } from 'reactstrap'
 import { ClubListItem, Heading2Text, HeadingText, ParaText, RecommendationContainer, RecommendationInfo, FeedContainer } from './HomePageElements'
 import Gravatar from 'react-gravatar'
-import Nav from '../components/Nav/Nav'
+import Nav from '../Nav/Nav'
 
 const HomePage = () => {
     return (

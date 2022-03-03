@@ -12,7 +12,7 @@ import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
 import Home from "./Home/Home";
 import Hello from "./Hello/Hello"
-import HomePage from "../HomePage/HomePage";
+import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
 
 export default class App extends Component {
