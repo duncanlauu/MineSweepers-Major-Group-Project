@@ -105,14 +105,14 @@ class FriendRequest(models.Model):
 # Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
-    title = models.CharField(max_length=50, blank=False, unique=True)
+    title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.DateField(
-        blank=False, validators=[PastDateValidator])
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
+    genre = models.CharField(max_length=50, blank=False)
 
 # Book Ratings class
 class BookRating(models.Model):
@@ -234,3 +234,44 @@ class Club(models.Model):
 
     def switch_public(self):
         self.public = not self.public
+
+
+class BookRecommendation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
+    rating = models.FloatField()
+    genre = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class UserRecommendation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_user_to')
+    recommended_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommended_user_to_user')
+    diff = models.FloatField()
+    method = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ClubRecommendation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_club')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='recommended_club_to_user')
+    diff = models.FloatField()
+    method = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class BookRecommendationForClub(models.Model):
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='club_to_recommend_book')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_club')
+    rating = models.FloatField()
+    genre = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class GlobalBookRecommendation(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='book_to_globally_recommend')
+    weighted_rating = models.FloatField()
+    number_of_ratings = models.IntegerField()
+    flat_rating = models.FloatField()
+    genre = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
