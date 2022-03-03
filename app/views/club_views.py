@@ -68,30 +68,32 @@ class SingleClub(APIView):
             club.remove_user_from_club(user)
             if request.query_params['action'] == 'accept':
                 club.members.add(user)
-                return Response(status=status.HTTP_200_OK)
+
             elif request.query_params['action'] == 'remove':
                 club.remove_member(user)
-                return Response(status=status.HTTP_200_OK)
+
             elif request.query_params['action'] == 'reject':
-                return Response(status=status.HTTP_200_OK)
+                club.remove_applicant(user)
+
             elif request.query_params['action'] == 'ban':
                 club.add_banned_user(user)
-                return Response(status=status.HTTP_200_OK)
+
             elif request.query_params['action'] == 'unban':
                 club.remove_banned_user(user)
-                return Response(status=status.HTTP_200_OK)
+
             elif request.query_params['action'] == 'apply':
                 club.add_applicant(user)
-                return Response(status=status.HTTP_200_OK)
+
             elif request.query_params['action'] == 'transfer':
                 club.transfer_ownership(user)
-                return Response(status=status.HTTP_200_OK)
+
             else: 
-                return Response(status=status.HTTP_400_BAD_REQUEST)        
+                return Response(status=status.HTTP_400_BAD_REQUEST)  
+                      
         serializer = ClubSerializer(club, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, format=None):
