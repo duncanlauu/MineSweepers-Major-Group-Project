@@ -60,16 +60,6 @@ urlpatterns = [
     # endpoint for the registration. This is where the API (React) will point.
     path('api/', include('app.urls', namespace='app')),
 
-    # Recommender system
-    path('recommender/', RecommenderAPI.as_view(), name='recommender'),
-    path('recommender/<str:action>', RecommenderAPI.as_view(), name='recommender_action'),
-    path('recommender/<int:n>/<int:id>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n'),
-    path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>', RecommenderAPI.as_view(),
-         name='recommender_top_n_for_genre'),
-    path('recommender/<int:n>/<str:action>', RecommenderAPI.as_view(), name='recommender_top_n_global'),
-    path('recommender/<int:n>/<str:action>/<str:genre>', RecommenderAPI.as_view(),
-         name='recommender_top_n_global_for_genre'),
-
     # create seperate app for api communication for data?
 
     path('', include('frontend.urls')),

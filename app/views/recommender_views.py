@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from surprise import SVD
 
 from app.models import BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, UserRecommendation, \
@@ -22,6 +23,8 @@ class RecommenderAPI(APIView):
     The basic idea is that a post request calls the recommender system to calculate the recommended items and
     save the recommendations to the database, whereas the get requests retrieve the recommendations from the database.
     """
+
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         if 'action' not in kwargs:

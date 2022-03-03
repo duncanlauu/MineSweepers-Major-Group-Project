@@ -95,7 +95,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = BookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n(self.uid, self.trainset, self.algo, self.n)
@@ -105,7 +105,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_for_genre_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_for_genre', 'genre': self.genre}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = BookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
@@ -116,7 +116,7 @@ class RecommenderAPITestCase(APITestCase):
     def _post_top_n_for_club_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club'}
         pred_lookup = generate_pred_set(self.pred)
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = BookRecommendationForClub.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, self.n)
@@ -127,7 +127,7 @@ class RecommenderAPITestCase(APITestCase):
     def _post_top_n_for_club_for_genre_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': self.genre}
         pred_lookup = generate_pred_set(self.pred)
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = BookRecommendationForClub.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup, self.genre, self.n)
@@ -137,7 +137,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_global_test(self):
         args = {'n': self.n, 'action': 'top_n_global'}
-        url = reverse('recommender_top_n_global', kwargs=args)
+        url = reverse('app:recommender_top_n_global', kwargs=args)
         num_of_recommendations_before = GlobalBookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, self.n)
@@ -147,7 +147,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_global_for_genre_test(self):
         args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': self.genre}
-        url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_global_for_genre', kwargs=args)
         num_of_recommendations_before = GlobalBookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, self.n)
@@ -157,7 +157,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_users_top_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_top_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_by_favourite_books(self.uid, self.trainset, self.algo, self.n)
@@ -167,7 +167,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_users_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_random_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
@@ -177,7 +177,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_users_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_genre_books', 'genre': self.genre}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_for_a_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
@@ -187,7 +187,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_clubs_top_user_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_user_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -198,7 +198,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_clubs_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_random_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -209,7 +209,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_clubs_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': self.genre}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -220,7 +220,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_top_n_clubs_top_club_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_club_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -230,13 +230,13 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(num_of_recommendations_after - num_of_recommendations_before, self.n)
 
     def _post_with_no_action_test(self):
-        url = reverse('recommender', kwargs={})
+        url = reverse('app:recommender', kwargs={})
         response = self.client.post(url)
         self.assertEqual(response.data, 'You need to provide an action')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def _post_retrain_test(self):
-        url = reverse('recommender_action', kwargs={'action': 'retrain'})
+        url = reverse('app:recommender_action', kwargs={'action': 'retrain'})
         response = self.client.post(url)
         self.assertEqual(response.data, 'Model has been trained')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -244,21 +244,21 @@ class RecommenderAPITestCase(APITestCase):
 
     def _post_with_wrong_action_test(self):
         args = {'action': 'wrong_action'}
-        url = reverse('recommender_action', kwargs=args)
+        url = reverse('app:recommender_action', kwargs=args)
         response = self.client.post(url)
         self.assertEqual(response.data, 'You need to provide a correct action')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def _post_with_wrong_parameters_test(self):
         args = {'action': 'top_n_users_top_books'}
-        url = reverse('recommender_action', kwargs=args)
+        url = reverse('app:recommender_action', kwargs=args)
         response = self.client.post(url)
         self.assertEqual(response.data, 'You need to provide correct parameters')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def _get_top_n_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = BookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n(self.uid, self.trainset, self.algo, self.n)
@@ -277,7 +277,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_for_genre_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_for_genre', 'genre': 'fiction'}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = BookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
@@ -297,7 +297,7 @@ class RecommenderAPITestCase(APITestCase):
     def _get_top_n_for_club_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club'}
         pred_lookup = generate_pred_set(self.pred)
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = BookRecommendationForClub.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, self.n)
@@ -317,7 +317,7 @@ class RecommenderAPITestCase(APITestCase):
     def _get_top_n_for_club_for_genre_test(self):
         args = {'n': self.n, 'id': self.club.id, 'action': 'top_n_for_club_for_genre', 'genre': self.genre}
         pred_lookup = generate_pred_set(self.pred)
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = BookRecommendationForClub.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup, self.genre, self.n)
@@ -336,7 +336,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_global_test(self):
         args = {'n': self.n, 'action': 'top_n_global'}
-        url = reverse('recommender_top_n_global', kwargs=args)
+        url = reverse('app:recommender_top_n_global', kwargs=args)
         num_of_recommendations_before = GlobalBookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_global_top_n(self.dataframe, self.trainset.global_mean, self.n)
@@ -356,7 +356,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_global_for_genre_test(self):
         args = {'n': self.n, 'action': 'top_n_global_for_genre', 'genre': self.genre}
-        url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_global_for_genre', kwargs=args)
         num_of_recommendations_before = GlobalBookRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_global_top_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, self.n)
@@ -376,7 +376,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_users_top_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_top_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_by_favourite_books(self.uid, self.trainset, self.algo, self.n)
@@ -395,7 +395,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_users_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_random_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
@@ -414,7 +414,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_users_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_users_genre_books', 'genre': self.genre}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
         top_n = get_top_n_users_for_a_genre(self.uid, self.trainset, self.algo, self.genre, self.n)
@@ -433,7 +433,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_clubs_top_user_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_user_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -453,7 +453,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_clubs_random_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_random_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -473,7 +473,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_clubs_genre_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_genre_books', 'genre': self.genre}
-        url = reverse('recommender_top_n_for_genre', kwargs=args)
+        url = reverse('app:recommender_top_n_for_genre', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -493,7 +493,7 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_top_n_clubs_top_club_books_test(self):
         args = {'n': self.n, 'id': self.uid, 'action': 'top_n_clubs_top_club_books'}
-        url = reverse('recommender_top_n', kwargs=args)
+        url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = ClubRecommendation.objects.count()
         response = self.client.post(url)
         clubs = list(Club.objects.all())
@@ -513,20 +513,20 @@ class RecommenderAPITestCase(APITestCase):
 
     def _get_with_wrong_action_test(self):
         args = {'action': 'wrong_action'}
-        url = reverse('recommender_action', kwargs=args)
+        url = reverse('app:recommender_action', kwargs=args)
         response = self.client.get(url)
         self.assertEqual(response.data, 'You need to provide a correct action')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def _get_with_no_action_test(self):
-        url = reverse('recommender', kwargs={})
+        url = reverse('app:recommender', kwargs={})
         response = self.client.get(url)
         self.assertEqual(response.data, 'You need to provide an action')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def _get_with_wrong_parameters_test(self):
         args = {'action': 'top_n_users_top_books'}
-        url = reverse('recommender_action', kwargs=args)
+        url = reverse('app:recommender_action', kwargs=args)
         response = self.client.get(url)
         self.assertEqual(response.data, 'You need to provide correct parameters')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
