@@ -27,9 +27,7 @@ export default function NonFriendList(props) {
     const postFriendRequest = (receiver, e) => {
         axiosInstance
             .post("friend_requests/", {
-                data: { 
-                    other_user_id : receiver  
-                }
+                other_user_id : receiver  
             })
             .then((res) => {
                 navigate("/log_in/") // Test purpose
