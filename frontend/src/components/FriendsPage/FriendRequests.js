@@ -40,18 +40,6 @@ export default function FriendRequests(props) {
                 }
             })
     }
-
-    // not used at this point.
-    // const cancelFriendRequest = (sender, e) => {
-    //     axiosInstance
-    //         .delete("friend_requests/", {
-    //             data: { 
-    //                 other_user_id : sender,  
-    //                 action : "cancel"
-    //             }
-    //         })
-    // }
-
     
     const displayFriendRequests = (e) => {
         if (myFriendRequests.length > 0) {
@@ -62,7 +50,7 @@ export default function FriendRequests(props) {
                         <div className="friendRequest" key={friendRequest.sender}>
                             <Row>
                                 <Col>
-                                    <h3 className="friend_id"> {friendRequest.sender} </h3>
+                                    <h3 className="friend_id"> {friendRequest.sender__username} </h3>
                                 </Col>
                                 <Col>
                                     <Row>

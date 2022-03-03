@@ -1,13 +1,16 @@
 import React, { Component, useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
-import { Container, Row, Col, Navbar, NavbarBrand, Button } from 'reactstrap'
-import { FriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
+import { Container, Row, Col, Navbar, NavbarBrand, Button, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import classnames from 'classnames';
+// import {Box, Tab, Tabs, TabPanel} from '@mui/material/Button';
+import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
 import FriendList from "../FriendList/FriendList";
 import FriendRequests from "./FriendRequests";
+import NonFriendList from "./NonFriendList";
 
 
 
@@ -20,6 +23,15 @@ export default function FriendsPage() {
   // useEffect(() => {
   //   getAllFriendRequests();
   // }, []);
+
+  const [currentActiveTab, setCurrentActiveTab] = useState("1");
+
+  const toggle = (tab) => {
+    if (currentActiveTab !== tab) {
+      setCurrentActiveTab(tab)
+    }
+  }
+
 
   return (
     <div id="ParentDiv">
@@ -56,39 +68,98 @@ export default function FriendsPage() {
             </Row>
 
           </Col>
+
+
           <Col>
 
-            <h1> Friends Page </h1>
-            {/* <p> Tabs instead of buttons. Will be fixed </p>
+            <div>
+              <Nav tabs> 
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
+                      Profile
+                  </NavLink>
+                </NavItem>
 
-                <Button>
-                  Profile
-                </Button>
-                <Button style={{marginLeft: "1rem"}}>
-                  Books
-                </Button>
-                <Button onClick={getAllFriends} style={{marginLeft: "1rem"}}>
-                  List friends
-                </Button>
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
+                      Books
+                  </NavLink>
+                </NavItem>
 
-                <Button style={{marginLeft: "1rem"}}>
-                  Posts
-                </Button> */}
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "3"})} onClick={() => {toggle("3");}}>
+                      Friends
+                  </NavLink>
+                </NavItem>
 
-            {/* <Button onClick={getAllFriendRequests} style={{ marginLeft: "1rem" }}>
-              List F.Requests
-            </Button> */}
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
+                      Posts
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "5"})} onClick={() => {toggle("5");}}>
+                      Find friends
+                  </NavLink>
+                </NavItem>
+              </Nav>
+              <TabContent activeTab={currentActiveTab}>
+                <TabPane tabId="1">
+                  <Row>
+                    <Col sm="12">
+                      <h5>Sample Tab 1 Content</h5>
+                    </Col>
+                  </Row>
+                </TabPane>
+                
+                <TabPane tabId="2">
+                  <Row>
+                    <Col sm="12">
+                      <h5>Sample Tab 2 Content</h5>
+                    </Col>
+                  </Row>
+                </TabPane>
+                
+                <TabPane tabId="3">
+                  
+                  {/* FriendPage content */}
 
 
-            <FriendsRequestContainer>
-              <p> Here are your friend requests</p>
-              <FriendRequests />
-            </FriendsRequestContainer>
+                    <h1> Friends Page </h1>
+                    
+                      <FriendsRequestContainer>
+                        <p> Here are your friend requests</p>
+                        <FriendRequests />
+                      </FriendsRequestContainer>
 
 
-            <FriendsListContainer>
-              <FriendList />
-            </FriendsListContainer>
+                      <FriendsListContainer>
+                        <FriendList />
+                      </FriendsListContainer>
+
+                    </TabPane>
+
+                    <TabPane tabId="4">
+                      <Row>
+                        <Col sm="12">
+                          <h5>Sample Tab 4 Content</h5>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    <TabPane tabId="5">
+
+                      <NonFriendsListContainer>
+                        <NonFriendList />
+                      </NonFriendsListContainer>
+
+                    </TabPane>
+                  </TabContent>
+                </div>
+
+        
+
           </Col>
           <Col />
         </Row>
