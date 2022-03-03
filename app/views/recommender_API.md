@@ -54,62 +54,62 @@ gives an OrderedDict of the model objects)
    1. retrain 
       1. Retrain the model and save it (and the predictions) as _app/files/dump_file_
       2. args={'action': 'retrain'} 
-      3. url = reverse('recommender_action', kwargs=args)
+      3. url = reverse('app:recommender_action', kwargs=args)
       4. Response(data='Model has been trained', status=status.HTTP_200_OK)
    2. top_n
       1. Calculate and save to the database the top n books for a particular user
       2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    3. top_n_for_genre
       1. Calculate and save to the database the top n books for a particular user for a particular genre  
       2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_for_genre', 'genre': the genre for which we want to calculate recommendations}
-      3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+      3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    4. top_n_for_club
       1. Calculate and save to a database the top n books for a club
       2. args = {'n': the number of books to calculate, 'id': the club id for which we calculate recommendations, 'action': 'top_n_for_club'}
       3. pred_lookup = generate_pred_set(self.pred)
-      4. url = reverse('recommender_top_n', kwargs=args)
+      4. url = reverse('app:recommender_top_n', kwargs=args)
    5. top_n_for_club_for_genre
       1. Calculate and save to a database the top n books for a club using a particular genre
       2. args = {'n': the number of books to calculate, 'id': the club id for which we calculate recommendations, 'action': 'top_n_for_club_for_genre', 'genre': the genre for which we want to calculate recommendations}
       3. pred_lookup = generate_pred_set(self.pred)
-      4. url = reverse('recommender_top_n_for_genre', kwargs=args)
+      4. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    6. top_n_global
       1. Calculate and save to a database the global top n books using true bayesian weighted average
       2. args = {'n': the number of books to calculate, 'action': 'top_n_global'} 
-      3. url = reverse('recommender_top_n_global', kwargs=args)
+      3. url = reverse('app:recommender_top_n_global', kwargs=args)
    7. top_n_global_for_genre
       1. Calculate and save to a database the global top n books using true bayesian weighted average for a particular genre
       2. args = {'n': the number of books to calculate, 'action': 'top_n_global_for_genre', 'genre': the genre for which we want to calculate recommendations} 
-      3. url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+      3. url = reverse('app:recommender_top_n_global_for_genre', kwargs=args)
    8. top_n_users_top_books
       1. Calculate and save to a database the top n users recommendations using the user top books
       2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_users_top_books'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    9. top_n_users_random_books 
       1. Calculate and save to a database the top n users recommendations using random books
       2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_users_random_books'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    10. top_n_users_genre_books 
        1. Calculate and save to a database the top n users recommendations using random books from a particular genre
        2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_users_genre_books', 'genre': the genre for which we want to calculate recommendations} 
-       3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+       3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    11. top_n_clubs_top_user_books
        1. Calculate and save to a database the top n club recommendations using the top user books
        2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_clubs_top_user_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    12. top_n_clubs_random_books
        1. Calculate and save to a database the top n club recommendations using random books
        2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_clubs_random_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    13. top_n_clubs_genre_books
        1. Calculate and save to a database the top n club recommendations using random books from a particular genre
        2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_clubs_genre_books', 'genre': the genre for which we want to calculate recommendations} 
-       3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+       3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    14. top_n_clubs_top_club_books
        1. Calculate and save to a database the top n club recommendations using the club's books
        2. args = {'n': the number of books to calculate, 'id': the user id for which we calculate recommendations, 'action': 'top_n_clubs_top_club_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    15. Calls without the action parameter specified
        1. Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
    16. Calls with an incorrect action
@@ -120,57 +120,57 @@ gives an OrderedDict of the model objects)
    1. top_n
       1. Get the top n books for a particular user
       2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    2. top_n_for_genre
       1. Get the top n books for a particular user for a particular genre  
       2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_for_genre', 'genre': the genre for which we want to get recommendations}
-      3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+      3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    3. top_n_for_club
       1. Get the top n books for a club
       2. args = {'n': the number of books to get, 'id': the club id for which we get recommendations, 'action': 'top_n_for_club'}
       3. pred_lookup = generate_pred_set(self.pred)
-      4. url = reverse('recommender_top_n', kwargs=args)
+      4. url = reverse('app:recommender_top_n', kwargs=args)
    4. top_n_for_club_for_genre
       1. Get the top n books for a club using a particular genre
       2. args = {'n': the number of books to get, 'id': the club id for which we get recommendations, 'action': 'top_n_for_club_for_genre', 'genre': the genre for which we want to get recommendations}
       3. pred_lookup = generate_pred_set(self.pred)
-      4. url = reverse('recommender_top_n_for_genre', kwargs=args)
+      4. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    5. top_n_global
       1. Get the global top n books using true bayesian weighted average
       2. args = {'n': the number of books to get, 'action': 'top_n_global'} 
-      3. url = reverse('recommender_top_n_global', kwargs=args)
+      3. url = reverse('app:recommender_top_n_global', kwargs=args)
    6. top_n_global_for_genre
       1. Get the global top n books using true bayesian weighted average for a particular genre
       2. args = {'n': the number of books to get, 'action': 'top_n_global_for_genre', 'genre': the genre for which we want to get recommendations} 
-      3. url = reverse('recommender_top_n_global_for_genre', kwargs=args)
+      3. url = reverse('app:recommender_top_n_global_for_genre', kwargs=args)
    7. top_n_users_top_books
       1. Get the top n users recommendations using the user top books
       2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_users_top_books'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    8. top_n_users_random_books 
       1. Get the top n users recommendations using random books
       2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_users_random_books'} 
-      3. url = reverse('recommender_top_n', kwargs=args)
+      3. url = reverse('app:recommender_top_n', kwargs=args)
    9. top_n_users_genre_books 
       1. Get the top n users recommendations using random books from a particular genre
       2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_users_genre_books', 'genre': the genre for which we want to get recommendations} 
-      3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+      3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    10. top_n_clubs_top_user_books
        1. Get the top n club recommendations using the top user books
        2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_clubs_top_user_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    11. top_n_clubs_random_books
        1. Get the top n club recommendations using random books
        2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_clubs_random_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    12. top_n_clubs_genre_books
        1. Get the top n club recommendations using random books from a particular genre
        2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_clubs_genre_books', 'genre': the genre for which we want to get recommendations} 
-       3. url = reverse('recommender_top_n_for_genre', kwargs=args)
+       3. url = reverse('app:recommender_top_n_for_genre', kwargs=args)
    13. top_n_clubs_top_club_books
        1. Get the top n club recommendations using the club's books
        2. args = {'n': the number of books to get, 'id': the user id for which we get recommendations, 'action': 'top_n_clubs_top_club_books'} 
-       3. url = reverse('recommender_top_n', kwargs=args)
+       3. url = reverse('app:recommender_top_n', kwargs=args)
    14. Calls without the action parameter specified
        1. Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
    15. Calls with an incorrect action

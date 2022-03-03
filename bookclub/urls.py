@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from app import views
-from app.views.recommender_views import RecommenderAPI
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
