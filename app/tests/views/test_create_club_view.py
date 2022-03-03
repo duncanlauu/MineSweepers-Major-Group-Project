@@ -6,8 +6,9 @@ from app.forms import CreateClubForm
 from app.models import User, Club
 from app.tests.helpers import LogInTester
 from django.conf import settings
+from rest_framework import status
 
-class CreateClubViewTestCase(TestCase, LogInTester):
+class CreateClubViewTestCase(APITestCase, LogInTester):
     """Tests of the create club view."""
 
     fixtures = ['app/tests/fixtures/default_user.json']
@@ -41,11 +42,7 @@ class CreateClubViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input)
         after_count = Club.objects.count()
         self.assertEqual(after_count, before_count)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'create_club.html')
-        form = response.context['form']
-        self.assertTrue(isinstance(form, CreateClubForm))
-        self.assertTrue(form.is_bound)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
     # def test_successful_club_creation(self):
