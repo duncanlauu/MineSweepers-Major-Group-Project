@@ -72,7 +72,7 @@ export default function FriendRequests(props) {
                 })
             )
         } else {
-            return (<h3> You don't have any friend requests yet. </h3>)
+            return (<h5> You don't have any friend requests yet. </h5>)
 
         }
     }

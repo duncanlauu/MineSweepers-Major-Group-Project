@@ -29,9 +29,6 @@ export default function NonFriendList(props) {
             .post("friend_requests/", {
                 other_user_id : receiver  
             })
-            .then((res) => {
-                navigate("/log_in/") // Test purpose
-            })
     }
 
     // not used at this point.
@@ -55,16 +52,13 @@ export default function NonFriendList(props) {
                             <Row>
                                 <Col>
                                     <h3 className="friend_username"> {nonFriend.username} </h3>
-                                    <p className="friend_email"> {nonFriend.email} </p>
                                 </Col>
                                 <Col>
                                     <Button onClick={(e) => postFriendRequest(nonFriend.id)}>
-                                        <p> Follow: {nonFriend.id} </p> 
-                                    </Button>                                       
-                                </Col>
-                                <Col>
+                                        <p> Follow </p> 
+                                    </Button>   
                                     <Button onClick={(e) => cancelFriendRequest(nonFriend.id)}>
-                                        <p> Cancel request: {nonFriend.id} </p> 
+                                        <p> X </p> 
                                     </Button>
                                 </Col>
                             </Row>

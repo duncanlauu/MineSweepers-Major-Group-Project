@@ -13,7 +13,6 @@ import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
 
 
-
 export default function FriendsPage() {
 
   const navigate = useNavigate(); // for test purpose if axios works
@@ -31,6 +30,13 @@ export default function FriendsPage() {
       setCurrentActiveTab(tab)
     }
   }
+
+  const tabsStyle = {
+    marginBottom: "1rem",
+    width: "50rem",
+    marginTop: "1rem",
+
+  };
 
 
   return (
@@ -73,34 +79,34 @@ export default function FriendsPage() {
           <Col>
 
             <div>
-              <Nav tabs> 
+              <Nav tabs style={tabsStyle}> 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
-                      Profile
+                      <h5> Profile </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
-                      Books
+                     <h5> Books </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "3"})} onClick={() => {toggle("3");}}>
-                      Friends
+                      <h5> Friends </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
-                      Posts
+                      <h5> Posts </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "5"})} onClick={() => {toggle("5");}}>
-                      Find friends
+                      <h5> Find friends </h5>
                   </NavLink>
                 </NavItem>
               </Nav>
@@ -108,7 +114,7 @@ export default function FriendsPage() {
                 <TabPane tabId="1">
                   <Row>
                     <Col sm="12">
-                      <h5>Sample Tab 1 Content</h5>
+                      <h1> Profile Page </h1>
                     </Col>
                   </Row>
                 </TabPane>
@@ -116,7 +122,7 @@ export default function FriendsPage() {
                 <TabPane tabId="2">
                   <Row>
                     <Col sm="12">
-                      <h5>Sample Tab 2 Content</h5>
+                      <h1> Books Page </h1>
                     </Col>
                   </Row>
                 </TabPane>
@@ -126,13 +132,13 @@ export default function FriendsPage() {
                   {/* FriendPage content */}
 
 
-                    <h1> Friends Page </h1>
+                    <h3> Friend Requests </h3>
                     
                       <FriendsRequestContainer>
-                        <p> Here are your friend requests</p>
                         <FriendRequests />
                       </FriendsRequestContainer>
 
+                      <h3> Friends </h3>
 
                       <FriendsListContainer>
                         <FriendList />
@@ -143,7 +149,7 @@ export default function FriendsPage() {
                     <TabPane tabId="4">
                       <Row>
                         <Col sm="12">
-                          <h5>Sample Tab 4 Content</h5>
+                          <h1> Posts Page </h1>
                         </Col>
                       </Row>
                     </TabPane>
@@ -158,8 +164,7 @@ export default function FriendsPage() {
                   </TabContent>
                 </div>
 
-        
-
+    
           </Col>
           <Col />
         </Row>

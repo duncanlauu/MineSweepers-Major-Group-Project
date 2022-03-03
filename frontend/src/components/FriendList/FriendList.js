@@ -58,7 +58,7 @@ export default function FriendList(props) {
                 })
             )
         } else {
-            return (<h3> You don't have any friend connections yet. </h3>)
+            return (<h5> You don't have any friend connections yet. </h5>)
 
         }
     }
