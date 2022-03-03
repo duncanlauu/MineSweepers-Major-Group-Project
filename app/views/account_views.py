@@ -77,36 +77,18 @@ class CreateUser(APIView):
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST) # need to send back more information when something goes wrong. Data missing? Email/ username already in use?
 
 
-    def get(self, request, format=None):
+    def get(self, request, *args, **kwargs):
             try:
-                user = User.objects.get(pk=request.query_params['id'])
-                
-                if request.query_params['field'] == "clubs":
-                    try:
-                        serializer = ClubSerializer(user.clubs.all(), many=True)
-                        return Response(serializer.data, status=status.HTTP_200_OK)
-                    except Club.DoesNotExist:
-                        return Response(status=status.HTTP_404_NOT_FOUND)
-
+                user = User.objects.get(pk=kwargs['id'])
                 serializer = RegisterUserSerializer(user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, format=None):
-        user = User.objects.get(pk=request.query_params['id'])
+    def put(self, request, *args, **kwargs):
+        user = User.objects.get(pk=kwargs['id'])
         serializer = RegisterUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-class Users(APIView):
-
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = RegisterUserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
