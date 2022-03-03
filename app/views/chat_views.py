@@ -9,15 +9,14 @@ from rest_framework.generics import (
     DestroyAPIView,
     UpdateAPIView
 )
-from app.models import Chat, Contact
+from app.models import Chat
 from app.serializers import ChatSerializer
 
 User = get_user_model()
 
-def get_user_contact(username):
+def get_user(username):
     user = get_object_or_404(User, username=username)
-    contact = get_object_or_404(Contact, user=user)
-    return contact
+    return user
 
 
 class ChatListView(ListAPIView):
@@ -28,8 +27,8 @@ class ChatListView(ListAPIView):
         queryset = Chat.objects.all()
         username = self.request.query_params.get('username', None)
         if username is not None:
-            contact = get_user_contact(username)
-            queryset = contact.chats.all()
+            user = get_user(username)
+            queryset = user.chats.all()
         return queryset
 
 

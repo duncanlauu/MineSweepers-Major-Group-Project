@@ -33,10 +33,11 @@ export default function Sidepanel(props) {
     }
 
     const activeChats = chats.map(c => {
+        console.log(c)
         return (
             <Contact
                 key={c.id}
-                name="Harvey Specter"
+                name="Chat name"
                 picURL="http://emilcarlsson.se/assets/louislitt.png"
                 status="busy"
                 chatURL={`/chat/${c.id}`} />
@@ -68,10 +69,6 @@ export default function Sidepanel(props) {
                 <ul>
                     {activeChats}
                 </ul>
-            </div>
-            <div id="bottom-bar">
-                <button id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                <button id="settings"><i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
             </div>
         </div>
     );

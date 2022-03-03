@@ -1,6 +1,6 @@
 from django.contrib import admin
 from app.models import User, Club, Book
-from app.models import Contact, Chat, Message
+from app.models import Chat, Message
 
 # Register your models here.
 
@@ -30,5 +30,5 @@ class BookAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(Chat)
-admin.site.register(Contact)
+# admin.site.register(Contact)
 admin.site.register(Message)

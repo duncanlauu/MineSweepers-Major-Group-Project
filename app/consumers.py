@@ -2,8 +2,8 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import User, Message, Chat, Contact
-from app.views.chat_views import get_last_10_messages, get_user_contact, get_current_chat
+from .models import User, Message, Chat
+from app.views.chat_views import get_last_10_messages, get_user, get_current_chat
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -18,9 +18,9 @@ class ChatConsumer(WebsocketConsumer):
 
     def new_message(self, data):
         print(data)
-        user_contact = get_user_contact(data['from'])
+        user = get_user(data['from'])
         message = Message.objects.create(
-            contact=user_contact,
+            author=user,
             content=data['message'])
         current_chat = get_current_chat(data['chatId'])
         current_chat.messages.add(message)
@@ -40,7 +40,7 @@ class ChatConsumer(WebsocketConsumer):
     def message_to_json(self, message):
         return {
             'id': message.id,
-            'author': message.contact.user.username,
+            'author': message.author.username,
             'content': message.content,
             'timestamp': str(message.timestamp)
         }
