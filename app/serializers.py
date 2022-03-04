@@ -40,12 +40,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class ClubSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model: Club
-        fields: '__all__'
+        model= Club
+        fields= '__all__'
 
     def create(self, validated_data):
         owner = self.context['request'].user # check with jwt
-        instance = self.Meta.model(**validated_data)
+        instance = Club.objects.create(**validated_data)
         instance.save()
         return instance
 

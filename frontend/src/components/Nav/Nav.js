@@ -50,6 +50,7 @@ class Nav extends React.Component {
                         </Box>
                     </Button>
                     <NavMenu>
+                    <Link to="/create_club/" style={{ color: "#000" }}>
                         <Button 
                             type='button'
                             style={{
@@ -60,7 +61,13 @@ class Nav extends React.Component {
                                 justifyContent:"space-around",
                                 marginRight:"2rem",
                             }}
-                            ><AiOutlinePlus style={{ backgroundColor:"#4F30CC", borderRadius:"2px", height:"2rem", width:"2rem", marginRight: "1rem" }}/>New Club</Button>
+                            ><AiOutlinePlus 
+                                style={{ backgroundColor:"#4F30CC", 
+                                         borderRadius:"2px", 
+                                         height:"2rem", 
+                                         width:"2rem", 
+                                         marginRight: "1rem" }}/>New Club</Button>
+                            </Link>
                         <ChatBubbleOutline fontSize='large' />
                         <Link to="/notifications/" style={{ color: "#000" }}>
                             <NotificationsNoneIcon fontSize='large' />

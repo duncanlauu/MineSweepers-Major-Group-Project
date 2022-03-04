@@ -14,6 +14,7 @@ import Home from "./Home/Home";
 import Hello from "./Hello/Hello"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
+import CreateClub from "./CreateClub/CreateClub";
 
 export default class App extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ export default class App extends Component {
             <Route path='/error/' element={<Error404 />}></Route>
             <Route path='/club_profile/' element={<ClubProfile />}></Route>
             <Route path='/sign_up/' element={<SignUp />}></Route>
+            <Route path='/create_club/' element={<CreateClub />}></Route>
             <Route path='/notifications/' element={<Notifications />}></Route>
             <Route path='/hello/' element={<Hello />}></Route>
             <Route path='/password_reset/' element={<PasswordReset />}></Route>

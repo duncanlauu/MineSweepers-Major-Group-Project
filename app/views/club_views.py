@@ -22,9 +22,12 @@ class Clubs(APIView):
 
     def post(self, request, format=None):
         serializer =  ClubSerializer(data=request.data)
+        print("got here")
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            print("got here 2")
+            new_club = serializer.save()
+            if new_club:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
