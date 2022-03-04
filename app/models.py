@@ -106,7 +106,8 @@ class FriendRequest(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='posts')
     club = models.ForeignKey(
         "Club", on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=100, blank=False)
@@ -137,10 +138,9 @@ class Post(models.Model):
 
     def modify_content(self, new_content):
         self.content = new_content
-    
+
     def modify_title(self, new_title):
         self.title = new_title
-
 
 
 class Response(models.Model):
@@ -184,8 +184,6 @@ class Book(models.Model):
     image_links_small = models.CharField(max_length=500)
 
 # Book Ratings class
-
-
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -207,8 +205,6 @@ class Meeting(models.Model):
     link = models.CharField(max_length=500, unique=True, blank=True)
 
 # Vote class
-
-
 class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
     start_time = models.DateTimeField(
