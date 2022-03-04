@@ -38,7 +38,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
     read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
-    clubs = models.ManyToManyField('Club', related_name='clubs', blank=True, null=True)
+    clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -132,11 +132,11 @@ class Club(models.Model):
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    members = models.ManyToManyField(User, related_name='members', null=True, blank=True)
-    admins = models.ManyToManyField(User, related_name='admins', null=True, blank=True)
-    applicants = models.ManyToManyField(User, related_name='applicants', null=True, blank=True)
-    banned_users = models.ManyToManyField(User, related_name='banned_users', null=True, blank=True)
-    books = models.ManyToManyField('Book', related_name='books', null=True, blank=True)
+    members = models.ManyToManyField(User, related_name='members', blank=True)
+    admins = models.ManyToManyField(User, related_name='admins', blank=True)
+    applicants = models.ManyToManyField(User, related_name='applicants', blank=True)
+    banned_users = models.ManyToManyField(User, related_name='banned_users', blank=True)
+    books = models.ManyToManyField('Book', related_name='books', blank=True)
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
 
