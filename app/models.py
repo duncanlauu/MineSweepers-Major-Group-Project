@@ -132,11 +132,11 @@ class Club(models.Model):
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    members = models.ManyToManyField(User, related_name='members')
-    admins = models.ManyToManyField(User, related_name='admins')
-    applicants = models.ManyToManyField(User, related_name='applicants')
-    banned_users = models.ManyToManyField(User, related_name='banned_users')
-    books = models.ManyToManyField('Book', related_name='books')
+    members = models.ManyToManyField(User, related_name='members', null=True, blank=True)
+    admins = models.ManyToManyField(User, related_name='admins', null=True, blank=True)
+    applicants = models.ManyToManyField(User, related_name='applicants', null=True, blank=True)
+    banned_users = models.ManyToManyField(User, related_name='banned_users', null=True, blank=True)
+    books = models.ManyToManyField('Book', related_name='books', null=True, blank=True)
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
 
