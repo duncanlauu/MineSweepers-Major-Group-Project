@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from app.serializers import ClubSerializer
 from rest_framework.permissions import IsAuthenticated
 
+
 class Clubs(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -21,13 +22,15 @@ class Clubs(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        serializer =  ClubSerializer(data=request.data)
-        print("got here")
+        partial_club = request.data
+        partial_club['owner'] = request.user.id
+        serializer = ClubSerializer(data=partial_club)
         if serializer.is_valid():
-            print("got here 2")
             new_club = serializer.save()
             if new_club:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
