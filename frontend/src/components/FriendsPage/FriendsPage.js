@@ -11,11 +11,14 @@ import { useNavigate } from "react-router";
 import FriendList from "../FriendList/FriendList";
 import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
+import useGetUser from "../../helpers";
 
 
 export default function FriendsPage() {
 
   const navigate = useNavigate(); // for test purpose if axios works
+
+  const currentUser = useGetUser();
 
   // const [myFriendRequests, setFriendRequests] = useState("");
 
@@ -62,14 +65,14 @@ export default function FriendsPage() {
             </Row>
 
             <Row>
-              <h1> JaneDoe </h1>
-              <h4> janedoe@example.com </h4>
+              <h1> {currentUser.username}  </h1>
+              <h4> {currentUser.email} </h4>
             </Row>
 
             <Row>
               <UserDetailsContainer>
-                <h5> London, UK </h5>
-                <h5> Date joined </h5>
+                <h5> From: {currentUser.location} </h5>
+                <h5> Joined: {currentUser.created_at} </h5>
               </UserDetailsContainer>
             </Row>
 
