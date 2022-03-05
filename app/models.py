@@ -152,17 +152,16 @@ class Club(models.Model):
             self.club_chat.name = self.name
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
-    
-    def create_chat(self):
-        return 1
 
     def add_member(self, user):
         user.add_club(self)
         self.members.add(user)
+        self.club_chat.participants.add(user) # might need to be moved TBD
 
     def remove_member(self, user):
         user.remove_club(self)
         self.members.remove(user)
+        self.club_chat.participants.remove(user) # might need to be moved TBD
 
     def member_count(self):
         return self.members.count()

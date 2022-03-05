@@ -24,18 +24,8 @@ class Clubs(APIView):
     def post(self, request, format=None):
         partial_club = request.data
         partial_club['owner'] = request.user.id
-        
-        # print(request.data)
-        # club_name = request.data.get('name')
-        # print(club_name )
-        # club_chat = Chat.objects.create(name=request.data.get('name'))
-        # club_chat.participants.add(request.user.id)
-        # partial_club['club_chat'] = club_chat.pk
-
         serializer = ClubSerializer(data=partial_club)
         if serializer.is_valid():
-            # print(serializer)
-            # return "lol"
             new_club = serializer.save()
             if new_club:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
