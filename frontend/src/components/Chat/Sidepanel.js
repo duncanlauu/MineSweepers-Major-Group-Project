@@ -1,11 +1,9 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
 import { Spin, Icon } from 'antd';
 import { connect } from 'react-redux';
-import * as actions from '../store/actions/auth';
 import Contact from './Contact';
-import axiosInstance from '../axios'
+import axiosInstance from '../../axios'
 
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
