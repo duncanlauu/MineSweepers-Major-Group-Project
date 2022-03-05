@@ -38,6 +38,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
     liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
     read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
+    clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -56,6 +57,13 @@ class User(AbstractUser):
 
     def remove_read_book(self, book):
         self.read_books.remove(book)
+
+    def add_club(self, club):
+        self.clubs.add(club)
+
+    def remove_club(self, club):
+        self.clubs.remove(club)
+
 
 
 
@@ -120,23 +128,25 @@ class EventVote(models.Model):
 
 #Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50,blank=False)
+    name = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    members = models.ManyToManyField(User, related_name='members')
-    admins = models.ManyToManyField(User, related_name='admins')
-    applicants = models.ManyToManyField(User, related_name='applicants')
-    banned_users = models.ManyToManyField(User, related_name='banned_users')
-    books = models.ManyToManyField('Book', related_name='books')
+    members = models.ManyToManyField(User, related_name='members', blank=True)
+    admins = models.ManyToManyField(User, related_name='admins', blank=True)
+    applicants = models.ManyToManyField(User, related_name='applicants', blank=True)
+    banned_users = models.ManyToManyField(User, related_name='banned_users', blank=True)
+    books = models.ManyToManyField('Book', related_name='books', blank=True)
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
     # group_chat = models.ForeignKey('Chat', related_name='group_chat')
 
     def add_member(self, user):
+        user.add_club(self)
         self.members.add(user)
 
     def remove_member(self, user):
+        user.remove_club(self)
         self.members.remove(user)
 
     def member_count(self):
@@ -164,9 +174,11 @@ class Club(models.Model):
         return self.members.count() + self.admins.count() + 1
 
     def add_banned_user(self, user):
+        user.remove_club(self)
         self.banned_users.add(user)
 
     def remove_banned_user(self, user):
+        user.add_club(self)
         self.banned_users.remove(user)
 
     def banned_user_count(self):
@@ -186,6 +198,16 @@ class Club(models.Model):
 
     def switch_public(self):
         self.public = not self.public
+
+    def remove_user_from_club(self, user):
+        self.members.remove(user)
+        self.admins.remove(user)
+        self.applicants.remove(user)
+        self.banned_users.remove(user)
+
+    def transfer_ownership(self, user):
+        self.add_admin(self.owner)
+        self.owner = user
 
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 # class Contact(models.Model):
@@ -257,3 +279,4 @@ class GlobalBookRecommendation(models.Model):
     flat_rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+
