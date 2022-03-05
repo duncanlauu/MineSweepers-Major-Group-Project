@@ -131,6 +131,7 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books')
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
+    # group_chat = models.ForeignKey('Chat', related_name='group_chat')
 
     def add_member(self, user):
         self.members.add(user)
@@ -205,10 +206,11 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
-    # name = models.CharField(max_length=50,blank=True)
-    # club ???
+    name = models.CharField(max_length=50,blank=True)
+    # add chat to club
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
+    group_chat = models.BooleanField(default=False)
 
     # def last_10_messages(self):
     #     return self.messages.order_by('-timestamp').all()[:10]
