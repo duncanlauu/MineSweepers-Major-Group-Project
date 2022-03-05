@@ -42,6 +42,10 @@ export default function NonFriendList(props) {
             })
     }
 
+    const rejectButtonStyle = {
+        backgroundColor: "red"
+      };
+
     const displayNonFriends = (e) => {
         if (myNonFriends.length > 0) {
             return (
@@ -57,7 +61,7 @@ export default function NonFriendList(props) {
                                     <Button onClick={(e) => postFriendRequest(nonFriend.id)}>
                                         <p> Follow </p> 
                                     </Button>   
-                                    <Button onClick={(e) => cancelFriendRequest(nonFriend.id)}>
+                                    <Button style={rejectButtonStyle} onClick={(e) => cancelFriendRequest(nonFriend.id)}>
                                         <p> X </p> 
                                     </Button>
                                 </Col>

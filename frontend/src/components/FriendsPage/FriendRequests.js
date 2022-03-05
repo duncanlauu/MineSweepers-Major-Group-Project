@@ -40,6 +40,14 @@ export default function FriendRequests(props) {
                 }
             })
     }
+
+    const acceptButtonStyle = {
+        backgroundColor: "green"
+      };
+
+      const rejectButtonStyle = {
+        backgroundColor: "red"
+      };
     
     const displayFriendRequests = (e) => {
         if (myFriendRequests.length > 0) {
@@ -55,12 +63,12 @@ export default function FriendRequests(props) {
                                 <Col>
                                     <Row>
                                         <Col>
-                                            <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}>
+                                            <Button style={acceptButtonStyle} onClick={(e) => acceptFriendRequest(friendRequest.sender)}>
                                                 <p> Accept </p>
                                             </Button>                                        
                                         </Col>
                                         <Col>
-                                            <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}>
+                                            <Button style={rejectButtonStyle} onClick={(e) => rejectFriendRequest(friendRequest.sender)}>
                                                 <p> Reject </p>
                                             </Button>
                                         </Col>
