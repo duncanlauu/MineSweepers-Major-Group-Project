@@ -61,12 +61,18 @@ class ClubSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
 
 class ChatSerializer(serializers.ModelSerializer):
+    participants = SimpleUserSerializer(many=True, required=False)
+
     class Meta:
         model = Chat
         fields = ('__all__')
+    
 
 class BookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:

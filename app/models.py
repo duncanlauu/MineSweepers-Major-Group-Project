@@ -86,6 +86,9 @@ class User(AbstractUser):
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
+            new_chat = Chat.objects.create()
+            new_chat.participants.add(self)
+            new_chat.participants.add(other_user)
             FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
             FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
         
@@ -279,9 +282,6 @@ class Chat(models.Model):
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
-
-    # def last_10_messages(self):
-    #     return self.messages.order_by('-timestamp').all()[:10]
 
     def __str__(self):
         return "{}".format(self.pk)

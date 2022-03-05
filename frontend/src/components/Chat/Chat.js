@@ -81,6 +81,48 @@ class Chat extends React.Component {
         this.setState({ message: '' });
     }
 
+    leaveChatHandler = (e) => {
+        console.log("BYEE")
+
+            axiosInstance
+                .delete(`chat/${this.props.chatID}/leave/`)
+                .then((res) => {
+                    console.log(res)
+                })
+                .catch(error => console.error(error));
+
+        // axiosInstance.get(`http://127.0.0.1:8000/api/chat/${this.props.chatID}`)
+        //     .then(response => { // use .then to make react wait for response
+        //         // console.log(this.props.chatID)
+        //         // console.log(response)
+        //         let chat = response.data
+        //         // console.log(chat.participants)
+        //         console.log(localStorage.username)
+        //         // for (let i = 0; i < chat.participants.length; i++) {
+        //         //     console.log(chat.participants[i])
+        //         // }
+        //         // for(i in chat.participants){
+        //         //     console.log(participant)
+        //         // }
+        //         chat.participants = chat.participants.filter(participant => !(participant.username == localStorage.username))
+        //         console.log(chat)
+
+        //         axiosInstance.put(`http://127.0.0.1:8000/api/chat/${this.props.chatID}/update/`, chat)
+        //             .then(response => { // use .then to make react wait for response
+        //                 console.log("LEFT CHAT")
+        //         });
+        //     });
+
+        // e.preventDefault();
+        // const messageObject = {
+        //     from: this.currentUser, //broken
+        //     content: this.state.message,
+        //     chatId: this.props.chatID,
+        // };
+        // WebSocketInstance.newChatMessage(messageObject);
+        // this.setState({ message: '' });
+    }
+
     renderTimestamp = timestamp => {
         let prefix = '';
         const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
@@ -154,6 +196,11 @@ class Chat extends React.Component {
         const messages = this.state.messages;
         return (
             <Hoc>
+                <div>
+                    <button onClick={this.leaveChatHandler} id="chat-message-submit" className="submit">
+                        Leave
+                    </button>
+                </div>
                 <div className="messages">
                     <ul id="chat-log">
                         {

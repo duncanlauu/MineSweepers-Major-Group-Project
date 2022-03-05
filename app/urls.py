@@ -12,7 +12,8 @@ from .views.chat_views import (
     ChatDetailView,
     ChatCreateView,
     ChatUpdateView,
-    ChatDeleteView
+    ChatDeleteView,
+    ChatLeaveView
 )
 from .views.club_views import Clubs, SingleClub
 
@@ -36,7 +37,8 @@ urlpatterns = [
     path('chat/create/', ChatCreateView.as_view()),
     path('chat/<pk>', ChatDetailView.as_view()),
     path('chat/<pk>/update/', ChatUpdateView.as_view()),
-    path('chat/goo<pk>/delete/', ChatDeleteView.as_view()),
+    path('chat/<pk>/delete/', ChatDeleteView.as_view()),
+    path('chat/<pk>/leave/', ChatLeaveView.as_view()),
 
     # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),
