@@ -1,4 +1,5 @@
 import datetime
+from email.policy import default
 from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -125,6 +126,9 @@ class EventVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
+def get_new_club_chat():
+    new_club_chat = Chat.objects.create(group_chat=True)
+    return new_club_chat
 
 #Club class
 class Club(models.Model):
@@ -139,7 +143,18 @@ class Club(models.Model):
     books = models.ManyToManyField('Book', related_name='books', blank=True)
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
-    # group_chat = models.ForeignKey('Chat', related_name='group_chat')
+    club_chat = models.ForeignKey('Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
+
+    def save(self, *args, **kwargs):
+        is_new = not self.pk
+        super().save(*args, **kwargs)
+        if is_new: # need to double check if this actually gets only called when new
+            self.club_chat.name = self.name
+            self.club_chat.participants.add(self.owner)
+            self.club_chat.save()
+    
+    def create_chat(self):
+        return 1
 
     def add_member(self, user):
         user.add_club(self)
@@ -210,14 +225,6 @@ class Club(models.Model):
         self.owner = user
 
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
-# class Contact(models.Model):
-#     user = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
-#     friends = models.ManyToManyField('self', blank=True)
-
-#     def __str__(self):
-#         return self.user.username
-
-
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
     content = models.TextField()
@@ -229,7 +236,6 @@ class Message(models.Model):
 
 class Chat(models.Model):
     name = models.CharField(max_length=50,blank=True)
-    # add chat to club
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)

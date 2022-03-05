@@ -1,5 +1,5 @@
 from app.forms import CreateClubForm
-from app.models import Club, User
+from app.models import Club, User, Chat
 from app.helpers import remove_user_from_club, user_in_club, user_is_banned
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,8 +24,18 @@ class Clubs(APIView):
     def post(self, request, format=None):
         partial_club = request.data
         partial_club['owner'] = request.user.id
+        
+        # print(request.data)
+        # club_name = request.data.get('name')
+        # print(club_name )
+        # club_chat = Chat.objects.create(name=request.data.get('name'))
+        # club_chat.participants.add(request.user.id)
+        # partial_club['club_chat'] = club_chat.pk
+
         serializer = ClubSerializer(data=partial_club)
         if serializer.is_valid():
+            # print(serializer)
+            # return "lol"
             new_club = serializer.save()
             if new_club:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
