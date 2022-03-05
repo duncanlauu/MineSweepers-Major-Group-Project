@@ -11,6 +11,7 @@ import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
 import Home from "./Home/Home";
+import FriendsPage from "./FriendsPage/FriendsPage";
 import Hello from "./Hello/Hello"
 import Chat from "./Chat.js"
 import ChatWrapper from "./ChatWrapper.js"
@@ -38,6 +39,7 @@ export default class App extends Component {
             <Route path='/sign_up/' element={<SignUp />}></Route>
             <Route path='/create_club/' element={<CreateClub />}></Route>
             <Route path='/notifications/' element={<Notifications />}></Route>
+            <Route path='/friends_page/' element={<FriendsPage />}></Route>
             <Route path='/hello/' element={<Hello />}></Route>
             <Route path='/password_reset/' element={<PasswordReset />}></Route>
             <Route path='/password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
