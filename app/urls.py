@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.recommender_views import RecommenderAPI
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
@@ -23,9 +24,20 @@ urlpatterns = [
     path('hello/', HelloWorldView.as_view(), name='hello_world'),
     # Reset User Password
     path('auth/', include('djoser.urls')),
+    # Chat
     path('chat/', ChatListView.as_view()),
     path('chat/create/', ChatCreateView.as_view()),
     path('chat/<pk>', ChatDetailView.as_view()),
     path('chat/<pk>/update/', ChatUpdateView.as_view()),
     path('chat/goo<pk>/delete/', ChatDeleteView.as_view()),
+
+    # Recommender system
+    path('recommender/', RecommenderAPI.as_view(), name='recommender'),
+    path('recommender/<str:action>/', RecommenderAPI.as_view(), name='recommender_action'),
+    path('recommender/<int:n>/<int:id>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n'),
+    path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+         name='recommender_top_n_for_genre'),
+    path('recommender/<int:n>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n_global'),
+    path('recommender/<int:n>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+         name='recommender_top_n_global_for_genre'),
 ]
