@@ -4,20 +4,29 @@ import { HeadingText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import axios from 'axios'
 
-// class IndividualClubCard extends React.Component {
-//   render() {
-//     const { category } = this.props
-
-//   }
-// }
+class IndividualClubCard extends React.Component {
+  render() {
+    const { email } = this.props
+    return(
+      <Container>
+        <h3>{email}</h3>
+      </Container>
+    )
+  }
+}
 
 export default class ListOfClubs extends React.Component {
-  state = {
-    clubs: []
+
+  constructor() {
+    super();
+
+    this.state = {
+      clubs: []
+    }
   }
 
   componentDidMount() {
-    axios.get(`/clubs/`).then(
+    axios.get(`https://jsonplaceholder.typicode.com/users`).then(
       response => {
         console.log(response)
         this.setState({

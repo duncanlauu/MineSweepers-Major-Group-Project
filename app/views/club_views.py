@@ -17,12 +17,9 @@ class Clubs(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, format=None):
-        try:
-            clubs = Club.objects.filter(visibility=True).values()
-            serializer = ClubSerializer(clubs, many=True)
-            return Response({'clubs': clubs}, status=status.HTTP_200_OK)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        clubs = Club.objects.filter(visibility=True).values()
+        # serializer = ClubSerializer(clubs, many=True)
+        return Response({'clubs': clubs}, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
         partial_club = request.data
