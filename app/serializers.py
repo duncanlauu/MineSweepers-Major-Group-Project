@@ -38,6 +38,13 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return instance
 
 class ClubSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(read_only = True)
+    members = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    admins = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    applicants = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    banned_users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    books = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
 
     class Meta:
         model = Club

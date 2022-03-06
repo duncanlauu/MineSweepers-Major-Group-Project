@@ -17,17 +17,15 @@ class GetSingleClubTestCase(TestCase, LogInTester):
 
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
-                'app/tests/fixtures/default_club.json',]
+                'app/tests/fixtures/default_club.json',
+                'app/tests/fixtures/others_clubs.json']
 
     def test_get_valid_single_club(self):
             response = self.client.get(
-                reverse('get_club', kwargs={'id':1}))
-            club = Club.objects.get(pk=1)
-            serializer = ClubSerializer(club)
-            self.assertEqual(response.data, serializer.data)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
+                reverse('clubs'))
+            print (response.data)
 
-    def test_get_invalid_single_club(self):
-            response = self.client.get(
-                reverse('get_club', kwargs={'id':20000}))
-            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    # def test_get_invalid_single_club(self):
+    #         response = self.client.get(
+    #             reverse('get_club', kwargs={'id':20000}))
+    #         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

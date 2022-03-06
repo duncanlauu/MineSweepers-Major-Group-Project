@@ -9,17 +9,20 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from app.serializers import ClubSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class Clubs(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, format=None):
-        clubs = Club.objects.filter(visibility=True)
-        serializer = ClubSerializer(clubs, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            clubs = Club.objects.filter(visibility=True).values()
+            serializer = ClubSerializer(clubs, many=True)
+            return Response({'clubs': clubs}, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, format=None):
         partial_club = request.data
