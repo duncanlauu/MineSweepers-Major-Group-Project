@@ -18,11 +18,8 @@ class Clubs(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        logging.info("got here 1")
         clubs = Club.objects.filter(visibility=True).values()
-        logging.info("got here 2")
         serializer = ClubSerializer(clubs, many=True)
-        logging.info("got here 3")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
