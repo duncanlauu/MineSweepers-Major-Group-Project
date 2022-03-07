@@ -62,13 +62,15 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            if post.author == user:  # can edit post if user is author of post
+            if post.author == user:  
+                # can edit post if user is author of post
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            if is_post_visible_to_user(user, post):  # anyone other than user that can view the post can upvote or downvote post
+            if is_post_visible_to_user(user, post):  
+                # anyone other than user that can view the post can upvote or downvote post
                 if request.data['action'] == 'upvote':
                     post.upvote_post()
                     return Response(status=status.HTTP_200_OK)
