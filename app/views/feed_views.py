@@ -33,8 +33,9 @@ class AllPostsView(APIView):
     def post(self, request):
         """Create post"""
         user = request.user
-        serializer = PostSerializer(data=request.data)
-        serializer.data['author'] = user
+        data = request.data
+        data['author'] = user.id
+        serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -62,7 +63,7 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            if post.author == user:  
+            if post.author == user:
                 # can edit post if user is author of post
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
@@ -114,26 +115,16 @@ class AllCommentsView(APIView):
             if not is_post_visible_to_user(user, post):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             post = Post.objects.get(id=post_id)
-            # post_serializer = PostSerializer(post)
-            # request.data['post'] = post_serializer.data
-            comment_serializer = CommentSerializer(data=request.data)
-            comment_serializer.data['post'] = post
-            comment_serializer.data['author'] = user
+            data = request.data
+            data['author'] = user.id
+            data['post'] = post.id
+            comment_serializer = CommentSerializer(data=data)
             if comment_serializer.is_valid():
                 comment_serializer.save()
                 return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
             return Response(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    # def delete(self, request, comment_id):
-    #     """Delete a comment from a post"""
-    #     comment = Comment.objects.get(id=comment_id)
-    #     if comment.author == request.user:
-    #         comment.delete()
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class CommentView(APIView):
     """API View of a comment of a user"""
@@ -172,11 +163,6 @@ class CommentView(APIView):
                 elif request.data['action'] == 'downvote':
                     comment.downvote()
                     return Response(status=status.HTTP_200_OK)
-            # serializer = CommentSerializer(comment, data=request.data)
-            # if serializer.is_valid():
-            #     serializer.save()
-            #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-            # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -216,25 +202,16 @@ class AllRepliesView(APIView):
             if not is_post_visible_to_user(user, post):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             comment = Comment.objects.get(id=comment_id)
-            # comment_serializer = CommentSerializer(comment)
-            # request.data['comment'] = comment_serializer.data
-            reply_serializer = ReplySerializer(data=request.data)
-            reply_serializer.data['comment'] = comment
-            reply_serializer.data['author'] = user
+            data = request.data
+            data['author'] = user.id
+            data['comment'] = comment.id
+            reply_serializer = ReplySerializer(data=data)
             if reply_serializer.is_valid():
                 reply_serializer.save()
                 return Response(reply_serializer.data, status=status.HTTP_201_CREATED)
             return Response(reply_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    # def delete(self, request, reply_id):
-    #     """Delete a reply from a comment"""
-    #     reply = Reply.objects.get(id=reply_id)
-    #     if reply.author == request.user:
-    #         reply.delete()
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ReplyView(APIView):
     """API View to a reply to a comment from a post"""
@@ -274,10 +251,6 @@ class ReplyView(APIView):
                 elif request.data['action'] == 'downvote':
                     reply.downvote()
                     return Response(status=status.HTTP_200_OK)
-            # serializer = CommentSerializer(reply, data=request.data)
-            # if serializer.is_valid():
-            #     serializer.save()
-            #     return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -286,7 +259,6 @@ class ReplyView(APIView):
     def delete(self, request, post_id, comment_id, reply_id):
         """Delete a reply from a comment either if you are the author of the reply or the post it is in"""
         user = request.user
-        comment = Comment.objects.get(id=comment_id)
         post = Post.objects.get(id=post_id)
         reply = Reply.objects.get(id=reply_id)
         if reply.author == user or post.author == user:
