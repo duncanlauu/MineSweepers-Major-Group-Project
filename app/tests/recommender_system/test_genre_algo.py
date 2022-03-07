@@ -1,3 +1,5 @@
+from app.recommender_system.file_management import get_trainset_from_dataset, get_dataset_from_dataframe, \
+    get_combined_data
 from app.recommender_system.genre_algo import *
 from app.management.commands.seed import *
 from django.test import TestCase
@@ -9,6 +11,11 @@ class GenreAlgoTest(TestCase):
     def setUp(self):
         seed_books()
         self.book = Book.objects.get(pk="0195153448")
+        self.csv_file_path = 'app/files/BX-Book-Ratings.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
 
     def test_main(self):
         """
@@ -98,5 +105,11 @@ class GenreAlgoTest(TestCase):
                 self.assertTrue(book.genre.lower() ==
                                 genre or genre in book.genre.lower())
 
-    def _test_get_isbns_for_a_genre(self):  # TODO
-        pass
+    def _test_get_isbns_for_a_genre(self):
+        genre = 'fiction'
+        # This needs to be sorted to compare the results because internally it's a set which is unsorted
+        isbns = sorted(get_isbns_for_a_genre(genre, self.trainset))[:15]
+        correct_first_15_isbns_for_fiction = ['0002005395', '0002219980', '000222674X', '0002245663', '0002251760',
+                                              '0002253178', '0002254123', '0002254131', '000225929X', '0002259478',
+                                              '0002261022', '0002325780', '0006163041', '0006176909', '0006471641']
+        self.assertEqual(isbns, correct_first_15_isbns_for_fiction)
