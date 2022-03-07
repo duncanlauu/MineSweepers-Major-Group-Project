@@ -10,18 +10,22 @@ from rest_framework import status
 from rest_framework.response import Response
 from app.serializers import ClubSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+import logging
 
 
 class Clubs(APIView):
 
     permission_classes = [AllowAny]
 
-    def get(self, request, format=None):
+    def get(self, request):
+        logging.info("got here 1")
         clubs = Club.objects.filter(visibility=True).values()
-        # serializer = ClubSerializer(clubs, many=True)
-        return Response({'clubs': clubs}, status=status.HTTP_200_OK)
+        logging.info("got here 2")
+        serializer = ClubSerializer(clubs, many=True)
+        logging.info("got here 3")
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, format=None):
+    def post(self, request):
         partial_club = request.data
         partial_club['owner'] = request.user.id
         serializer = ClubSerializer(data=partial_club)

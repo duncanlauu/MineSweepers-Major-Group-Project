@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { HeadingText, ParaText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
-import axios from 'axios'
+import axiosInstance from '../../axios'
 import Gravatar from 'react-gravatar'
 
 function IndividualClubsCard(props) {
@@ -10,7 +10,6 @@ function IndividualClubsCard(props) {
     <Container fluid>
       <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
       <HeadingText>{props.name}</HeadingText>
-      <ParaText>{props.size} Members</ParaText>
       <Button>Apply</Button>
     </Container>
   )
@@ -27,7 +26,7 @@ export default class ListOfClubs extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`).then(
+    axiosInstance.get(`clubs/`).then(
       response => {
         console.log(response)
         this.setState({
@@ -52,7 +51,6 @@ export default class ListOfClubs extends React.Component {
                       <li>
                         <IndividualClubsCard
                           name={club.name}
-                          size={club.id}
                         />
                       </li>
                     )
