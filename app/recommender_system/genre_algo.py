@@ -1,5 +1,5 @@
-"""Genre-Related Algorithms
-
+"""
+Genre-Related Algorithms
 Note that genres are treated as case-insensitive
 """
 
@@ -125,3 +125,13 @@ def get_top_n_merged_genres_with_books(n=25):
     """Get a list of tuples (genre, books_list) based on the top n merged genres"""
     merged_genres = get_top_n_merged_genres(n)
     return list(map(lambda g: (g, get_books_from_similar_genre(g)), merged_genres))
+
+
+def get_isbns_for_a_genre(genre, trainset):
+    """Get all the rated books for a given genre"""
+    books = get_books_from_iexact_genre(genre)
+    items_with_the_genre = (book.ISBN for book in books)
+    rated_items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
+    # Make sure the books are in the system (are rated at least once)
+    items = list(set(rated_items).intersection(items_with_the_genre))
+    return items
