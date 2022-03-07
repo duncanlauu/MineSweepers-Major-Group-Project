@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "club_id": 1,
-            "book": "978-0-7356-6745-7",
+            "book": "0195153448",
             "voting_time" : 1,
             "meeting": 1,
             "description": "This is a great book that we going to discuss"
