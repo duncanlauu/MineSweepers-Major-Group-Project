@@ -5,13 +5,13 @@ module.exports = {
   devtool: "eval-cheap-source-map",
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "./static/frontend"),
+    path: path.resolve(__dirname, "./static/frontend"), // change this to the folder djangos collectstatic saves to in production
     filename: "[name].js",
   },
   module: {
     rules: [
       {
-        test: /\.js$/, 
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",

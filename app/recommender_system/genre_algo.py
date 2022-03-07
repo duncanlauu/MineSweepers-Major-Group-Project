@@ -1,5 +1,5 @@
-"""
-Genre-Related Algorithms
+"""Genre-Related Algorithms
+
 Note that genres are treated as case-insensitive
 """
 
