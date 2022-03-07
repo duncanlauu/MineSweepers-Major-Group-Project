@@ -1,18 +1,19 @@
 import React from 'react'
-import { Container, Row, Col } from 'reactstrap'
-import { HeadingText } from '../Login/LoginElements'
+import { Container, Row, Col, Button } from 'reactstrap'
+import { HeadingText, ParaText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import axios from 'axios'
+import Gravatar from 'react-gravatar'
 
-class IndividualClubCard extends React.Component {
-  render() {
-    const { email } = this.props
-    return(
-      <Container>
-        <h3>{email}</h3>
-      </Container>
-    )
-  }
+function IndividualClubsCard(props) {
+  return (
+    <Container fluid>
+      <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
+      <HeadingText>{props.name}</HeadingText>
+      <ParaText>{props.size} Members</ParaText>
+      <Button>Apply</Button>
+    </Container>
+  )
 }
 
 export default class ListOfClubs extends React.Component {
@@ -47,7 +48,15 @@ export default class ListOfClubs extends React.Component {
             <Col xs={8}>
                 <HeadingText>Club Database</HeadingText>
                 <ul>
-                  {this.state.clubs.map(club => <li>{club.name}</li>)}
+                  {this.state.clubs.map(club =>
+                      <li>
+                        <IndividualClubsCard
+                          name={club.name}
+                          size={club.id}
+                        />
+                      </li>
+                    )
+                  }
                 </ul>
             </Col>
             <Col />
