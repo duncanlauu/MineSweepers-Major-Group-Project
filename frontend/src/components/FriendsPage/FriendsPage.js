@@ -6,9 +6,8 @@ import classnames from 'classnames';
 import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
-import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
-import FriendList from "../FriendList/FriendList";
+import FriendList from "./FriendList";
 import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
 import useGetUser from "../../helpers";
