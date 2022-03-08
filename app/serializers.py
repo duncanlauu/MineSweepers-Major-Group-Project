@@ -1,4 +1,3 @@
-from unittest import mock
 from rest_framework import serializers
 from .models import User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
     BookRecommendationForClub, Club
@@ -79,21 +78,11 @@ class BookRecommendationSerializer(serializers.ModelSerializer):
         model = BookRecommendation
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-
 
 class BookRecommendationForClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRecommendationForClub
         fields = '__all__'
-
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
 
 
 class UserRecommendationSerializer(serializers.ModelSerializer):
@@ -101,30 +90,14 @@ class UserRecommendationSerializer(serializers.ModelSerializer):
         model = UserRecommendation
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-
 
 class ClubRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClubRecommendation
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-
 
 class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalBookRecommendation
         fields = '__all__'
-
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-    

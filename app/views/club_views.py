@@ -1,4 +1,3 @@
-from app.forms import CreateClubForm
 from app.models import Club, User, Chat
 from app.helpers import remove_user_from_club, user_in_club, user_is_banned
 from django.db.models import Q
