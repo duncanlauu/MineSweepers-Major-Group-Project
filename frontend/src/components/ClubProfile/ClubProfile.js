@@ -1,12 +1,15 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap';
 import { BookProfile, ProfileContainer, ProfileHeader } from './ClubProfileElements';
+import Nav from '../Nav/Nav';
+import ClubProfileTabs from './ClubProfileTabs.js';
 import Gravatar from 'react-gravatar';
 
 function ProfileBody() {
     return (
         <Container fluid style={{ margin: "1rem" }}>
             <Row>
+                <Col/>
                 <Col>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                 sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -49,14 +52,17 @@ const ClubProfile = () => {
   return (
     <div>
         <Container fluid>
-            <Row style={{ marginTop: "2rem"}}>
+            <Row style={{ marginBottom:"3rem" }}>
+                <Nav />
+            </Row>
+            <Row>
                 <Col />
                 <Col xs={6}>
                     <ProfileContainer>
                         <ProfileHeader>
                             Lorem Ipsum
+                            <ClubProfileTabs />
                         </ProfileHeader>
-                        <ProfileBody></ProfileBody>
                     </ProfileContainer>
                 </Col>
                 <Col />

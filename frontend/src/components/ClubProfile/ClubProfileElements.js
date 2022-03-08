@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ProfileContainer = styled.div`
-    height: 90vh;
+    height: 38vw;
     width: 100%;
     border-radius: 10px;
     background-color: #FFF;
@@ -19,10 +19,12 @@ export const ProfileHeader = styled.div`
 
 export const BookProfile = styled.div`
     background-color: #F3F3F3;
-    height: 7rem;
-    width: 30rem;
+    height: 10rem;
+    width: 90%;
     border-radius: 7px;
     margin-left: 1rem;
     display: flex;
+    margin-bottom: 1rem;
+    justify-content: center;
+    align-items: center;
 `
-
