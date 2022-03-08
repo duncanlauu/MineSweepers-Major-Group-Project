@@ -7,16 +7,16 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
-#It uses datetime.date which only uses the date
+# It uses datetime.date which only uses the date
 def PastDateValidator(date):
-        if date > datetime.date.today():
-            raise ValidationError("Date cannot be in the future")
+    if date > datetime.date.today():
+        raise ValidationError("Date cannot be in the future")
 
 
-#It uses datetime.datetime which includes hours too
+# It uses datetime.datetime which includes hours too
 def FutureDateValidator(date):
-        if date < timezone.now():
-            raise ValidationError("Date cannot be in the past")
+    if date < timezone.now():
+        raise ValidationError("Date cannot be in the past")
 
 
 # User class
@@ -30,14 +30,20 @@ class User(AbstractUser):
         )]
     )
     email = models.EmailField(max_length=50, unique=True)
-    first_name = models.CharField(max_length=50, blank= False)
-    last_name = models.CharField(max_length=50, blank= False)
-    bio = models.CharField(max_length=500, blank= True)
-    location = models.CharField(max_length=70, blank= True)
-    birthday = models.DateField(validators=[PastDateValidator],blank =False, null =True)
-    created_at = models.DateTimeField(auto_now_add=True) ##? sure how to test this
-    liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
-    read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
+    first_name = models.CharField(max_length=50, blank=False)
+    last_name = models.CharField(max_length=50, blank=False)
+    bio = models.CharField(max_length=500, blank=True)
+    location = models.CharField(max_length=70, blank=True)
+    birthday = models.DateField(
+        validators=[PastDateValidator], blank=False, null=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True)  # ? sure how to test this
+    # blank true for development purposes.
+    liked_books = models.ManyToManyField(
+        'Book', related_name='liked_books', blank=True)
+    # blank true for development purposes.
+    read_books = models.ManyToManyField(
+        'Book', related_name='read_books', blank=True)
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -58,41 +64,45 @@ class User(AbstractUser):
         self.read_books.remove(book)
 
 
-
-
-
-#Book class
+# Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
+    publication_date = models.PositiveIntegerField(
+        validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
     genre = models.CharField(max_length=50, blank=False)
 
-#Book Ratings class
+# Book Ratings class
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
-    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
+    rating = models.IntegerField(
+        validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(
+        auto_now_add=True)  # ? not sure how to test this
 
-#Meeting class
+# Meeting class
 class Meeting(models.Model):
-    start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
-    end_time = models.DateTimeField(blank=False, validators=[FutureDateValidator])
+    start_time = models.DateTimeField(
+        blank=False, validators=[FutureDateValidator])
+    end_time = models.DateTimeField(
+        blank=False, validators=[FutureDateValidator])
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=70, blank=True)
     link = models.CharField(max_length=500, unique=True, blank=True)
 
-#Vote class
+# Vote class
 class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
-    start_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
-    end_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
+    start_time = models.DateTimeField(
+        validators=[FutureDateValidator], blank=False)
+    end_time = models.DateTimeField(
+        validators=[FutureDateValidator], blank=False)
 
     def add_event_vote(self, event_vote):
         self.event_vote.add(event_vote)
@@ -103,7 +113,7 @@ class Vote(models.Model):
     def event_vote_count(self):
         return self.event_vote.count()
 
-#Club event class
+# Club event class
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -112,18 +122,20 @@ class ClubEvent(models.Model):
     description = models.CharField(max_length=500, blank=True)
 
 
-#EventVote class
+# EventVote class
 class EventVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 
-#Club class
+# Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50,blank=False)
+    name = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=500, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+    created_at = models.DateTimeField(
+        auto_now_add=True)  # ? not sure how to test this
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(User, related_name='members')
     admins = models.ManyToManyField(User, related_name='admins')
     applicants = models.ManyToManyField(User, related_name='applicants')
@@ -188,39 +200,48 @@ class Club(models.Model):
 
 
 class BookRecommendation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
     rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class UserRecommendation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_user_to')
-    recommended_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommended_user_to_user')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_to_recommend_user_to')
+    recommended_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='recommended_user_to_user')
     diff = models.FloatField()
     method = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class ClubRecommendation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_club')
-    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='recommended_club_to_user')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_to_recommend_club')
+    club = models.ForeignKey(
+        Club, on_delete=models.CASCADE, related_name='recommended_club_to_user')
     diff = models.FloatField()
     method = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class BookRecommendationForClub(models.Model):
-    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='club_to_recommend_book')
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_club')
+    club = models.ForeignKey(
+        Club, on_delete=models.CASCADE, related_name='club_to_recommend_book')
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, related_name='recommended_book_to_club')
     rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class GlobalBookRecommendation(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='book_to_globally_recommend')
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, related_name='book_to_globally_recommend')
     weighted_rating = models.FloatField()
     number_of_ratings = models.IntegerField()
     flat_rating = models.FloatField()

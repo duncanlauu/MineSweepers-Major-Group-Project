@@ -4,7 +4,6 @@ from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.recommender_views import RecommenderAPI
 from .views.static_views import HelloWorldView
 from .views.authentication_views import BlacklistTokenView
-from django.contrib.auth import views as auth_views
 
 app_name = 'app'
 
