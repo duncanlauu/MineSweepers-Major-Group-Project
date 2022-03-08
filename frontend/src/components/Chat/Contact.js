@@ -10,7 +10,7 @@ const Contact = (props) => (
                 <img src={props.picURL} alt="" />
                 <div className="meta">
                     <p className="name">{props.name}</p>
-                    {/* <p className="preview">You just got LITT up, Mike.</p> */}
+                    {/* <p className="preview">last message...</p> */}
                 </div>
             </div>
         </li>

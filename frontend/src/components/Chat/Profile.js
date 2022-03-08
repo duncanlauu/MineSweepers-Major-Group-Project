@@ -1,6 +1,5 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React from 'react';
-import { connect } from 'react-redux';
 import Hoc from '../../hoc/hoc';
 
 export default function Profile() {

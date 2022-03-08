@@ -1,12 +1,7 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React, { useState, useEffect } from 'react'
-import { Spin, Icon } from 'antd';
-import { connect } from 'react-redux';
 import Contact from './Contact';
 import axiosInstance from '../../axios'
-
-// const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
 
 export default function Sidepanel(props) {
 
@@ -26,8 +21,8 @@ export default function Sidepanel(props) {
 
     const getUserChats = (e) => {
         const username = localStorage.username
-        axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`) //broken
-            .then(res => setChats(res.data)); // data type not sure
+        axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
+            .then(res => setChats(res.data));
     }
 
     const activeChats = chats.map(c => {

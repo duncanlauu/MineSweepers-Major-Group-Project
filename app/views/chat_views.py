@@ -52,18 +52,6 @@ class ChatUpdateView(UpdateAPIView):
     serializer_class = ChatSerializer
     permission_classes = (permissions.AllowAny, )
 
-    # def update(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     print(instance)
-    #     serializer = self.get_serializer(instance, data=request.data, partial=True)
-    #     print(serializer)
-        
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data,status=status.HTTP_200_OK)
-    #     print(serializer.errors)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class ChatDeleteView(DestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
@@ -76,12 +64,9 @@ class ChatLeaveView(APIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            print(request)
             user = request.user
-            chat_pk = self.kwargs['pk']
-            chat = Chat.objects.get(pk = chat_pk)
+            chat = Chat.objects.get(pk = self.kwargs['pk'])
             chat.participants.remove(user)
-            print("Totimusijebat")
             return Response(status=status.HTTP_200_OK)
         except:
              return Response(status=status.HTTP_400_BAD_REQUEST)
