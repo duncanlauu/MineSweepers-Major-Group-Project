@@ -1,6 +1,6 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React from 'react';
-import Hoc from '../../hoc/hoc';
+import Hoc from './hoc/hoc';
 
 export default function Profile() {
     return (

@@ -13,7 +13,6 @@ import SignUp from "./SignUp/SignUp";
 import Home from "./Home/Home";
 import FriendsPage from "./FriendsPage/FriendsPage";
 import Hello from "./Hello/Hello"
-import Chat from "./Chat/Chat.js"
 import ChatWrapper from "./Chat/ChatWrapper.js"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";

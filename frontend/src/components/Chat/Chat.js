@@ -1,8 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import WebSocketInstance from '../../websocket';
-import Hoc from '../../hoc/hoc';
-import { Link, useParams } from 'react-router-dom';
+import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
 
 class Chat extends React.Component {

@@ -40,28 +40,8 @@ class ChatDetailView(RetrieveAPIView):
     serializer_class = ChatSerializer
     permission_classes = (permissions.AllowAny, )
 
-
-class ChatCreateView(CreateAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-
-class ChatUpdateView(UpdateAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny, )
-
-class ChatDeleteView(DestroyAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-
 class ChatLeaveView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [permissions.AllowAny]
-
+    permission_classes = [permissions.IsAuthenticated]
     def delete(self, request, *args, **kwargs):
         try:
             user = request.user
