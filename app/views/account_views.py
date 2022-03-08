@@ -1,5 +1,4 @@
 from re import U
-from app.forms import PasswordForm, SignUpForm
 from app.models import Club, User
 from django.conf import settings
 from django.contrib import messages
