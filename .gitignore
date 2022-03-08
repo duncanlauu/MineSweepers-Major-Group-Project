@@ -1732,3 +1732,6 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,pycharm,sublimetext,visualstudio,visualstudiocode,xcode
 staticfiles
+
+main.js
+main.js.LICENSE.txt
