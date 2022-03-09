@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
 import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
@@ -13,42 +13,40 @@ export default function SignIn() {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
 
+    const usernameRef = useRef();
+    const errRef = useRef();
 
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+    const [errMsg, setErrMsg] = useState('');
 
+    useEffect(() => {
+        usernameRef.current.focus()
+    }, [])
 
-    const initialFormData = Object.freeze({
-        username: '',
-        password: '',
-    });
-
-    const [formData, updateFormData] = useState(initialFormData)
-
-    const handleChange = (e) => {
-        updateFormData({
-            ...formData,
-            [e.target.name]: e.target.value.trim(),
-        });
-    };
+    useEffect(() => {
+        setErrMsg('')
+    }, [user, password])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(formData)
+        // console.log(formData)
 
         axiosInstance
             .post(`token/`, {
-                username: formData.username,
-                password: formData.password,
+                username: user,
+                password: password,
             })
             .then((response) => {
-                const password = formData.password
-                const username = formData.username
+                // const password = formData.password
+                // const username = formData.username
                 const access_token = response.data.access
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
 
-                localStorage.setItem('username', username) // might not be necessary
-                setAuth({ username, password, access_token, refresh_token });
+                localStorage.setItem('username', user) // might not be necessary
+
 
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
@@ -56,6 +54,13 @@ export default function SignIn() {
                 console.log(response);
                 console.log(response.data);
             })
+        const access_token = localStorage.getItem('access_token')
+        const refresh_token = localStorage.getItem('refresh_token')
+        if (access_token) {
+            setUser('')
+            setPassword('')
+            setAuth({ user, password, access_token, refresh_token });
+        }
     }
 
     return (
@@ -68,6 +73,7 @@ export default function SignIn() {
                 </Navbar>
             </Row>
             <Container fluid>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>
@@ -80,16 +86,22 @@ export default function SignIn() {
                                     <Label>Username</Label>
                                     <Input
                                         name="username"
-                                        onChange={handleChange}
+                                        onChange={(e) => setUser(e.target.value)}
+                                        value={user}
+                                        ref={usernameRef}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        required
                                     />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label>Password</Label>
                                     <Input
                                         name="password"
-                                        onChange={handleChange}
+                                        type="text"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        value={password}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        required
                                     />
                                 </FormGroup>
                                 <FormGroup>
