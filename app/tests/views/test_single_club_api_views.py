@@ -10,7 +10,7 @@ from app.serializers import ClubSerializer
 from app.tests.helpers import LogInTester
 
 
-class PutSingleClubTestCase(TestCase, LogInTester):
+class GetSingleClubTestCase(APITestCase, LogInTester):
     """
     Test case for the GET /users/<id>/ endpoint
     """
@@ -18,6 +18,7 @@ class PutSingleClubTestCase(TestCase, LogInTester):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_club.json',]
+
 
     def setUp(self):
        self.valid_data = {
@@ -30,6 +31,23 @@ class PutSingleClubTestCase(TestCase, LogInTester):
        self.club = Club.objects.get(pk=1)
        self.applicant = User.objects.get(pk=4)
 
+    
+
+    def test_get_valid_single_club(self):
+            response = self.client.get(
+                reverse('get_club', kwargs={'id':1}))
+            club = Club.objects.get(pk=1)
+            serializer = ClubSerializer(club)
+            self.assertEqual(response.data, serializer.data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_invalid_single_club(self):
+            response = self.client.get(
+                reverse('get_club', kwargs={'id':20000}))
+            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+    
     def test_put_valid_details_update(self):
         response = self.client.put(
             reverse('put_club', kwargs={'id':1}),
@@ -133,11 +151,3 @@ class PutSingleClubTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
         
-
-
-        
-
-        
-        
-
-    

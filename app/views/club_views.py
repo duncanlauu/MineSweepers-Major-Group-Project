@@ -39,12 +39,9 @@ class SingleClub(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        try:
-            club = Club.objects.get(pk=kwargs['id'])
-            serializer = ClubSerializer(club)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Club.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        club = Club.objects.get(pk=kwargs['id'])
+        serializer = ClubSerializer(club)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     def update(self, request, club):
