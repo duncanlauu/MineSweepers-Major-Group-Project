@@ -5,13 +5,16 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 
 import axiosInstance from '../../axios'
-import { useNavigate } from "react-router";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
     const { setAuth } = useAuth();
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/home"
 
     const usernameRef = useRef();
     const errRef = useRef();
@@ -44,13 +47,10 @@ export default function SignIn() {
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
-
                 localStorage.setItem('username', user) // might not be necessary
-
-
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
-                navigate("/home") // change to redirect to dashboard
+                navigate(from, { replace: true })
                 console.log(response);
                 console.log(response.data);
             })
@@ -59,7 +59,7 @@ export default function SignIn() {
         if (access_token) {
             setUser('')
             setPassword('')
-            setAuth({ user, password, access_token, refresh_token });
+            setAuth({ user, password, access_token, refresh_token })
         }
     }
 
