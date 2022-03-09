@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
 import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import useAuth from '../hooks/useAuth'
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
@@ -9,7 +10,12 @@ import { useNavigate } from "react-router";
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
+
+
+
+
     const initialFormData = Object.freeze({
         username: '',
         password: '',
@@ -34,9 +40,16 @@ export default function SignIn() {
                 password: formData.password,
             })
             .then((response) => {
-                localStorage.setItem('access_token', response.data.access) // receiving the tokens from the api
-                localStorage.setItem('refresh_token', response.data.refresh)
-                localStorage.setItem('username', formData.username)
+                const password = formData.password
+                const username = formData.username
+                const access_token = response.data.access
+                const refresh_token = response.data.refresh
+                localStorage.setItem('access_token', access_token) // receiving the tokens from the api
+                localStorage.setItem('refresh_token', refresh_token)
+
+                localStorage.setItem('username', username) // might not be necessary
+                setAuth({ username, password, access_token, refresh_token });
+
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
                 navigate("/home") // change to redirect to dashboard
