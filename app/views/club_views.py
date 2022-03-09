@@ -1,64 +1,110 @@
-from django.conf import settings
-from django.views.generic.edit import FormView
-from django.contrib.auth import login
-from .mixins import LoginProhibitedMixin
-from app.forms import CreateClubForm
-from app.models import Club, User
-from django.urls import reverse
+from app.models import Club, User, Chat
+from app.helpers import remove_user_from_club, user_in_club, user_is_banned
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from app.serializers import ClubSerializer
+from rest_framework.permissions import IsAuthenticated
 
-@login_required
-def create_club(request):
-    current_user = request.user
-    if request.method == 'POST':
-        form = CreateClubForm(request.POST)
-        if form.is_valid():
-            club = form.save(current_user)
-            return redirect('home')
-    else:
-        form = CreateClubForm()
-    return render(request, 'create_club.html', {'form': form})
 
-@login_required
-def club_list(request):
-    clubs = Club.objects.filter(visibility=True)
-    return render(request, 'club_list.html', {'clubs': clubs})
+class Clubs(APIView):
 
-@login_required
-def user_club_list(request):
-    current_user = request.user.id
-    clubs = Club.objects.filter(Q(owner=current_user) | Q(admins=current_user) | Q(members=current_user))
-    return render(request, 'club_list.html', {'clubs': clubs})
+    permission_classes = [IsAuthenticated]
 
-# TODO: refactor with sessions for club_id
-@login_required
-def accept_applicant(request, club_id, applicant_id):
-    current_user = request.user
-    club = Club.objects.get(club_id=club_id)
-    if club.owner == current_user:
-        applicant = User.objects.get(pk=applicant_id)
-        club.remove_applicant(applicant)
-        club.add_member(applicant)
-    return render(request, "dummy.html")
+    def get(self, request, format=None):
+        clubs = Club.objects.filter(visibility=True)
+        serializer = ClubSerializer(clubs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-@login_required
-def reject_applicant(request, club_id, applicant_id):
-    current_user = request.user
-    club = Club.objects.get(club_id=club_id)
-    if club.owner == current_user:
-        applicant = User.objects.get(pk=applicant_id)
-        club.remove_applicant(applicant)
-    return render(request, "dummy.html")
+    def post(self, request, format=None):
+        partial_club = request.data
+        partial_club['owner'] = request.user.id
+        serializer = ClubSerializer(data=partial_club)
+        if serializer.is_valid():
+            new_club = serializer.save()
+            if new_club:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@login_required
-def ban_members(request, club_id, member_id):
-    current_user = request.user
-    club = Club.objects.get(club_id=club_id)
-    if club.owner == current_user:
-        member = User.objects.get(pk=member_id)
-        club.remove_member(member)
-        club.add_banned_user(member)
-    return render(request, "dummy.html")
+
+
+class SingleClub(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            club = Club.objects.get(pk=kwargs['id'])
+            serializer = ClubSerializer(club)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Club.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+    def update(self, request, club):
+        serializer = ClubSerializer(club, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        if 'action' not in kwargs:
+            return Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
+        action = kwargs['action']
+        club = Club.objects.get(pk=kwargs['id'])
+
+        user = User.objects.get(pk=kwargs['user_id'])
+        
+        if user:
+            club.remove_user_from_club(user)
+            if action == 'accept':
+                club.members.add(user)
+                return self.update(request, club)
+
+            elif action == 'remove':
+                club.remove_member(user)
+                return self.update(request, club)
+
+            elif action == 'reject':
+                club.remove_applicant(user)
+                return self.update(request, club)
+
+            elif action == 'ban':
+                club.add_banned_user(user)
+                return self.update(request, club)
+
+            elif action == 'unban':
+                club.remove_banned_user(user)
+                return self.update(request, club)
+
+            elif action == 'apply':
+                club.add_applicant(user)
+                return self.update(request, club)
+
+            elif action == 'transfer':
+                club.transfer_ownership(user)
+                return self.update(request, club)
+            
+            else:
+                return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
+                
+        elif action == 'update':
+            return self.update(request, club)
+
+        else:
+            return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
+                
+       
+
+    def delete(self, request, *args, **kwargs):
+        club = Club.objects.get(pk=kwargs['id'])
+        club.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
