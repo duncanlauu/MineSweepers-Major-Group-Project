@@ -8,8 +8,8 @@ def get_top_between_m_and_n_users_for_search(search_user, search_books, trainset
 
     users = get_actual_users(trainset)
     books = list(search_books)
-    books.append(search_user.liked_books())
-    items = list((book.isbn for book in books))
+    books.extend(search_user.liked_books.all())
+    items = list((book.ISBN for book in books))
     return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, search_user, users)
 
 
@@ -23,8 +23,8 @@ def get_top_between_m_and_n_clubs_for_search(search_user, search_books, search_c
     """Get the top n clubs using the search books"""
 
     books = list(search_books)
-    books.append(search_user.liked_books())
-    items = list((book.isbn for book in books))
+    books.extend(list(search_user.liked_books.all()))
+    items = list((book.ISBN for book in books))
     clubs = list(set(Club.objects.all()).difference(search_clubs))
     return get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, search_user)
 
