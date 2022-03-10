@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, get_trainset_from_dataset, load_trained_model
 from app.serializers import ClubSerializer, UserSerializer, BookSerializer
-from recommender_system.search_functions import get_top_between_m_and_n_users_for_search, get_top_between_m_and_n_clubs_for_search
+from app.recommender_system.search_functions import get_top_between_m_and_n_users_for_search, get_top_between_m_and_n_clubs_for_search
 import json
 
 
@@ -24,7 +24,7 @@ class SearchView(ListView, APIView):
     def get(self, request, *args, **kwargs):
         request = self.request
         # query = request.GET.get('q', None)
-        query = request.data['search_string']
+        query = request.query_params['search_query']
 
         
         if query is not None:
@@ -45,7 +45,6 @@ class SearchView(ListView, APIView):
             trainset = get_trainset_from_dataset(data)
             pred, algo = load_trained_model(dump_file_name)
          
-            
 
             #recomended_book_results 
             recommended_club_results = get_top_between_m_and_n_clubs_for_search(request.user, book_results, club_results, algo, 0, 20)
