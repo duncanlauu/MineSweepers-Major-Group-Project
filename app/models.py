@@ -124,6 +124,20 @@ class FriendRequest(models.Model):
         User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+#Book Manager class
+class BookManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(title__icontains=query) |
+                         Q(author__icontains=query) |
+                         Q(publisher__icontains=query) |
+                         Q(genre__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
 # Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
@@ -136,6 +150,8 @@ class Book(models.Model):
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
     genre = models.CharField(max_length=50, blank=False)
+
+    objects = BookManager()
 
 # Book Ratings class
 class BookRating(models.Model):
@@ -191,6 +207,18 @@ def get_new_club_chat():
     new_club_chat = Chat.objects.create(group_chat=True)
     return new_club_chat
 
+
+#Club Manager class
+class ClubManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(name__icontains=query) |
+                         Q(description__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
 # Club class
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -206,6 +234,8 @@ class Club(models.Model):
     public = models.BooleanField(default=True)
     club_chat = models.ForeignKey('Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
 
+    objects = ClubManager()
+
     def save(self, *args, **kwargs):
         is_new = not self.pk
         super().save(*args, **kwargs)
@@ -214,7 +244,7 @@ class Club(models.Model):
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
 
-    objects = ClubManager()
+   
 
     def add_member(self, user):
         user.add_club(self)
