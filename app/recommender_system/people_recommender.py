@@ -11,8 +11,8 @@ from app.recommender_system.file_management import get_all_related_users
 from app.recommender_system.genre_algo import get_isbns_for_a_genre
 
 
-def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
-    """Get the top n users for a user using favourite books as a measure
+def get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, m=0, n=10):
+    """Get the top between m and n users for a user using favourite books as a measure
 
     The number of books for which we compare the similarity between the users is
     calculated as 100000 / the number of users, because I discovered that a 100000
@@ -28,11 +28,17 @@ def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
 
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
 
-    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
+    return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, uid, users)
 
 
-def get_top_n_users_double_random(uid, trainset, algo, n=10):
-    """Get the top n users for a user using random users and random items"""
+def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
+    """Get the top n users for a user using favourite books as a measure"""
+
+    return get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, 0, n)
+
+
+def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
+    """Get the top between m and n users for a user using random users and random items"""
 
     users = get_actual_users(trainset)
     if uid in users:
@@ -41,11 +47,17 @@ def get_top_n_users_double_random(uid, trainset, algo, n=10):
 
     items = get_random_n_items(trainset, max_number_of_items)
 
-    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
+    return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, uid, users)
 
 
-def get_top_n_users_for_a_genre(uid, trainset, algo, genre, n=10):
-    """Get the top n users for a user using items from a given genre"""
+def get_top_n_users_double_random(uid, trainset, algo, n=10):
+    """Get the top users for a user using random users and random items"""
+
+    return get_top_between_m_and_n_users_double_random(uid, trainset, algo, 0, n)
+
+
+def get_top_between_m_and_n_users_for_a_genre(uid, trainset, algo, genre, m, n=10):
+    """Get the top between m and n users for a user using items from a given genre"""
 
     users = get_random_n_users(trainset, 100)
     if uid in users:
@@ -55,17 +67,30 @@ def get_top_n_users_for_a_genre(uid, trainset, algo, genre, n=10):
     all_items = get_isbns_for_a_genre(genre, trainset)
     items = get_random_n_items_from_a_list(all_items, max_number_of_items)
 
-    return get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users)
+    return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, uid, users)
 
 
-def get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users):
-    """Get top n users for a set of users and a set of items"""
+def get_top_n_users_for_a_genre(uid, trainset, algo, genre, n=10):
+    """Get the top n users for a user using items from a given genre"""
+
+    return get_top_between_m_and_n_users_for_a_genre(uid, trainset, algo, genre, 0, n)
+
+
+def get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, uid, users):
+    """Get top between m and n users for a set of users and a set of items"""
+
     users_with_diffs = []
     for user in users:
         diff = get_difference_for_two_users(uid1=uid, uid2=user, algo=algo, items=items)
         users_with_diffs.append((user, diff))
     users_with_diffs.sort(key=itemgetter(1))
-    return users_with_diffs[0:n]
+    return users_with_diffs[m:n]
+
+
+def get_top_n_users_for_given_items_and_given_users(algo, items, n, uid, users):
+    """Get top n users for a set of users and a set of items"""
+
+    return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, 0, n, uid, users)
 
 
 def get_difference_for_two_users(uid1, uid2, algo, items):
@@ -125,8 +150,8 @@ def get_average_diff_for_list_of_users(uid1, uids, algo, items):
     return diff / (len(items))
 
 
-def get_top_n_clubs_using_random_items(uid, algo, trainset, clubs, n=10):
-    """Get the top n clubs for a user using random items"""
+def get_top_between_m_and_n_clubs_using_random_items(uid, algo, trainset, clubs, m, n=10):
+    """Get the top between m and n clubs for a user using random items"""
 
     num_of_users = 0
     for club in clubs:
@@ -134,11 +159,17 @@ def get_top_n_clubs_using_random_items(uid, algo, trainset, clubs, n=10):
 
     items = get_random_n_items(trainset, int(100000 / num_of_users))
 
-    return get_top_n_clubs_for_items(algo, clubs, items, n, uid)
+    return get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid)
 
 
-def get_top_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, n=10):
-    """Get the top n clubs for a user using user's top books"""
+def get_top_n_clubs_using_random_items(uid, algo, trainset, clubs, n=10):
+    """Get the top n clubs for a user using random items"""
+
+    return get_top_between_m_and_n_clubs_using_random_items(uid, algo, trainset, clubs, 0, n)
+
+
+def get_top_between_m_and_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, m, n=10):
+    """Get the top between m and n clubs for a user using user's top books"""
 
     num_of_users = 0
     for club in clubs:
@@ -147,11 +178,17 @@ def get_top_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, n=10)
     max_number_of_items = int(100000 / num_of_users)
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
 
-    return get_top_n_clubs_for_items(algo, clubs, items, n, uid)
+    return get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid)
 
 
-def get_top_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, n=10):
-    """Get the top n clubs for a user using random books from a genre"""
+def get_top_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, n=10):
+    """Get the top n clubs for a user using user's top books"""
+
+    return get_top_between_m_and_n_clubs_using_top_items_for_a_user(uid, algo, trainset, clubs, 0, n)
+
+
+def get_top_between_m_and_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, m, n=10):
+    """Get the top between m and n clubs for a user using random books from a genre"""
 
     num_of_users = 0
     for club in clubs:
@@ -161,11 +198,17 @@ def get_top_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, n=10):
     all_items = get_isbns_for_a_genre(genre, trainset)
     items = get_random_n_items_from_a_list(all_items, max_number_of_items)
 
-    return get_top_n_clubs_for_items(algo, clubs, items, n, uid)
+    return get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid)
 
 
-def get_top_n_clubs_using_clubs_books(uid, algo, clubs, n=10):
-    """Get the top n clubs for a user using the club's books"""
+def get_top_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, n=10):
+    """Get the top n clubs for a user using random books from a genre"""
+
+    return get_top_between_m_and_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre, 0, n)
+
+
+def get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n=10):
+    """Get the top between m and n clubs for a user using the club's books"""
 
     clubs_with_diffs = []
     for club in clubs:
@@ -173,18 +216,24 @@ def get_top_n_clubs_using_clubs_books(uid, algo, clubs, n=10):
         items = list((book.ISBN for book in club.books.all()))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
-    return clubs_with_diffs[0:n]
+    return clubs_with_diffs[m:n]
 
 
-def get_top_n_clubs_for_items(algo, clubs, items, n, uid):
-    """Get the top n clubs for a user for a list of items"""
+def get_top_n_clubs_using_clubs_books(uid, algo, clubs, n=10):
+    """Get the top n clubs for a user using the club's books"""
+
+    return get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, 0, n)
+
+
+def get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid):
+    """Get the top between m and n clubs for a user for a list of items"""
 
     clubs_with_diffs = []
     for club in clubs:
         uids = list((user.id for user in get_all_related_users(club)))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
-    return clubs_with_diffs[0:n]
+    return clubs_with_diffs[m:n]
 
 
 def get_top_n_users_test(algo, trainset, genre='fiction'):
