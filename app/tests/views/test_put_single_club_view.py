@@ -17,7 +17,17 @@ class PutSingleClubTestCase(TestCase):
 
     def setUp(self):
         self.valid_data = {
-
+            'name': 'Joe\'s club but better',
+            'description': "This is a club for people who don't like to read science fiction.",
+            "created_at": "2015-03-05T20:04:00Z",
+            "owner": 1,
+            "members": [3],
+            "admins": [2],
+            "applicants": [5],
+            "banned_users": [4],
+            "books": ["978-0-7356-6745-7"],
+            "visibility": False,
+            "public": False
         }
 
         self.invalid_data = {
@@ -28,7 +38,7 @@ class PutSingleClubTestCase(TestCase):
 
     def test_put_valid_details_update(self):
         response = self.client.put(
-            reverse('app:update_club', kwargs={'id': 1}),
+            reverse('app:update_club', kwargs={'id': 1, 'action': 'update'}),
             json.dumps(self.valid_data),
             content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)

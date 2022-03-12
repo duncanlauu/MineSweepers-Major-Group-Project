@@ -12,8 +12,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class Clubs(APIView):
-
-    permission_classes = [IsAuthenticated, AllowAny]
+    permission_classes = [AllowAny]
 
     def get(self, request, format=None):
         clubs = Club.objects.filter(visibility=True)
@@ -33,10 +32,8 @@ class Clubs(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class SingleClub(APIView):
-
-    permission_classes = [IsAuthenticated, AllowAny]
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         try:
@@ -46,12 +43,12 @@ class SingleClub(APIView):
         except Club.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-
     def update(self, request, club):
         serializer = ClubSerializer(club, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):
@@ -60,9 +57,8 @@ class SingleClub(APIView):
         action = kwargs['action']
         club = Club.objects.get(pk=kwargs['id'])
 
-        user = User.objects.get(pk=kwargs['user_id'])
-        
-        if user:
+        if 'user_id' in kwargs:
+            user = User.objects.get(pk=kwargs['user_id'])
             club.remove_user_from_club(user)
             if action == 'accept':
                 club.members.add(user)
@@ -91,20 +87,17 @@ class SingleClub(APIView):
             elif action == 'transfer':
                 club.transfer_ownership(user)
                 return self.update(request, club)
-            
+
             else:
                 return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
-                
+
         elif action == 'update':
             return self.update(request, club)
 
         else:
             return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
-                
-       
 
     def delete(self, request, *args, **kwargs):
         club = Club.objects.get(pk=kwargs['id'])
         club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
