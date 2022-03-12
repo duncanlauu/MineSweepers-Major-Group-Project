@@ -1,16 +1,9 @@
-from unittest import mock
 from rest_framework import serializers
 from .models import User, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
-    BookRecommendationForClub
+    BookRecommendationForClub, Post, Comment, Reply
 
 
 class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-
-class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
@@ -24,16 +17,21 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def update(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model.get(id=validated_data['id'])
+        if password is not None:
+            instance.set_password(password)
+        for k, v in validated_data.items():
+            setattr(instance, k, v)
+        instance.save()
+        return instance
+
 
 class BookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRecommendation
         fields = '__all__'
-
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
 
 
 class BookRecommendationForClubSerializer(serializers.ModelSerializer):
@@ -41,21 +39,11 @@ class BookRecommendationForClubSerializer(serializers.ModelSerializer):
         model = BookRecommendationForClub
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-
 
 class UserRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRecommendation
         fields = '__all__'
-
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
 
 
 class ClubRecommendationSerializer(serializers.ModelSerializer):
@@ -63,18 +51,26 @@ class ClubRecommendationSerializer(serializers.ModelSerializer):
         model = ClubRecommendation
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
-
 
 class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalBookRecommendation
         fields = '__all__'
 
-    def create(self, validated_data):
-        instance = self.Meta.model(**validated_data)
-        instance.save()
-        return instance
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'
