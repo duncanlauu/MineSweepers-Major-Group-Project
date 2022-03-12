@@ -3,7 +3,7 @@ import time
 
 from faker import Faker
 from django.core.management.base import BaseCommand
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from pandas import read_csv
 from app.models import Book, User, BookRating, Club
 
@@ -21,30 +21,31 @@ class Command(BaseCommand):
 def seed_books():
     """Seed all the books from the csv file with genres
 
-    NOTE: Takes about 13 minutes on Mikolaj's computer
+    NOTE: Takes about 2 minutes on Mikolaj's computer
 
     """
 
     # Load data from csv file
-    filepath = 'app/csv_files/BX_Books_genres.csv'
+    filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
     total = len(df)
+    books_db = []
     for i in range(total):
         book = df.iloc[i]
-        Book.objects.create(
-            ISBN=book['ISBN'],
-            title=book['Book-Title'],
-            author=book['Book-Author'],
-            publication_date=book['Year-Of-Publication'],
-            publisher=book['Publisher'],
-            image_links_large=book['Image-URL-L'],
-            image_links_medium=book['Image-URL-M'],
-            image_links_small=book['Image-URL-S'],
-            genre=book['Genre']
-        )
+        book_db = Book(ISBN=book['ISBN'])
+        book_db.title = book['Book-Title']
+        book_db.author = book['Book-Author']
+        book_db.publication_date = book['Year-Of-Publication']
+        book_db.publisher = book['Publisher']
+        book_db.image_links_large = book['Image-URL-L']
+        book_db.image_links_medium = book['Image-URL-M']
+        book_db.image_links_small = book['Image-URL-S']
+        book_db.genre = book['Genre']
         if (i + 1) % 10000 == 0:
             print(f'{i + 1}/{total} inserted...')
+        books_db.append(book_db)
+    Book.objects.bulk_create(books_db)
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
@@ -60,12 +61,13 @@ def seed_users(number=150):
     books = list(Book.objects.all())
     while user_counter < number:
         try:
-            create_user(faker, books)
-            user_counter += 1
+            with transaction.atomic():
+                create_user(faker, books)
+                user_counter += 1
         except IntegrityError:
             print("This username was already taken")
         if user_counter % 10 == 0:
-            print(f'{user_counter}/{number} inserted...')
+            print(f'{user_counter}/{number} users inserted...')
     print('----- ALL USERS INSERTED TO DATABASE -----')
 
 
