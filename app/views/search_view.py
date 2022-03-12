@@ -9,7 +9,7 @@ from app.recommender_system.file_management import get_combined_data, get_datase
     get_trainset_from_dataset, load_trained_model
 from app.serializers import ClubSerializer, UserSerializer, BookSerializer
 from app.recommender_system.search_functions import get_top_between_m_and_n_users_for_search, \
-    get_top_between_m_and_n_clubs_for_search
+    get_top_between_m_and_n_clubs_for_search, order_books_based_on_recommendations
 import json
 
 
@@ -28,11 +28,10 @@ class SearchView(ListView, APIView):
 
         if 'search_query' in request.query_params and request.query_params['search_query'] != '':
             query = request.query_params['search_query']
-            book_results = Book.objects.search(query)[:10]
+            book_results = Book.objects.search(query)
             club_results = Club.objects.search(query)[:10]
             user_results = User.objects.search(query)[:10]
 
-            serialized_book_results = BookSerializer(book_results, many=True)
             serialized_club_results = ClubSerializer(club_results, many=True)
             serialized_user_results = UserSerializer(user_results, many=True)
 
@@ -43,11 +42,14 @@ class SearchView(ListView, APIView):
             trainset = get_trainset_from_dataset(data)
             pred, algo = load_trained_model(dump_file_name)
 
+            ordered_books = order_books_based_on_recommendations(book_results, algo, request.user.id)[:10]
+
+            serialized_book_results = BookSerializer(ordered_books, many=True)
+
             start = time.time()
-            # recommended_book_results
-            recommended_club_results = get_top_between_m_and_n_clubs_for_search(request.user, book_results,
+            recommended_club_results = get_top_between_m_and_n_clubs_for_search(request.user, ordered_books,
                                                                                 club_results, algo, 0, 20)
-            recommended_user_results = get_top_between_m_and_n_users_for_search(request.user, book_results, trainset,
+            recommended_user_results = get_top_between_m_and_n_users_for_search(request.user, ordered_books, trainset,
                                                                                 algo, 0, 20)
 
             serialized_recommended_club_results = ClubSerializer(
@@ -59,7 +61,6 @@ class SearchView(ListView, APIView):
                 "books": serialized_book_results.data,
                 "clubs": serialized_club_results.data,
                 "users": serialized_user_results.data,
-                # "recommended_books": recommended_book_results.data,
                 "recommended_clubs": serialized_recommended_club_results.data,
                 "recommended_users": serialized_recommended_user_results.data
             }

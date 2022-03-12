@@ -13,7 +13,7 @@ from .views.chat_views import (
     ChatLeaveView
 )
 from .views.club_views import Clubs, SingleClub
-from .views.search_views import SearchView
+from .views.search_view import SearchView
 
 app_name = 'app'
 

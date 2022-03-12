@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from app.models import Club
 from app.recommender_system.people_recommender import get_actual_users, \
     get_top_between_m_and_n_users_for_given_items_and_given_users, get_top_between_m_and_n_clubs_for_items
@@ -33,3 +35,16 @@ def get_top_n_clubs_for_search(search_user, search_books, search_clubs, algo, n=
     """Get the top n clubs using the search books"""
 
     return get_top_between_m_and_n_clubs_for_search(search_user, search_books, search_clubs, algo, 0, n)
+
+
+def order_books_based_on_recommendations(books, algo, uid):
+    """Sort books from a given list based on the predicted ratings for a user"""
+
+    books_with_ratings = []
+    for book in books:
+        books_with_ratings.append((book, algo.predict(uid=uid, iid=book.ISBN).est))
+    books_with_ratings.sort(key=itemgetter(1))
+    ordered_books = []
+    for book, rating in books_with_ratings:
+        ordered_books.append(book)
+    return ordered_books
