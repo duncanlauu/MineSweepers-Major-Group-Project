@@ -7,8 +7,6 @@ from rest_framework.test import APIClient, APITestCase
 from django.urls import reverse
 from app.models import User
 from app.serializers import RegisterUserSerializer
-from app.tests.helpers import LogInTester
-
 
 class SingleUserViewTestCase(APITestCase):
    

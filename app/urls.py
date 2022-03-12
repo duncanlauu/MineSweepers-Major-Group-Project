@@ -48,7 +48,7 @@ urlpatterns = [
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
     path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('clubs/', Clubs.as_view(), name='clubs'),
-    path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
-    path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
-    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
+    path('clubs/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
+    path('clubs/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
+    path('clubs/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
 ]
