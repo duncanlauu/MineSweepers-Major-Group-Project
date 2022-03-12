@@ -33,7 +33,9 @@ class WebSocketService {
   }
 
   disconnect() {
-    this.socketRef.close();
+    if(this.socketRef != null){
+      this.socketRef.close();
+    }
   }
 
   socketNewMessage(data) {

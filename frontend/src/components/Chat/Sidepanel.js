@@ -22,7 +22,11 @@ export default function Sidepanel(props) {
     const getUserChats = (e) => {
         const username = localStorage.username
         axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
-            .then(res => setChats(res.data));
+            .then(res => {
+                console.log(res.data)
+                setChats(res.data)
+            } );
+        
     }
 
     const activeChats = chats.map(c => {
@@ -30,12 +34,47 @@ export default function Sidepanel(props) {
         return (
             <Contact
                 key={c.id}
-                name="Chat name"
-                picURL="http://emilcarlsson.se/assets/louislitt.png"
-                status="busy"
-                chatURL={`/chat/${c.id}`} />
+                name={getChatName(c)}//"asd"//{c.name == "" ? c.name : c.participants}
+                picURL={getChatGravatar(c)}
+                status="busy" // get rid of?
+                chatURL={`/chat/${c.id}`} 
+                lastMessage={getChatLastMessage(c)}
+                />
         )
     })
+
+    function getChatName(chat){
+        let chatName = "undefined";
+        if(chat.group_chat == false){
+            console.log(localStorage.username)
+            console.log(chat.participants.length)
+            if(chat.participants.length == 2){
+                for(const participant of chat.participants){
+                    if(participant.username != localStorage.username){
+                        chatName = participant.username;
+                    }
+                }
+            }
+        } else {
+            chatName = chat.name;
+        }
+        return chatName;
+    }
+
+    function getChatGravatar(chat){
+        //TO BE IMPLEMENTED
+        return "http://emilcarlsson.se/assets/louislitt.png";
+    }
+
+    function getChatLastMessage(chat){
+        let lastMessage = "";
+        if(chat.messages.length > 0){
+            lastMessage = chat.messages.slice(-1).pop().content;
+        }
+        return lastMessage;
+    }
+
+    
 
     return (
         <div id="sidepanel" >

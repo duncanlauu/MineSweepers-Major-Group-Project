@@ -43,6 +43,7 @@ export default class App extends Component {
             <Route path='/password_reset/' element={<PasswordReset />}></Route>
             <Route path='/password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
             <Route path="/chat/:chatID/" element={<ChatWrapper />}></Route>
+            <Route path="/chat/" element={<ChatWrapper />}></Route>
           </Routes>
           {/* <Footer /> */}
         </React.StrictMode>
