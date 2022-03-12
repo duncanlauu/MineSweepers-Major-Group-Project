@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import include, path
 from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
+from app.views.friend_views import FriendRequestsView, FriendView, FriendsView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.recommender_views import RecommenderAPI

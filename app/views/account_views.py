@@ -67,7 +67,7 @@ class CreateUser(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        reg_serializer = RegisterUserSerializer(data=request.data)
+        reg_serializer = UserSerializer(data=request.data)
         if reg_serializer.is_valid():
             newuser = reg_serializer.save()
             if newuser:
