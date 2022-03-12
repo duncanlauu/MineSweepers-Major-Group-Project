@@ -31,8 +31,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     # Chat
     path('chat/', ChatListView.as_view()),
-    path('chat/<pk>', ChatDetailView.as_view()),
-    path('chat/<pk>/leave/', ChatLeaveView.as_view()),
+    path('chat/<pk>/', ChatDetailView.as_view()),
+    path('chat/leave/<pk>/', ChatLeaveView.as_view()),
 
     # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),

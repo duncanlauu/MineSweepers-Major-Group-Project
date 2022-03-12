@@ -1,5 +1,6 @@
-from django.core import mail
+from os import access
 from rest_framework import status
+from django.urls import reverse
 from rest_framework.test import APITestCase
 from app.models import User, Chat
 from app.serializers import ChatSerializer
@@ -13,6 +14,7 @@ class PasswordResetTest(APITestCase):
 
     login_url = "/api/token/"
     chat_url = "/api/chat/"
+    leave_chat_url = "/api/chat/leave/"
 
 
     def setUp(self):
@@ -38,22 +40,38 @@ class PasswordResetTest(APITestCase):
         self.assertEqual(len(response.data), len(allUserChats))
 
     def test_get_default_chat(self):
-        default_chat_url = self.chat_url + f"{self.default_chat.pk}"
+        default_chat_url = self.chat_url + f"{self.default_chat.pk}/"
         response = self.client.get(default_chat_url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = ChatSerializer(self.default_chat)
         self.assertEqual(response.data, serializer.data)
+        print(response.data)
 
     def test_leave_default_chat(self):
+
+        # self.client.force_login(self.user)
         # print(User.objects.get(username='johndoe').password)
-        # leave_default_chat_url = self.chat_url + f"{self.default_chat.pk}/leave"
+        leave_default_chat_url = self.leave_chat_url + f"{self.default_chat.pk}/"
         # print(User.objects.all())
-        # login_data = dict(self.login_data)
+        login_data = dict(self.login_data)
+        login_data["password"] = "Password123"
         # print(login_data)
-        # response = self.client.post(self.login_url, login_data, format="json")
-        # print(response.data)
+        response = self.client.post(self.login_url, login_data, format="json")
+        print(response.data['access'])
+        access_token = response.data['access']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
+
+        response = self.client.delete(leave_default_chat_url, format="json")
+        print(response)
+
+        # actually works MADD
+
+        
+        # response = self.client.get(
+        #         reverse('chat/1/', kwargs={'id':1}))
         # self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # response = self.client.get(leave_default_chat_url, format="json")
-        # self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
         # serializer = ChatSerializer(self.default_chat)
         # self.assertEqual(response.data, serializer.data)

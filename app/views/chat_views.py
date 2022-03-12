@@ -41,7 +41,7 @@ class ChatDetailView(RetrieveAPIView):
     permission_classes = (permissions.AllowAny, )
 
 class ChatLeaveView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def delete(self, request, *args, **kwargs):
         try:
             user = request.user
