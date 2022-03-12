@@ -5,37 +5,25 @@ import Nav from '../Nav/Nav';
 import ClubProfileTabs from './ClubProfileTabs.js';
 import Gravatar from 'react-gravatar';
 import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
 
-export default class ClubProfile extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            club_id: this.props.club_id,
-            name: this.props.name,
-            description: this.props.description
-        }
-    }
+export default function ClubProfile() {
+        
+    const { club_id } = useParams(); // Gets the id provided in the URL
+    console.log("Club ID: " + club_id);
+    const [club, setClub] = React.useState(null);
 
-    getClubDetails = (club_id) => {
-        console.log(club_id)
-        axiosInstance.get(`singleclub/`+club_id, {
-            headers: {
-                "content-type": "application/json"
+    React.useEffect(() => {
+        axiosInstance.get(`/singleclub/${club_id}`).then(
+            res => {
+                console.log(res);
+                setClub(res.data);
             }
-        }).then(res => {
-            console.log(res);
-            this.setState({
-                name: res.data.results[0].name,
-                description: res.data.results[0].description
-            })
-        })
-    }
+        );
+    }, []);
 
-    componentDidMount() {
-        this.getClubDetails(this.state.club_id);
-    }
-
-    render() {
+    if (!club) return null;
+    
         return(
             <div>
                 <Container fluid>
@@ -47,7 +35,7 @@ export default class ClubProfile extends React.Component {
                         <Col xs={6}>
                             <ProfileContainer>
                                 <ProfileHeader>
-                                    {this.state.name}
+                                    {club.name}
                                     <ClubProfileTabs />
                                 </ProfileHeader>
                             </ProfileContainer>
@@ -57,5 +45,5 @@ export default class ClubProfile extends React.Component {
                 </Container>
             </div>
         )
-    }
+    
 }

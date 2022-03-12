@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap';
 import Gravatar from 'react-gravatar';
 import { BookProfile } from './ClubProfileElements';
+import axiosInstance from '../../axios';
 
 export default class LandingProfile extends React.Component {
     constructor(props) {
@@ -11,6 +12,11 @@ export default class LandingProfile extends React.Component {
             applied: false
         };
     }
+
+    applyToClub = (id, e) => {
+        const action = 'apply'
+        axiosInstance.put(`singleclub/${id}/${action}/${club_id}`)
+    } 
 
     toggleClass() {
         const currentState = this.state.applied

@@ -35,7 +35,7 @@ export default class App extends Component {
             <Route path='/log_in/' element={<Login />}></Route>
             <Route path='/log_out/' element={<Logout />}></Route>
             <Route path='/error/' element={<Error404 />}></Route>
-            <Route path='/club_profile/:id' element={<ClubProfile />}></Route>
+            <Route path='/club_profile/:club_id' element={<ClubProfile />}></Route>
             <Route path='/sign_up/' element={<SignUp />}></Route>
             <Route path='/create_club/' element={<CreateClub />}></Route>
             <Route path='/notifications/' element={<Notifications />}></Route>
