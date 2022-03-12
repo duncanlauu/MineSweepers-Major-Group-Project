@@ -8,12 +8,12 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from app.serializers import ClubSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class Clubs(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AllowAny]
 
     def get(self, request, format=None):
         clubs = Club.objects.filter(visibility=True)
@@ -36,7 +36,7 @@ class Clubs(APIView):
 
 class SingleClub(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AllowAny]
 
     def get(self, request, *args, **kwargs):
         try:
