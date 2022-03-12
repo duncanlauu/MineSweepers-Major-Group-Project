@@ -33,7 +33,7 @@ class RecommenderAPITestCase(APITestCase):
         seed_users()
         seed_ratings()
         seed_clubs()
-        self.csv_file_path = 'app/files/BX-Book-Ratings.csv'
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
         self.dump_file_path = 'app/files/dump_file'
         self.dataframe = get_combined_data(self.csv_file_path)
         self.data = get_dataset_from_dataframe(self.dataframe)
