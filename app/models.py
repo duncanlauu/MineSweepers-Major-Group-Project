@@ -41,7 +41,7 @@ class User(AbstractUser):
     liked_books = models.ManyToManyField('Book', related_name='liked_books', blank=True) # blank true for development purposes.
     read_books = models.ManyToManyField('Book', related_name='read_books', blank=True) # blank true for development purposes.
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
-    friends = models.ManyToManyField("User")
+    friends = models.ManyToManyField("User", blank=True)
 
     def add_liked_book(self, book):
         self.liked_books.add(book)

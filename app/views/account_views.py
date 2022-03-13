@@ -20,11 +20,15 @@ class CreateUser(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        print("Got here")
         reg_serializer = RegisterUserSerializer(data=request.data)
+        print("serializer")
         if reg_serializer.is_valid():
+            print("serializer valid")
             newuser = reg_serializer.save()
             if newuser:
                 return Response(status=status.HTTP_201_CREATED)
+        print(reg_serializer.errors)
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST) # need to send back more information when something goes wrong. Data missing? Email/ username already in use?
 
     def get(self, request, *args, **kwargs):
