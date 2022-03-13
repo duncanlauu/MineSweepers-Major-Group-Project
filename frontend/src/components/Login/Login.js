@@ -5,11 +5,14 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
+import useGetUser from '../../helpers';
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
     const navigate = useNavigate();
+    const user = useGetUser();
+
     const initialFormData = Object.freeze({
         username: '',
         password: '',
@@ -23,6 +26,14 @@ export default function SignIn() {
             [e.target.name]: e.target.value.trim(),
         });
     };
+
+    const postRecommenderCalculation = (user) => {
+        axiosInstance
+            .post(`recommender/0/10/${user.id}/top_n_users_random_books/`)
+            .then((res) => {
+                navigate("/friends_page")
+            })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -39,6 +50,9 @@ export default function SignIn() {
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token. 
                     'JWT ' + localStorage.getItem('access_token')
                 navigate("/home") // change to redirect to dashboard
+                
+                console.log(user.id)
+                postRecommenderCalculation(user)
                 // console.log(response);
                 // console.log(response.data);
             })
