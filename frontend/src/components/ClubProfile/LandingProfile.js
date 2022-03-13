@@ -15,24 +15,20 @@ export default class LandingProfile extends React.Component {
         };
     }
 
-    ApplyToClub = (id, e) => {
-        // currentUser = useGetUser(); --> Returns not defined
-        // console.log("Current user: " + currentUser)
+    applyToClub = (id, e) => {
         const action = 'apply'
-        const user_id = 1
+        const user_id = 3
         axiosInstance.put(
-            `clubs/2/apply}/1`, id 
-            // {
-            //     data: {
-            //         action: 'apply',
-            //         id: 1,
-            //         user_id: 1
-            //     }
-            // }
-        ).then(res => {
-            console.log(res);
-        })
-        
+            `clubs/2/apply/3`, {}
+        ).then(
+            res => {
+                console.log(res);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        )
     }
 
     toggleClass() {
@@ -78,7 +74,7 @@ export default class LandingProfile extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={(e) => this.ApplyToClub(1)} style={applyStyle}>{buttonState}</Button>
+                    <Button onClick={(e) => this.applyToClub(1)} style={applyStyle}>{buttonState}</Button>
                 </Row>
                 <Row>
                     <h3 style={{ fontFamily:"Source Sans Pro", marginTop:"2rem", fontWeight:"600" }}>Reading History</h3>
