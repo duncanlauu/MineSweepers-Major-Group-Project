@@ -14,7 +14,7 @@ export default function ClubProfile() {
     const [club, setClub] = React.useState(null);
 
     React.useEffect(() => {
-        axiosInstance.get(`/singleclub/${club_id}`).then(
+        axiosInstance.get(`clubs/${club_id}`).then(
             res => {
                 console.log(res);
                 setClub(res.data);

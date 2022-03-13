@@ -21,14 +21,17 @@ export default class LandingProfile extends React.Component {
         const action = 'apply'
         const user_id = 1
         axiosInstance.put(
-            `singleclub/${id}/${action}/${user_id}`, {
-                data: {
-                    action: 'apply',
-                    id: 1,
-                    user_id: 1
-                }
-            }
-        )
+            `clubs/2/apply}/1`, id 
+            // {
+            //     data: {
+            //         action: 'apply',
+            //         id: 1,
+            //         user_id: 1
+            //     }
+            // }
+        ).then(res => {
+            console.log(res);
+        })
         
     }
 
@@ -75,7 +78,7 @@ export default class LandingProfile extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={this.ApplyToClub} style={applyStyle}>{buttonState}</Button>
+                    <Button onClick={(e) => this.ApplyToClub(1)} style={applyStyle}>{buttonState}</Button>
                 </Row>
                 <Row>
                     <h3 style={{ fontFamily:"Source Sans Pro", marginTop:"2rem", fontWeight:"600" }}>Reading History</h3>
