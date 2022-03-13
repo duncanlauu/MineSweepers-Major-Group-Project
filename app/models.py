@@ -179,7 +179,7 @@ class Club(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(User, related_name='members', blank=True)
     admins = models.ManyToManyField(User, related_name='admins', blank=True)
     applicants = models.ManyToManyField(User, related_name='applicants', blank=True)
@@ -211,6 +211,8 @@ class Club(models.Model):
         return self.members.count()
 
     def add_admin(self, user):
+        self.remove_member(user)
+        self.remove_applicant(user)
         self.admins.add(user)
 
     def remove_admin(self, user):
@@ -232,12 +234,15 @@ class Club(models.Model):
         return self.members.count() + self.admins.count() + 1
 
     def add_banned_user(self, user):
+        # self.remove_member(user)
+        self.members.remove(user)
         user.remove_club(self)
         self.banned_users.add(user)
-
+        
     def remove_banned_user(self, user):
         user.add_club(self)
         self.banned_users.remove(user)
+        self.add_member(user)
 
     def banned_user_count(self):
         return self.banned_users.count()
@@ -265,7 +270,12 @@ class Club(models.Model):
 
     def transfer_ownership(self, user):
         self.add_admin(self.owner)
+        self.remove_admin(user)
+        self.remove_member(user)
         self.owner = user
+        self.save()
+        
+
 
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):

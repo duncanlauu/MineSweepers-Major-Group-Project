@@ -37,24 +37,18 @@ urlpatterns = [
     # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),
     path('recommender/<str:action>/', RecommenderAPI.as_view(), name='recommender_action'),
-    path('recommender/<int:n>/<int:id>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n'),
-    path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+    path('recommender/<int:m>/<int:n>/<int:id>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n'),
+    path('recommender/<int:m>/<int:n>/<int:id>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
          name='recommender_top_n_for_genre'),
-    path('recommender/<int:n>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n_global'),
-    path('recommender/<int:n>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+    path('recommender/<int:m>/<int:n>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n_global'),
+    path('recommender/<int:m>/<int:n>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
          name='recommender_top_n_global_for_genre'),
 
-    #Club API
+    # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
     path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('clubs/', Clubs.as_view(), name='clubs'),
-    path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
-    path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
-    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
-
-
-
-
-
-
+    path('clubs/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
+    path('clubs/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
+    path('clubs/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
 ]
