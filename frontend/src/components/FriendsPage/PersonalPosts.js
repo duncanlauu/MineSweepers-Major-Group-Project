@@ -25,6 +25,8 @@ export default function PersonalPosts(props) {
             })
             .catch(error => console.error(error));
     }
+
+    
     
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
@@ -38,11 +40,15 @@ export default function PersonalPosts(props) {
                                 <Row>
                                     <Col>
                                         <PostTitle>
-                                            <h1> {personalPost.title} </h1>
+                                            <h2> {personalPost.title} </h2>
                                         </PostTitle>
                                         <PostContent>
-                                            <h3> {personalPost.content} </h3>
+                                            <h4> {personalPost.content} </h4>
                                         </PostContent>
+
+                                        <div>
+                                            <p> Comment section </p>
+                                        </div>
                                     </Col>
                                 </Row>
                             </SinglePostContainer>

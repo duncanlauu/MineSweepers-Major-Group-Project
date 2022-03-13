@@ -13,8 +13,8 @@ export default function PersonalPostForm(props) {
 
     const handleChange = (e) => {
         updateFormData({
-          ...formData, // ... is spread syntax. Slits the iterable into individual elements
-          [e.target.name]: e.target.value.trim(), // Referring to the forms elements name attribute. Trimming whitespace
+          ...formData, 
+          [e.target.name]: e.target.value.trim(), 
         })
       }
 
@@ -45,51 +45,53 @@ export default function PersonalPostForm(props) {
 
 
                     <Container>
-                    <Form> {/*  might have to add more info here */}
-                        <Row>
-                        <Col xs="6">
-                            <FormGroup>
-                                <Label for="club_id"> Club ID </Label>
-                                <Input
-                                    id="club_id"
-                                    name="club_id" // name to target from JS
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col xs="6">
-                            <FormGroup>
-                                <Label for="title"> Title </Label>
-                                <Input
-                                    id="title"
-                                    name="title"
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                />
-                            </FormGroup>
-                        </Col>
-                        </Row>
+                    <Form> 
+                        
+                        <FormGroup>
+                            <Label for="title"> Title </Label>
+                            <Input
+                                id="title"
+                                name="title"
+                                onChange={handleChange}
+                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                            />
+                        </FormGroup>
 
                         <FormGroup>
                             <Label for="content"> Content </Label>
-                            <Input
+                            <Input type="textarea" rows="5"
                                 id="content"
                                 name="content"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
                             />
                         </FormGroup>
+                        
+                        <Row>
+                        <Col xs="3">
+                            <FormGroup>
+                                <Label for="club_id"> Club ID </Label>
+                                <Input
+                                    id="club_id"
+                                    name="club_id" 
+                                    onChange={handleChange}
+                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                />
+                            </FormGroup>
+                        </Col>
 
-                        <FormGroup>
-                            <Label for="image_link"> Image link </Label>
-                            <Input
-                                id="image_link"
-                                name="image_link"
-                                onChange={handleChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            />
-                        </FormGroup>
+                        <Col xs="9">
+                            <FormGroup>
+                                <Label for="image_link"> Image link </Label>
+                                <Input
+                                    id="image_link"
+                                    name="image_link"
+                                    onChange={handleChange}
+                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                />
+                            </FormGroup>
+                        </Col>
+                        </Row>
 
                         <FormGroup>
                             <Label for="book_link"> Book link </Label>
@@ -107,7 +109,7 @@ export default function PersonalPostForm(props) {
                                 type="submit"
                                 className="submit"
                                 onClick={handlePostFriendRequest}
-                                style={{ backgroundColor: "#653FFD", width: "7rem" }}
+                                style={{ width: "7rem" }}
                                 >
                                 Post!
                                 </Button>

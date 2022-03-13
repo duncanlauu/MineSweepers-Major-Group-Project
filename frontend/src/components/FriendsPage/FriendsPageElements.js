@@ -38,7 +38,7 @@ overflow-y: scroll;
 `
 export const SinglePostContainer = styled.div`
 background-color: #FFF;
-height: 20rem;
+height: 25rem;
 width: 30rem;
 border-radius: 10px;
 border: 2px solid;
@@ -48,7 +48,7 @@ overflow-y: scroll;
 
 export const PostContent = styled.div`
 background-color: #ccc;
-height: 10rem;
+height: 8rem;
 width: 30rem;
 border-radius: 10px;
 margin-top: 1rem;
@@ -57,7 +57,7 @@ overflow-y: scroll;
 
 export const PostTitle = styled.div`
 background-color: #9678b6;
-height: 7rem;
+height: 6rem;
 width: 30rem;
 border-radius: 10px;
 margin-top: 1rem;
