@@ -3,6 +3,8 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import Gravatar from 'react-gravatar';
 import { BookProfile } from './ClubProfileElements';
 import axiosInstance from '../../axios';
+// import useGetUser from '../../helpers';
+import { useParams } from 'react-router-dom';
 
 export default class LandingProfile extends React.Component {
     constructor(props) {
@@ -13,10 +15,22 @@ export default class LandingProfile extends React.Component {
         };
     }
 
-    applyToClub = (id, e) => {
+    ApplyToClub = (id, e) => {
+        // currentUser = useGetUser(); --> Returns not defined
+        // console.log("Current user: " + currentUser)
         const action = 'apply'
-        axiosInstance.put(`singleclub/${id}/${action}/${club_id}`)
-    } 
+        const user_id = 1
+        axiosInstance.put(
+            `singleclub/${id}/${action}/${user_id}`, {
+                data: {
+                    action: 'apply',
+                    id: 1,
+                    user_id: 1
+                }
+            }
+        )
+        
+    }
 
     toggleClass() {
         const currentState = this.state.applied
@@ -61,7 +75,7 @@ export default class LandingProfile extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={this.toggleClass} style={appliedStyle}>{buttonState}</Button>
+                    <Button onClick={this.ApplyToClub} style={applyStyle}>{buttonState}</Button>
                 </Row>
                 <Row>
                     <h3 style={{ fontFamily:"Source Sans Pro", marginTop:"2rem", fontWeight:"600" }}>Reading History</h3>
