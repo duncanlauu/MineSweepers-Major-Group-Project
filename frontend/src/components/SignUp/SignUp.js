@@ -78,7 +78,7 @@ export default function SignUp() {
 
 
       <Container fluid style={{ overflowX: "hidden" }}>
-        <Row style={{ marginTop: "3rem" }}>
+        <Row>
           <Col />
           <Col>
             <HeadingText>Create an account</HeadingText><br />
@@ -147,7 +147,7 @@ export default function SignUp() {
                     onClick={togglePassword}
                     style={{ backgroundColor: "#653FFD" }}
                     >
-                      {passwordVisible ? <BsFillEyeFill /> : <BsFillEyeSlashFill /> }
+                      {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }
                     </Button>
                   </Container>
                 </FormGroup>
