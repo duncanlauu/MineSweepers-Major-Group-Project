@@ -28,6 +28,42 @@ margin-top: 1rem;
 overflow-y: scroll;
 `
 
+export const PostsContainer = styled.div`
+background-color: #FFF;
+height: 50rem;
+width: 40rem;
+border-radius: 10px;
+margin-top: 1rem;
+overflow-y: scroll;
+`
+export const SinglePostContainer = styled.div`
+background-color: #FFF;
+height: 20rem;
+width: 30rem;
+border-radius: 10px;
+border: 2px solid;
+margin-top: 1rem;
+overflow-y: scroll;
+`
+
+export const PostContent = styled.div`
+background-color: #ccc;
+height: 10rem;
+width: 30rem;
+border-radius: 10px;
+margin-top: 1rem;
+overflow-y: scroll;
+`
+
+export const PostTitle = styled.div`
+background-color: #9678b6;
+height: 7rem;
+width: 30rem;
+border-radius: 10px;
+margin-top: 1rem;
+overflow-x: scroll;
+`
+
 export const UserDetailsContainer = styled.div`
 background-color: #FFF;
 height: 10rem;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Navbar, NavbarBrand, Button, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames';
 // import {Box, Tab, Tabs, TabPanel} from '@mui/material/Button';
-import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
+import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer, PostsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
 import { useNavigate } from "react-router";
@@ -11,6 +11,8 @@ import FriendList from "./FriendList";
 import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
 import useGetUser from "../../helpers";
+import PersonalPosts from "./PersonalPosts";
+import PersonalPostForm from "./PersonalPostForm";
 
 
 export default function FriendsPage() {
@@ -35,7 +37,7 @@ export default function FriendsPage() {
 
   const tabsStyle = {
     marginBottom: "1rem",
-    width: "50rem",
+    width: "60rem",
     marginTop: "1rem",
 
   };
@@ -102,13 +104,19 @@ export default function FriendsPage() {
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
-                      <h5> Posts </h5>
+                      <h5> Find friends </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "5"})} onClick={() => {toggle("5");}}>
-                      <h5> Find friends </h5>
+                      <h5> Posts </h5>
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "6"})} onClick={() => {toggle("6");}}>
+                      <h5> Posting </h5>
                   </NavLink>
                 </NavItem>
               </Nav>
@@ -149,18 +157,26 @@ export default function FriendsPage() {
                     </TabPane>
 
                     <TabPane tabId="4">
-                      <Row>
-                        <Col sm="12">
-                          <h1> Posts Page </h1>
-                        </Col>
-                      </Row>
+                      
+                      <NonFriendsListContainer>
+                        <NonFriendList />
+                      </NonFriendsListContainer>
+
                     </TabPane>
 
                     <TabPane tabId="5">
 
-                      <NonFriendsListContainer>
-                        <NonFriendList />
-                      </NonFriendsListContainer>
+                      <PostsContainer>
+                        <PersonalPosts />
+                      </PostsContainer>
+
+                    </TabPane>
+
+                    <TabPane tabId="6">
+
+                      <PostsContainer>
+                        <PersonalPostForm />
+                      </PostsContainer>
 
                     </TabPane>
                   </TabContent>

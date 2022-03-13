@@ -27,7 +27,7 @@ class AllPostsView(APIView):
     def get(self, request):
         """Get list of posts of user"""
         user = request.user
-        posts = user.posts.values()
+        posts = user.posts.values("created_at", "title", "content")
         return Response({'posts': posts}, status=status.HTTP_200_OK)
 
     def post(self, request):
