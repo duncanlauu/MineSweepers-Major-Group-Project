@@ -282,6 +282,7 @@ class Chat(models.Model):
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
+    # created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{}".format(self.pk)

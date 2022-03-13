@@ -16,7 +16,7 @@
         "fields": {
             "name": "Chat 3",
             "participants": [
-              2,3,4
+              1,2,3,4
             ],
             "group_chat": true
         }

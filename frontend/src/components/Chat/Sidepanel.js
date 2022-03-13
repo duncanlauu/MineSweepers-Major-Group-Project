@@ -25,6 +25,7 @@ export default function Sidepanel(props) {
             .then(res => {
                 console.log(res.data)
                 setChats(res.data)
+                console.log(res.data)
             } );
         
     }
