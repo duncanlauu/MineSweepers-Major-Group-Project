@@ -1,0 +1,25 @@
+[
+    {
+      "model": "app.Chat",
+      "pk": 2,
+      "fields": {
+          "name": "Club Chat 2",
+          "participants": [
+            2,3
+          ],
+          "group_chat": true
+      }
+    },
+    {
+        "model": "app.Chat",
+        "pk": 3,
+        "fields": {
+            "name": "Chat 3",
+            "participants": [
+              2,3,4
+            ],
+            "group_chat": true
+        }
+      }
+  ]
+  

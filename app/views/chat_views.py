@@ -46,8 +46,12 @@ class ChatLeaveView(APIView):
         try:
             user = request.user
             chat = Chat.objects.get(pk = self.kwargs['pk'])
-            chat.participants.remove(user)
-            return Response(status=status.HTTP_200_OK)
+            if(user in chat.participants.all()):
+                chat.participants.remove(user)
+                return Response(status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE) #maybe change to something else
+                
         except:
              return Response(status=status.HTTP_400_BAD_REQUEST)
 
