@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
 import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
@@ -59,8 +60,10 @@ export default function SignIn() {
                     <Col />
                     <Col>
                         <HeadingText>Sign into your account</HeadingText><br />
-                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
-
+                        <ParaText>
+                            If you haven't created one yet, you can do so <Link to="/sign_up/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
+                            </Link> .
+                        </ParaText>
                         <LoginContainer>
                             <form>
                                 <FormGroup>

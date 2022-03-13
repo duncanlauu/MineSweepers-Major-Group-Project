@@ -53,7 +53,7 @@ function ClubProfileTabs() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
           <Tab label="Profile" {...a11yProps(0)} />
-          <Tab label="Applicants" {...a11yProps(1)} />
+          <Tab label="Members" {...a11yProps(1)} />
           <Tab label="Feed" {...a11yProps(2)} />
         </Tabs>
       </Box>

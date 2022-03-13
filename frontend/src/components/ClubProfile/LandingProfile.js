@@ -19,7 +19,7 @@ export default class LandingProfile extends React.Component {
         const action = 'apply'
         const user_id = 3
         axiosInstance.put(
-            `clubs/2/apply/3`, {}
+            `clubs/5/apply/5`, {}
         ).then(
             res => {
                 console.log(res);
