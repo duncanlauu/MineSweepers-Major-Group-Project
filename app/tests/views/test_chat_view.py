@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 from app.models import User, Chat
 from app.serializers import ChatSerializer
 
+
 class PasswordResetTest(APITestCase):
 
     fixtures = ['app/tests/fixtures/default_user.json',
@@ -27,37 +28,48 @@ class PasswordResetTest(APITestCase):
             "password": self.user.password,
         }
         
-    def test_get_all_chats(self):
+    def test_get_all_chats_without_specifying_user(self):
         allChats = Chat.objects.all()
-        response = self.client.get(self.chat_url, format="json")
+        login_data = dict(self.login_data)
+        login_data["password"] = "Password123"
+        response = self.client.post(self.login_url, login_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), len(allChats))
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
+        response = self.client.get(self.chat_url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_get_user_chats(self):
-        allUserChats = self.user.chats.all()
+    def test_get_logged_in_user_chats(self):
+        userChats = self.user.chats.all()
+        login_data = dict(self.login_data)
+        login_data["password"] = "Password123"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
         user_chats_url = self.chat_url + f"?username={self.user.username}"
         response = self.client.get(user_chats_url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), len(allUserChats))
+        self.assertEqual(len(response.data), len(userChats))
 
-    def test_get_invalid_user_chats(self):
-        invalid_username = "invalid_username"
+    def test_get_user_chats_while_not_logged_in(self):
+        userChats = self.user.chats.all()
+        user_chats_url = self.chat_url + f"?username={self.user.username}"
+        response = self.client.get(user_chats_url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_get_other_users_chats(self):
+        invalid_username = "otheruser_username" #not the logged in user
+        login_data = dict(self.login_data)
+        login_data["password"] = "Password123"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
+
         user_chats_url = self.chat_url + f"?username={invalid_username}"
         response = self.client.get(user_chats_url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_get_default_chat(self):
-        default_chat_url = self.chat_url + f"{self.default_chat.pk}/"
-        response = self.client.get(default_chat_url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        serializer = ChatSerializer(self.default_chat)
-        self.assertEqual(response.data, serializer.data)
-
-    def test_get_invalid_chat(self):
-        invalid_chat_pk = 10
-        default_chat_url = self.chat_url + f"{invalid_chat_pk}/"
-        response = self.client.get(default_chat_url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_leave_default_chat(self):
         chat_participants = list(self.default_chat.participants.all())
@@ -74,6 +86,16 @@ class PasswordResetTest(APITestCase):
         self.assertTrue(self.user in chat_participants)
         self.assertFalse(self.user in updated_chat_participants)
         self.assertNotEqual(chat_participants, updated_chat_participants)
+
+    def test_leave_default_chat_while_not_logged_in(self):
+        chat_participants = list(self.default_chat.participants.all())
+        leave_default_chat_url = self.leave_chat_url + f"{self.default_chat.pk}/"
+        response = self.client.delete(leave_default_chat_url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        updated_chat_participants = list(self.default_chat.participants.all())
+        self.assertTrue(self.user in chat_participants)
+        self.assertTrue(self.user in updated_chat_participants)
+        self.assertEqual(chat_participants, updated_chat_participants)
 
     def test_leave_chat_user_is_not_in(self):
         chat = Chat.objects.get(pk=2)

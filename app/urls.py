@@ -9,7 +9,7 @@ from .views.authentication_views import BlacklistTokenView
 from django.contrib.auth import views as auth_views
 from .views.chat_views import (
     ChatListView,
-    ChatDetailView,
+    # ChatDetailView,
     ChatLeaveView
 )
 from .views.club_views import Clubs, SingleClub
@@ -31,7 +31,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     # Chat
     path('chat/', ChatListView.as_view()),
-    path('chat/<pk>/', ChatDetailView.as_view()),
+    # path('chat/<pk>/', ChatDetailView.as_view()),
     path('chat/leave/<pk>/', ChatLeaveView.as_view()),
 
     # Recommender system

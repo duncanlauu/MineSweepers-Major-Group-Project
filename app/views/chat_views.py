@@ -14,6 +14,8 @@ from app.models import Chat
 from app.serializers import ChatSerializer
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied
 
 User = get_user_model()
 
@@ -24,24 +26,37 @@ def get_user(username):
 
 class ChatListView(ListAPIView):
     serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Chat.objects.all()
         username = self.request.query_params.get('username', None)
-        if username is not None:
+        if(self.request.user.username != username):
+            raise PermissionDenied({"error": ["You can't request other users chats"]})
+        else:
+            queryset = Chat.objects.all()
             user = get_user(username)
             queryset = user.chats.all()
-        return queryset
+            return queryset
 
 
-class ChatDetailView(RetrieveAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny, )
+# class ChatDetailView(RetrieveAPIView):
+#     queryset = Chat.objects.all()
+#     serializer_class = ChatSerializer
+#     permission_classes = (permissions.IsAuthenticated, )
+
+#     def get(self, request, *args, **kwargs):
+#         chat = Chat.objects.get(pk = self.kwargs['pk'])
+#         print(chat)
+#         # if(self.request.user.username != username):
+#         #     return Response(status=status.HTTP_403_FORBIDDEN)
+#         # else:
+#         #     queryset = Chat.objects.all()
+#         #     user = get_user(username)
+#         #     queryset = user.chats.all()
+#         #     return queryset
 
 class ChatLeaveView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     def delete(self, request, *args, **kwargs):
         try:
             user = request.user
