@@ -335,7 +335,7 @@ def generate_link():
 
 
 class VotingPeriod(models.Model):
-    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
+    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, related_name='voting_time')
     book_votes = models.ManyToManyField(BookVote, blank=True)
     time_votes = models.ManyToManyField(TimeVote, blank=True)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
@@ -350,7 +350,6 @@ class VotingPeriod(models.Model):
         self.meeting.time = time
         self.meeting.link = link
         self.meeting.save()
-
 
     def get_book_vote(self):
         books_and_votes = {}
