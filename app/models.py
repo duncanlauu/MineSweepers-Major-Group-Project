@@ -1,4 +1,6 @@
 import datetime
+from operator import itemgetter
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
@@ -131,7 +133,6 @@ class BookRating(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(1)])
     created_at = models.DateTimeField(
         auto_now_add=True)  # ? not sure how to test this
-
 
 
 def get_new_club_chat():
@@ -303,7 +304,6 @@ class GlobalBookRecommendation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-
 class TimePeriod(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -313,6 +313,7 @@ class TimeVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
 
+
 class BookVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -320,18 +321,59 @@ class BookVote(models.Model):
 
 class Meeting(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500, blank= True)
+    description = models.CharField(max_length=500, blank=True)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True)
     time = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, blank=True)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
-    attendees = models.ManyToManyField(User, related_name='attendees', blank = True)
+    attendees = models.ManyToManyField(User, related_name='attendees', blank=True)
     link = models.CharField(max_length=500, blank=True)
+
+
+def generate_link():
+    return 'We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)'
+
 
 class VotingPeriod(models.Model):
     time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
-    book_vote = models.ManyToManyField(BookVote, blank=True)
-    time_vote = models.ManyToManyField(TimeVote, blank=True)
+    book_votes = models.ManyToManyField(BookVote, blank=True)
+    time_votes = models.ManyToManyField(TimeVote, blank=True)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     proposed_books = models.ManyToManyField(Book, blank=True)
     proposed_times = models.ManyToManyField(TimePeriod, blank=True)
+
+    def fill_in_the_meeting(self):
+        book = self.get_book_vote()
+        time = self.get_time_vote()
+        link = generate_link()
+        self.meeting.book = book
+        self.meeting.time = time
+        self.meeting.link = link
+        self.meeting.save()
+
+
+    def get_book_vote(self):
+        books_and_votes = {}
+        for book_vote in self.book_votes.all():
+            if book_vote.book in books_and_votes:
+                books_and_votes[book_vote.book] += 1
+            else:
+                books_and_votes[book_vote.book] = 1
+        books_and_votes_list = []
+        for book, num in books_and_votes:
+            books_and_votes_list.append((book, num))
+        books_and_votes_list.sort(key=itemgetter(1))
+        return books_and_votes_list[0]
+
+    def get_time_vote(self):
+        times_and_votes = {}
+        for time_vote in self.time_votes.all():
+            if time_vote.book in times_and_votes:
+                times_and_votes[time_vote.book] += 1
+            else:
+                times_and_votes[time_vote.book] = 1
+        times_and_votes_list = []
+        for time, num in times_and_votes:
+            times_and_votes_list.append((time, num))
+        times_and_votes_list.sort(key=itemgetter(1))
+        return times_and_votes_list[0]
