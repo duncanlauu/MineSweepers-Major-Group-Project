@@ -7,6 +7,7 @@ function ProfileBody() {
     return (
         <Container fluid style={{ margin: "1rem" }}>
             <Row>
+                <Col/>
                 <Col>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                 sed do eiusmod tempor incididunt ut labore et dolore magna

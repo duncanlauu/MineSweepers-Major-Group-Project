@@ -5,11 +5,12 @@
         "fields": {
             "title": "Ender's Game",
             "author": "Orson Scott Card",
-            "publication_date": "1985-10-01",
+            "publication_date": "1985",
             "publisher": "Orbit",
             "image_links_large": "image_link_large",
             "image_links_medium": "image_link_medium",
-            "image_links_small": "Image_link"
+            "image_links_small": "Image_link",
+            "genre": "Sci-Fi"
         }
     }
 ]

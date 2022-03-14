@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, User, Comment, Reply
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,8 +23,18 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         for k, v in validated_data.items():
             setattr(instance, k, v)
-        instance.save()
-        return instance
+
+
+class BookRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookRecommendation
+        fields = '__all__'
+
+
+class BookRecommendationForClubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookRecommendationForClub
+        fields = '__all__'
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -42,4 +52,22 @@ class CommentSerializer(serializers.ModelSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
+        fields = '__all__'
+
+
+class UserRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRecommendation
+        fields = '__all__'
+
+
+class ClubRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClubRecommendation
+        fields = '__all__'
+
+
+class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalBookRecommendation
         fields = '__all__'

@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 from django.urls import path
 
 from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
+=======
+from django.urls import path, include
+
+from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
+>>>>>>> 1b6da0e0a25279d913264226d8434d714721e07d
 from .views.account_views import CreateUser
+from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.recommender_views import RecommenderAPI
+from .views.static_views import HelloWorldView
 from .views.authentication_views import BlacklistTokenView
+from django.contrib.auth import views as auth_views
 
 app_name = 'app'
 
@@ -17,5 +27,22 @@ urlpatterns = [
     path('posts/<int:post_id>/comments/', AllCommentsView.as_view(), name='all_comments'),
     path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
-    path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply')
+    path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply'),
+    path('friends/', FriendsView.as_view(), name='friends'),
+    path('friends/<int:other_user_id>', FriendView.as_view(), name='single_friend'),
+    path('friend_requests/', FriendRequestsView.as_view(), name='friend_requests'),
+    path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
+    path('hello/', HelloWorldView.as_view(), name='hello_world'),
+    # Reset User Password
+    path('auth/', include('djoser.urls')),
+
+    # Recommender system
+    path('recommender/', RecommenderAPI.as_view(), name='recommender'),
+    path('recommender/<str:action>/', RecommenderAPI.as_view(), name='recommender_action'),
+    path('recommender/<int:n>/<int:id>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n'),
+    path('recommender/<int:n>/<int:id>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+         name='recommender_top_n_for_genre'),
+    path('recommender/<int:n>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n_global'),
+    path('recommender/<int:n>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
+         name='recommender_top_n_global_for_genre'),
 ]
