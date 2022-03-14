@@ -58,7 +58,7 @@ overflow-y: scroll;
 export const PostTitle = styled.div`
 background-color: #9678b6;
 height: 6rem;
-width: 30rem;
+width: 23rem;
 border-radius: 10px;
 margin-top: 1rem;
 overflow-x: scroll;

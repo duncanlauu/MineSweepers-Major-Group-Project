@@ -27,7 +27,7 @@ class AllPostsView(APIView):
     def get(self, request):
         """Get list of posts of user"""
         user = request.user
-        posts = user.posts.values("created_at", "title", "content")
+        posts = user.posts.values()
         return Response({'posts': posts}, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -44,17 +44,17 @@ class AllPostsView(APIView):
 
 class PostView(APIView):
     """API View of a post of a user"""
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id):
         """Get a post visible to user"""
         try:
-            user = request.user
-            post = Post.objects.get(id=post_id)
-            if is_post_visible_to_user(user, post):
-                return Response({'post': post}, status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+            user = request.user.values()
+            #post = Post.objects.get(id=post_id).values()
+            # if is_post_visible_to_user(user, post):
+            return Response({'user': user}, status=status.HTTP_200_OK)
+            # else:
+            #     return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
@@ -92,7 +92,7 @@ class PostView(APIView):
 
 class AllCommentsView(APIView):
     """API View of all comments from a post by the user"""
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id):
         """Get all comments from a post by the user"""
@@ -128,7 +128,7 @@ class AllCommentsView(APIView):
 
 class CommentView(APIView):
     """API View of a comment of a user"""
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id, comment_id):
         """Get a comment visible to a user"""

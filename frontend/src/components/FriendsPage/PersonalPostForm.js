@@ -9,11 +9,19 @@ export default function PersonalPostForm(props) {
     console.log(props)
 
     const [formData, updateFormData] = useState()
+    const [writtenComment, updateWrittenComment] = useState()
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         updateFormData({
           ...formData, 
+          [e.target.name]: e.target.value.trim(), 
+        })
+      }
+
+      const handleCommentChange = (e) => {
+        updateWrittenComment({
+          ...writtenComment, 
           [e.target.name]: e.target.value.trim(), 
         })
       }
