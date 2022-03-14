@@ -54,9 +54,15 @@ export default function PersonalPosts(props) {
             .then((res) => {
                 //navigate("/log_in/")
                 console.log(res)
+                removeFromPage(e)
                 //console.log(writtenComment)
             })
             .catch(error => console.error(error));
+    }
+
+    const removeFromPage = (e) => {
+        const id = parseInt(e.target.getAttribute("name"))
+        setPersonalPosts(myPersonalPosts.filter(item => item.id !== id));
     }
 
     const getCommentsUnderPost = (post_id) => {

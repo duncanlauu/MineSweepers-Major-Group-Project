@@ -73,7 +73,7 @@ overflow-x: scroll;
 export const UserDetailsContainer = styled.div`
 background-color: #FFF;
 height: 10rem;
-width: 10rem;
+width: 20rem;
 border-radius: 10px;
 margin-top: 1rem;
 `

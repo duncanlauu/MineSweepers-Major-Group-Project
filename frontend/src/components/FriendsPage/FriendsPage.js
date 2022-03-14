@@ -122,9 +122,14 @@ export default function FriendsPage() {
               </Nav>
               <TabContent activeTab={currentActiveTab}>
                 <TabPane tabId="1">
-                  <PostsContainer>
-                    <PersonalPosts />
-                  </PostsContainer>
+                  <Row>
+                    <Col sm="12">
+                      <h1> Feed Page </h1>
+                      <PostsContainer>
+                        <PersonalPosts />
+                      </PostsContainer>
+                    </Col>
+                  </Row>
                 </TabPane>
                 
                 <TabPane tabId="2">
@@ -163,7 +168,7 @@ export default function FriendsPage() {
                     </TabPane>
 
                     <TabPane tabId="5">
-
+                      <h1> My Posts </h1>
                       <PostsContainer>
                         <PersonalPosts />
                       </PostsContainer>
