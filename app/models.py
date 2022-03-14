@@ -322,8 +322,8 @@ class Meeting(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500, blank=True)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True)
-    time = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, blank=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True, null=True)
+    time = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, blank=True, null=True)
     organiser = models.ForeignKey(User, on_delete=models.CASCADE)
     attendees = models.ManyToManyField(User, related_name='attendees', blank=True)
     link = models.CharField(max_length=500, blank=True)
@@ -358,20 +358,20 @@ class VotingPeriod(models.Model):
             else:
                 books_and_votes[book_vote.book] = 1
         books_and_votes_list = []
-        for book, num in books_and_votes:
+        for book, num in books_and_votes.items():
             books_and_votes_list.append((book, num))
-        books_and_votes_list.sort(key=itemgetter(1))
-        return books_and_votes_list[0]
+        books_and_votes_list.sort(key=itemgetter(1), reverse=True)
+        return books_and_votes_list[0][0]
 
     def get_time_vote(self):
         times_and_votes = {}
         for time_vote in self.time_votes.all():
-            if time_vote.book in times_and_votes:
-                times_and_votes[time_vote.book] += 1
+            if time_vote.time_period in times_and_votes:
+                times_and_votes[time_vote.time_period] += 1
             else:
-                times_and_votes[time_vote.book] = 1
+                times_and_votes[time_vote.time_period] = 1
         times_and_votes_list = []
-        for time, num in times_and_votes:
+        for time, num in times_and_votes.items():
             times_and_votes_list.append((time, num))
-        times_and_votes_list.sort(key=itemgetter(1))
-        return times_and_votes_list[0]
+        times_and_votes_list.sort(key=itemgetter(1), reverse=True)
+        return times_and_votes_list[0][0]

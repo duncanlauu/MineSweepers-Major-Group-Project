@@ -1,7 +1,7 @@
 """Unit tests for the time vote model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book, TimeVote, TimePeriod
+from app.models import TimeVote
 
 
 class TimeVoteModelTest(TestCase):
@@ -15,9 +15,6 @@ class TimeVoteModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.user = User.objects.get(username="johndoe")
-        self.time = TimePeriod.objects.get(pk=1)
         self.time_vote = TimeVote.objects.get(pk=1)
 
     def test_valid_time_vote(self):

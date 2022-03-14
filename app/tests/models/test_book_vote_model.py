@@ -1,7 +1,7 @@
 """Unit tests for the book vote model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book, BookVote
+from app.models import BookVote
 
 
 class BookVoteModelTest(TestCase):
@@ -14,8 +14,6 @@ class BookVoteModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.user = User.objects.get(username="johndoe")
         self.book_vote = BookVote.objects.get(pk=1)
 
     def test_valid_book_vote(self):

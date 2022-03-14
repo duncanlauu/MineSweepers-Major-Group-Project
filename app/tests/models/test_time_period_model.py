@@ -1,7 +1,7 @@
 """Unit tests for the time period model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book, TimePeriod
+from app.models import TimePeriod
 
 
 class TimePeriodModelTest(TestCase):
@@ -14,8 +14,6 @@ class TimePeriodModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.user = User.objects.get(username="johndoe")
         self.time_period = TimePeriod.objects.get(pk=1)
 
     def test_valid_time_period(self):
