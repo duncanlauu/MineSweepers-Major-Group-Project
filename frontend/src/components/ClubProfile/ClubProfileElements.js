@@ -28,3 +28,11 @@ export const BookProfile = styled.div`
     justify-content: center;
     align-items: center;
 `
+
+export const ModalContainer = styled.div`
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vw;
+    background: rgba(0,0,0,0.5);
+`

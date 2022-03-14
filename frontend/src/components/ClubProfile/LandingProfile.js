@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button, ModalHeader, Modal, ModalBody } from 'reactstrap';
 import Gravatar from 'react-gravatar';
 import { BookProfile } from './ClubProfileElements';
 import axiosInstance from '../../axios';
@@ -10,8 +10,10 @@ export default class LandingProfile extends React.Component {
     constructor(props) {
         super(props);
         this.toggleClass = this.toggleClass.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.state = {
-            applied: false
+            applied: false,
+            modal: false
         };
     }
 
@@ -29,6 +31,7 @@ export default class LandingProfile extends React.Component {
                 console.log(err);
             }
         )
+        this.toggleClass();
     }
 
     toggleClass() {
@@ -37,22 +40,28 @@ export default class LandingProfile extends React.Component {
             applied: !currentState
         });
     }
+
+    toggleModal() {
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
     
     render() {
         const applyStyle = {
-            width: "7rem",
+            width: "17rem",
             margin: "1rem",
             fontFamily: "Source Sans Pro",
-            borderRadius: "100px",
+            borderRadius: "5px",
             backgroundColor: "#653FFD",
-            border: "0px"
+            border: "2px solid #653DDF",
         }
 
         const appliedStyle = {
-            width: "7rem",
+            width: "17rem",
             margin: "1rem",
             fontFamily: "Source Sans Pro",
-            borderRadius: "100px",
+            borderRadius: "5px",
             backgroundColor: "#fff",
             border: "2px solid #653DDF",
             color: "#653FFD"
@@ -61,6 +70,7 @@ export default class LandingProfile extends React.Component {
         let buttonState = this.state.applied ? "Applied" : "Apply"
 
         return (
+            <>
             <Container fluid>
                 <Row style={{ display:"flex" }}>
                     <Col xs={8}>
@@ -74,7 +84,12 @@ export default class LandingProfile extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={(e) => this.applyToClub(1)} style={applyStyle}>{buttonState}</Button>
+                    <Button onClick={
+                        // (e) => this.applyToClub(1)
+                        this.state.applied ? this.toggleModal : (e) => this.applyToClub(1)
+                    } 
+                        style= {this.state.applied ? appliedStyle : applyStyle}
+                    >{buttonState}</Button>
                 </Row>
                 <Row>
                     <h3 style={{ fontFamily:"Source Sans Pro", marginTop:"2rem", fontWeight:"600" }}>Reading History</h3>
@@ -89,6 +104,23 @@ export default class LandingProfile extends React.Component {
                     </BookProfile>
                 </Row>
             </Container>
+            <Modal
+                isOpen = {this.state.modal}
+                toggle = {this.toggleModal}
+                style = {{
+                    left: 0,
+                    top: 100
+                }}>
+                <ModalHeader toggle={this.toggleModal}>
+                    This action will cancel your application to the club. Do you wish to proceed?
+                </ModalHeader>
+                <ModalBody>
+                    <Button onClick={this.toggleClass}>
+                        Continue
+                    </Button>
+                </ModalBody>
+            </Modal>
+            </>
         );
     }
 }

@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ClubApplicants from './ClubApplicants';
+import ClubMembers from './ClubMembers';
 import ClubFeed from './ClubFeed';
 import LandingProfile from './LandingProfile';
 
@@ -61,7 +61,7 @@ function ClubProfileTabs() {
         <LandingProfile />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ClubApplicants />
+        <ClubMembers />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ClubFeed />
