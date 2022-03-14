@@ -133,49 +133,6 @@ class BookRating(models.Model):
         auto_now_add=True)  # ? not sure how to test this
 
 
-# Meeting class
-class Meeting(models.Model):
-    start_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
-    end_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
-    discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=70, blank=True)
-    link = models.CharField(max_length=500, unique=True, blank=True)
-
-
-# Vote class
-class Vote(models.Model):
-    event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
-    start_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
-    end_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
-
-    def add_event_vote(self, event_vote):
-        self.event_vote.add(event_vote)
-
-    def remove_event_vote(self, event_vote):
-        self.event_vote.remove(event_vote)
-
-    def event_vote_count(self):
-        return self.event_vote.count()
-
-
-# Club event class
-class ClubEvent(models.Model):
-    club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE)
-    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    description = models.CharField(max_length=500, blank=True)
-
-
-# EventVote class
-class EventVote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-
 
 def get_new_club_chat():
     new_club_chat = Chat.objects.create(group_chat=True)
@@ -344,3 +301,37 @@ class GlobalBookRecommendation(models.Model):
     flat_rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+class TimePeriod(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+
+class TimeVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
+
+class BookVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
+class Meeting(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, blank= True)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True)
+    time = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, blank=True)
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    attendees = models.ManyToManyField(User, related_name='attendees', blank = True)
+    link = models.CharField(max_length=500, blank=True)
+
+class VotingPeriod(models.Model):
+    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
+    book_vote = models.ManyToManyField(BookVote, blank=True)
+    time_vote = models.ManyToManyField(TimeVote, blank=True)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    proposed_books = models.ManyToManyField(Book, blank=True)
+    proposed_times = models.ManyToManyField(TimePeriod, blank=True)
