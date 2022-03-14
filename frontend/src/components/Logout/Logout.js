@@ -11,6 +11,7 @@ export default function Logout() {
         });
         localStorage.removeItem('access_token'); // remove the tokens from local storate
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('username');
         axiosInstance.defaults.headers['Authorization'] = null; // remove the headers
         navigate('/')
     });

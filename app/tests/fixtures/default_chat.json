@@ -1,0 +1,14 @@
+[
+    {
+      "model": "app.Chat",
+      "pk": 1,
+      "fields": {
+          "name": "Default Club Chat",
+          "participants": [
+            1
+          ],
+          "group_chat": true
+      }
+    }
+  ]
+  

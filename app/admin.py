@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import User, Club, Book
+from app.models import User, Club, Book, Chat, Message, FriendRequest
 
 # Register your models here.
 
@@ -26,4 +26,13 @@ class BookAdmin(admin.ModelAdmin):
 
     list_display = [
         'ISBN', 'title', 'author', 'publisher'
+    ]
+
+admin.site.register(Chat)
+admin.site.register(Message)
+
+@admin.register(FriendRequest)
+class FriendRequest(admin.ModelAdmin):
+    list_display = [
+        'sender', 'receiver', 'created_at'
     ]

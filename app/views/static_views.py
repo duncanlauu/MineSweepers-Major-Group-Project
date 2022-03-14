@@ -1,6 +1,5 @@
 """Static views of the app."""
 from django.shortcuts import render
-from app.helpers import login_prohibited
 from rest_framework import generics, permissions, status
 from app.models import User
 from app.serializers import UserSerializer
