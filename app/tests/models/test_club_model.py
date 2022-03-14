@@ -19,7 +19,7 @@ class ClubModelTestCase(TestCase):
     def setUp(self):
         self.club = Club.objects.get(name="Joe's Club")
         self.new_user = User.objects.get(username='jakedoe')
-        self.book = Book.objects.get(title="Ender's Game")
+        self.book = Book.objects.get(pk="0380715899")
 
 
     def test_valid_club(self):
