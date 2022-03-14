@@ -4,7 +4,6 @@ import { Row, Col, Button, Input, FormGroup, Label } from "reactstrap"
 
 import { useNavigate } from "react-router";
 import { PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElements";
-import PostComments from "./PostComments";
 
 export default function PersonalPosts(props) {
     console.log(props)
@@ -97,11 +96,6 @@ export default function PersonalPosts(props) {
                                         <PostTitle>
                                             <h2> {personalPost.title} </h2>
                                         </PostTitle>
-                                    </Col>
-                                    <Col>
-                                        <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-                                             X 
-                                        </Button>
                                     </Col>
                                 </Row>
                                         

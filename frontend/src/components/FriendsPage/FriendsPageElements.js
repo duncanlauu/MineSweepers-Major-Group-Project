@@ -38,11 +38,13 @@ overflow-y: scroll;
 `
 export const SinglePostContainer = styled.div`
 background-color: #FFF;
-height: 25rem;
-width: 30rem;
+height: 30rem;
+width: 35rem;
 border-radius: 10px;
 border: 2px solid;
 margin-top: 1rem;
+margin-left: 1rem;
+margin-right: 1rem;
 overflow-y: scroll;
 `
 
@@ -52,6 +54,8 @@ height: 8rem;
 width: 30rem;
 border-radius: 10px;
 margin-top: 1rem;
+margin-left: 1rem;
+margin-right: 1rem;
 overflow-y: scroll;
 `
 
@@ -61,6 +65,8 @@ height: 6rem;
 width: 23rem;
 border-radius: 10px;
 margin-top: 1rem;
+margin-left: 1rem;
+margin-right: 1rem;
 overflow-x: scroll;
 `
 

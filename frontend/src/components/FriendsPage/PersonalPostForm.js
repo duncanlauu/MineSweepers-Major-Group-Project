@@ -19,12 +19,12 @@ export default function PersonalPostForm(props) {
         })
       }
 
-      const handleCommentChange = (e) => {
-        updateWrittenComment({
-          ...writtenComment, 
-          [e.target.name]: e.target.value.trim(), 
-        })
-      }
+    //   const handleCommentChange = (e) => {
+    //     updateWrittenComment({
+    //       ...writtenComment, 
+    //       [e.target.name]: e.target.value.trim(), 
+    //     })
+    //   }
 
     const handlePostFriendRequest = (e) => {
         e.preventDefault()
@@ -49,8 +49,7 @@ export default function PersonalPostForm(props) {
             <Row>
                 <Col>
                     <h1> Upload Post </h1>
-                    <h5> Type in just the title and content for now. </h5>
-
+                    
 
                     <Container>
                     <Form> 

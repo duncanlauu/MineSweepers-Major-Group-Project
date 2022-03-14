@@ -84,9 +84,9 @@ export default function FriendsPage() {
 
             <div>
               <Nav tabs style={tabsStyle}> 
-                <NavItem>
+              <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
-                      <h5> Profile </h5>
+                      <h5> Feed </h5>
                   </NavLink>
                 </NavItem>
 
@@ -122,11 +122,9 @@ export default function FriendsPage() {
               </Nav>
               <TabContent activeTab={currentActiveTab}>
                 <TabPane tabId="1">
-                  <Row>
-                    <Col sm="12">
-                      <h1> Profile Page </h1>
-                    </Col>
-                  </Row>
+                  <PostsContainer>
+                    <PersonalPosts />
+                  </PostsContainer>
                 </TabPane>
                 
                 <TabPane tabId="2">
