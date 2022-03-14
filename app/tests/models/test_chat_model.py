@@ -9,17 +9,13 @@ class ChatModelTestCase(TestCase):
 
     fixtures = [
         'app/tests/fixtures/default_user.json',
-        'app/tests/fixtures/default_club.json',
         'app/tests/fixtures/default_chat.json',
         'app/tests/fixtures/default_message.json',
         'app/tests/fixtures/other_users.json',
-        'app/tests/fixtures/default_book.json',
-        'app/tests/fixtures/others_clubs.json',
-        'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/other_chats.json',
         'app/tests/fixtures/other_messages.json',
     ]
-    
+
     def setUp(self):
         self.chat = Chat.objects.get(pk = 1)
         self.new_user = User.objects.get(pk = 2)
