@@ -33,7 +33,7 @@ class AllPostsView(APIView):
     def post(self, request):
         """Create post"""
         user = request.user
-        data = request.data
+        data = request.data.copy()
         data['author'] = user.id
         serializer = PostSerializer(data=data)
         if serializer.is_valid():
@@ -115,7 +115,7 @@ class AllCommentsView(APIView):
             if not is_post_visible_to_user(user, post):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             post = Post.objects.get(id=post_id)
-            data = request.data
+            data = request.data.copy()
             data['author'] = user.id
             data['post'] = post.id
             comment_serializer = CommentSerializer(data=data)
@@ -202,7 +202,7 @@ class AllRepliesView(APIView):
             if not is_post_visible_to_user(user, post):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             comment = Comment.objects.get(id=comment_id)
-            data = request.data
+            data = request.data.copy()
             data['author'] = user.id
             data['comment'] = comment.id
             reply_serializer = ReplySerializer(data=data)
