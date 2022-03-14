@@ -1,8 +1,8 @@
-"""Unit tests for the User model"""
+"""Unit tests for the Book model"""
 import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book
+from app.models import Book
 
 
 class BookModelTest(TestCase):
@@ -14,8 +14,7 @@ class BookModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(
-            title="Harry Potter and the Sorcerer's Stone")
+        self.book = Book.objects.get(pk="0195153448")
 
     def test_ISBN_primary_key(self):
         self.assertEqual(self.book.ISBN, self.book.pk)
