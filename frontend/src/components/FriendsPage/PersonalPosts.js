@@ -36,18 +36,17 @@ export default function PersonalPosts(props) {
             .catch(error => console.error(error));
     }
 
-    const getCommentsUnderPost = (post_id) => {
+    const getPost = (post_id, e) => {
         axiosInstance
             .get(`posts/${post_id}`)
             .then((res) => {
-                console.log("comments:")
-                console.log(res)
-                //const allPersonalPosts = res.data.posts;
-                //setPersonalPosts(allPersonalPosts)
                 //navigate("/log_in/")
+                console.log(res)
+                //console.log(writtenComment)
             })
             .catch(error => console.error(error));
     }
+
 
     const deletePost = (post_id, e) => {
         axiosInstance
@@ -116,7 +115,7 @@ export default function PersonalPosts(props) {
                                         {/* <Button onClick={(e) => handleCommentSubmit(personalPost.id)}>
                                             <p> Send </p>
                                         </Button> */}
-                                        <Button onClick={(e) => getCommentsUnderPost(personalPost.id, e)}>
+                                        <Button onClick={(e) => getPost(personalPost.id, e)}>
                                             <p> get comments </p>
                                         </Button>
                                     </Col>
