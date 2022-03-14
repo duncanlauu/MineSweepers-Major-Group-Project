@@ -32,7 +32,6 @@ class User(AbstractUser):
         )]
     )
     email = models.EmailField(max_length=50, unique=True)
-
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=500, blank=True)
@@ -44,7 +43,7 @@ class User(AbstractUser):
     read_books = models.ManyToManyField('Book', related_name='read_books',
                                         blank=True)  # blank true for development purposes.
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
-    friends = models.ManyToManyField("User")
+    friends = models.ManyToManyField("User", blank=True)
 
     def add_liked_book(self, book):
         self.liked_books.add(book)

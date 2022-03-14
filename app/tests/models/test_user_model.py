@@ -16,7 +16,7 @@ class UserModelTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
+        self.book = Book.objects.get(pk="0195153448")
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -30,7 +30,7 @@ class UserModelTest(TestCase):
         self._assert_user_is_valid()
 
     def test_username_cannot_be_over_50_characters_long(self):
-        self.user.username = 'j' + 'x' * 50
+        self.user.username = 'j'+'x' * 50
         self._assert_user_is_invalid()
 
     def test_username_must_be_unique(self):
@@ -178,14 +178,18 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.read_books.count(), 0)
 
     def test_liked_book_count(self):
-        self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
+        self.assertEqual(self.user.liked_books_count(),
+                         self.user.liked_books.count())
         self.user.add_liked_book(self.book)
-        self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
+        self.assertEqual(self.user.liked_books_count(),
+                         self.user.liked_books.count())
 
     def test_read_book_count(self):
-        self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
+        self.assertEqual(self.user.read_books_count(),
+                         self.user.read_books.count())
         self.user.add_read_book(self.book)
-        self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
+        self.assertEqual(self.user.read_books_count(),
+                         self.user.read_books.count())
 
     def _assert_user_is_valid(self):
         try:
