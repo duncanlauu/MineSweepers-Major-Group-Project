@@ -1,25 +1,21 @@
-"""Unit tests for the Club model."""
+"""Unit tests for the Message model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import Club, Message, User, Book, Chat
+from app.models import Message
 
 
-class ClubModelTestCase(TestCase):
-    """Unit tests for the Club model."""
+class MessageModelTestCase(TestCase):
+    """Unit tests for the Message model."""
 
     fixtures = [
         'app/tests/fixtures/default_user.json',
-        'app/tests/fixtures/default_chat.json',
         'app/tests/fixtures/default_message.json',
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/other_messages.json',
     ]
 
     def setUp(self):
-        self.chat = Chat.objects.get(pk = 1)
         self.message = Message.objects.get(pk = 1)
-        self.user = User.objects.get(pk = 1)
-
 
     def test_valid_message(self):
         self._assert_message_is_valid()
