@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from app.models import Book, User, BookRating, Club
+from app.models import Book, User
 
 
 class Command(BaseCommand):
@@ -9,5 +9,3 @@ class Command(BaseCommand):
         # Do not remove superusers
         User.objects.filter(is_superuser=False, is_staff=False).delete()
         Book.objects.all().delete()
-        Club.objects.all().delete()
-
