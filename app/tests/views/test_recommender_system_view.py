@@ -59,9 +59,10 @@ class RecommenderAPITestCase(APITestCase):
             birthday="1980-01-01",
             password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
         )
-        self.uid = 1276726
+        self.uid = self.user.pk
         self.client = APIClient()
         self.genre = 'fiction'
+        self.client.force_authenticate(user=self.user)
 
     # Unfortunately, the seeding takes about 2-3 minutes each time and I want to test the recommender
     # system thoroughly so I'll need to run non-atomic tests. I will create one test which runs
