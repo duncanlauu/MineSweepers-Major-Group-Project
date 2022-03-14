@@ -23,9 +23,12 @@ export default function Sidepanel(props) {
         const username = localStorage.username
         axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
             .then(res => {
-                console.log(res.data)
-                setChats(res.data)
-                console.log(res.data)
+                let userChats = res.data;
+                userChats.sort(function(a,b){
+                    return (b.last_update).localeCompare(a.last_update);
+                  })
+                console.log(userChats)
+                setChats(userChats)
             } );
         
     }
@@ -39,7 +42,8 @@ export default function Sidepanel(props) {
                 picURL={getChatGravatar(c)}
                 status="busy" // get rid of?
                 chatURL={`/chat/${c.id}`} 
-                lastMessage={getChatLastMessage(c)}
+                lastMessage={c.last_message}
+                lastUpdated={c.last_updated}
                 />
         )
     })
@@ -67,7 +71,15 @@ export default function Sidepanel(props) {
         return "http://emilcarlsson.se/assets/louislitt.png";
     }
 
-    function getChatLastMessage(chat){
+    // function getChatLastMessage(chat){
+    //     let lastMessage = "";
+    //     if(chat.messages.length > 0){
+    //         lastMessage = chat.messages.slice(-1).pop().content;
+    //     }
+    //     return lastMessage;
+    // }
+
+    function getLastUpdatedTime(chat){
         let lastMessage = "";
         if(chat.messages.length > 0){
             lastMessage = chat.messages.slice(-1).pop().content;

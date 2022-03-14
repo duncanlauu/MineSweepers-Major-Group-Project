@@ -40,31 +40,17 @@ class ChatListView(ListAPIView):
     
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(self.get_queryset(), many=True)
-
-        # change the data
-        # serializer.data is the response that your serializer generates
-        # res = {"projects": serializer.data}
-        # serializer.data.add
-        # chat_id = serializer.data["id"]
-        # print(chat_id)
-        # print(serializer.data)
         response_list = serializer.data
 
         for response in response_list:
-        #     # print(response)
             last_message = get_last_message(response["id"])
             if(last_message == None):
-                response["last_message"] = "" #empty
-                response["last_update"] = "now" #chat.createdAt
+                chat = Chat.objects.get(pk = response["id"])
+                response["last_message"] = ""
+                response["last_update"] = chat.created_at
             else:
                 response["last_message"] = last_message.content
                 response["last_update"] = last_message.timestamp
-
-        # for response in response_list:
-        #     print(response)
-
-        # response_list.append({"last_message":get_last_message(chat_id)})
-        # print(response_list)
     
         return Response(serializer.data)
 

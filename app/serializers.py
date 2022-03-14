@@ -71,14 +71,8 @@ class SimpleMessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = ('__all__')
 
-# class MessageSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Message
-#         fields = ('__all__')
-
 class ChatSerializer(serializers.ModelSerializer):
     participants = SimpleUserSerializer(many=True, required=False)
-    messages = SimpleMessageSerializer(many=True, required=False)
 
     class Meta:
         model = Chat
