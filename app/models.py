@@ -270,7 +270,7 @@ class Club(models.Model):
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
