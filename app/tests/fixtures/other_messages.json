@@ -1,0 +1,29 @@
+[
+    {
+      "model": "app.Message",
+      "pk": 2,
+      "fields": {
+        "author": 2,
+        "content": "Hi!",
+        "timestamp": "2016-04-16T17:41:29+00:00" 
+      }   
+    },
+    {
+        "model": "app.Message",
+        "pk": 3,
+        "fields": {
+          "author": 3,
+          "content": "What's up?",
+          "timestamp": "2016-05-16T17:41:29+00:00" 
+        }   
+      },
+      {
+        "model": "app.Message",
+        "pk": 4,
+        "fields": {
+          "author": 1,
+          "content": "Good Morning!",
+          "timestamp": "2016-06-16T17:41:29+00:00" 
+        }   
+      }
+  ]

@@ -273,9 +273,6 @@ class Message(models.Model):
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.author.username
-
 
 class Chat(models.Model):
     name = models.CharField(max_length=50,blank=True)
@@ -283,10 +280,7 @@ class Chat(models.Model):
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return "{}".format(self.pk)
-
+    
 class BookRecommendation(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
