@@ -5,12 +5,12 @@ import { useNavigate } from "react-router";
 
 export default function PostComments(props) {
 
-    // const navigate = useNavigate();
-    // const [commentsUnderPost, setCommentsUnderPost] = useState("");
+    const navigate = useNavigate();
+    const [commentsUnderPost, setCommentsUnderPost] = useState("");
 
-    // useEffect(() => {
-    //     getCommentsUnderPost(personalPost)
-    // }, []);
+    useEffect(() => {
+        getCommentsUnderPost()
+    }, []);
     
     // const getCommentsForPost = (post_id) => {
     //     axiosInstance
@@ -22,17 +22,17 @@ export default function PostComments(props) {
     //         })
     // }
 
-    // const getCommentsUnderPost = (personalPost) => {
-    //     //console.log(personalPost)
-    //     return(<p> personalPost </p>)
-    //     // axiosInstance
-    //     //     .get(`posts/${post_id}/comments/`)
-    //     //     .then((res) => {
-    //     //         console.log(res.data)
-    //     //         const allCommentsUnderPost = res.data;
-    //     //         setCommentsUnderPost(allCommentsUnderPost);
-    //     //     })
-    // }
+    const getCommentsUnderPost = () => {
+        console.log(props.personalPost.id)
+        axiosInstance
+            .get(`posts/${props.personalPost.id}/comments/`)
+            .then((res) => {
+                console.log(res.data)
+                const allCommentsUnderPost = res.data;
+                setCommentsUnderPost(allCommentsUnderPost);
+            })
+        // return(<p> {props.personalPost.id} </p>)
+    }
 
     // const displayCommentsUnderPost = (e) => {
     //     if (allCommentsUnderPost.length > 0) {
@@ -60,7 +60,7 @@ export default function PostComments(props) {
     return (
         <>
             {/* {displayCommentsUnderPost(personalPost)} */}
-            {/* {getCommentsUnderPost()} */}
+            {getCommentsUnderPost()}
         </>
     )
     

@@ -69,7 +69,7 @@ export default function PersonalPosts(props) {
         axiosInstance
             .get(`posts/${post_id}/comments/`)
             .then((res) => {
-                console.log(res.data.comments)
+                console.log(res.data)
                 const allCommentsUnderPost = res.data.comments;
                 setCommentsUnderPost(allCommentsUnderPost)
             })
@@ -117,8 +117,8 @@ export default function PersonalPosts(props) {
 
                                 <div>                                       
                                     <h5> Comment section </h5>
-                                    <p> ... </p>
-                                    {/* <PostComments personalPost={personalPost}/> */}
+                                    
+                                    <PostComments personalPost={personalPost}/>
                                 </div>
                         
                                 <Row>
