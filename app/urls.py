@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 from django.urls import path, include
 from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
-=======
-from django.urls import include, path
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
-from app.views.friend_views import FriendRequestsView, FriendView, FriendsView
->>>>>>> 8b9e1fff3210bd65a1ed1e0bfbd6838babedd764
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.recommender_views import RecommenderAPI
