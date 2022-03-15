@@ -1,10 +1,9 @@
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import json
-from urllib import request
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import User, Message, Chat
-from app.views.chat_views import get_last_10_messages, get_user, get_current_chat
+from .models import Message
+from app.views.chat_views import get_user, get_current_chat, get_all_messages
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -13,7 +12,7 @@ class ChatConsumer(WebsocketConsumer):
         request_user = get_user(data['username'])
         current_chat = get_current_chat(data['chatId'])
         if(request_user in current_chat.participants.all()):
-            messages = get_last_10_messages(data['chatId'])
+            messages = get_all_messages(data['chatId'])
             content = {
                 'command': 'messages',
                 'messages': self.messages_to_json(messages)

@@ -1,19 +1,19 @@
 from email.policy import default
-from os import access
 from rest_framework import status
-from django.urls import reverse
 from rest_framework.test import APITestCase
 from app.models import User, Chat
-from app.serializers import ChatSerializer
 
 
-class PasswordResetTest(APITestCase):
+class ChatViewTest(APITestCase):
 
-    fixtures = ['app/tests/fixtures/default_user.json',
-                'app/tests/fixtures/other_users.json',
-                'app/tests/fixtures/default_chat.json',
-                'app/tests/fixtures/other_chats.json',
-                ]
+    fixtures = [
+        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/default_chat.json',
+        'app/tests/fixtures/default_message.json',
+        'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/other_chats.json',
+        'app/tests/fixtures/other_messages.json',
+    ]
 
     login_url = "/api/token/"
     chat_url = "/api/chat/"
@@ -53,7 +53,6 @@ class PasswordResetTest(APITestCase):
         self.assertEqual(len(response.data), len(userChats))
 
     def test_get_user_chats_while_not_logged_in(self):
-        userChats = self.user.chats.all()
         user_chats_url = self.chat_url + f"?username={self.user.username}"
         response = self.client.get(user_chats_url, format="json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
