@@ -153,10 +153,20 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(edited_post.content, original_content)
 
     def test_upvote_post_by_authorized_user(self):
-        pass
+        self._log_in_helper(self.other_user.username, "Password123")
+        upvote_before = Post.objects.get(id=1).upvotes
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"upvote"})
+        self.assertEqual(response.status_code, 200)
+        upvote_after = Post.objects.get(id=1).upvotes
+        self.assertEqual(upvote_before + 1, upvote_after)
 
     def test_downvote_post_by_authorized_user(self):
-        pass
+        self._log_in_helper(self.other_user.username, "Password123")
+        downvote_before = Post.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"downvote"})
+        self.assertEqual(response.status_code, 200)
+        downvote_after = Post.objects.get(id=1).downvotes
+        self.assertEqual(downvote_before + 1, downvote_after)
 
     def test_upvote_post_by_unauthorized_user(self):
         pass
