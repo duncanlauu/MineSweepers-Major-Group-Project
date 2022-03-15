@@ -133,15 +133,19 @@ class Post(models.Model):
 
     def modify_image_link(self, link):
         self.image_link = link
+        self.save()
 
     def modify_book_link(self, link):
         self.book_link = link
+        self.save()
 
     def modify_content(self, new_content):
         self.content = new_content
+        self.save()
 
     def modify_title(self, new_title):
         self.title = new_title
+        self.save()
 
 
 class Response(models.Model):

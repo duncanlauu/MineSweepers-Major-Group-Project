@@ -203,6 +203,21 @@ class FeedAPIViewTestCase(APITestCase):
 
     ## ---------- COMMENT ---------- ##
 
+    def test_get_comment_from_visible_post(self):
+        self._log_in_helper(self.user.username, "Password123")
+
+    def test_get_comment_from_invisible_post(self):
+        pass
+
+    def test_edit_comment(self):
+        pass
+
+    def test_upvote_comment(self):
+        pass
+
+    def test_downvote_comment(self):
+        pass
+
     ## ---------- REPLY ---------- ##
 
     
