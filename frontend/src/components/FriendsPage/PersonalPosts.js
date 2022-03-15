@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, FormGroup, Label } from "reactstrap"
 
@@ -8,7 +8,7 @@ import PostComments from "./PostComments";
 
 export default function PersonalPosts(props) {
     console.log(props)
-    
+
     const [myPersonalPosts, setPersonalPosts] = useState("");
     const [commentsUnderPost, setCommentsUnderPost] = useState("")
 
@@ -21,10 +21,10 @@ export default function PersonalPosts(props) {
 
     const handleCommentChange = (e) => {
         updateWrittenComment({
-          writtenComment, 
-          [e.target.name]: e.target.value, 
+            writtenComment,
+            [e.target.name]: e.target.value,
         })
-      }
+    }
 
     const getPersonalPosts = () => {
         axiosInstance
@@ -75,6 +75,8 @@ export default function PersonalPosts(props) {
             })
     }
 
+    const commentsRef = useRef();
+
     const uploadComment = (post_id, e) => {
         console.log(writtenComment.myComment)
         axiosInstance
@@ -83,12 +85,16 @@ export default function PersonalPosts(props) {
             })
             .then((res) => {
                 console.log(res.data)
+                const comment = { author: localStorage.username, content: writtenComment.myComment }
+                commentsRef.current.addComment(comment)
+                console.log("adding post in parent: ", comment)
                 // navigate("/home/")
                 // navigate("/friends_page/")
+                // call setCommentsUnderPost in PostComments
             })
-    } 
+    }
 
-    
+
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
             console.log(myPersonalPosts);
@@ -96,7 +102,7 @@ export default function PersonalPosts(props) {
                 myPersonalPosts.map((personalPost, index) => {
                     console.log(personalPost);
                     return (
-                        <div className="personalPost" key={personalPost.id}> 
+                        <div className="personalPost" key={personalPost.id}>
                             <SinglePostContainer>
                                 <Row>
                                     <Col>
@@ -106,30 +112,30 @@ export default function PersonalPosts(props) {
                                     </Col>
                                     <Col>
                                         <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-                                             X 
+                                            X
                                         </Button>
                                     </Col>
                                 </Row>
-                                        
+
                                 <PostContent>
                                     <h4> {personalPost.content} </h4>
                                 </PostContent>
 
-                                <div>                                       
+                                <div>
                                     <h5> Comment section </h5>
-                                    
-                                    <PostComments personalPost={personalPost}/>
+
+                                    <PostComments ref={commentsRef} personalPost={personalPost} />
                                 </div>
-                        
+
                                 <Row>
-                                     
-                                        <Input type="textarea" rows="1"
-                                            id="myComment"
-                                            name="myComment"
-                                            onChange={handleCommentChange}
-                                            style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                        />
-                                    
+
+                                    <Input type="textarea" rows="1"
+                                        id="myComment"
+                                        name="myComment"
+                                        onChange={handleCommentChange}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    />
+
                                 </Row>
                                 <Row>
                                     <Col xs="6">
@@ -138,7 +144,7 @@ export default function PersonalPosts(props) {
                                                 <p> Send </p>
                                             </Button>
                                         </Row>
-                                        
+
                                     </Col>
                                     <Col xs="3">
                                         <Button onClick={(e) => getCommentsUnderPost(personalPost.id, e)}>
@@ -147,7 +153,7 @@ export default function PersonalPosts(props) {
                                     </Col>
 
                                 </Row>
-                                      
+
                                 <Row>
                                     <Button onClick={(e) => getPost(personalPost.id)}>
                                         <p> Get Info </p>
