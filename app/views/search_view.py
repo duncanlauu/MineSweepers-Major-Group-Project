@@ -35,7 +35,7 @@ class SearchView(ListView, APIView):
             serialized_club_results = ClubSerializer(club_results, many=True)
             serialized_user_results = UserSerializer(user_results, many=True)
 
-            csv_file_path = 'app/files/BX-Book-Ratings.csv'
+            csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
             dump_file_name = 'app/files/dump_file'
             dataframe = get_combined_data(csv_file_path)
             data = get_dataset_from_dataframe(dataframe)
