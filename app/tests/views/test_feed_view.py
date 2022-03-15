@@ -1,6 +1,7 @@
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
 from app.models import Post, User
+from django.forms.models import model_to_dict
 
 
 class FeedAPIViewTestCase(APITestCase):
@@ -20,6 +21,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.client = APIClient()
         self.user = User.objects.get(pk=1)
         self.client.force_authenticate(self.user)
+        self.other_user = User.objects.get(pk=1)
 
     ## ---------- FEED ---------- ##
 
@@ -89,7 +91,62 @@ class FeedAPIViewTestCase(APITestCase):
         response = self.client.get(reverse('app:post', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 200)
         post = Post.objects.get(id=1)
-        self.assertDictEqual(response.data, post.values())
+        post_values = model_to_dict(post, fields=([field.name for field in post._meta.fields]))
+        for k,v in post_values.items():
+            self.assertEqual(response.data['post'][k], v)
+
+    def test_full_edit_post_by_author(self):
+        new_title = 'new post title'
+        new_content = 'new post content'
+        new_image_link = 'www.new-image-link.com'
+        new_book_link = 'www.new-book-link.com'
+        new_post_data = {'title': new_title, 'content': new_content, 'image_link': new_image_link, 'book_link': new_book_link}
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        self.assertEqual(response.status_code, 200)
+        edited_post = Post.objects.get(id=1)
+        self.assertEqual(edited_post.title, new_title)
+        self.assertEqual(edited_post.content, new_content)
+        self.assertEqual(edited_post.image_link, new_image_link)
+        self.assertEqual(edited_post.book_link, new_book_link)
+
+
+    def test_partial_edit_post_by_author(self):
+        new_title = 'new post title'
+        new_content = 'new post content'
+        new_post_data = {'title': new_title, 'content': new_content}
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        self.assertEqual(response.status_code, 200)
+        edited_post = Post.objects.get(id=1)
+        self.assertEqual(edited_post.title, new_title)
+        self.assertEqual(edited_post.content, new_content)
+
+    def test_edit_post_not_by_author(self):
+        original_post = Post.objects.get(id=1)
+        original_title = original_post.title
+        original_content = original_post.content
+        self.client.force_authenticate(user=None)
+        self.client.force_authenticate(self.other_user)
+        new_title = 'new post title'
+        new_content = 'new post content'
+        new_post_data = {'title': new_title, 'content': new_content}
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        self.assertEqual(response.status_code, 400)
+        edited_post = Post.objects.get(id=1)
+        self.assertEqual(edited_post.title, original_title)
+        self.assertEqual(edited_post.content, original_content)
+
+    def test_upvote_post_by_authorized_user(self):
+        pass
+
+    def test_downvote_post_by_authorized_user(self):
+        pass
+
+    def test_upvote_post_by_unauthorized_user(self):
+        pass
+
+    def test_downvote_post_by_unauthorized_user(self):
+        pass
+    
 
     ## ---------- COMMENT ---------- ##
 
