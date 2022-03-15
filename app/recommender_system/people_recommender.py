@@ -141,6 +141,8 @@ def get_actual_users(trainset):
 def get_average_diff_for_list_of_users(uid1, uids, algo, items):
     """Get the average difference between a user and a list of users given a list of items"""
 
+    if not items:
+        return -1
     diff = 0
     for uid2 in uids:
         for iid in items:

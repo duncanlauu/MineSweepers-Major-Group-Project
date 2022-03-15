@@ -12,6 +12,7 @@ from .views.chat_views import (
     ChatLeaveView
 )
 from .views.club_views import Clubs, SingleClub
+from .views.search_view import SearchView
 
 app_name = 'app'
 
@@ -50,5 +51,8 @@ urlpatterns = [
     path('clubs/', Clubs.as_view(), name='clubs'),
     path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
     path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
-    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
+    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club'),
+
+    #Search API
+    path('search/', SearchView.as_view(), name='search'),
 ]
