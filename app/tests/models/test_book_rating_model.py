@@ -14,7 +14,7 @@ class BookRatingModelTest(TestCase):
     ]
 
     def setUp(self):
-        self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
+        self.book = Book.objects.get(pk="0195153448")
         self.user = User.objects.get(username="johndoe")
         self.bookrating = BookRating.objects.get(user=self.user, book=self.book)
 

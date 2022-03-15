@@ -2,6 +2,7 @@
 
 It loads the model and runs some tests
 """
+import time
 
 from surprise import SVD
 
@@ -23,8 +24,32 @@ def recommender_system_tests():
 
     # path to dataset file
     file_path = 'app/files/BX-Book-Ratings.csv'
+    filtered_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
 
-    dataframe = get_combined_data(file_path)
+    start = time.time()
+    dataframe = get_combined_data(file_path, False)
+    end = time.time()
+    print(end - start)
+
+    dataframe = dataframe.sort_values('User-ID')
+    dataframe = dataframe.reset_index(drop=True)
+
+    file_dataframe = get_dataframe_from_file(file_path)
+    file_dataframe.to_csv(index=False, path_or_buf=filtered_file_path)
+
+    start = time.time()
+    dataframe2 = get_combined_data(filtered_file_path)
+    end = time.time()
+    print(end - start)
+
+    dataframe2 = dataframe2.sort_values('User-ID')
+    dataframe2 = dataframe2.reset_index(drop=True)
+
+    print(dataframe)
+    print(dataframe2)
+
+    print(dataframe.equals(dataframe2))
+
     data = get_dataset_from_dataframe(dataframe)
     trainset = get_trainset_from_dataset(data)
 
