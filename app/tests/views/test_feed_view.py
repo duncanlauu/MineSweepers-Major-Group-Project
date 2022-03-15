@@ -21,6 +21,8 @@ class FeedAPIViewTestCase(APITestCase):
         self.user = User.objects.get(pk=1)
         self.client.force_authenticate(self.user)
 
+    ## ---------- FEED ---------- ##
+
     def test_get_feed(self):
         """Test user can see posts by themselves, friends, and clubs they are in"""
         response = self.client.get(reverse('app:feed'))
@@ -35,6 +37,8 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertIn(3, post_ids)
         # Check posts by non friends who are in a club user is not a member of is not visible to user
         self.assertNotIn(4, post_ids)
+
+    ## ---------- POST ---------- ##
 
     def test_get_all_posts_of_user(self):
         response = self.client.get(reverse('app:all_posts'))
@@ -82,4 +86,11 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(post.book_link, book_link)
 
     def test_get_post(self):
-        pass
+        response = self.client.get(reverse('app:post', kwargs={'post_id': 1}))
+        self.assertEqual(response.status_code, 200)
+        post = Post.objects.get(id=1)
+        self.assertDictEqual(response.data, post.values())
+
+    ## ---------- COMMENT ---------- ##
+
+    ## ---------- REPLY ---------- ##
