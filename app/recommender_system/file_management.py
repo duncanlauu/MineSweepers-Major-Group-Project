@@ -17,10 +17,13 @@ def filter_out_for_books_we_have_in_the_database(df):
     return df[df['ISBN'].isin(all_database_isbns)]
 
 
-def get_combined_data(file_path):
+def get_combined_data(file_path, filtered=True):
     """Get the combined data from the database and a file"""
 
-    file_dataframe = get_dataframe_from_file(file_path)
+    if filtered:
+        file_dataframe = get_filtered_dataframe_from_file(file_path)
+    else:
+        file_dataframe = get_dataframe_from_file(file_path)
     combined = append_database_to_file_dataset(file_dataframe)
     logging.debug(combined)
     return combined
@@ -37,6 +40,13 @@ def get_dataframe_from_file(file_path):
     logging.debug(file_dataframe)
     return file_dataframe
 
+
+def get_filtered_dataframe_from_file(file_path):
+    """Get a filtered dataframe from a file given (and log what it looks like)"""
+
+    file_dataframe = read_csv(file_path, sep=',')
+    logging.debug(file_dataframe)
+    return file_dataframe
 
 def append_database_to_file_dataset(file_dataframe):
     """Append the ratings from the database to the ones in the csv"""
