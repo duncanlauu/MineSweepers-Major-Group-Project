@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import User, Club, Book, FriendRequest
+from app.models import User, Club, Book, FriendRequest, Post
 
 # Register your models here.
 
@@ -32,4 +32,10 @@ class BookAdmin(admin.ModelAdmin):
 class FriendRequest(admin.ModelAdmin):
     list_display = [
         'sender', 'receiver', 'created_at'
+    ]
+
+@admin.register(Post)
+class Post(admin.ModelAdmin):
+    list_display = [
+        "title", "content", "created_at", "image_link", "book_link"
     ]

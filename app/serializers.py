@@ -23,6 +23,8 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         for k, v in validated_data.items():
             setattr(instance, k, v)
+        instance.save()
+        return instance
 
 
 class BookRecommendationSerializer(serializers.ModelSerializer):

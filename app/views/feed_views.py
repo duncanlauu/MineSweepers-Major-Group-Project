@@ -51,8 +51,9 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
+            serializer = PostSerializer(post)
             if is_post_visible_to_user(user, post):
-                return Response({'post': post}, status=status.HTTP_200_OK)
+                return Response({'post': serializer.data}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -92,7 +93,7 @@ class PostView(APIView):
 
 class AllCommentsView(APIView):
     """API View of all comments from a post by the user"""
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id):
         """Get all comments from a post by the user"""
@@ -128,7 +129,7 @@ class AllCommentsView(APIView):
 
 class CommentView(APIView):
     """API View of a comment of a user"""
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id, comment_id):
         """Get a comment visible to a user"""
@@ -136,8 +137,9 @@ class CommentView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
+            serializer = CommentSerializer(comment)
             if is_post_visible_to_user(user, post) and comment.post == post:
-                return Response({'comment': comment}, status=status.HTTP_200_OK)
+                return Response({'comment': serializer.data}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -224,8 +226,9 @@ class ReplyView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
+            serializer = ReplySerializer(reply)
             if is_post_visible_to_user(user, post) and comment.post == post and reply.comment == comment:
-                return Response({'reply': reply}, status=status.HTTP_200_OK)
+                return Response({'reply': serializer.data}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
