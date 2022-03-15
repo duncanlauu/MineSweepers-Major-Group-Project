@@ -18,6 +18,7 @@ import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
 import CreateClub from "./CreateClub/CreateClub";
 import ListOfClubs from "./ListOfClubs/ListOfClubs";
+import RecommenderPage from "./RecommenderPage/RecommenderPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -45,6 +46,7 @@ export default class App extends Component {
             <Route path='/password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
             <Route path="/chat/:chatID/" element={<ChatWrapper />}></Route>
             <Route path="/all_clubs/" element={<ListOfClubs />}></Route>
+            <Route path="/recommendations/" element={<RecommenderPage />}></Route>
           </Routes>
           {/* <Footer /> */}
         </React.StrictMode>

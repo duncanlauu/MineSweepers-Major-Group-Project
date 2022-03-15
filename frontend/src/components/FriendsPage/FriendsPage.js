@@ -19,6 +19,7 @@ export default function FriendsPage() {
   const navigate = useNavigate(); // for test purpose if axios works
 
   const currentUser = useGetUser();
+  console.log("User ID: " + currentUser.id)
 
   // const [myFriendRequests, setFriendRequests] = useState("");
 
