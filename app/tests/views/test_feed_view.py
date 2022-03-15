@@ -17,16 +17,28 @@ class FeedAPIViewTestCase(APITestCase):
                 'app/tests/fixtures/other_books.json'
                 ]
 
+    def _log_in_helper(self, username, password):
+        login_data = {
+            "username": username,
+            "password": password,
+        }
+        login_url = "/api/token/"
+        response = self.client.post(login_url, login_data, format="json")
+        self.assertEqual(response.status_code, 200)
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
+
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.get(pk=1)
-        self.client.force_authenticate(self.user)
-        self.other_user = User.objects.get(pk=1)
+        self.other_user = User.objects.get(pk=2)
+
 
     ## ---------- FEED ---------- ##
 
     def test_get_feed(self):
         """Test user can see posts by themselves, friends, and clubs they are in"""
+        self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:feed'))
         self.assertEqual(response.status_code, 200)
         posts = response.data['posts']
@@ -43,6 +55,7 @@ class FeedAPIViewTestCase(APITestCase):
     ## ---------- POST ---------- ##
 
     def test_get_all_posts_of_user(self):
+        self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:all_posts'))
         self.assertEqual(response.status_code, 200)
         posts = response.data['posts']
@@ -52,6 +65,7 @@ class FeedAPIViewTestCase(APITestCase):
 
     def test_create_post_without_optional_fields(self):
         """Test user can create basic post without the optional fields"""
+        self._log_in_helper(self.user.username, "Password123")
         title = 'test post title'
         form_data = {'title': title, 'content': 'test post content'}
         post_count_before = Post.objects.count()
@@ -65,6 +79,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(post.author, self.user)
 
     def test_create_post(self):
+        self._log_in_helper(self.user.username, "Password123")
         title = 'test full post title'
         content = 'test post content'
         club_id = 1
@@ -88,6 +103,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(post.book_link, book_link)
 
     def test_get_post(self):
+        self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:post', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 200)
         post = Post.objects.get(id=1)
@@ -96,6 +112,7 @@ class FeedAPIViewTestCase(APITestCase):
             self.assertEqual(response.data['post'][k], v)
 
     def test_full_edit_post_by_author(self):
+        self._log_in_helper(self.user.username, "Password123")
         new_title = 'new post title'
         new_content = 'new post content'
         new_image_link = 'www.new-image-link.com'
@@ -111,6 +128,7 @@ class FeedAPIViewTestCase(APITestCase):
 
 
     def test_partial_edit_post_by_author(self):
+        self._log_in_helper(self.user.username, "Password123")
         new_title = 'new post title'
         new_content = 'new post content'
         new_post_data = {'title': new_title, 'content': new_content}
@@ -121,11 +139,10 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(edited_post.content, new_content)
 
     def test_edit_post_not_by_author(self):
+        self._log_in_helper(self.other_user.username, "Password123")
         original_post = Post.objects.get(id=1)
         original_title = original_post.title
         original_content = original_post.content
-        self.client.force_authenticate(user=None)
-        self.client.force_authenticate(self.other_user)
         new_title = 'new post title'
         new_content = 'new post content'
         new_post_data = {'title': new_title, 'content': new_content}
