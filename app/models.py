@@ -283,13 +283,9 @@ class Club(models.Model):
 
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
-    author = models.ForeignKey(
-        User, related_name='messages', on_delete=models.CASCADE)
-    content = models.TextField()
+    author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
+    content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.author.username
 
 
 class Chat(models.Model):
@@ -297,11 +293,8 @@ class Chat(models.Model):
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
-
-    def __str__(self):
-        return "{}".format(self.pk)
-
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    
 class BookRecommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
