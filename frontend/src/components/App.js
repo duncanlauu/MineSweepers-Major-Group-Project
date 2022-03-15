@@ -28,13 +28,13 @@ export default class App extends Component {
 
   render() {
     return (
-      <AuthProvider>
+      <React.StrictMode>
         <BrowserRouter>
-          <React.StrictMode>
+          <AuthProvider>
             <Routes>
               <Route path='/' element={<Layout />}>
                 {/* public routes */}
-                <Route path='' element={<LandingPage />}></Route>
+                <Route path='/' element={<LandingPage />}></Route>
                 <Route path='log_in' element={<Login />}></Route>
                 <Route path='sign_up' element={<SignUp />}></Route>
                 <Route path='password_reset' element={<PasswordReset />}></Route>
@@ -54,14 +54,14 @@ export default class App extends Component {
                 </Route>
 
                 {/* catch all */}
-                <Route path='*' element={<Error404 />} />
                 <Route path='error' element={<Error404 />}></Route>
+                <Route path='*' element={<Error404 />} />
                 {/* not sure what to do with error */}
               </Route>
             </Routes>
-          </React.StrictMode>
+          </AuthProvider>
         </BrowserRouter>
-      </AuthProvider>
+      </React.StrictMode>
     );
   }
 }

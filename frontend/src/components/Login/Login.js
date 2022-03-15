@@ -33,7 +33,6 @@ export default function SignIn() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // console.log(formData)
 
         axiosInstance
             .post(`token/`, {
@@ -41,8 +40,6 @@ export default function SignIn() {
                 password: password,
             })
             .then((response) => {
-                // const password = formData.password
-                // const username = formData.username
                 const access_token = response.data.access
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
@@ -50,17 +47,14 @@ export default function SignIn() {
                 localStorage.setItem('username', user) // might not be necessary
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
-                navigate(from, { replace: true })
+                console.log("From: ", from)
+                setAuth({ user })
+                setUser('')
+                setPassword('')
+                navigate(from)
                 console.log(response);
                 console.log(response.data);
             })
-        const access_token = localStorage.getItem('access_token')
-        const refresh_token = localStorage.getItem('refresh_token')
-        if (access_token) {
-            setUser('')
-            setPassword('')
-            setAuth({ user, password, access_token, refresh_token })
-        }
     }
 
     return (
