@@ -10,7 +10,9 @@ class PostModelTestCase(TestCase):
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/others_clubs.json',
         'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/default_post.json',
         'app/tests/fixtures/other_posts.json',
         'app/tests/fixtures/default_comment.json',
@@ -55,15 +57,15 @@ class PostModelTestCase(TestCase):
         self._assert_post_is_valid()
 
     def test_upvote_post(self):
-        upvote_count_before = self.post.upvotes
+        upvote_count_before = Post.objects.get(pk=self.post.id).upvotes
         self.post.upvote_post()
-        upvote_count_after = self.post.upvotes
+        upvote_count_after = Post.objects.get(pk=self.post.id).upvotes
         self.assertEqual(upvote_count_before + 1, upvote_count_after)
 
     def test_downvote_post(self):
-        downvote_count_before = self.post.downvotes
+        downvote_count_before = Post.objects.get(pk=self.post.id).downvotes
         self.post.downvote_post()
-        downvote_count_after = self.post.downvotes
+        downvote_count_after = Post.objects.get(pk=self.post.id).downvotes
         self.assertEqual(downvote_count_before + 1, downvote_count_after)
 
     def test_add_comment(self):
@@ -71,28 +73,32 @@ class PostModelTestCase(TestCase):
         comment.post = self.post
         comment_count_before = self.post.comment_set.count()
         self.post.add_comment(comment)
-        comment_count_after = self.post.comment_set.count()
+        comment_count_after = Comment.objects.filter(post_id=self.post.id).count()
         self.assertEqual(comment_count_before + 1, comment_count_after)
 
     def test_modify_image_link(self):
         image_link = "abc"
         self.post.modify_image_link(image_link)
-        self.assertEqual(self.post.image_link, image_link)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.image_link, image_link)
 
     def test_modify_book_link(self):
         book_link = "abc"
         self.post.modify_book_link(book_link)
-        self.assertEqual(self.post.book_link, book_link)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.book_link, book_link)
 
     def test_modify_title(self):
         title = "abc"
         self.post.modify_title(title)
-        self.assertEqual(self.post.title, title)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.title, title)
 
     def test_modify_content(self):
         content = "abc"
         self.post.modify_content(content)
-        self.assertEqual(self.post.content, content)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.content, content)
 
     def _assert_post_is_valid(self):
         try:

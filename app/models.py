@@ -122,24 +122,30 @@ class Post(models.Model):
 
     def upvote_post(self):
         self.upvotes += 1
+        self.save()
 
     def downvote_post(self):
         self.downvotes += 1
+        self.save()
 
     def add_comment(self, comment):
         self.comment_set.add(comment)
 
     def modify_image_link(self, link):
         self.image_link = link
+        self.save()
 
     def modify_book_link(self, link):
         self.book_link = link
+        self.save()
 
     def modify_content(self, new_content):
         self.content = new_content
+        self.save()
 
     def modify_title(self, new_title):
         self.title = new_title
+        self.save()
 
 
 class Response(models.Model):
