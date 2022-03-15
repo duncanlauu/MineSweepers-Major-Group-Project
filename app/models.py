@@ -2,7 +2,7 @@ import datetime
 from email.policy import default
 from pickle import TRUE
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -22,7 +22,7 @@ def FutureDateValidator(date):
 
 
 #User Manager class
-class UserManager(models.Manager):
+class UserManager(AbstractUserManager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query is not None:
