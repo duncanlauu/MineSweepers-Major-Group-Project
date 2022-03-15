@@ -36,3 +36,10 @@ export const ModalContainer = styled.div`
     height: 100vw;
     background: rgba(0,0,0,0.5);
 `
+
+export const ParaText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: #071C4E;
+`

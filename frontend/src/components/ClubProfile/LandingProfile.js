@@ -1,10 +1,11 @@
 import React from 'react'
 import { Container, Row, Col, Button, ModalHeader, Modal, ModalBody } from 'reactstrap';
 import Gravatar from 'react-gravatar';
-import { BookProfile } from './ClubProfileElements';
+import { BookProfile, ParaText } from './ClubProfileElements';
 import axiosInstance from '../../axios';
-// import useGetUser from '../../helpers';
+import useGetUser from '../../helpers';
 import { useParams } from 'react-router-dom';
+import {MdOutlineCancelScheduleSend} from 'react-icons/md'
 
 export default class LandingProfile extends React.Component {
     constructor(props) {
@@ -19,9 +20,9 @@ export default class LandingProfile extends React.Component {
 
     applyToClub = (id, e) => {
         const action = 'apply'
-        const user_id = 3
+        const user_id = useGetUser();
         axiosInstance.put(
-            `clubs/5/apply/5`, {}
+            `clubs/${id}/${action}/${user_id}`, {}
         ).then(
             res => {
                 console.log(res);
@@ -85,7 +86,6 @@ export default class LandingProfile extends React.Component {
                 </Row>
                 <Row>
                     <Button onClick={
-                        // (e) => this.applyToClub(1)
                         this.state.applied ? this.toggleModal : (e) => this.applyToClub(1)
                     } 
                         style= {this.state.applied ? appliedStyle : applyStyle}
@@ -111,11 +111,14 @@ export default class LandingProfile extends React.Component {
                     left: 0,
                     top: 100
                 }}>
-                <ModalHeader toggle={this.toggleModal}>
-                    This action will cancel your application to the club. Do you wish to proceed?
+                <ModalHeader toggle={this.toggleModal} style={{ alignItems:"center", justifyContent:"center", display: "flex" }}>
+                    <ParaText>This action will cancel your application to the club. Do you wish to proceed?</ParaText>
+                    <MdOutlineCancelScheduleSend />
                 </ModalHeader>
-                <ModalBody>
-                    <Button onClick={this.toggleClass}>
+                <ModalBody style={{ alignItems:"center", justifyContent:"center", display: "flex" }}>
+                    <Button 
+                        onClick={this.toggleClass}
+                        style={{ backgroundColor:"#653FFD" }}>
                         Continue
                     </Button>
                 </ModalBody>
