@@ -41,7 +41,7 @@ def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
     """Get the top between m and n users for a user using random users and random items"""
 
     users = get_actual_users(trainset)
-    if uid in users:
+    if trainset.to_inner_uid(uid) in users:
         users.remove(trainset.to_inner_uid(uid))
     max_number_of_items = int(100000 / len(users))
 

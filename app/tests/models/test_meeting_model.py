@@ -2,7 +2,7 @@
 import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import  Meeting
+from app.models import Meeting
 from django.utils import timezone
 
 
@@ -14,7 +14,7 @@ class MeetingModelTest(TestCase):
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_meeting.json',
         'app/tests/fixtures/other_meetings.json',
-        
+
     ]
 
     def setUp(self):
@@ -30,7 +30,7 @@ class MeetingModelTest(TestCase):
     def test_end_time_cannot_be_blank(self):
         self.meeting.end_time = ''
         self._assert_meeting_is_invalid()
-        
+
     def test_start_time_cannot_be_past_date(self):
         self.meeting.start_time = timezone.now() - timezone.timedelta(days=1)
         self._assert_meeting_is_invalid()
@@ -77,10 +77,6 @@ class MeetingModelTest(TestCase):
         self.meeting.link = 'x' * 501
         self._assert_meeting_is_invalid()
 
-    
-
-    
-
     def _assert_meeting_is_valid(self):
         try:
             self.meeting.full_clean()
@@ -89,5 +85,4 @@ class MeetingModelTest(TestCase):
 
     def _assert_meeting_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.meeting.full_clean()    
-    
+            self.meeting.full_clean()
