@@ -1,22 +1,17 @@
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
+from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
 from .views.recommender_views import RecommenderAPI
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
-from django.contrib.auth import views as auth_views
-from .views.chat_views import (
-    ChatListView,
-    ChatLeaveView
-)
+from .views.chat_views import ChatListView,ChatLeaveView
 from .views.club_views import Clubs, SingleClub
 from .views.search_view import SearchView
 
 app_name = 'app'
-
-# add api urls here
 
 urlpatterns = [
     path('user/sign_up/', CreateUser.as_view(), name="create_user"),
@@ -55,4 +50,9 @@ urlpatterns = [
 
     #Search API
     path('search/', SearchView.as_view(), name='search'),
+
+    # Ratings
+    path('ratings/', AllRatingsView.as_view(), name='user_ratings'),
+    path('ratings/<int:rating_id>/', RatingView.as_view(), name='rating'),
+    path('books/<int:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings')
 ]

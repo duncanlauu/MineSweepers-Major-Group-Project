@@ -1,7 +1,6 @@
 from pyexpat.errors import messages
 from rest_framework import serializers
-from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
-    BookRecommendationForClub, Club, Book
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -110,4 +109,9 @@ class ClubRecommendationSerializer(serializers.ModelSerializer):
 class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalBookRecommendation
+        fields = '__all__'
+
+class BookRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= BookRating
         fields = '__all__'
