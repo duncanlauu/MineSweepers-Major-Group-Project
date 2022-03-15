@@ -32,6 +32,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.client = APIClient()
         self.user = User.objects.get(pk=1)
         self.other_user = User.objects.get(pk=2)
+        self.non_friend_user = User.objects.get(pk=6)
 
 
     ## ---------- FEED ---------- ##
@@ -169,12 +170,40 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(downvote_before + 1, downvote_after)
 
     def test_upvote_post_by_unauthorized_user(self):
-        pass
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        upvote_before = Post.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"upvote"})
+        self.assertEqual(response.status_code, 400)
+        upvote_after = Post.objects.get(id=1).downvotes
+        self.assertEqual(upvote_before, upvote_after)
 
     def test_downvote_post_by_unauthorized_user(self):
-        pass
-    
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        downvote_before = Post.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"downvote"})
+        self.assertEqual(response.status_code, 400)
+        downvote_after = Post.objects.get(id=1).downvotes
+        self.assertEqual(downvote_before, downvote_after)
+
+    def test_delete_post_by_author(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.delete(reverse('app:post', kwargs={'post_id': 1}))
+        self.assertEqual(response.status_code, 200)
+        with self.assertRaises(Post.DoesNotExist):
+            Post.objects.get(pk=1)
+
+    def test_delete_post_not_by_author(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        original_post = Post.objects.get(pk=1)
+        response = self.client.delete(reverse('app:post', kwargs={'post_id': 1}))
+        self.assertEqual(response.status_code, 400)
+        post = Post.objects.get(pk=1)
+        self.assertEqual(original_post, post)
+        
 
     ## ---------- COMMENT ---------- ##
 
     ## ---------- REPLY ---------- ##
+
+    
+

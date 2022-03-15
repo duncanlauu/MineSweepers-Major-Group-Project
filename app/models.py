@@ -122,9 +122,11 @@ class Post(models.Model):
 
     def upvote_post(self):
         self.upvotes += 1
+        self.save()
 
     def downvote_post(self):
         self.downvotes += 1
+        self.save()
 
     def add_comment(self, comment):
         self.comment_set.add(comment)
@@ -190,8 +192,6 @@ class BookRating(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
 
 # Meeting class
-
-
 class Meeting(models.Model):
     start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
     end_time = models.DateTimeField(blank=False, validators=[FutureDateValidator])
@@ -215,8 +215,6 @@ class Vote(models.Model):
         return self.event_vote.count()
 
 # Club event class
-
-
 class ClubEvent(models.Model):
     club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
