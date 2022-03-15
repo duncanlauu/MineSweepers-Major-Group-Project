@@ -16,7 +16,7 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
         self.book = Book.objects.get(title="Harry Potter and the Sorcerer's Stone")
-        self.friend = User.objects.get(username='janedoe')
+        self.friend = User.objects.get(username='jakedoe')
 
     def test_valid_user(self):
         self._assert_user_is_valid()

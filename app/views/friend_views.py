@@ -51,7 +51,6 @@ class FriendRequestsView(APIView):
             other_user_id = request.data['other_user_id']
             other_user = User.objects.get(pk=other_user_id)
             user.send_friend_request(other_user)
-            print("Request sent to user: ", other_user_id)
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
