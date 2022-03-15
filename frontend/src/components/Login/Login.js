@@ -29,7 +29,7 @@ export default function SignIn() {
 
     const postRecommenderCalculation = (user) => {
         axiosInstance
-            .post(`recommender/0/10/${user.id}/top_n_users_random_books/`)
+            .post(`recommender/10/${user.id}/top_n_users_random_books/`)
             .then((res) => {
                 navigate("/friends_page")
             })
@@ -51,7 +51,7 @@ export default function SignIn() {
                     'JWT ' + localStorage.getItem('access_token')
                 navigate("/home") // change to redirect to dashboard
                 
-                console.log(user.id)
+                console.log(user)
                 postRecommenderCalculation(user)
                 // console.log(response);
                 // console.log(response.data);
