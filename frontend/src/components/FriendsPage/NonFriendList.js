@@ -18,16 +18,18 @@ export default function NonFriendList(props) {
     }, [user]);
 
     const getAllNonFriends = () => {
-        console.log(user.id)
-        axiosInstance
-            .get(`recommender/10/9/top_n_users_random_books/`)
-            .then((res) => {
-                console.log("Buenos dias")
-                console.log(res.data)
-                const allNonFriends = res.data;
-                setNonFriends(allNonFriends)
-            })
-            .catch(error => console.error(error));
+        if (typeof user != "undefined") {
+            axiosInstance
+                .get(`recommender/10/${user.id}/top_n_users_random_books/`)
+                .then((res) => {
+                    console.log(res.data)
+                    const allNonFriends = res.data;
+                    setNonFriends(allNonFriends)
+                })
+                .catch(error => console.error(error));
+        } else {
+            console.log("I don't really know")
+        }
     }
 
     // const getRecommendedFriends = () => {
@@ -41,23 +43,23 @@ export default function NonFriendList(props) {
     //         .catch(error => console.error(error));
     // }
 
-    const postFriendRequest = (receiver, e) => {
-        axiosInstance
-            .post("friend_requests/", {
-                other_user_id : receiver  
-            })
-    }
-
-    // not used at this point.
-    const cancelFriendRequest = (receiver, e) => {
-        axiosInstance
-            .delete("friend_requests/", {
-                data: { 
-                    other_user_id : receiver,  
-                    action : "cancel"
-                }
-            })
-    }
+    // const postFriendRequest = (receiver, e) => {
+    //     axiosInstance
+    //         .post("friend_requests/", {
+    //             other_user_id : receiver
+    //         })
+    // }
+    //
+    // // not used at this point.
+    // const cancelFriendRequest = (receiver, e) => {
+    //     axiosInstance
+    //         .delete("friend_requests/", {
+    //             data: {
+    //                 other_user_id : receiver,
+    //                 action : "cancel"
+    //             }
+    //         })
+    // }
 
     // display recommended friends
     const displayNonFriends = (e) => {
