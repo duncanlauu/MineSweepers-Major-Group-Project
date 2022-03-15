@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from app.models import Book, BookRating, User
+from app.models import Book, BookRating
 from app.serializers import BookRatingSerializer
 
 class AllRatingsView(APIView):
@@ -39,7 +39,7 @@ class RatingView(APIView):
             user = request.user
             rating = BookRating.objects.get(id=rating_id)
             serializer = BookRatingSerializer(rating)
-            return Response({'post': serializer.data}, status=status.HTTP_200_OK)
+            return Response({'rating': serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
