@@ -18,9 +18,11 @@ coverage==6.0.1
 cryptography==36.0.1
 daphne==3.0.2
 defusedxml==0.5.0
+dj-database-url==0.5.0
 Django==3.2.5
 django-allauth==0.48.0
 django-cors-headers==3.11.0
+django-heroku==0.0.0
 django-rest-auth==0.9.3
 django-rest-framework==0.1.0
 django-templated-mail==1.1.1
@@ -79,5 +81,6 @@ typing_extensions==4.0.1
 tzdata==2021.5
 uritemplate==4.1.1
 urllib3==1.24.1
+whitenoise==6.0.0
 wrapt==1.10.11
 zope.interface==5.4.0
