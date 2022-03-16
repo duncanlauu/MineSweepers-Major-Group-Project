@@ -1,12 +1,11 @@
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
-from .views.account_views import CreateUser
-from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.authentication_views import GetCurrentUserView
 from .views.recommender_views import RecommenderAPI
+from .views.scheduling_view import SchedulingView
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
-from django.contrib.auth import views as auth_views
 from .views.chat_views import (
     ChatListView,
     ChatLeaveView
@@ -53,6 +52,11 @@ urlpatterns = [
     path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
     path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club'),
 
-    #Search API
+    # Search API
     path('search/', SearchView.as_view(), name='search'),
+
+    # Scheduling API
+    path('scheduling/', SchedulingView.as_view(), name='scheduling'),
+    path('scheduling/<int:id>/', SchedulingView.as_view(), name='scheduling_with_id'),
+    path('scheduling/<int:id>/<str:action>/', SchedulingView.as_view(), name='scheduling_update'),
 ]

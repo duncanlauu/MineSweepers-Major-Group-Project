@@ -5,9 +5,8 @@ import time
 from operator import itemgetter
 from random import shuffle, seed
 
-from app.models import User, Club
+from app.models import User, Club, get_all_users_related_to_a_club
 from app.recommender_system.books_recommender import get_top_n
-from app.recommender_system.file_management import get_all_related_users
 from app.recommender_system.genre_algo import get_isbns_for_a_genre
 
 
@@ -157,7 +156,7 @@ def get_top_between_m_and_n_clubs_using_random_items(uid, algo, trainset, clubs,
 
     num_of_users = 0
     for club in clubs:
-        num_of_users += len(get_all_related_users(club))
+        num_of_users += len(get_all_users_related_to_a_club(club))
 
     items = get_random_n_items(trainset, int(100000 / num_of_users))
 
@@ -175,7 +174,7 @@ def get_top_between_m_and_n_clubs_using_top_items_for_a_user(uid, algo, trainset
 
     num_of_users = 0
     for club in clubs:
-        num_of_users += len(get_all_related_users(club))
+        num_of_users += len(get_all_users_related_to_a_club(club))
 
     max_number_of_items = int(100000 / num_of_users)
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
@@ -194,7 +193,7 @@ def get_top_between_m_and_n_clubs_for_a_genre(uid, algo, trainset, clubs, genre,
 
     num_of_users = 0
     for club in clubs:
-        num_of_users += len(get_all_related_users(club))
+        num_of_users += len(get_all_users_related_to_a_club(club))
 
     max_number_of_items = int(100000 / num_of_users)
     all_items = get_isbns_for_a_genre(genre, trainset)
@@ -214,7 +213,7 @@ def get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n=10):
 
     clubs_with_diffs = []
     for club in clubs:
-        uids = list((user.id for user in get_all_related_users(club)))
+        uids = list((user.id for user in get_all_users_related_to_a_club(club)))
         items = list((book.ISBN for book in club.books.all()))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
@@ -232,7 +231,7 @@ def get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid):
 
     clubs_with_diffs = []
     for club in clubs:
-        uids = list((user.id for user in get_all_related_users(club)))
+        uids = list((user.id for user in get_all_users_related_to_a_club(club)))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
     return clubs_with_diffs[m:n]

@@ -1,7 +1,6 @@
-from pyexpat.errors import messages
 from rest_framework import serializers
-from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
-    BookRecommendationForClub, Club, Book
+from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, \
+    GlobalBookRecommendation, BookRecommendationForClub, Club, Book, Meeting
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,7 +22,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-    
+
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)
         instance.username = validated_data.get('username', instance.username)
@@ -38,13 +37,14 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = '__all__'
 
-class ClubSerializer(serializers.ModelSerializer):
 
+class ClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Club
         fields = '__all__'
@@ -66,22 +66,26 @@ class ClubSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
 
+
 class SimpleMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('__all__')
+        fields = '__all__'
+
 
 class ChatSerializer(serializers.ModelSerializer):
     participants = SimpleUserSerializer(many=True, required=False)
 
     class Meta:
         model = Chat
-        fields = ('__all__')
+        fields = '__all__'
+
 
 class BookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -110,4 +114,10 @@ class ClubRecommendationSerializer(serializers.ModelSerializer):
 class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalBookRecommendation
+        fields = '__all__'
+
+
+class MeetingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
         fields = '__all__'

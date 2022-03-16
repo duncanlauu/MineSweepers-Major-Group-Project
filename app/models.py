@@ -22,7 +22,7 @@ def FutureDateValidator(date):
         raise ValidationError("Date cannot be in the past")
 
 
-#User Manager class
+# User Manager class
 class UserManager(AbstractUserManager):
     def search(self, query=None):
         qs = self.get_queryset()
@@ -31,7 +31,7 @@ class UserManager(AbstractUserManager):
                          Q(first_name__icontains=query) |
                          Q(last_name__icontains=query) |
                          Q(email__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
 
@@ -60,7 +60,7 @@ class User(AbstractUser):
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
     friends = models.ManyToManyField("User", blank=True)
 
-    objects= UserManager()
+    objects = UserManager()
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -127,7 +127,7 @@ class FriendRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-#Book Manager class
+# Book Manager class
 class BookManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
@@ -136,9 +136,10 @@ class BookManager(models.Manager):
                          Q(author__icontains=query) |
                          Q(publisher__icontains=query) |
                          Q(genre__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
+
 
 # Book class
 class Book(models.Model):
@@ -155,6 +156,7 @@ class Book(models.Model):
 
     objects = BookManager()
 
+
 # Book Ratings class
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -170,17 +172,17 @@ def get_new_club_chat():
     return new_club_chat
 
 
-
-#Club Manager class
+# Club Manager class
 class ClubManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query is not None:
             or_lookup = (Q(name__icontains=query) |
                          Q(description__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
+
 
 # Club class
 class Club(models.Model):
@@ -295,6 +297,7 @@ class Chat(models.Model):
     group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class BookRecommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
@@ -408,3 +411,14 @@ class VotingPeriod(models.Model):
             times_and_votes_list.append((time, num))
         times_and_votes_list.sort(key=itemgetter(1), reverse=True)
         return times_and_votes_list[0][0]
+
+
+def get_all_users_related_to_a_club(club):
+    """Get all related users to a club"""
+
+    if not isinstance(club, Club):
+        club = Club.objects.get(pk=club)
+    users = list(club.members.all())
+    users.extend(club.admins.all())
+    users.append(club.owner)
+    return users
