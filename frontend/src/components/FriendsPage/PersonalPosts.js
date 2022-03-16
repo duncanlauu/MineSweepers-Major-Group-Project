@@ -123,7 +123,6 @@ export default function PersonalPosts(props) {
 
                                 <div>
                                     <h5> Comment section </h5>
-
                                     <PostComments ref={commentsRef} personalPost={personalPost} />
                                 </div>
 
