@@ -2,11 +2,12 @@ import datetime
 from operator import itemgetter
 
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
+from django.db.models import Q
 
 
 # It uses datetime.date which only uses the date
@@ -19,6 +20,20 @@ def PastDateValidator(date):
 def FutureDateValidator(date):
     if date < timezone.now():
         raise ValidationError("Date cannot be in the past")
+
+
+#User Manager class
+class UserManager(AbstractUserManager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(username__icontains=query) |
+                         Q(first_name__icontains=query) |
+                         Q(last_name__icontains=query) |
+                         Q(email__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
 
 
 # User class
@@ -44,6 +59,8 @@ class User(AbstractUser):
                                         blank=True)  # blank true for development purposes.
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
     friends = models.ManyToManyField("User", blank=True)
+
+    objects= UserManager()
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -110,6 +127,19 @@ class FriendRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+#Book Manager class
+class BookManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(title__icontains=query) |
+                         Q(author__icontains=query) |
+                         Q(publisher__icontains=query) |
+                         Q(genre__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
 # Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
@@ -123,6 +153,7 @@ class Book(models.Model):
     image_links_small = models.CharField(max_length=500)
     genre = models.CharField(max_length=50, blank=False)
 
+    objects = BookManager()
 
 # Book Ratings class
 class BookRating(models.Model):
@@ -139,6 +170,18 @@ def get_new_club_chat():
     return new_club_chat
 
 
+
+#Club Manager class
+class ClubManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(name__icontains=query) |
+                         Q(description__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
 # Club class
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -153,6 +196,8 @@ class Club(models.Model):
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
     club_chat = models.ForeignKey('Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
+
+    objects = ClubManager()
 
     def save(self, *args, **kwargs):
         is_new = not self.pk
@@ -236,7 +281,7 @@ class Club(models.Model):
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -248,54 +293,42 @@ class Chat(models.Model):
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
-
-    def __str__(self):
-        return "{}".format(self.pk)
-
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class BookRecommendation(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
-    book = models.ForeignKey(
-        Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
     rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class UserRecommendation(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user_to_recommend_user_to')
-    recommended_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='recommended_user_to_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_user_to')
+    recommended_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommended_user_to_user')
     diff = models.FloatField()
     method = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class ClubRecommendation(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user_to_recommend_club')
-    club = models.ForeignKey(
-        Club, on_delete=models.CASCADE, related_name='recommended_club_to_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_club')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='recommended_club_to_user')
     diff = models.FloatField()
     method = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class BookRecommendationForClub(models.Model):
-    club = models.ForeignKey(
-        Club, on_delete=models.CASCADE, related_name='club_to_recommend_book')
-    book = models.ForeignKey(
-        Book, on_delete=models.CASCADE, related_name='recommended_book_to_club')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='club_to_recommend_book')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_club')
     rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class GlobalBookRecommendation(models.Model):
-    book = models.ForeignKey(
-        Book, on_delete=models.CASCADE, related_name='book_to_globally_recommend')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='book_to_globally_recommend')
     weighted_rating = models.FloatField()
     number_of_ratings = models.IntegerField()
     flat_rating = models.FloatField()

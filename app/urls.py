@@ -9,10 +9,10 @@ from .views.authentication_views import BlacklistTokenView
 from django.contrib.auth import views as auth_views
 from .views.chat_views import (
     ChatListView,
-    ChatDetailView,
     ChatLeaveView
 )
 from .views.club_views import Clubs, SingleClub
+from .views.search_view import SearchView
 
 app_name = 'app'
 
@@ -27,12 +27,13 @@ urlpatterns = [
     path('friend_requests/', FriendRequestsView.as_view(), name='friend_requests'),
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
     path('hello/', HelloWorldView.as_view(), name='hello_world'),
+
     # Reset User Password
     path('auth/', include('djoser.urls')),
+
     # Chat
     path('chat/', ChatListView.as_view()),
-    path('chat/<pk>', ChatDetailView.as_view()),
-    path('chat/<pk>/leave/', ChatLeaveView.as_view()),
+    path('chat/leave/<pk>/', ChatLeaveView.as_view()),
 
     # Recommender system
     path('recommender/', RecommenderAPI.as_view(), name='recommender'),
@@ -50,5 +51,8 @@ urlpatterns = [
     path('clubs/', Clubs.as_view(), name='clubs'),
     path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
     path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
-    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club')
+    path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club'),
+
+    #Search API
+    path('search/', SearchView.as_view(), name='search'),
 ]
