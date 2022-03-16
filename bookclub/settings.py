@@ -140,7 +140,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/static'),
+    os.path.join(BASE_DIR, 'frontend/static/frontend'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
