@@ -21,7 +21,7 @@ export default function Sidepanel(props) {
 
     const getUserChats = (e) => {
         const username = localStorage.username
-        axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
+        axiosInstance.get(`https://book-club-minesweepers.herokuapp.com/api/chat/?username=${username}`)
             .then(res => {
                 let userChats = res.data;
                 userChats.sort(function(a,b){
