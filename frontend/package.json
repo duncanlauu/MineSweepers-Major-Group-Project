@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://book-club-minesweepers.herokuapp.com/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
