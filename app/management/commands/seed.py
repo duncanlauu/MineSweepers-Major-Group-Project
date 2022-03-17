@@ -12,9 +12,9 @@ class Command(BaseCommand):
     """A seeder class for seeding books, users and user ratings"""
 
     def handle(self, *args, **options):
-        # time_function(seed_books)
+        time_function(seed_books)
         time_function(seed_users)
-        # time_function(seed_ratings)
+        time_function(seed_ratings)
         time_function(seed_clubs)
 
 
@@ -29,7 +29,7 @@ def seed_books():
     filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = len(df)
+    total = 5000#len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]
