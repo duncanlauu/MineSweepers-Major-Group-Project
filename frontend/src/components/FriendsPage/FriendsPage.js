@@ -13,6 +13,7 @@ import NonFriendList from "./NonFriendList";
 import useGetUser from "../../helpers";
 import PersonalPosts from "./PersonalPosts";
 import PersonalPostForm from "./PersonalPostForm";
+import FeedPage from "./FeedPage";
 
 
 export default function FriendsPage() {
@@ -87,6 +88,7 @@ export default function FriendsPage() {
               <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
                       <h5> Feed </h5>
+                      
                   </NavLink>
                 </NavItem>
 
@@ -126,7 +128,8 @@ export default function FriendsPage() {
                     <Col sm="12">
                       <h1> Feed Page </h1>
                       <PostsContainer>
-                        <PersonalPosts />
+                        {/* <PersonalPosts /> */}
+                        <FeedPage/>
                       </PostsContainer>
                     </Col>
                   </Row>

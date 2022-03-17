@@ -94,6 +94,19 @@ export default function PersonalPosts(props) {
             })
     }
 
+    // should be moved to feed
+    const getFeedPosts = () => {
+        axiosInstance
+            .get("feed/")
+            .then((res) => {
+                console.log("feed:")
+                console.log(res.data)
+                // const allFeedPosts = res.data;
+                // setFeedPosts(allFeedPosts)
+                navigate("/log_in/")
+            })
+            .catch(error => console.error(error));
+    }
 
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
@@ -148,6 +161,13 @@ export default function PersonalPosts(props) {
                                     <Col xs="3">
                                         <Button onClick={(e) => getCommentsUnderPost(personalPost.id, e)}>
                                             <p> Show </p>
+                                        </Button>
+                                    </Col>
+
+                                    {/* Feed test */}
+                                    <Col xs="3">
+                                        <Button onClick={(e) => getFeedPosts(personalPost.id, e)}>
+                                            <p> Feed </p>
                                         </Button>
                                     </Col>
 
