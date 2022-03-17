@@ -1,6 +1,4 @@
 import datetime
-from email.policy import default
-from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
 from django.core.validators import RegexValidator
@@ -8,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from django.db.models import Q
+
 
 # It uses datetime.date which only uses the date
 def PastDateValidator(date):
@@ -21,7 +20,7 @@ def FutureDateValidator(date):
         raise ValidationError("Date cannot be in the past")
 
 
-#User Manager class
+# User Manager class
 class UserManager(AbstractUserManager):
     def search(self, query=None):
         qs = self.get_queryset()
@@ -30,7 +29,7 @@ class UserManager(AbstractUserManager):
                          Q(first_name__icontains=query) |
                          Q(last_name__icontains=query) |
                          Q(email__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
 
@@ -63,7 +62,7 @@ class User(AbstractUser):
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
     friends = models.ManyToManyField("User", blank=True)
 
-    objects= UserManager()
+    objects = UserManager()
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -133,7 +132,7 @@ class FriendRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-#Book Manager class
+# Book Manager class
 class BookManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
@@ -142,9 +141,10 @@ class BookManager(models.Manager):
                          Q(author__icontains=query) |
                          Q(publisher__icontains=query) |
                          Q(genre__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
+
 
 # Book class
 class Book(models.Model):
@@ -161,6 +161,7 @@ class Book(models.Model):
 
     objects = BookManager()
 
+
 # Book Ratings class
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -169,6 +170,7 @@ class BookRating(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(1)])
     created_at = models.DateTimeField(
         auto_now_add=True)  # ? not sure how to test this
+
 
 # Meeting class
 class Meeting(models.Model):
@@ -179,6 +181,7 @@ class Meeting(models.Model):
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=70, blank=True)
     link = models.CharField(max_length=500, unique=True, blank=True)
+
 
 # Vote class
 class Vote(models.Model):
@@ -196,6 +199,7 @@ class Vote(models.Model):
 
     def event_vote_count(self):
         return self.event_vote.count()
+
 
 # Club event class
 class ClubEvent(models.Model):
@@ -217,16 +221,17 @@ def get_new_club_chat():
     return new_club_chat
 
 
-#Club Manager class
+# Club Manager class
 class ClubManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query is not None:
             or_lookup = (Q(name__icontains=query) |
                          Q(description__icontains=query)
-                        )
+                         )
             qs = qs.filter(or_lookup).distinct()
         return qs
+
 
 # Club class
 class Club(models.Model):
@@ -257,8 +262,6 @@ class Club(models.Model):
             self.club_chat.name = self.name
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
-
-   
 
     def add_member(self, user):
         user.add_club(self)
@@ -330,6 +333,7 @@ class Club(models.Model):
         self.add_admin(self.owner)
         self.owner = user
 
+
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
@@ -343,7 +347,8 @@ class Chat(models.Model):
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+
 class BookRecommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')

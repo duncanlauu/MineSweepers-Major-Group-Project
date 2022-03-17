@@ -30,7 +30,7 @@ class UserModelTest(TestCase):
         self._assert_user_is_valid()
 
     def test_username_cannot_be_over_50_characters_long(self):
-        self.user.username = 'j'+'x' * 50
+        self.user.username = 'j' + 'x' * 50
         self._assert_user_is_invalid()
 
     def test_username_must_be_unique(self):
@@ -194,7 +194,7 @@ class UserModelTest(TestCase):
     def _assert_user_is_valid(self):
         try:
             self.user.full_clean()
-        except (ValidationError):
+        except ValidationError:
             self.fail('Test user should be valid')
 
     def _assert_user_is_invalid(self):

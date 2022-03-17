@@ -15,7 +15,7 @@ class MessageModelTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.message = Message.objects.get(pk = 1)
+        self.message = Message.objects.get(pk=1)
 
     def test_valid_message(self):
         self._assert_message_is_valid()
@@ -37,18 +37,16 @@ class MessageModelTestCase(TestCase):
         self._assert_message_is_invalid()
 
     def test_content_need_not_be_unique(self):
-        second_message = Message.objects.get(pk = 2)
+        second_message = Message.objects.get(pk=2)
         self.message.content = second_message.content
         self._assert_message_is_valid()
 
     def _assert_message_is_valid(self):
         try:
             self.message.full_clean()
-        except (ValidationError):
+        except ValidationError:
             self.fail('Test message should be valid')
 
     def _assert_message_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.message.full_clean()
-
-   

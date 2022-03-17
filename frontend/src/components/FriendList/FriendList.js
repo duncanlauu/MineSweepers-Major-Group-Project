@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Row, Col, Button } from "reactstrap"
+import React, {useEffect, useState} from "react"
+import {Row, Col, Button} from "reactstrap"
 import axiosInstance from '../../axios'
 
 export default function FriendList(props) {
@@ -41,7 +41,7 @@ export default function FriendList(props) {
                 myFriends.map((friend, index) => {
                     console.log(friend);
                     return (
-                        <div className="friend" key={friend.id} >
+                        <div className="friend" key={friend.id}>
                             <Row>
                                 <Col>
                                     <h3 className="friend_username"> {friend.username} </h3>

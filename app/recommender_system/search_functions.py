@@ -1,3 +1,5 @@
+"""Functionality for using the recommender system for search"""
+
 from operator import itemgetter
 
 from app.models import Club
