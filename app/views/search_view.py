@@ -25,6 +25,7 @@ class SearchView(ListView, APIView):
 
     def get(self, request, *args, **kwargs):
         request = self.request
+        print(request.query_params)
 
         if 'search_query' in request.query_params and request.query_params['search_query'] != '':
             query = request.query_params['search_query']
