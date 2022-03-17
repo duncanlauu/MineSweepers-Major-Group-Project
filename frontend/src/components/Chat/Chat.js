@@ -13,25 +13,20 @@ class Chat extends React.Component {
     currentUser = null;
 
     initialiseChat() {
-        axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
-            const user = response.data;
-            console.log(response.data)
+        this.setState({ chatID: this.props.chatID })
+        this.currentUser = localStorage.username
+        WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
-            this.currentUser = user.username
+        if(this.state.chatID != undefined) {
             this.waitForSocketConnection(() => {
-                WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
                 WebSocketInstance.fetchMessages(
                     this.currentUser,
-                    this.props.chatID
+                    this.state.chatID
                 );
             });
-            console.log("initialise Chat: " + this.props.chatID)
-            this.setState({ chatID: this.props.chatID })
-            WebSocketInstance.connect(this.props.chatID);
-        }).catch(error => {
-            console.log("Error: ", JSON.stringify(error, null, 4));
-            throw error;
-        })
+            console.log("initialise Chat: " + this.state.chatID)
+            WebSocketInstance.connect(this.state.chatID);
+        }
     }
 
     constructor(props) {
@@ -82,7 +77,7 @@ class Chat extends React.Component {
     leaveChatHandler = (e) => {
         console.log("BYEE")
         axiosInstance
-            .delete(`chat/${this.props.chatID}/leave/`)
+            .delete(`chat/leave/${this.props.chatID}/`)
             .then((res) => {
                 console.log(res)
             })
@@ -90,6 +85,8 @@ class Chat extends React.Component {
     }
 
     renderTimestamp = timestamp => {
+        //broken 
+
         let prefix = '';
         const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
         if (timeDiff < 1) { // less than one minute ago
@@ -114,8 +111,13 @@ class Chat extends React.Component {
                 key={message.id}
                 style={{ marginBottom: arr.length - 1 === i ? '300px' : '15px' }}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png" />
-                <p>{message.content}
+                <img src="http://emilcarlsson.se/assets/mikeross.png" /> 
+                <p>
+                    <small>
+                        {message.author}
+                    </small>
+                    <br />
+                    {message.content}
                     <br />
                     <small>
                         {this.renderTimestamp(message.timestamp)}
@@ -160,6 +162,7 @@ class Chat extends React.Component {
 
     render() {
         const messages = this.state.messages;
+        const invalidChatID = this.state.chatID == undefined;
         return (
             <Hoc>
                 <div>
@@ -168,6 +171,10 @@ class Chat extends React.Component {
                     </button>
                 </div>
                 <div className="messages">
+                    {invalidChatID
+                        ? <h3>Select a chat! or refactor this to select a chat?</h3>
+                        : <div></div>
+                    }
                     <ul id="chat-log">
                         {
                             messages &&

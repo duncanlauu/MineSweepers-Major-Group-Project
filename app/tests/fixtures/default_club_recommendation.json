@@ -1,0 +1,13 @@
+[
+    {
+        "model": "app.ClubRecommendation",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "club": 1,
+            "diff": 9.2,
+            "method": "random",
+            "created_at": "2022-03-14T17:41:28+00:00"
+        }
+    }
+]

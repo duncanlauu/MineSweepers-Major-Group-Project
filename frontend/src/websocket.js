@@ -33,7 +33,9 @@ class WebSocketService {
   }
 
   disconnect() {
-    this.socketRef.close();
+    if(this.socketRef != null){
+      this.socketRef.close();
+    }
   }
 
   socketNewMessage(data) {
@@ -76,6 +78,10 @@ class WebSocketService {
   sendMessage(data) {
     try {
       this.socketRef.send(JSON.stringify({ ...data }));
+      //remove
+      console.log(this.socketRef)
+      console.log(data)
+      console.log(JSON.stringify({ ...data }))
     }
     catch(err) {
       console.log(err.message);

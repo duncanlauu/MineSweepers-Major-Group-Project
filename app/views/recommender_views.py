@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from surprise import SVD
 
 from app.models import BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, UserRecommendation, \
@@ -26,7 +26,7 @@ class RecommenderAPI(APIView):
     save the recommendations to the database, whereas the get requests retrieve the recommendations from the database.
     """
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         if 'action' not in kwargs:
@@ -133,7 +133,7 @@ class RecommenderAPI(APIView):
             return Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
         action = kwargs['action']
 
-        csv_file_path = 'app/files/BX-Book-Ratings.csv'
+        csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
         dump_file_name = 'app/files/dump_file'
         dataframe = get_combined_data(csv_file_path)
         data = get_dataset_from_dataframe(dataframe)

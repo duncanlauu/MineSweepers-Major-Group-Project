@@ -1,0 +1,11 @@
+[
+    {
+      "model": "app.Message",
+      "pk": 1,
+      "fields": {
+        "author": 1,
+        "content": "Hey!",
+        "timestamp": "2016-03-16T17:41:29+00:00" 
+      }   
+    }
+  ]

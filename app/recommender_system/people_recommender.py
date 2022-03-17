@@ -41,7 +41,7 @@ def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
     """Get the top between m and n users for a user using random users and random items"""
 
     users = get_actual_users(trainset)
-    if uid in users:
+    if trainset.to_inner_uid(uid) in users:
         users.remove(trainset.to_inner_uid(uid))
     max_number_of_items = int(100000 / len(users))
 
@@ -141,6 +141,8 @@ def get_actual_users(trainset):
 def get_average_diff_for_list_of_users(uid1, uids, algo, items):
     """Get the average difference between a user and a list of users given a list of items"""
 
+    if not items:
+        return -1
     diff = 0
     for uid2 in uids:
         for iid in items:

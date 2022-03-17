@@ -20,3 +20,5 @@ export default function ChatWrapper() {
       </div>
     );
 }
+
+{/* <Chat chatID={params.chatID} /> */}

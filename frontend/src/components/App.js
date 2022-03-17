@@ -50,6 +50,7 @@ export default class App extends Component {
                   <Route path='notifications' element={<Notifications />}></Route>
                   <Route path='friends_page' element={<FriendsPage />}></Route>
                   <Route path="chat/:chatID" element={<ChatWrapper />}></Route>
+                  <Route path="/chat/" element={<ChatWrapper />}></Route>
                   <Route path='hello' element={<Hello />}></Route>
                 </Route>
 
