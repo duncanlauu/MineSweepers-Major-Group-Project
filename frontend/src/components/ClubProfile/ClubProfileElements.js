@@ -29,6 +29,18 @@ export const BookProfile = styled.div`
     align-items: center;
 `
 
+export const ClubProfile = styled.div`
+    background-color: #F3F3F3;
+    height: 10rem;
+    width: 90%;
+    border-radius: 7px;
+    margin-left: 1rem;
+    display: flex;
+    margin-bottom: 1rem;
+    justify-content: center;
+    align-items: center;
+`
+
 export const ModalContainer = styled.div`
     left: 0px;
     top: 0px;

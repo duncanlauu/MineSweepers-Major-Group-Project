@@ -1,112 +1,119 @@
-import React from 'react'
-import { BookProfile, ParaText } from './ClubProfileElements'
-import { Button, Col, Container } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import {  ClubProfile } from './ClubProfileElements'
+import { Button, Col } from 'reactstrap'
 import Gravatar from 'react-gravatar';
 import { HeadingText } from '../Login/LoginElements';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../../axios';
 
-function IndividualMemberCard(props) {
-  console.log("Prop Names: " + props.name)
-  return (
-    <BookProfile>
-      <Col xs={3}>
-        <Gravatar email='blah@blah.com' size={70} />
-      </Col>
-      <Col xs={9}>
-        <HeadingText>{props.name}</HeadingText>
-        <Button onClick={(e) => acceptClubApplicant(87)}>Accept</Button>
-      </Col>
-    </BookProfile>
-  )
-}
+const ClubMembers = () => {
+  const [club, setClub] = useState(null);
+  const [owner, setOwner] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [applicants, setApplicants] = useState([]);
 
-function acceptClubApplicant(user_id, e) {
-  const action = 'accept'
-  axiosInstance.put(
-    `clubs/${id}/${action}/${user_id}`, {}
-  ).then(res => {
-    console.log(res);
-  }).catch(err => {
-    console.log(err);
-  })
-}
+  const { club_id } = useParams();
+  console.log("Club ID on Members Page: " + club_id);
 
-function rejectClubApplicant(user_id, e) {
-  const action = 'reject'
-  axiosInstance.put(
-    `clubs/${id}/${action}/${user_id}`, {}
-  ).then(res => {
-    console.log(res);
-  }).catch(err => {
-    console.log(err);
-  })
-}
+  useEffect(() => {
+    axiosInstance
+      .get(`clubs/${club_id}`)
+      .then(res => {
+        setClub(res.data);
 
-export default function ClubMembers() {
+        setOwner(res.data.owner);
+        console.log("Owner: " + res.data.owner);
 
-  const [members, setMembers] = React.useState([]);
-  const [admins, setAdmins] = React.useState([]);
-  const [applicants, setApplicants] = React.useState([]);
+        setAdmins(res.data.admins);
+        console.log("Admins: " + res.data.admins);
 
-  const { club_id } = useParams(); // Gets the id provided in the URL
-  console.log("Club ID on Members tab: " + club_id);
-  const [club, setClub] = React.useState(null);
+        setMembers(res.data.members);
+        console.log("Members: " + res.data.members);
 
-  React.useEffect(() => {
-      axiosInstance.get(`clubs/${club_id}`).then(
-          res => {
-              console.log(res);
-              setClub(res.data);
-          }
-      );
-  }, []);
-
-  React.useEffect(() => {
-      axiosInstance.get(`clubs/${club_id}`).then(
-        res => {
-          // console.log("Admin: " + res.data.admin);
-          // setAdmin(res.data.admin);
-          console.log("Applicants: " + res.data.applicants);
-          setApplicants(res.data.applicants);
-          // console.log("Applicants: " + res.data.applicants);
-          // setApplicants(res.data.applicants);
-        }
-      ).catch(err => {
+        setApplicants(res.data.applicants);
+        console.log("Applicants: " + res.data.applicants);
+      })
+      .catch(err => {
         console.log(err);
       })
-    }
-  );
+  }, [])
 
-  if (!club) return null;
+  function IndividualMemberCard(props) {
+    const isApplicant = props.isApplicant;
+    const user_id = props.userId;
+    return(
+      <ClubProfile>
+        <Col xs={3}>
+          <Gravatar email='blah@blah.com' size={70} />
+        </Col>
+        <Col xs={9}>
+          <HeadingText>{props.name}</HeadingText>
+          {isApplicant ?
+            <>
+              <Button onClick={(e) => acceptClubApplicant(club_id, user_id)}>Accept</Button>
+              <Button onClick={(e) => rejectClubApplicant(club_id, user_id)}>Reject</Button>
+            </> :
+            <></>
+          }
+        </Col>
+      </ClubProfile>
+    )
+  }
+
+  function acceptClubApplicant(id, user_id, e) {
+    const action = 'accept'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  function rejectClubApplicant(id, user_id, e) {
+    const action = 'reject'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
   return (
-    <div style={{ alignContent:"center", justifyContent:"center" }}>
-      
-        <BookProfile>
-          <Col xs={3}>
-            <Gravatar email='blah@blah.com' size={70}></Gravatar>
-          </Col>
-          <Col xs={9}>
-            <HeadingText>{club.owner}</HeadingText>
-            <ParaText>Owner</ParaText>
-          </Col>
-        </BookProfile>
-        <ul>
-          {admins.map(admin => 
-            <li>
-              <IndividualMemberCard name={admin} />
-            </li>
-          )}
-        </ul>
-        <hr />
-        <ul>
-          {applicants.map(applicant => 
-            <li>
-              <IndividualMemberCard name={applicant} />
-            </li>
-          )}
-        </ul>
-    </div>
+    <>
+      <IndividualMemberCard name={owner} isApplicant={false} />
+      <hr />
+      <ul>
+        {admins.map(admin => 
+          <li key={admin}>
+            <IndividualMemberCard name={admin} isApplicant={false} />
+          </li>
+        )}
+      </ul>
+      <hr />
+      <ul>
+        {members.map(member => 
+          <li key={member}>
+            <IndividualMemberCard name={member} isApplicant={false} />
+          </li>
+        )}
+      </ul>
+      <hr />
+      <ul>
+        {applicants.map((applicant, index) =>
+          <li key={applicant}>
+            <IndividualMemberCard name={applicant} isApplicant={true} userId={applicant} />
+          </li>
+        )}
+      </ul>
+    </>
   )
 }
+
+export default ClubMembers
