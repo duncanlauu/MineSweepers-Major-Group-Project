@@ -41,6 +41,9 @@ const ClubMembers = () => {
 
   function IndividualMemberCard(props) {
     const isApplicant = props.isApplicant;
+    const isMember = props.isMember;
+    const isAdmin = props.isAdmin;
+    const isOwner = props.isOwner;
     const user_id = props.userId;
     return(
       <ClubProfile>
@@ -56,9 +59,32 @@ const ClubMembers = () => {
             </> :
             <></>
           }
+          {
+            isMember ?
+            <>
+              <Button onClick={(e) => removeClubMember(club_id, user_id)}>Remove</Button>
+              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+            </> :
+            <></>
+          }
+          {
+            isAdmin ?
+            <>
+              <Button onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}>Make Owner</Button>
+              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+            </> :
+            <></>
+          }
         </Col>
       </ClubProfile>
     )
+  }
+
+  IndividualMemberCard.defaultProps = {
+    isApplicant: false,
+    isMember: false,
+    isAdmin: false,
+    isOwner: false
   }
 
   function acceptClubApplicant(id, user_id, e) {
@@ -85,14 +111,62 @@ const ClubMembers = () => {
       })
   }
 
+  function removeClubMember(id, user_id, e) {
+    const action = 'remove'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  function banUser(id, user_id, e) {
+    const action = 'ban'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  function transferOwnershipToAdmin(id, user_id, e) {
+    const action = 'transfer'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  function unbanUser(id, user_id, e) {
+    const action = 'unban'
+    axiosInstance
+      .put(`clubs/${id}/${action}/${user_id}`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
   return (
     <>
-      <IndividualMemberCard name={owner} isApplicant={false} />
+      <IndividualMemberCard name={owner} isOwner={true} />
       <hr />
       <ul>
         {admins.map(admin => 
           <li key={admin}>
-            <IndividualMemberCard name={admin} isApplicant={false} />
+            <IndividualMemberCard name={admin} isAdmin={true} userId={admin} />
           </li>
         )}
       </ul>
@@ -100,7 +174,7 @@ const ClubMembers = () => {
       <ul>
         {members.map(member => 
           <li key={member}>
-            <IndividualMemberCard name={member} isApplicant={false} />
+            <IndividualMemberCard name={member} isMember={true} userId={member} />
           </li>
         )}
       </ul>
