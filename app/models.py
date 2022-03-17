@@ -148,16 +148,16 @@ class BookManager(models.Manager):
 
 # Book class
 class Book(models.Model):
-    ISBN = models.CharField(max_length=250, primary_key=True)
-    title = models.CharField(max_length=250, blank=False)
-    author = models.CharField(max_length=250, blank=False)
+    ISBN = models.CharField(max_length=500, primary_key=True)
+    title = models.CharField(max_length=500, blank=False)
+    author = models.CharField(max_length=500, blank=False)
     publication_date = models.PositiveIntegerField(
         validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
-    publisher = models.CharField(max_length=250)
+    publisher = models.CharField(max_length=500)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
     image_links_small = models.CharField(max_length=500)
-    genre = models.CharField(max_length=250, blank=False)
+    genre = models.CharField(max_length=500, blank=False)
 
     objects = BookManager()
 
