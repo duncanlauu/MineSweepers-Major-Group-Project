@@ -113,17 +113,24 @@ const PostComments = forwardRef((props, ref) => {
             return (
                 commentsUnderPost.map((singleComment, index) => {
                     console.log(singleComment);
+                    console.log("hheheheh: ", singleComment.author_id)
                     return (
                         <div className="singleComment" key={singleComment.id}>
                             <Row>
                                 <Col>
-                                    <h2> {singleComment.author} </h2>
-
-                                    <h4> {singleComment.content} </h4>
+                                <Row>
+                                    <Col xs="3">
+                                        <h4> {singleComment.author_id} </h4>
+                                    </Col>
+                                    <Col xs="9">
+                                        <h4> {singleComment.content} </h4>
+                                    </Col>
+                                </Row>
+                                   
                                 </Col>
                                 <Col>
                                     <Button name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)}>
-                                        {singleComment.id}
+                                        X {singleComment.id}
                                     </Button>
                                 </Col>
                             </Row>

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
-import { Container, Row, Col, Navbar, NavbarBrand, Button, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import { Container, Row, Col, Button, Card, CardGroup, CardBody, CardTitle, Navbar, NavbarBrand, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames';
 // import {Box, Tab, Tabs, TabPanel} from '@mui/material/Button';
 import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer, PostsContainer } from "./FriendsPageElements";
@@ -38,7 +38,7 @@ export default function FriendsPage() {
 
   const tabsStyle = {
     marginBottom: "1rem",
-    width: "60rem",
+    width: "70rem",
     marginTop: "1rem",
 
   };
@@ -170,11 +170,26 @@ export default function FriendsPage() {
 
                     </TabPane>
 
+
+
+
+
+
+
+
+
+
+
+
                     <TabPane tabId="5">
                       <h1> My Posts </h1>
-                      <PostsContainer>
-                        <PersonalPosts />
-                      </PostsContainer>
+                      {/* <PostsContainer>
+                        <PersonalPosts /> 
+                      </PostsContainer> */}
+
+                      <CardGroup>
+                        <PersonalPosts /> 
+                      </CardGroup>
 
                     </TabPane>
 
