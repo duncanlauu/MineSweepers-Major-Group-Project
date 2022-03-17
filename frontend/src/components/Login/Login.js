@@ -66,6 +66,7 @@ export default function SignIn() {
                                 <FormGroup>
                                     <Label>Username</Label>
                                     <Input
+                                        data-testid="username"
                                         name="username"
                                         onChange={handleChange}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
@@ -74,6 +75,7 @@ export default function SignIn() {
                                 <FormGroup>
                                     <Label>Password</Label>
                                     <Input
+                                        data-testid="password"
                                         name="password"
                                         onChange={handleChange}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
