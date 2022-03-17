@@ -1,1 +1,1 @@
-web: daphne -b 0.0.0.0 -p $PORT bookclub.asgi:application
+web: daphne bookclub.asgi:application --port 8001 --bind 0.0.0.0 -v2
