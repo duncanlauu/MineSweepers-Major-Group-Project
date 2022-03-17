@@ -8,6 +8,7 @@ import useGetUser from "../../helpers";
 export default function Scheduling() {
     const user = useGetUser();
     const [books, setBooks] = useState([]);
+    const [bookData, setBookData] = useState([]);
 
     useEffect(() => {
         getRecommendedBooks();
@@ -62,7 +63,7 @@ export default function Scheduling() {
                 club: 3,
                 organiser: user.id,
                 attendees: [2, 8, 110],
-                book: formData.book,
+                book: bookData,
                 start_time: formData.start_time,
                 end_time: formData.end_time,
                 link: formData.link
@@ -125,10 +126,14 @@ export default function Scheduling() {
                                     <FormGroup>
                                         <Label for="book"> Book </Label>
                                         <select
-                                            onChange={handleChange}
+                                            value={bookData}
+                                            onChange={(e) => setBookData(e.target.value)}
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         >
-                                            {booksList}
+                                            <option></option>
+                                            {books.map(book =>
+                                                <option>{book.name}</option>
+                                            )}
                                         </select>
                                     </FormGroup>
 
