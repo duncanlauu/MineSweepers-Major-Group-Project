@@ -27,10 +27,11 @@ class SchedulingView(APIView):
             return Response(data='A meeting with this id does not exist', status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
+        print(request.data)
         try:
             data = {'name': request.data['name'], 'description': request.data['description'],
                     'club': request.data['club'], 'organiser': request.data['organiser'],
-                    'attendees': request.data.getlist('attendees')}
+                    'attendees': request.data['attendees']}
             # Make sure the user is the organiser of the meeting
             if User.objects.get(username=request.user).id != int(request.data['organiser']):
                 return Response(data='The user needs to be the organiser of the meeting',

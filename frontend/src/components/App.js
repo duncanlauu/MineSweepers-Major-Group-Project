@@ -17,6 +17,7 @@ import ChatWrapper from "./Chat/ChatWrapper.js"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
 import CreateClub from "./CreateClub/CreateClub";
+import Scheduling from "./Scheduling/Scheduling";
 
 export default class App extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class App extends Component {
             <Route path='/password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
             <Route path="/chat/:chatID/" element={<ChatWrapper />}></Route>
             <Route path="/chat/" element={<ChatWrapper />}></Route>
+            <Route path="/scheduling/" element={<Scheduling />}></Route>
           </Routes>
           {/* <Footer /> */}
         </React.StrictMode>
