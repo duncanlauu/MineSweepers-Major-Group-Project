@@ -1,1 +1,1 @@
-web: gunicorn bookclub.wsgi
+web: daphne -b 0.0.0.0 -p $PORT bookclub.asgi:application
