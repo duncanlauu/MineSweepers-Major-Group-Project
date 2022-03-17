@@ -19,8 +19,6 @@ export default function SignUp() {
     bio: '',
     location: '',
     birthday: '',
-    // liked_books: [],
-    // read_books: [],
   })
 
   const [formData, updateFormData] = useState(initialFormData)
@@ -83,6 +81,7 @@ export default function SignUp() {
                     <FormGroup>
                       <Label for="first_name"> First Name </Label>
                       <Input
+                        data-testid="first_name"
                         id="first_name"
                         name="first_name" // name to target from JS
                         onChange={handleChange}
@@ -94,6 +93,7 @@ export default function SignUp() {
                     <FormGroup>
                       <Label for="last_name"> Last Name </Label>
                       <Input
+                        data-testid="last_name"
                         id="last_name"
                         name="last_name"
                         onChange={handleChange}
@@ -106,6 +106,7 @@ export default function SignUp() {
                 <FormGroup>
                   <Label for="username"> User Name </Label>
                   <Input
+                    data-testid="username"
                     id="username"
                     name="username"
                     onChange={handleChange}
@@ -116,6 +117,7 @@ export default function SignUp() {
                 <FormGroup>
                   <Label for="email"> Email </Label>
                   <Input
+                    data-testid="email"
                     type="email"
                     id="email"
                     name="email"
@@ -127,6 +129,7 @@ export default function SignUp() {
                 <FormGroup>
                   <Label for="password"> Password </Label>
                   <Input
+                    data-testid="password"
                     type="password"
                     id="password"
                     name="password"
@@ -138,6 +141,7 @@ export default function SignUp() {
                 <FormGroup>
                   <Label for="bio"> Bio </Label>
                   <Input
+                    data-testid="bio"
                     id="bio"
                     name="bio"
                     onChange={handleChange}
@@ -150,6 +154,7 @@ export default function SignUp() {
                     <FormGroup>
                       <Label for="location"> Location </Label>
                       <Input
+                        data-testid="location"
                         id="location"
                         name="location"
                         onChange={handleChange}
@@ -161,6 +166,7 @@ export default function SignUp() {
                     <FormGroup>
                       <Label for="birthday"> Birthday </Label>
                       <Input
+                        data-testid="birthday"
                         id="birthday"
                         type="date"
                         name="birthday"
