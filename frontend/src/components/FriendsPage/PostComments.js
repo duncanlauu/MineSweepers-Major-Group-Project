@@ -1,6 +1,8 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button } from "reactstrap"
+import { Navigate } from "react-router"
+import { useNavigate } from "react-router" 
 
 // export default function PostComments(props) {
 
@@ -69,6 +71,7 @@ const PostComments = forwardRef((props, ref) => {
     }))
 
     const [commentsUnderPost, setCommentsUnderPost] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getCommentsUnderPost()
@@ -94,15 +97,15 @@ const PostComments = forwardRef((props, ref) => {
             .delete(`posts/${props.personalPost.id}/comments/${comment_id}`)
             .then((res) => {
                 console.log(res)
-                //removeFromPage(e) // remove friend with id from myFriends state
+                removeCommentFromPage(e) // remove friend with id from myFriends state
             })
             .catch(error => console.error(error));
     }
 
-    // const removeFromPage = (e) => {
-    //     const id = parseInt(e.target.getAttribute("name"))
-    //     setFriends(myFriends.filter(item => item.id !== id));
-    // }
+    const removeCommentFromPage = (e) => {
+        const id = parseInt(e.target.getAttribute("name"))
+        setCommentsUnderPost(commentsUnderPost.filter(item => item.id !== id));
+    }
 
     const displayCommentsUnderPost = (e) => {
         if (commentsUnderPost.length > 0) {

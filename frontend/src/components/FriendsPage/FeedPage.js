@@ -243,9 +243,9 @@ export default function FeedPage(props) {
             })
     }
 
-    const commentsRef = useRef();
+    const commentsRef = useRef([]);
 
-    const uploadComment = (post_id, e) => {
+    const uploadComment = (post_id, e, index) => {
         console.log(writtenComment.myComment)
         axiosInstance
             .post(`posts/${post_id}/comments/`, {
@@ -254,7 +254,8 @@ export default function FeedPage(props) {
             .then((res) => {
                 console.log(res.data)
                 const comment = { author: localStorage.username, content: writtenComment.myComment }
-                commentsRef.current.addComment(comment)
+                console.log(commentsRef.current[index])
+                commentsRef.current[index].addComment(comment)
                 console.log("adding post in parent: ", comment)
                 // navigate("/home/")
                 // navigate("/friends_page/")
@@ -291,7 +292,8 @@ export default function FeedPage(props) {
 
                                 <div>
                                     <h5> Comment section </h5>
-                                    <PostComments ref={commentsRef} personalPost={feedPost} />
+                                    {/* <PostComments ref={commentsRef} personalPost={feedPost} /> */}
+                                    <PostComments ref={el => commentsRef.current[index] = el}  personalPost={feedPost} />
                                 </div>
 
                                 <Row>
@@ -307,7 +309,7 @@ export default function FeedPage(props) {
                                 <Row>
                                     <Col xs="6">
                                         <Row>
-                                            <Button onClick={(e) => uploadComment(feedPost.id, e)}>
+                                            <Button onClick={(e) => uploadComment(feedPost.id, e, index)}>
                                                 <p> Send </p>
                                             </Button>
                                         </Row>
