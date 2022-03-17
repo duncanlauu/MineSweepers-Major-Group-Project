@@ -1,14 +1,13 @@
-import React, { createContext, useLayoutEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
-const AuthContext = createContext({});
+const AuthContext = createContext({ user: "none" });
 
 export const AuthProvider = ({ children }) => { // children are the components nested inside the auth provider
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState({ user: "none" });
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const user = localStorage.getItem('username')
-        console.log("Reloading authprovider: ", localStorage.getItem('username'))
-        setAuth({ user })
+        setAuth({ user: user })
     }, [])
 
     return (

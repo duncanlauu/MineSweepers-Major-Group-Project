@@ -49,8 +49,8 @@ export default class App extends Component {
                   <Route path='create_club' element={<CreateClub />}></Route>
                   <Route path='notifications' element={<Notifications />}></Route>
                   <Route path='friends_page' element={<FriendsPage />}></Route>
-                  <Route path='hello' element={<Hello />}></Route>
                   <Route path="chat/:chatID" element={<ChatWrapper />}></Route>
+                  <Route path='hello' element={<Hello />}></Route>
                 </Route>
 
                 {/* catch all */}
