@@ -105,8 +105,6 @@ def get_top_between_m_and_n_for_k_for_genre(uids, trainset, algo, preds, genre, 
 def get_top_between_m_and_n_of_items_for_k_users(algo, items, m, n, preds, uids):
     """Get the top books between m and n for k users from given items"""
 
-    max_number_of_items = int(100000 / len(uids))
-    items = items[:max_number_of_items]
     sum_of_ratings = {}
     for iid in items:
         for uid in uids:
