@@ -7,16 +7,14 @@ import useGetUser from "../../helpers";
 
 
 export default function Scheduling() {
-    const navigate = useNavigate();
     const user = useGetUser();
-    let club;
-
+    let book = [];
 
     const initialFormData = Object.freeze({
         name: '',
         description: '',
-        book: '',
-        time: '',
+        start_time: '',
+        end_time: '',
         link: ''
     })
 
@@ -33,30 +31,43 @@ export default function Scheduling() {
         e.preventDefault()
         console.log("submitting", formData)
 
+        axiosInstance
+            .post('recommender/0/10/3/top_n_for_club/', {})
+            .then((res) => {
+                axiosInstance
+                    .get('recommender/0/10/3/top_n_for_club/', {})
+                    .then((res) => {
+                        for (let i = 0; i < res.data.length; ++i) {
+                            book.append(res.data[i]['book'])
+                        }
+                        axiosInstance
+                            .post(`scheduling/`, {
+                                name: formData.name,
+                                description: formData.description,
+                                club: 3,
+                                organiser: user.id,
+                                attendees: [2, 8, 110],
+                                book: book[0],
+                                start_time: formData.start_time,
+                                end_time: formData.end_time,
+                                link: formData.link
+                            })
+                            .then((res) => {
+                                console.log(res)
+                                console.log(res.data)
+                            })
+                    })
+            })
+
+
         // axiosInstance
         //     .get('singleclub/3', {})
         //     .then((res) => {
         //         club = res.data
         //         console.log(res)
         //     })
-        //
-        // console.log(club)
 
-        axiosInstance
-            .post(`scheduling/`, {
-                name: formData.name,
-                description: formData.description,
-                club: 3,
-                organiser: user.id,
-                attendees: [2, 8, 110],
-                book: formData.book,
-                time: formData.time,
-                link: formData.link
-            })
-            .then((res) => {
-                console.log(res)
-                console.log(res.data)
-            })
+
     }
 
     return (
@@ -93,19 +104,29 @@ export default function Scheduling() {
 
                                 <FormGroup>
                                     <Label for="book"> Book </Label>
+                                    <select value={this.state.value} onChange={handleChange} style={{border: "0", backgroundColor: "#F3F3F3"}}>
+                                        <option value={book[0]}>book[0]</option>
+                                        <option value={book[1]}>book[1]</option>
+                                    </select>
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <Label for="start_time"> Start time </Label>
                                     <Input
-                                        id="book"
-                                        name="book"
+                                        id="start_time"
+                                        name="start_time"
+                                        type="datetime-local"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Label for="time"> Time </Label>
+                                    <Label for="end_time"> End time </Label>
                                     <Input
-                                        id="time"
-                                        name="time"
+                                        id="end_time"
+                                        name="end_time"
+                                        type="datetime-local"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />

@@ -1,9 +1,11 @@
+from django.http import QueryDict
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app.models import Meeting, VotingPeriod, TimePeriod, Book, BookVote, TimeVote, User, get_all_users_related_to_a_club
+from app.models import Meeting, VotingPeriod, TimePeriod, Book, BookVote, TimeVote, User, \
+    get_all_users_related_to_a_club
 from app.serializers import MeetingSerializer
 
 
@@ -27,11 +29,11 @@ class SchedulingView(APIView):
             return Response(data='A meeting with this id does not exist', status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        print(request.data)
         try:
             data = {'name': request.data['name'], 'description': request.data['description'],
                     'club': request.data['club'], 'organiser': request.data['organiser'],
-                    'attendees': request.data['attendees']}
+                    'attendees': (request.data.getlist('attendees') if isinstance(request.data, QueryDict)
+                                  else request.data['attendees'])}
             # Make sure the user is the organiser of the meeting
             if User.objects.get(username=request.user).id != int(request.data['organiser']):
                 return Response(data='The user needs to be the organiser of the meeting',
@@ -45,12 +47,20 @@ class SchedulingView(APIView):
                             time_period_id=request.data['voting_period'],
                             meeting=new_meeting
                         )
-                        voting_period.proposed_books.set(request.data.getlist('proposed_books'))
-                        voting_period.proposed_times.set(request.data.getlist('proposed_times'))
+                        voting_period.proposed_books.set(
+                            (request.data.getlist('proposed_books') if isinstance(request.data, QueryDict)
+                             else request.data['proposed_books']))
+                        voting_period.proposed_times.set(
+                            (request.data.getlist('proposed_times') if isinstance(request.data, QueryDict)
+                             else request.data['proposed_times']))
                         voting_period.save()
                     else:
                         new_meeting.book_id = request.data['book']
-                        new_meeting.time_id = request.data['time']
+                        time = TimePeriod.objects.create(
+                            start_time=request.data['start_time'],
+                            end_time=request.data['end_time']
+                        )
+                        new_meeting.time_id = time.pk
                         new_meeting.link = request.data['link']
                         new_meeting.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -74,7 +84,8 @@ class SchedulingView(APIView):
             if request.data['action'] == 'book_vote':
                 voting_period = VotingPeriod.objects.get(meeting=request.data['id'])
                 # Make sure the user is a part of the related club
-                if User.objects.get(username=request.user) not in get_all_users_related_to_a_club(voting_period.meeting.club):
+                if User.objects.get(username=request.user) not in get_all_users_related_to_a_club(
+                        voting_period.meeting.club):
                     return Response(data='The user needs to be a member of the club',
                                     status=status.HTTP_401_UNAUTHORIZED)
                 book_vote = BookVote.objects.create(
@@ -87,7 +98,8 @@ class SchedulingView(APIView):
             if request.data['action'] == 'time_vote':
                 voting_period = VotingPeriod.objects.get(meeting=request.data['id'])
                 # Make sure the user is a part of the related club
-                if User.objects.get(username=request.user) not in get_all_users_related_to_a_club(voting_period.meeting.club):
+                if User.objects.get(username=request.user) not in get_all_users_related_to_a_club(
+                        voting_period.meeting.club):
                     return Response(data='The user needs to be a member of the club',
                                     status=status.HTTP_401_UNAUTHORIZED)
                 time_vote = TimeVote.objects.create(

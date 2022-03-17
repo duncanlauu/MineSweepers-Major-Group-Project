@@ -80,7 +80,8 @@ class SchedulingTestCase(APITestCase):
             'organiser': 1,
             'attendees': [2, 3, 4, 5],
             'book': "0195153448",
-            'time': 2,
+            'start_time': '2022-03-12T18:00:00+00:00',
+            'end_time': '2022-03-12T19:00:00+00:00',
             'link': 'This is the meeting link'
         })
         number_of_meetings_after = Meeting.objects.count()

@@ -85,7 +85,7 @@ def get_top_n_for_k(uids, trainset, algo, pred_lookup, n=10):
 def get_top_between_m_and_n_for_k(uids, trainset, algo, preds, m=0, n=10):
     """Get the top books between m and n for k users"""
 
-    items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))
+    items = list((trainset.to_raw_iid(iid) for iid in trainset.all_items()))[:10000]
     return get_top_between_m_and_n_of_items_for_k_users(algo, items, m, n, preds, uids)
 
 
