@@ -62,6 +62,7 @@ export default function CreateClub() {
                 <FormGroup>
                   <Label for="name">Name </Label>
                   <Input
+                    data-testid="name"
                     id="name"
                     name="name"
                     onChange={handleChange}
@@ -72,6 +73,7 @@ export default function CreateClub() {
                 <FormGroup>
                   <Label for="description"> description </Label>
                   <Input
+                    data-testid="description"
                     id="description"
                     name="description"
                     onChange={handleChange}
