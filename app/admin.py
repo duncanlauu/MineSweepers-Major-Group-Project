@@ -1,6 +1,7 @@
 from django.contrib import admin
 from app.models import User, Club, Book, Chat, Message, FriendRequest
 
+
 # Register your models here.
 
 @admin.register(User)
@@ -10,6 +11,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = [
         'username', 'first_name', 'last_name', 'email', 'location'
     ]
+
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
@@ -28,8 +30,10 @@ class BookAdmin(admin.ModelAdmin):
         'ISBN', 'title', 'author', 'publisher'
     ]
 
+
 admin.site.register(Chat)
 admin.site.register(Message)
+
 
 @admin.register(FriendRequest)
 class FriendRequest(admin.ModelAdmin):

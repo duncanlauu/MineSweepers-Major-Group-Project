@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
-import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
+import { HeadingText, LoginContainer, ParaText } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 
 import axiosInstance from '../../axios'
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -72,7 +72,8 @@ export default function SignIn() {
                     <Col />
                     <Col>
                         <HeadingText>Sign into your account</HeadingText><br />
-                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
+                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt
+                            style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
 
                         <LoginContainer>
                             <form>
@@ -100,7 +101,8 @@ export default function SignIn() {
                                 </FormGroup>
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 4 }}>
-                                        <Button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#653FFD", width: "7rem" }}>Sign In</Button>
+                                        <Button type="submit" onClick={handleSubmit}
+                                            style={{ backgroundColor: "#653FFD", width: "7rem" }}>Sign In</Button>
                                     </Col>
                                 </FormGroup>
                             </form>
@@ -109,6 +111,6 @@ export default function SignIn() {
                     <Col />
                 </Row>
             </Container>
-        </div>
+        </div >
     )
 }

@@ -17,9 +17,9 @@ class ChatModelTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.chat = Chat.objects.get(pk = 1)
-        self.new_user = User.objects.get(pk = 2)
-        self.new_message = Message.objects.get(pk = 2)
+        self.chat = Chat.objects.get(pk=1)
+        self.new_user = User.objects.get(pk=2)
+        self.new_message = Message.objects.get(pk=2)
 
     def test_valid_chat(self):
         self._assert_chat_is_valid()
@@ -37,7 +37,7 @@ class ChatModelTestCase(TestCase):
         self._assert_chat_is_invalid()
 
     def test_name_need_not_be_unique(self):
-        second_chat = Chat.objects.get(pk = 2)
+        second_chat = Chat.objects.get(pk=2)
         self.chat.name = second_chat.name
         self._assert_chat_is_valid()
 
@@ -64,11 +64,9 @@ class ChatModelTestCase(TestCase):
     def _assert_chat_is_valid(self):
         try:
             self.chat.full_clean()
-        except (ValidationError):
+        except ValidationError:
             self.fail('Test chat should be valid')
 
     def _assert_chat_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.chat.full_clean()
-
-   

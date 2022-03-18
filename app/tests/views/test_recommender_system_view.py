@@ -687,7 +687,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
-        top_n = get_global_top_between_m_and_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, m, self.n)
+        top_n = get_global_top_between_m_and_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, m,
+                                                         self.n)
         self.assertEqual(len(top_n), len(recommendations))
         for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['book'], top_n[i][0])
@@ -781,7 +782,8 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
-        top_n = get_top_between_m_and_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, m, self.n)
+        top_n = get_top_between_m_and_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, m,
+                                                                         self.n)
         self.assertEqual(len(top_n), len(recommendations))
         for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)

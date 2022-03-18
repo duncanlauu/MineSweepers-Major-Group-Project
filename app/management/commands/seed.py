@@ -21,7 +21,7 @@ class Command(BaseCommand):
 def seed_books():
     """Seed all the books from the csv file with genres
 
-    NOTE: Takes about 2 minutes on Mikolaj's computer
+    NOTE: Takes about 2 minutes on a macbook air
 
     """
 
@@ -52,7 +52,7 @@ def seed_books():
 def seed_users(number=150):
     """Seed all the users
 
-    NOTE: Takes about a minute on Mikolaj's computer
+    NOTE: Takes about a minute on a macbook air
 
     """
 
@@ -209,6 +209,7 @@ def generate_club_users(club, num_of_members, num_of_admins, num_of_applicants):
 
 def generate_club_books(club, num_of_books, books):
     """Generate a number of random books for the club"""
+
     books = get_n_random_books_from(num_of_books, books)
     club.books.set(books)
     return club

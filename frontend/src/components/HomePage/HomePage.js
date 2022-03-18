@@ -1,6 +1,13 @@
 import React from 'react'
-import { Container, Col, Row, Button } from 'reactstrap'
-import { ClubListItem, Heading2Text, HeadingText, ParaText, RecommendationContainer, RecommendationInfo, FeedContainer } from './HomePageElements'
+import { Container, Col, Row } from 'reactstrap'
+import {
+    ClubListItem,
+    Heading2Text,
+    HeadingText,
+    RecommendationContainer,
+    RecommendationInfo,
+    FeedContainer
+} from './HomePageElements'
 import Gravatar from 'react-gravatar'
 import Nav from '../Nav/Nav'
 import { Link } from 'react-router-dom'
@@ -12,7 +19,7 @@ const HomePage = () => {
                 <Nav />
             </Row>
             <Row>
-                <Col></Col>
+                <Col />
                 <Col xs={5}>
                     <FeedContainer>
                     </FeedContainer>
@@ -44,14 +51,8 @@ const HomePage = () => {
                         </ClubListItem>
                     </ul>
                 </Col>
-                <Col></Col>
+                <Col />
             </Row>
-            <Link to="/log_out">
-                <Button>LOG OUT</Button><br />
-            </Link>
-            <Link to="/hello">
-                <Button>GO TO HELLO</Button><br />
-            </Link>
         </Container>
     )
 }

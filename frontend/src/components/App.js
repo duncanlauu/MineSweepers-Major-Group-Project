@@ -10,7 +10,6 @@ import ClubProfile from "./ClubProfile/ClubProfile";
 import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
-import Home from "./Home/Home";
 import FriendsPage from "./FriendsPage/FriendsPage";
 import Hello from "./Hello/Hello"
 import ChatWrapper from "./Chat/ChatWrapper.js"

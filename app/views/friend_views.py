@@ -7,19 +7,20 @@ from app.models import User
 
 class FriendsView(APIView):
     """API View of friends of user"""
+
     # permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         """Get list of friends of current user"""
         friends = request.user.friends.values()
-        non_friends = User.objects.exclude(id__in = [friend["id"] for friend in friends.all()]).values()
-        #non_friends = request.user.friends.values()
+        non_friends = User.objects.exclude(id__in=[friend["id"] for friend in friends.all()]).values()
+        # non_friends = request.user.friends.values()
         return Response({'friends': friends, "non_friends": non_friends}, status=status.HTTP_200_OK)
 
-    
 
 class FriendView(APIView):
     permission_classes = [IsAuthenticated]
+
     # add allowed methods
 
     # def get(self, request):
@@ -67,7 +68,7 @@ class FriendRequestsView(APIView):
             user.send_friend_request(other_user)
             print("Request sent to user: ", other_user_id)
             return Response(status=status.HTTP_200_OK)
-        except:
+        except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
@@ -87,5 +88,5 @@ class FriendRequestsView(APIView):
                 return Response(status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
