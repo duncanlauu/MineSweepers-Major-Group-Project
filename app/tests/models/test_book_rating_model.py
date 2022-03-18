@@ -1,11 +1,11 @@
-"""Unit tests for the User model"""
-import datetime
+"""Unit tests for the BookRating model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from app.models import User, Book, BookRating
 
+
 class BookRatingModelTest(TestCase):
-    """Test the User model"""
+    """Test the BookRating model"""
 
     fixtures = [
         'app/tests/fixtures/default_book_rating.json',
@@ -37,10 +37,9 @@ class BookRatingModelTest(TestCase):
     def _assert_book_rating_is_valid(self):
         try:
             self.bookrating.full_clean()
-        except (ValidationError):
-            self.fail('Test user should be valid')
+        except ValidationError:
+            self.fail('Test BookRating should be valid')
 
     def _assert_book_rating_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.bookrating.full_clean()    
-    
+            self.bookrating.full_clean()

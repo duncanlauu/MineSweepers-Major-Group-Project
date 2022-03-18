@@ -12,7 +12,8 @@ from app.recommender_system.genre_algo import get_isbns_for_a_genre
 
 
 def get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, m=0, n=10):
-    """Get the top between m and n users for a user using favourite books as a measure
+    """
+    Get the top between m and n users for a user using favourite books as a measure
 
     The number of books for which we compare the similarity between the users is
     calculated as 100000 / the number of users, because I discovered that a 100000
@@ -239,7 +240,8 @@ def get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid):
 
 
 def get_top_n_users_test(algo, trainset, genre='fiction'):
-    """A test for getting top n users for a user
+    """
+    A test for getting top n users for a user
 
     It runs the following functions
     get_top_n_users_by_favourite_books, get_top_n_users_double_random
@@ -293,7 +295,8 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
 
 
 def get_top_n_clubs_test(algo, trainset, genre):
-    """A test for getting top n clubs for a user
+    """
+    A test for getting top n clubs for a user
 
     It runs the following functions
     get_top_n_clubs_using_random_items, get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_for_a_genre

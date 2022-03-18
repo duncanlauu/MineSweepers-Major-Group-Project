@@ -11,7 +11,7 @@ class ChatConsumer(WebsocketConsumer):
     def fetch_messages(self, data):
         request_user = get_user(data['username'])
         current_chat = get_current_chat(data['chatId'])
-        if(request_user in current_chat.participants.all()):
+        if request_user in current_chat.participants.all():
             messages = get_all_messages(data['chatId'])
             content = {
                 'command': 'messages',
@@ -25,7 +25,7 @@ class ChatConsumer(WebsocketConsumer):
             author=user,
             content=data['message'])
         current_chat = get_current_chat(data['chatId'])
-        if(user in current_chat.participants.all()):
+        if user in current_chat.participants.all():
             current_chat.messages.add(message)
             current_chat.save()
             content = {
@@ -71,7 +71,6 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         self.commands[data['command']](self, data)
-
 
     def send_chat_message(self, message):
         async_to_sync(self.channel_layer.group_send)(

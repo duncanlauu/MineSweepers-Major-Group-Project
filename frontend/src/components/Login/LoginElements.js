@@ -23,7 +23,7 @@ export const LoginContainer = styled.div`
     border-radius: 10px;
     margin-top: 1rem;
 `
- 
+
 export const Form = styled.form`
     padding-left: 2rem;
     padding-right: 2rem;

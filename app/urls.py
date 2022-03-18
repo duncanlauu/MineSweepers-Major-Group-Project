@@ -1,17 +1,12 @@
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
-from .views.account_views import CreateUser
-from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.authentication_views import GetCurrentUserView
 from .views.genres_view import GenresView
 from .views.recommender_views import RecommenderAPI
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
-from django.contrib.auth import views as auth_views
-from .views.chat_views import (
-    ChatListView,
-    ChatLeaveView
-)
+from .views.chat_views import ChatListView, ChatLeaveView
 from .views.club_views import Clubs, SingleClub
 from .views.search_view import SearchView
 

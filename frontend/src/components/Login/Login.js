@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
-import { HeadingText, LoginContainer, ParaText, Form, VisibilityToggle } from './LoginElements'
-import { FaExternalLinkAlt } from 'react-icons/fa'
+import React, {useState} from 'react'
+import {Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand} from 'reactstrap'
+import {HeadingText, LoginContainer, ParaText} from './LoginElements'
+import {FaExternalLinkAlt} from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -55,11 +55,12 @@ export default function SignIn() {
                 </Navbar>
             </Row>
             <Container fluid>
-                <Row style={{ marginTop: "6rem" }}>
-                    <Col />
+                <Row style={{marginTop: "6rem"}}>
+                    <Col/>
                     <Col>
-                        <HeadingText>Sign into your account</HeadingText><br />
-                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
+                        <HeadingText>Sign into your account</HeadingText><br/>
+                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt
+                            style={{height: "15px", color: "#0057FF"}}/> .</ParaText>
 
                         <LoginContainer>
                             <form>
@@ -68,7 +69,7 @@ export default function SignIn() {
                                     <Input
                                         name="username"
                                         onChange={handleChange}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <FormGroup>
@@ -76,18 +77,19 @@ export default function SignIn() {
                                     <Input
                                         name="password"
                                         onChange={handleChange}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col sm={{ size: 10, offset: 4 }}>
-                                        <Button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#653FFD", width: "7rem" }}>Sign In</Button>
+                                    <Col sm={{size: 10, offset: 4}}>
+                                        <Button type="submit" onClick={handleSubmit}
+                                                style={{backgroundColor: "#653FFD", width: "7rem"}}>Sign In</Button>
                                     </Col>
                                 </FormGroup>
                             </form>
                         </LoginContainer>
                     </Col>
-                    <Col />
+                    <Col/>
                 </Row>
             </Container>
         </div>

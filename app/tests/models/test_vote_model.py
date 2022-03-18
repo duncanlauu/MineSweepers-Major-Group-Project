@@ -1,14 +1,13 @@
-"""Unit tests for the Club model."""
-import datetime
+"""Unit tests for the vote model."""
 from time import timezone
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import Club, User, Book, Vote, EventVote
+from app.models import Vote, EventVote
 from django.utils import timezone
 
 
 class VoteModelTestCase(TestCase):
-    """Unit tests for the Club model."""
+    """Unit tests for the vote model."""
 
     fixtures = [
         'app/tests/fixtures/default_user.json',
@@ -58,16 +57,13 @@ class VoteModelTestCase(TestCase):
     def test_end_time_cannot_be_past_date(self):
         self.vote.end_time = timezone.now() - timezone.timedelta(days=1)
         self._assert_vote_is_invalid()
-        
 
     def _assert_vote_is_valid(self):
         try:
             self.vote.full_clean()
-        except (ValidationError):
-            self.fail('Test event vote should be valid')
+        except ValidationError:
+            self.fail('Test vote should be valid')
 
     def _assert_vote_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.vote.full_clean()
-
-   
