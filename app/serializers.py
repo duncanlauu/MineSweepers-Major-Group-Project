@@ -80,6 +80,8 @@ class BookRecommendationForClubSerializer(serializers.ModelSerializer):
 
 
 class UserRecommendationSerializer(serializers.ModelSerializer):
+    recommended_user = SimpleUserSerializer()
+
     class Meta:
         model = UserRecommendation
         fields = '__all__'
