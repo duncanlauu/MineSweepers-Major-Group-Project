@@ -21,13 +21,18 @@ class AllRatingsView(APIView):
     def post(self, request):
         """Create new rating by logged in user for a particular book"""
         user = request.user
-        data = request.data.copy()
-        data['user'] = user.id
-        serializer = BookRatingSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        book_id = request.data['book']
+        rating_exists = BookRating.objects.filter(book_id=book_id, user_id=user.id).exists()
+
+        if not rating_exists:
+            data = request.data.copy()
+            data['user'] = user.id
+            serializer = BookRatingSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class RatingView(APIView):
     """API View of any singular rating"""

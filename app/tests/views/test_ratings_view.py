@@ -44,12 +44,22 @@ class RatingsAPIViewTestCase(APITestCase):
 
     def test_create_new_book_rating(self):
         self._log_in_helper(self.user.username, 'Password123')
+        book = Book.objects.get(pk="00000000001")
+        rating_data = {'book': book.pk, 'rating': 1}
+        book_ratings_before = BookRating.objects.filter(book=book).count()
+        response = self.client.post(reverse('app:user_ratings'), rating_data)
+        book_ratings_after = BookRating.objects.filter(book=book).count()
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(book_ratings_before + 1, book_ratings_after)
+
+    def test_create_duplicate_book_rating(self):
+        self._log_in_helper(self.user.username, 'Password123')
         rating_data = {'book': self.book.pk, 'rating': 1}
         book_ratings_before = BookRating.objects.filter(book=self.book).count()
         response = self.client.post(reverse('app:user_ratings'), rating_data)
         book_ratings_after = BookRating.objects.filter(book=self.book).count()
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(book_ratings_before + 1, book_ratings_after)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(book_ratings_before, book_ratings_after)
 
     def test_get_rating_by_id(self):
         self._log_in_helper(self.user.username, "Password123")
