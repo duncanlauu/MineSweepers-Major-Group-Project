@@ -53,6 +53,7 @@
     "react-icons": "^4.3.1",
     "react-promise-tracker": "^2.1.0",
     "react-router": "^6.2.1",
+    "react-select": "^5.2.2",
     "react-toastify": "^8.2.0",
     "reactstrap": "^9.0.1",
     "styled-components": "^5.3.3",
