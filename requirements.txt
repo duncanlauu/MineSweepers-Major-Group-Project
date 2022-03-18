@@ -57,7 +57,6 @@ pytz==2021.3
 requests==2.20.1
 requests-oauthlib==1.0.0
 scikit-surprise==1.1.1
-scipy==1.8.0
 service-identity==21.1.0
 six==1.16.0
 social-auth-app-django==4.0.0
