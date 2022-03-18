@@ -1,9 +1,16 @@
+from unittest import mock
 from rest_framework import serializers
-from .models import User, BookRecommendation, UserRecommendation, ClubRecommendation, GlobalBookRecommendation, \
-    BookRecommendationForClub, Post, Comment, Reply
+from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, \
+    GlobalBookRecommendation, BookRecommendationForClub, Club, Book, Post, Comment, Reply
 
 
 class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
+class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
@@ -17,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def update(self, validated_data):
+    def update(self, validated_data, **kwargs):
         password = validated_data.pop('password', None)
         instance = self.Meta.model.get(id=validated_data['id'])
         if password is not None:
@@ -26,6 +33,38 @@ class UserSerializer(serializers.ModelSerializer):
             setattr(instance, k, v)
         instance.save()
         return instance
+
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+
+class ClubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Club
+        fields = '__all__'
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
+
+class SimpleMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    participants = SimpleUserSerializer(many=True, required=False)
+
+    class Meta:
+        model = Chat
+        fields = '__all__'
 
 
 class BookRecommendationSerializer(serializers.ModelSerializer):

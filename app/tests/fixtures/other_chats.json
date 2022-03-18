@@ -1,0 +1,31 @@
+[
+  {
+    "model": "app.Chat",
+    "pk": 2,
+    "fields": {
+      "name": "Club Chat 2",
+      "participants": [
+        2,
+        3
+      ],
+      "group_chat": true,
+      "created_at": "2014-03-16T17:41:29+00:00"
+    }
+  },
+  {
+    "model": "app.Chat",
+    "pk": 3,
+    "fields": {
+      "name": "Chat 3",
+      "participants": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "group_chat": true,
+      "created_at": "2014-06-16T17:41:29+00:00"
+    }
+  }
+]
+  

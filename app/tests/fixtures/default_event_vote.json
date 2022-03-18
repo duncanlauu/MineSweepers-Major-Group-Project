@@ -1,10 +1,10 @@
 [
-    {
-        "model": "app.EventVote",
-        "pk": 1,
-        "fields": {
-            "user": 1,
-            "book": "978-0-7356-6745-7"
-        }
+  {
+    "model": "app.EventVote",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "book": "0195153448"
     }
+  }
 ]
