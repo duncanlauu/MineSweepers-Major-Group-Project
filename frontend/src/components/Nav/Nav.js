@@ -37,7 +37,9 @@ class Nav extends React.Component {
     handleChange(e) {
         this.setState({
             search: e.target.value
+            
         });
+        console.log(this.state.search)
     }
 
     handleSubmit = (e) => {
@@ -72,6 +74,7 @@ class Nav extends React.Component {
                         onClick={this.toggle}>
                         <Box style={{ backgroundColor:"#ECECEC", height:"3rem", width:"30rem", display:"flex", borderRadius:"100px", alignItems:"center", justifyContent:"flex-end" }}>
                         <IconButton type='submit'>
+                            {this.state.search === '' ? <SearchText> </SearchText> : <SearchText>{this.state.search}</SearchText>}
                         <BiSearch />
                         </IconButton>
                         </Box>
