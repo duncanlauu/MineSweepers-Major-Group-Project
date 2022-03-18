@@ -13,7 +13,19 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+<<<<<<< HEAD
+  .errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+  #frame {
+=======
 #frame {
+>>>>>>> develop
     width: 100%;
     min-width: 360px;
     height: 100vh;

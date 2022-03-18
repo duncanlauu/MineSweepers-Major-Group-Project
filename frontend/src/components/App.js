@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {render} from "react-dom";
+import React, { Component } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { render } from "react-dom";
 
 import Login from "./Login/Login"
 import PasswordReset from "./PasswordReset/PasswordReset"
@@ -16,40 +16,55 @@ import ChatWrapper from "./Chat/ChatWrapper.js"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
 import CreateClub from "./CreateClub/CreateClub";
+import Layout from "./Layout/Layout";
+import { AuthProvider } from "./context/AuthProvider";
+import RequireAuth from "./RequireAuth/RequireAuth";
 
 export default class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <BrowserRouter>
-                <React.StrictMode>
-                    {/* <Header /> */}
-                    <Routes>
-                        <Route path='/' element={<LandingPage/>}/>
-                        <Route path='/home' element={<HomePage/>}/>
-                        <Route path='/log_in/' element={<Login/>}/>
-                        <Route path='/log_out/' element={<Logout/>}/>
-                        <Route path='/error/' element={<Error404/>}/>
-                        <Route path='/club_profile/' element={<ClubProfile/>}/>
-                        <Route path='/sign_up/' element={<SignUp/>}/>
-                        <Route path='/create_club/' element={<CreateClub/>}/>
-                        <Route path='/notifications/' element={<Notifications/>}/>
-                        <Route path='/friends_page/' element={<FriendsPage/>}/>
-                        <Route path='/hello/' element={<Hello/>}/>
-                        <Route path='/password_reset/' element={<PasswordReset/>}/>
-                        <Route path='/password_reset_confirm/:uid/:token' element={<PasswordResetConfirm/>}/>
-                        <Route path="/chat/:chatID/" element={<ChatWrapper/>}/>
-                        <Route path="/chat/" element={<ChatWrapper/>}/>
-                    </Routes>
-                    {/* <Footer /> */}
-                </React.StrictMode>
-            </BrowserRouter>
-        );
-    }
+  render() {
+    return (
+      <React.StrictMode>
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path='/' element={<Layout />}>
+                {/* public routes */}
+                <Route path='/' element={<LandingPage />}></Route>
+                <Route path='log_in' element={<Login />}></Route>
+                <Route path='sign_up' element={<SignUp />}></Route>
+                <Route path='password_reset' element={<PasswordReset />}></Route>
+                <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
+                {/* <Route path='unauthorized' element={<Unauthorized />}></Route> */}
+
+                {/* protected routes */}
+                <Route element={<RequireAuth />}>
+                  <Route path='home' element={<HomePage />}></Route>
+                  <Route path='log_out' element={<Logout />}></Route>
+                  <Route path='club_profile' element={<ClubProfile />}></Route>
+                  <Route path='create_club' element={<CreateClub />}></Route>
+                  <Route path='notifications' element={<Notifications />}></Route>
+                  <Route path='friends_page' element={<FriendsPage />}></Route>
+                  <Route path="chat/:chatID" element={<ChatWrapper />}></Route>
+                  <Route path="/chat/" element={<ChatWrapper />}></Route>
+                  <Route path='hello' element={<Hello />}></Route>
+                </Route>
+
+                {/* catch all */}
+                <Route path='error' element={<Error404 />}></Route>
+                <Route path='*' element={<Error404 />} />
+                {/* not sure what to do with error */}
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </React.StrictMode>
+    );
+  }
 }
 
 const appDiv = document.getElementById("app");
-render(<App/>, appDiv);
+render(<App />, appDiv);
