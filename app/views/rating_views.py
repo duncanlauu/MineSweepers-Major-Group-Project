@@ -15,8 +15,9 @@ class AllRatingsView(APIView):
         user = request.user
         user_ratings = BookRating.objects.filter(user=user)
         serializer = BookRatingSerializer(user_ratings, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'ratings': serializer.data}, status=status.HTTP_200_OK)
 
+    # TODO: Users post multiple ratings on the same book
     def post(self, request):
         """Create new rating by logged in user for a particular book"""
         user = request.user
@@ -38,7 +39,7 @@ class RatingView(APIView):
         try:
             rating = BookRating.objects.get(id=rating_id)
             serializer = BookRatingSerializer(rating)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'rating': serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
@@ -49,8 +50,8 @@ class RatingView(APIView):
             rating = BookRating.objects.get(id=rating_id)
             if rating.user == user: # can edit rating if user is author of rating
                 new_rating = request.data['rating']
-                rating.rating = new_rating
-                rating.save()
+                rating.update_rating(new_rating)
+                return Response({'updated': 'true'}, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -74,6 +75,6 @@ class BookRatingsView(APIView):
             book = Book.objects.get(pk=isbn)
             book_ratings = BookRating.objects.filter(book=book)
             serializer = BookRatingSerializer(book_ratings, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'ratings': serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

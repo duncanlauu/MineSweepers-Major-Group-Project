@@ -64,7 +64,7 @@ urlpatterns = [
     # Ratings
     path('ratings/', AllRatingsView.as_view(), name='user_ratings'),
     path('ratings/<int:rating_id>/', RatingView.as_view(), name='rating'),
-    path('books/<int:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings')
+    path('books/<str:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings'),
 
     # Others
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),

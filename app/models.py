@@ -241,6 +241,10 @@ class BookRating(models.Model):
     rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
     created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
 
+    def update_rating(self, new_rating):
+        self.rating = new_rating
+        self.save()
+
 # Meeting class
 class Meeting(models.Model):
     start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
