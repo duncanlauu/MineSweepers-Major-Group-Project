@@ -13,12 +13,11 @@ class FriendsView(APIView):
         """Get list of friends of current user"""
         friends = request.user.friends.values()
         non_friends = User.objects.exclude(id__in = [friend["id"] for friend in friends.all()]).values()
-        #non_friends = request.user.friends.values()
         return Response({'friends': friends, "non_friends": non_friends}, status=status.HTTP_200_OK)
 
-    
 
 class FriendView(APIView):
+    """API View of a friend of user"""
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, other_user_id):
@@ -51,7 +50,6 @@ class FriendRequestsView(APIView):
             other_user_id = request.data['other_user_id']
             other_user = User.objects.get(pk=other_user_id)
             user.send_friend_request(other_user)
-            print("Request sent to user: ", other_user_id)
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -3,6 +3,7 @@ from email.policy import default
 from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
+from django.db.models import Q
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -97,18 +98,19 @@ class User(AbstractUser):
 
     def send_friend_request(self, other_user):
         request_exists = FriendRequest.objects.filter(
-            sender=self, receiver=other_user).exists()
+            Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).exists()
         is_friend = other_user in self.friends.all()
         if not request_exists and not is_friend:
             FriendRequest.objects.create(sender=self, receiver=other_user)
 
     def accept_friend_request(self, other_user):
-        request_exists = self.incoming_friend_requests.filter(
-            sender=other_user).exists()
+        request_exists = self.incoming_friend_requests.filter(sender=other_user).exists()
         is_friend = other_user in self.friends.all()
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
+            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
+
             new_chat = Chat.objects.create()
             new_chat.participants.add(self)
             new_chat.participants.add(other_user)
@@ -165,17 +167,13 @@ class Book(models.Model):
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(
-        validators=[MaxValueValidator(10), MinValueValidator(1)])
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # ? not sure how to test this
+    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(auto_now_add=True) ##? not sure how to test this
 
 # Meeting class
 class Meeting(models.Model):
-    start_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
-    end_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
+    start_time = models.DateTimeField(blank =False, validators=[FutureDateValidator])
+    end_time = models.DateTimeField(blank=False, validators=[FutureDateValidator])
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=70, blank=True)
     link = models.CharField(max_length=500, unique=True, blank=True)
@@ -183,10 +181,8 @@ class Meeting(models.Model):
 # Vote class
 class Vote(models.Model):
     event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
-    start_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
-    end_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
+    start_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
+    end_time = models.DateTimeField(validators=[FutureDateValidator], blank=False)
 
     def add_event_vote(self, event_vote):
         self.event_vote.add(event_vote)
@@ -258,7 +254,7 @@ class Club(models.Model):
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
 
-   
+
 
     def add_member(self, user):
         user.add_club(self)
@@ -343,7 +339,7 @@ class Chat(models.Model):
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
 class BookRecommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_to_recommend_book_to')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommended_book_to_user')
