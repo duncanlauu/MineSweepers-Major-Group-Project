@@ -188,6 +188,7 @@ export default function NonFriendList(props) {
     // }
 
     const postFriendRequest = (receiver, e) => {
+        console.log(receiver)
         axiosInstance
             .post("friend_requests/", {
                 other_user_id : receiver
@@ -196,6 +197,7 @@ export default function NonFriendList(props) {
     
     // not used at this point.
     const cancelFriendRequest = (receiver, e) => {
+        console.log(receiver)
         axiosInstance
             .delete("friend_requests/", {
                 data: {
@@ -246,10 +248,10 @@ export default function NonFriendList(props) {
                                                 <h3 className="friend_username"> {recommendedFriend.recommended_user} </h3>
                                             </Col>
                                             <Col>
-                                                <Button onClick={(e) => postFriendRequest(recommendedFriend.id)}>
+                                                <Button onClick={(e) => postFriendRequest(recommendedFriend.recommended_user, e)}>
                                                     <p> Follow </p>
                                                 </Button>
-                                                <Button onClick={(e) => cancelFriendRequest(recommendedFriend.id)}>
+                                                <Button onClick={(e) => cancelFriendRequest(recommendedFriend.recommended_user, e)}>
                                                     <p> X </p>
                                                 </Button>
                                             </Col>
