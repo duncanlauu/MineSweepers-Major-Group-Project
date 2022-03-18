@@ -22,7 +22,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-    
+
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)
         instance.username = validated_data.get('username', instance.username)
@@ -91,6 +91,24 @@ class BookRecommendationSerializer(serializers.ModelSerializer):
 class BookRecommendationForClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRecommendationForClub
+        fields = '__all__'
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
         fields = '__all__'
 
 

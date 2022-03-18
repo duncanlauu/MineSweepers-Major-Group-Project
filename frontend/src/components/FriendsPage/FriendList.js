@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Row, Col, Button } from "reactstrap"
+// import {getAllFriends, deleteFriend} from "../../actions/friends"
 import axiosInstance from '../../axios'
+
 
 export default function FriendList(props) {
 

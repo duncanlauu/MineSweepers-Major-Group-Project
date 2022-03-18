@@ -1,4 +1,5 @@
 from django.urls import path, include
+from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
 from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
 from .views.account_views import CreateUser
@@ -14,17 +15,17 @@ from .views.search_view import SearchView
 app_name = 'app'
 
 urlpatterns = [
+    # User Auth
     path('user/sign_up/', CreateUser.as_view(), name="create_user"),
-
     path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
-    path('friends/', FriendsView.as_view(), name='friends'),
-    path('friends/<int:other_user_id>', FriendView.as_view(), name='single_friend'),
-    path('friend_requests/', FriendRequestsView.as_view(), name='friend_requests'),
-    path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
-    path('hello/', HelloWorldView.as_view(), name='hello_world'),
 
     # Reset User Password
     path('auth/', include('djoser.urls')),
+
+    # Friends
+    path('friends/', FriendsView.as_view(), name='friends'),
+    path('friends/<int:other_user_id>', FriendView.as_view(), name='single_friend'),
+    path('friend_requests/', FriendRequestsView.as_view(), name='friend_requests'),
 
     # Chat
     path('chat/', ChatListView.as_view()),
@@ -39,6 +40,15 @@ urlpatterns = [
     path('recommender/<int:m>/<int:n>/<str:action>/', RecommenderAPI.as_view(), name='recommender_top_n_global'),
     path('recommender/<int:m>/<int:n>/<str:action>/<str:genre>/', RecommenderAPI.as_view(),
          name='recommender_top_n_global_for_genre'),
+
+    # Feed
+    path('feed/', FeedView.as_view(), name='feed'),
+    path('posts/', AllPostsView.as_view(), name='all_posts'),
+    path('posts/<int:post_id>', PostView.as_view(), name='post'),
+    path('posts/<int:post_id>/comments/', AllCommentsView.as_view(), name='all_comments'),
+    path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
+    path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
+    path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply'),
 
     # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
@@ -55,4 +65,8 @@ urlpatterns = [
     path('ratings/', AllRatingsView.as_view(), name='user_ratings'),
     path('ratings/<int:rating_id>/', RatingView.as_view(), name='rating'),
     path('books/<int:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings')
+
+    # Others
+    path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
+    path('hello/', HelloWorldView.as_view(), name='hello_world'),
 ]

@@ -43,7 +43,8 @@
         "location": "London, UK",
         "birthday": "1985-03-15",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2012-07-11T17:41:29+00:00"
+        "created_at": "2012-07-11T17:41:29+00:00",
+        "friends": [1]
       }
     },
     {
@@ -58,7 +59,8 @@
         "location": "London, UK",
         "birthday": "1983-02-20",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2018-11-09T17:41:29+00:00"
+        "created_at": "2018-11-09T17:41:29+00:00",
+        "friends": []
       }
     },
     {
@@ -73,7 +75,8 @@
         "location": "London, UK",
         "birthday": "1980-01-10",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2009-01-15T17:41:29+00:00"
+        "created_at": "2009-01-15T17:41:29+00:00",
+        "friends": []
       }
     },
     {

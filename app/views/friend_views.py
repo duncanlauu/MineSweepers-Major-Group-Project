@@ -48,7 +48,7 @@ class FriendRequestsView(APIView):
         try:
             user = request.user
             other_user_id = request.data['other_user_id']
-            other_user = User.objects.get(pk=other_user_id)
+            other_user = User.objects.get(id=other_user_id)
             user.send_friend_request(other_user)
             return Response(status=status.HTTP_200_OK)
         except:
@@ -59,7 +59,7 @@ class FriendRequestsView(APIView):
         try:
             user = request.user
             other_user_id = request.data['other_user_id']
-            other_user = User.objects.get(pk=other_user_id)
+            other_user = User.objects.get(id=other_user_id)
             if request.data['action'] == 'accept':
                 user.accept_friend_request(other_user)
                 return Response(status=status.HTTP_200_OK)
