@@ -157,9 +157,11 @@ class Response(models.Model):
 
     def upvote(self):
         self.upvotes += 1
+        self.save()
 
     def downvote(self):
         self.downvotes += 1
+        self.save()
 
     class Meta:
         abstract = True

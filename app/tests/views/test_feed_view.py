@@ -1,6 +1,6 @@
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
-from app.models import Post, User
+from app.models import Post, User, Comment, Reply
 from django.forms.models import model_to_dict
 
 
@@ -14,7 +14,11 @@ class FeedAPIViewTestCase(APITestCase):
                 'app/tests/fixtures/default_club.json',
                 'app/tests/fixtures/others_clubs.json',
                 'app/tests/fixtures/default_book.json',
-                'app/tests/fixtures/other_books.json'
+                'app/tests/fixtures/other_books.json',
+                'app/tests/fixtures/default_comment.json',
+                'app/tests/fixtures/other_comments.json',
+                'app/tests/fixtures/default_reply.json',
+                'app/tests/fixtures/other_replies.json'
                 ]
 
     def _log_in_helper(self, username, password):
@@ -33,6 +37,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.user = User.objects.get(pk=1)
         self.other_user = User.objects.get(pk=2)
         self.non_friend_user = User.objects.get(pk=6)
+        self.post = Post.objects.get(pk=1)
 
 
     ## ---------- FEED ---------- ##
@@ -171,10 +176,10 @@ class FeedAPIViewTestCase(APITestCase):
 
     def test_upvote_post_by_unauthorized_user(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
-        upvote_before = Post.objects.get(id=1).downvotes
+        upvote_before = Post.objects.get(id=1).upvotes
         response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"upvote"})
         self.assertEqual(response.status_code, 400)
-        upvote_after = Post.objects.get(id=1).downvotes
+        upvote_after = Post.objects.get(id=1).upvotes
         self.assertEqual(upvote_before, upvote_after)
 
     def test_downvote_post_by_unauthorized_user(self):
@@ -199,26 +204,211 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 400)
         post = Post.objects.get(pk=1)
         self.assertEqual(original_post, post)
-        
+
 
     ## ---------- COMMENT ---------- ##
 
-    def test_get_comment_from_visible_post(self):
+    def test_get_all_comment_from_visible_post(self):
         self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1}))
+        comments = response.data['comments']
+        self.assertEqual(3, len(comments))
+        self.assertEqual(response.status_code, 200)
+
 
     def test_get_comment_from_invisible_post(self):
-        pass
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1}))
+        self.assertEqual(response.status_code, 400)
 
-    def test_edit_comment(self):
-        pass
+    def test_get_comment_with_invalid_post_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1000}))
+        self.assertEqual(response.status_code, 400)
+
+    def test_add_comment(self):
+        user = User.objects.get(pk=3)
+        self._log_in_helper(user.username, "Password123")
+        post_data = {'content': 'test'}
+        comment_count_before = self.post.comment_set.count()
+        self.assertFalse(Comment.objects.filter(post_id=1, author=user).exists())
+        response = self.client.post(reverse('app:all_comments', kwargs={'post_id': 1}), data=post_data)
+        comment_count_after = Post.objects.get(pk=1).comment_set.count()
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(comment_count_before + 1, comment_count_after)
+        self.assertTrue(Comment.objects.filter(post_id=1, author=user).exists())
+
+    def test_get_single_comment_from_post(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        response = self.client.get(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        comment = response.data['comment']
+        self.assertEqual(comment['author'], self.user.id)
+        self.assertEqual(comment['post'], 1)
+        self.assertEqual(comment['content'], 'This is a test comment.')
+
+    def test_edit_comment_from_post(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        comment_data = {'content': 'new test content'}
+        response = self.client.put(reverse('app:comment', kwargs=args), data=comment_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['content'], 'new test content')
 
     def test_upvote_comment(self):
-        pass
+        user = User.objects.get(pk=3)
+        self._log_in_helper(user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        upvote_before = Comment.objects.get(id=1).upvotes
+        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "upvote"})
+        self.assertEqual(response.status_code, 200)
+        upvote_after = Comment.objects.get(id=1).upvotes
+        self.assertEqual(upvote_before + 1, upvote_after)
 
     def test_downvote_comment(self):
-        pass
+        user = User.objects.get(pk=3)
+        self._log_in_helper(user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        downvote_before = Comment.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "downvote"})
+        self.assertEqual(response.status_code, 200)
+        downvote_after = Comment.objects.get(id=1).downvotes
+        self.assertEqual(downvote_before + 1, downvote_after)
+
+    def test_delete_comment_as_comment_author(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 2}
+        self.assertTrue(Comment.objects.filter(pk=2).exists())
+        response = self.client.delete(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Comment.objects.filter(pk=2).exists())
+
+    def test_delete_author_comment_as_post_author(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        self.assertTrue(Comment.objects.filter(pk=1).exists())
+        response = self.client.delete(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Comment.objects.filter(pk=1).exists())
+
+    def test_delete_other_user_comment_as_post_author(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 2}
+        self.assertTrue(Comment.objects.filter(pk=2).exists())
+        response = self.client.delete(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Comment.objects.filter(pk=2).exists())
+
+    def test_delete_comment_as_a_non_author(self):
+        user = User.objects.get(pk=3)
+        self._log_in_helper(user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 2}
+        self.assertTrue(Comment.objects.filter(pk=2).exists())
+        response = self.client.delete(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue(Comment.objects.filter(pk=2).exists())
 
     ## ---------- REPLY ---------- ##
 
-    
+    def test_get_all_replies_from_comment(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        response = self.client.get(reverse('app:all_replies', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        replies = response.data['replies']
+        reply_count = Reply.objects.filter(comment_id=1).count()
+        self.assertEqual(reply_count, len(replies))
+        # Check for author ids in returned data
+        reply_author_ids = [author['id'] for author in replies]
+        self.assertIn(1, reply_author_ids)
+        self.assertIn(2, reply_author_ids)
 
+    def test_add_reply_to_comment(self):
+        self._log_in_helper(self.user.username, "Password123")
+        comment_data = {'content': 'test reply'}
+        args = {'post_id': 1, 'comment_id': 1}
+        reply_count_before = Comment.objects.get(pk=1).reply_set.count()
+        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
+        reply_count_after = Comment.objects.get(pk=1).reply_set.count()
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(reply_count_before + 1, reply_count_after)
+        new_reply = Reply.objects.get(pk=response.data['id'])
+        self.assertEqual(new_reply.content, 'test reply')
+        self.assertEqual(new_reply.author_id, response.data['author'])
+
+    def test_get_single_reply_from_a_comment(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        response = self.client.get(reverse('app:reply', kwargs=args))
+        self.assertEqual(response.status_code, 200)
+        actual_reply = Reply.objects.get(pk=1)
+        returned_reply = response.data['reply']
+        self.assertEqual(actual_reply.id, returned_reply['id'])
+        self.assertEqual(actual_reply.content, returned_reply['content'])
+        self.assertEqual(actual_reply.author_id, returned_reply['author'])
+
+    def test_upvote_reply_by_authorized_user(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        upvote_before = Reply.objects.get(id=1).upvotes
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        self.assertEqual(response.status_code, 200)
+        upvote_after = Reply.objects.get(id=1).upvotes
+        self.assertEqual(upvote_before + 1, upvote_after)
+
+    def test_upvote_reply_by_unauthorized_user(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        upvote_before = Reply.objects.get(id=1).upvotes
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        self.assertEqual(response.status_code, 400)
+        upvote_after = Reply.objects.get(id=1).upvotes
+        self.assertEqual(upvote_before, upvote_after)
+
+    def test_downvote_reply_by_authorized_user(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        downvote_before = Reply.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "downvote"})
+        self.assertEqual(response.status_code, 200)
+        downvote_after = Reply.objects.get(id=1).downvotes
+        self.assertEqual(downvote_before + 1, downvote_after)
+
+    def test_downvote_reply_by_unauthorized_user(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        downvote_before = Reply.objects.get(id=1).downvotes
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "downvote"})
+        self.assertEqual(response.status_code, 400)
+        downvote_after = Reply.objects.get(id=1).downvotes
+        self.assertEqual(downvote_before, downvote_after)
+
+    # TODO: fix bug for edit reply
+    # def test_edit_reply_as_author(self):
+    #     self._log_in_helper(self.user.username, "Password123")
+    #     args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+    #     reply_data = {'content': 'new test reply content'}
+    #     response = self.client.put(reverse('app:reply', kwargs=args), reply_data)
+    #     self.assertEqual(response.status_code, 200)
+    #     reply = Reply.objects.get(pk=1)
+    #     # self.assertEqual(reply.content, 'new test reply content')
+
+    def test_edit_reply_as_non_author(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        reply_data = {'content': 'new test reply content'}
+        response = self.client.put(reverse('app:reply', kwargs=args), reply_data)
+        self.assertEqual(response.status_code, 400)
+        reply = Reply.objects.get(pk=1)
+        self.assertNotEqual(reply.content, 'new test reply content')
+
+    # TODO: implement after refactoring view
+    # def test_delete_reply_as_reply_author(self):
+    #     pass
+    #
+    # def test_delete_reply_as_post_author(self):
+    #     pass
+    #
+    # def test_delete_reply_as_non_author(self):
+    #     pass

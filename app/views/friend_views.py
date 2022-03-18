@@ -24,7 +24,6 @@ class FriendView(APIView):
         """Delete a friend based on request parameter"""
         try:
             user = request.user
-            other_user_id = self.kwargs['other_user_id']
             other_user = User.objects.get(pk=other_user_id)
             user.remove_friend(other_user)
             other_user.remove_friend(user)
