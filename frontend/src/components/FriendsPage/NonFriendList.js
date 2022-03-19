@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from "react"
-import {Row, Col, Button} from "reactstrap"
+import React, { useEffect, useState } from "react"
+import { Row, Col, Button } from "reactstrap"
 import axiosInstance from '../../axios'
 
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 export default function NonFriendList(props) {
 
     const [myNonFriends, setNonFriends] = useState("")
 
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         getAllNonFriends();
     }, []);
@@ -27,7 +27,7 @@ export default function NonFriendList(props) {
     const postFriendRequest = (receiver, e) => {
         axiosInstance
             .post("friend_requests/", {
-                other_user_id: receiver
+                other_user_id : receiver  
             })
     }
 
@@ -35,9 +35,9 @@ export default function NonFriendList(props) {
     const cancelFriendRequest = (receiver, e) => {
         axiosInstance
             .delete("friend_requests/", {
-                data: {
-                    other_user_id: receiver,
-                    action: "cancel"
+                data: { 
+                    other_user_id : receiver,  
+                    action : "cancel"
                 }
             })
     }
@@ -48,17 +48,17 @@ export default function NonFriendList(props) {
                 myNonFriends.map((nonFriend, index) => {
                     console.log(nonFriend);
                     return (
-                        <div className="friend" key={nonFriend.id}>
+                        <div className="friend" key={nonFriend.id} >
                             <Row>
                                 <Col>
                                     <h3 className="friend_username"> {nonFriend.username} </h3>
                                 </Col>
                                 <Col>
                                     <Button onClick={(e) => postFriendRequest(nonFriend.id)}>
-                                        <p> Follow </p>
-                                    </Button>
+                                        <p> Follow </p> 
+                                    </Button>   
                                     <Button onClick={(e) => cancelFriendRequest(nonFriend.id)}>
-                                        <p> X </p>
+                                        <p> X </p> 
                                     </Button>
                                 </Col>
                             </Row>

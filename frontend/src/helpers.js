@@ -1,5 +1,5 @@
 import axiosInstance from './axios';
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 // custom hook for getting the logged in user
 export default function useGetUser() {

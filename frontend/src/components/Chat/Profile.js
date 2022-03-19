@@ -8,7 +8,7 @@ export default function Profile() {
             {
                 localStorage.username !== null ?
                     <Hoc>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>{localStorage.username}</p>
                         <div className="social-media">
                             <i className="fa fa-facebook" aria-hidden="true"></i>

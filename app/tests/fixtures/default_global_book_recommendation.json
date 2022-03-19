@@ -1,14 +1,14 @@
 [
-  {
-    "model": "app.GlobalBookRecommendation",
-    "pk": 1,
-    "fields": {
-      "book": "0195153448",
-      "weighted_rating": 9.21,
-      "number_of_ratings": 14,
-      "flat_rating": 9.2,
-      "genre": "fiction",
-      "created_at": "2022-03-14T17:41:28+00:00"
+    {
+        "model": "app.GlobalBookRecommendation",
+        "pk": 1,
+        "fields": {
+            "book": "0195153448",
+            "weighted_rating": 9.21,
+            "number_of_ratings": 14,
+            "flat_rating": 9.2,
+            "genre": "fiction",
+            "created_at": "2022-03-14T17:41:28+00:00"
+        }
     }
-  }
 ]

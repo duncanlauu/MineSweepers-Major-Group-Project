@@ -1,19 +1,20 @@
-"""Unit tests for the ClubEvent model"""
+"""Unit tests for the User model"""
+import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import ClubEvent
-
+from app.models import User, Book, ClubEvent
 
 class ClubEventModelTest(TestCase):
-    """Test the ClubEvent model"""
+    """Test the club_event model"""
 
     fixtures = [
+        
         'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_club.json',
-        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/others_clubs.json',
         'app/tests/fixtures/default_event_vote.json',
         'app/tests/fixtures/other_event_votes.json',
         'app/tests/fixtures/default_club_event.json',
@@ -24,6 +25,7 @@ class ClubEventModelTest(TestCase):
         'app/tests/fixtures/other_meetings.json',
         'app/tests/fixtures/default_club_event',
         'app/tests/fixtures/other_club_events.json',
+        
     ]
 
     def setUp(self):
@@ -62,12 +64,15 @@ class ClubEventModelTest(TestCase):
         self.club_event.description = second_club_event.description
         self._assert_club_event_is_valid()
 
+    
+
     def _assert_club_event_is_valid(self):
         try:
             self.club_event.full_clean()
-        except ValidationError:
+        except (ValidationError):
             self.fail('Test club event should be valid')
 
     def _assert_club_event_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.club_event.full_clean()
+            self.club_event.full_clean()    
+    

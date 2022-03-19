@@ -213,7 +213,7 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
 
     """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
-           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+        minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
 def get_top_n_test(trainset, algo):
@@ -379,7 +379,7 @@ def get_top_n_global_for_genre_test(trainset, dataset, genre):
         logging.debug(f'{item} with rating {r}, num {n} and weighted rating {wr}')
 
     # for i in range(0, len(top_n_global)):
-    # assert top_n_global[i][0] == top_n_global_actual[i][0]
-    # assert top_n_global[i][1] == top_n_global_actual[i][1]
-    # assert top_n_global[i][2] == top_n_global_actual[i][2]
-    # The weighted rating is different because the global mean is different
+        # assert top_n_global[i][0] == top_n_global_actual[i][0]
+        # assert top_n_global[i][1] == top_n_global_actual[i][1]
+        # assert top_n_global[i][2] == top_n_global_actual[i][2]
+        # The weighted rating is different because the global mean is different

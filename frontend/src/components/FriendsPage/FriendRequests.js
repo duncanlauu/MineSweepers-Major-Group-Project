@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, {useState, useEffect} from "react"
-import {Row, Col, Button} from "reactstrap"
+import React, { useState, useEffect } from "react"
+import { Row, Col, Button } from "reactstrap"
 import axiosInstance from '../../axios'
 
 export default function FriendRequests(props) {
@@ -24,9 +24,9 @@ export default function FriendRequests(props) {
     const rejectFriendRequest = (sender, e) => {
         axiosInstance
             .delete("friend_requests/", {
-                data: {
-                    other_user_id: sender,
-                    action: "reject"
+                data: { 
+                    other_user_id : sender, 
+                    action : "reject"
                 }
             })
     }
@@ -34,13 +34,13 @@ export default function FriendRequests(props) {
     const acceptFriendRequest = (sender, e) => {
         axiosInstance
             .delete("friend_requests/", {
-                data: {
-                    other_user_id: sender,
-                    action: "accept"
+                data: { 
+                    other_user_id : sender, 
+                    action : "accept"
                 }
             })
     }
-
+    
     const displayFriendRequests = (e) => {
         if (myFriendRequests.length > 0) {
             return (
@@ -57,7 +57,7 @@ export default function FriendRequests(props) {
                                         <Col>
                                             <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}>
                                                 <p> Accept </p>
-                                            </Button>
+                                            </Button>                                        
                                         </Col>
                                         <Col>
                                             <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}>

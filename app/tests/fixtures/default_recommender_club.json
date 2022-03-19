@@ -1,39 +1,39 @@
 [
-  {
-    "model": "app.Club",
-    "pk": 1,
-    "fields": {
-      "name": "Joe's Club",
-      "description": "This is a club for people who like to read science fiction.",
-      "created_at": "2015-03-04T20:04:00Z",
-      "owner": 1,
-      "members": [
-        2
-      ],
-      "admins": [
-        3
-      ],
-      "applicants": [
-        4
-      ],
-      "banned_users": [
-        5
-      ],
-      "books": [
-        "0743454529",
-        "067168390X",
-        "0345361792",
-        "0618002235",
-        "193156146X",
-        "0142001740",
-        "3551551693",
-        "0060915544",
-        "843760494X",
-        "0345342968"
-      ],
-      "visibility": true,
-      "public": true
+    {
+      "model": "app.Club",
+      "pk": 1,
+      "fields": {
+          "name": "Joe's Club",
+          "description": "This is a club for people who like to read science fiction.",  
+          "created_at": "2015-03-04T20:04:00Z",
+          "owner": 1,
+          "members": [
+            2
+          ],
+          "admins": [
+            3
+          ],
+          "applicants": [
+            4
+          ],
+          "banned_users": [
+            5
+          ],
+          "books": [
+            "0743454529",
+            "067168390X",
+            "0345361792",
+            "0618002235",
+            "193156146X",
+            "0142001740",
+            "3551551693",
+            "0060915544",
+            "843760494X",
+            "0345342968"
+          ],
+          "visibility": true,
+          "public": true
+      }
     }
-  }
-]
+  ]
   

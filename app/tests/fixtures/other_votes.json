@@ -1,13 +1,11 @@
 [
-  {
-    "model": "app.Vote",
-    "pk": 2,
-    "fields": {
-      "event_vote": [
-        2
-      ],
-      "start_time": "2022-12-01T09:00:00.0+00:00",
-      "end_time": "2022-12-09T12:00:00.0+00:00"
+    {
+        "model": "app.Vote",
+        "pk": 2,
+        "fields": {
+            "event_vote": [2],
+            "start_time": "2022-12-01T09:00:00.0+00:00",
+            "end_time": "2022-12-09T12:00:00.0+00:00"
+        }
     }
-  }
 ]
