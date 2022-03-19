@@ -17,7 +17,6 @@ class AllRatingsView(APIView):
         serializer = BookRatingSerializer(user_ratings, many=True)
         return Response({'ratings': serializer.data}, status=status.HTTP_200_OK)
 
-    # TODO: Users post multiple ratings on the same book
     def post(self, request):
         """Create new rating by logged in user for a particular book"""
         user = request.user

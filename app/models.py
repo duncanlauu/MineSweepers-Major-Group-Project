@@ -158,9 +158,6 @@ class Post(models.Model):
         self.downvotes += 1
         self.save()
 
-    def add_comment(self, comment):
-        self.comment_set.add(comment)
-
     def modify_image_link(self, link):
         self.image_link = link
         self.save()

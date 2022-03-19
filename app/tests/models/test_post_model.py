@@ -10,7 +10,7 @@ class PostModelTestCase(TestCase):
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_club.json',
-        'app/tests/fixtures/others_clubs.json',
+        'app/tests/fixtures/other_clubs.json',
         'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/default_post.json',
@@ -67,14 +67,6 @@ class PostModelTestCase(TestCase):
         self.post.downvote_post()
         downvote_count_after = Post.objects.get(pk=self.post.id).downvotes
         self.assertEqual(downvote_count_before + 1, downvote_count_after)
-
-    def test_add_comment(self):
-        comment = Comment.objects.get(pk=2)
-        comment.post = self.post
-        comment_count_before = self.post.comment_set.count()
-        self.post.add_comment(comment)
-        comment_count_after = Comment.objects.filter(post_id=self.post.id).count()
-        self.assertEqual(comment_count_before + 1, comment_count_after)
 
     def test_modify_image_link(self):
         image_link = "abc"

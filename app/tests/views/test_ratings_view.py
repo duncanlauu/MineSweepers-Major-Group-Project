@@ -10,7 +10,7 @@ class RatingsAPIViewTestCase(APITestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_club.json',
-                'app/tests/fixtures/others_clubs.json',
+                'app/tests/fixtures/other_clubs.json',
                 'app/tests/fixtures/default_book.json',
                 'app/tests/fixtures/other_books.json',
                 'app/tests/fixtures/default_book_rating.json',

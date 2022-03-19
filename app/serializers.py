@@ -1,8 +1,5 @@
-from unittest import mock
-from pyexpat.errors import messages
 from rest_framework import serializers
-from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, \
-    GlobalBookRecommendation, BookRecommendationForClub, Club, Book, Post, Comment, Reply
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -127,5 +124,5 @@ class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
 
 class BookRatingSerializer(serializers.ModelSerializer):
     class Meta:
-        model= BookRating
+        model = BookRating
         fields = '__all__'
