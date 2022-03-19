@@ -8,6 +8,7 @@ import ClubMembers from './ClubMembers';
 import ClubFeed from './ClubFeed';
 import LandingProfile from './LandingProfile';
 import ClubScheduling from './ClubScheduling';
+import ClubScheduling2 from './ClubScheduling2';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,7 +57,7 @@ function ClubProfileTabs() {
           <Tab label="Profile" {...a11yProps(0)} />
           <Tab label="Members" {...a11yProps(1)} />
           <Tab label="Feed" {...a11yProps(2)} />
-          <Tab label="Schedule Meeting" {...a11yProps(3)} />
+          <Tab label="Meetings" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
