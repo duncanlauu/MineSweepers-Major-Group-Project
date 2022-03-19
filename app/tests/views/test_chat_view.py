@@ -106,3 +106,15 @@ class ChatViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
         updated_chat_participants = list(chat.participants.all())
         self.assertEqual(chat_participants, updated_chat_participants)
+
+    def test_leave_nonexistent_chat(self):
+        chat_pk = 10
+        leave_default_chat_url = self.leave_chat_url + f"{chat_pk}/"
+        login_data = dict(self.login_data)
+        login_data["password"] = "Password123"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
+        response = self.client.delete(leave_default_chat_url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
