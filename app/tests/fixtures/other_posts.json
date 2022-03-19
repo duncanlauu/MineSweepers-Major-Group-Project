@@ -1,0 +1,17 @@
+[
+  {
+    "model": "app.Post",
+    "pk": 2,
+    "fields": {
+      "author": 1,
+      "club": 1,
+      "title": "Test post 2!",
+      "content": "This is another test post.",
+      "upvotes": 0,
+      "downvotes": 0,
+      "created_at": "2013-03-16T17:41:28+00:00",
+      "image_link": "",
+      "book_link": ""
+    }
+  }
+]

@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
-import { Button } from 'reactstrap';
+import {Link} from 'react-router-dom'
+import {Button} from 'reactstrap';
 import useGetUser from '../../helpers';
 import React from 'react'
+import Hello from '../Hello/Hello';
 
 export default function Home() {
 
@@ -10,7 +11,10 @@ export default function Home() {
         <div>
             <h1>Homepage</h1>
             <Link to="/log_out">
-                <Button>LOG OUT</Button><br />
+                <Button>LOG OUT</Button><br/>
+            </Link>
+            <Link to="/hello">
+                <Button>GO TO HELLO</Button><br />
             </Link>
             <h3>{user.username}</h3>
         </div>

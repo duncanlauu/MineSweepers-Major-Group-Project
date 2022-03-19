@@ -5,7 +5,6 @@ from djoser import utils
 from djoser.conf import settings
 
 
-
 class PasswordResetEmail(BaseEmailMessage):
     template_name = "email/password_reset.html"
 

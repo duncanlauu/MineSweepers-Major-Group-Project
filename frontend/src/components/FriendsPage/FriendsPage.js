@@ -1,17 +1,19 @@
 import React, { Component, useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
-import { Container, Row, Col, Navbar, NavbarBrand, Button, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import { Container, Row, Col, Button, Card, CardGroup, CardBody, CardTitle, Navbar, NavbarBrand, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames';
 // import {Box, Tab, Tabs, TabPanel} from '@mui/material/Button';
-import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer } from "./FriendsPageElements";
+import { FriendsListContainer, NonFriendsListContainer, FriendsRequestContainer, UserDetailsContainer, PostsContainer } from "./FriendsPageElements";
 import Gravatar from 'react-gravatar';
 
-import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
-import FriendList from "../FriendList/FriendList";
+import FriendList from "./FriendList";
 import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
 import useGetUser from "../../helpers";
+import PersonalPosts from "./PersonalPosts";
+import PersonalPostForm from "./PersonalPostForm";
+import FeedPage from "./FeedPage";
 
 
 export default function FriendsPage() {
@@ -19,7 +21,6 @@ export default function FriendsPage() {
   const navigate = useNavigate(); // for test purpose if axios works
 
   const currentUser = useGetUser();
-  console.log("User ID: " + currentUser.id)
 
   // const [myFriendRequests, setFriendRequests] = useState("");
 
@@ -37,7 +38,7 @@ export default function FriendsPage() {
 
   const tabsStyle = {
     marginBottom: "1rem",
-    width: "50rem",
+    width: "70rem",
     marginTop: "1rem",
 
   };
@@ -84,9 +85,10 @@ export default function FriendsPage() {
 
             <div>
               <Nav tabs style={tabsStyle}> 
-                <NavItem>
+              <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
-                      <h5> Profile </h5>
+                      <h5> Feed </h5>
+                      
                   </NavLink>
                 </NavItem>
 
@@ -104,13 +106,19 @@ export default function FriendsPage() {
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
-                      <h5> Posts </h5>
+                      <h5> Find friends </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "5"})} onClick={() => {toggle("5");}}>
-                      <h5> Find friends </h5>
+                      <h5> Posts </h5>
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "6"})} onClick={() => {toggle("6");}}>
+                      <h5> Posting </h5>
                   </NavLink>
                 </NavItem>
               </Nav>
@@ -118,7 +126,11 @@ export default function FriendsPage() {
                 <TabPane tabId="1">
                   <Row>
                     <Col sm="12">
-                      <h1> Profile Page </h1>
+                      <h1> Feed Page </h1>
+                      <PostsContainer>
+                        {/* <PersonalPosts /> */}
+                        <FeedPage/>
+                      </PostsContainer>
                     </Col>
                   </Row>
                 </TabPane>
@@ -151,18 +163,41 @@ export default function FriendsPage() {
                     </TabPane>
 
                     <TabPane tabId="4">
-                      <Row>
-                        <Col sm="12">
-                          <h1> Posts Page </h1>
-                        </Col>
-                      </Row>
-                    </TabPane>
-
-                    <TabPane tabId="5">
-
+                      
                       <NonFriendsListContainer>
                         <NonFriendList />
                       </NonFriendsListContainer>
+
+                    </TabPane>
+
+
+
+
+
+
+
+
+
+
+
+
+                    <TabPane tabId="5">
+                      <h1> My Posts </h1>
+                      {/* <PostsContainer>
+                        <PersonalPosts /> 
+                      </PostsContainer> */}
+
+                      <CardGroup>
+                        <PersonalPosts /> 
+                      </CardGroup>
+
+                    </TabPane>
+
+                    <TabPane tabId="6">
+
+                      <PostsContainer>
+                        <PersonalPostForm />
+                      </PostsContainer>
 
                     </TabPane>
                   </TabContent>

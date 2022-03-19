@@ -13,25 +13,20 @@ class Chat extends React.Component {
     currentUser = null;
 
     initialiseChat() {
-        axiosInstance.get('/get_current_user/').then(response => { // use .then to make react wait for response
-            const user = response.data;
-            console.log(response.data)
+        this.setState({chatID: this.props.chatID})
+        this.currentUser = localStorage.username
+        WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
-            this.currentUser = user.username
+        if (this.state.chatID != undefined) {
             this.waitForSocketConnection(() => {
-                WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
                 WebSocketInstance.fetchMessages(
                     this.currentUser,
-                    this.props.chatID
+                    this.state.chatID
                 );
             });
-            console.log("initialise Chat: " + this.props.chatID)
-            this.setState({ chatID: this.props.chatID })
-            WebSocketInstance.connect(this.props.chatID);
-        }).catch(error => {
-            console.log("Error: ", JSON.stringify(error, null, 4));
-            throw error;
-        })
+            console.log("initialise Chat: " + this.state.chatID)
+            WebSocketInstance.connect(this.state.chatID);
+        }
     }
 
     constructor(props) {
@@ -55,16 +50,16 @@ class Chat extends React.Component {
 
     addMessage(message) {
         if (!(JSON.stringify(message) === JSON.stringify(this.state.messages[this.state.messages.length - 1]))) { //fix duplicate messages when sending, horrible implementation
-            this.setState({ messages: [...this.state.messages, message] });
+            this.setState({messages: [...this.state.messages, message]});
         }
     }
 
     setMessages(messages) {
-        this.setState({ messages: messages.reverse() });
+        this.setState({messages: messages.reverse()});
     }
 
     messageChangeHandler = (event) => {
-        this.setState({ message: event.target.value });
+        this.setState({message: event.target.value});
     }
 
     sendMessageHandler = (e) => {
@@ -76,13 +71,13 @@ class Chat extends React.Component {
             chatId: this.props.chatID,
         };
         WebSocketInstance.newChatMessage(messageObject);
-        this.setState({ message: '' });
+        this.setState({message: ''});
     }
 
     leaveChatHandler = (e) => {
         console.log("BYEE")
         axiosInstance
-            .delete(`chat/${this.props.chatID}/leave/`)
+            .delete(`chat/leave/${this.props.chatID}/`)
             .then((res) => {
                 console.log(res)
             })
@@ -90,6 +85,8 @@ class Chat extends React.Component {
     }
 
     renderTimestamp = timestamp => {
+        //broken 
+
         let prefix = '';
         const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
         if (timeDiff < 1) { // less than one minute ago
@@ -112,11 +109,16 @@ class Chat extends React.Component {
         return messages.map((message, i, arr) => (
             <li
                 key={message.id}
-                style={{ marginBottom: arr.length - 1 === i ? '300px' : '15px' }}
+                style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png" />
-                <p>{message.content}
-                    <br />
+                <img src="http://emilcarlsson.se/assets/mikeross.png"/>
+                <p>
+                    <small>
+                        {message.author}
+                    </small>
+                    <br/>
+                    {message.content}
+                    <br/>
                     <small>
                         {this.renderTimestamp(message.timestamp)}
                     </small>
@@ -126,7 +128,7 @@ class Chat extends React.Component {
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEnd.scrollIntoView({behavior: "smooth"});
     }
 
     componentDidMount() {
@@ -152,7 +154,7 @@ class Chat extends React.Component {
         console.log(newProps.chatID);
 
         if (newProps.chatID !== prevState.chatID) {
-            return { chatID: newProps.chatID };
+            return {chatID: newProps.chatID};
         } else {
             return null
         }
@@ -160,6 +162,7 @@ class Chat extends React.Component {
 
     render() {
         const messages = this.state.messages;
+        const invalidChatID = this.state.chatID == undefined;
         return (
             <Hoc>
                 <div>
@@ -168,13 +171,19 @@ class Chat extends React.Component {
                     </button>
                 </div>
                 <div className="messages">
+                    {invalidChatID
+                        ? <h3>Select a chat! or refactor this to select a chat?</h3>
+                        : <div/>
+                    }
                     <ul id="chat-log">
                         {
                             messages &&
                             this.renderMessages(messages)
                         }
-                        <div style={{ float: "left", clear: "both" }}
-                            ref={(el) => { this.messagesEnd = el; }}>
+                        <div style={{float: "left", clear: "both"}}
+                             ref={(el) => {
+                                 this.messagesEnd = el;
+                             }}>
                         </div>
                     </ul>
                 </div>
@@ -187,7 +196,7 @@ class Chat extends React.Component {
                                 required
                                 id="chat-message-input"
                                 type="text"
-                                placeholder="Write your message..." />
+                                placeholder="Write your message..."/>
                             <i className="fa fa-paperclip attachment" aria-hidden="true"></i>
                             <button id="chat-message-submit" className="submit">
                                 <i className="fa fa-paper-plane" aria-hidden="true"></i>

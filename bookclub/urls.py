@@ -17,20 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from app import views
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     # General URLs
     path('admin/', admin.site.urls),
-    path('dummy/', views.dummy, name='dummy'),
 
-    # Messaging
-    path('api-auth/', include('rest_framework.urls')),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    # Search
+    path('search/', views.SearchView.as_view(), name='search'),
 
     # Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -39,7 +33,6 @@ urlpatterns = [
     # endpoint for the registration. This is where the API (React) will point.
     path('api/', include('app.urls', namespace='app')),
 
-    # create seperate app for api communication for data?
-
+    # create separate app for api communication for data?
     path('', include('frontend.urls')),
 ]
