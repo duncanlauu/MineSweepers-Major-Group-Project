@@ -36,6 +36,7 @@ class SchedulingTestCase(APITestCase):
     def test_meeting_with_invalid_id(self):
         response = self.client.get(reverse('app:scheduling_with_id', kwargs={'id': 2}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data, 'A meeting with this id does not exist')
 
     def test_meeting_with_no_id(self):
         response = self.client.get(reverse('app:scheduling'))
@@ -342,3 +343,23 @@ class SchedulingTestCase(APITestCase):
         })
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, 'The user needs to be the organiser of the meeting')
+
+    def test_get_calendar(self):
+        response = self.client.get(reverse('app:calendar_with_id', kwargs={'id': 1}))
+        self.assertEqual(response.data, b'BEGIN:VCALENDAR\r\nVERSION:1.0\r\nPRODID:-//Book club '
+                                        b'event//bookgle.com//\r\nBEGIN:VEVENT\r\nSUMMARY:Meeting number '
+                                        b'1\r\nDTSTART;VALUE=DATE-TIME:20220312T170000Z\r\nDTEND;VALUE=DATE-TIME'
+                                        b':20220312T180000Z\r\nDTSTAMP;VALUE=DATE:20220312\r\nLOCATION:This is a fake '
+                                        b'link\r\nORGANIZER;CN=johndoe:MAILTO:johndoe@example.org\r\nURL:This is a '
+                                        b'fake link\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_calendar_with_invalid_id(self):
+        response = self.client.get(reverse('app:calendar_with_id', kwargs={'id': 2}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data, 'A meeting with this id does not exist')
+
+    def test_get_calendar_with_no_id(self):
+        response = self.client.get(reverse('app:calendar'))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, 'You need to provide the meeting id')

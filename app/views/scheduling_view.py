@@ -3,8 +3,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from icalendar import Calendar, Event, vCalAddress, vText
 
-from app.models import Meeting, VotingPeriod, TimePeriod, Book, BookVote, TimeVote, User, \
+from app.models import Meeting, VotingPeriod, TimePeriod, BookVote, TimeVote, User, \
     get_all_users_related_to_a_club
 from app.serializers import MeetingSerializer
 
@@ -29,7 +30,6 @@ class SchedulingView(APIView):
             return Response(data='A meeting with this id does not exist', status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        print(request.data)
         try:
             data = {'name': request.data['name'], 'description': request.data['description'],
                     'club': request.data['club'], 'organiser': request.data['organiser'],
@@ -113,3 +113,33 @@ class SchedulingView(APIView):
             return Response(data='You need to provide a correct action', status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
             return Response(data='You need to provide correct parameters', status=status.HTTP_400_BAD_REQUEST)
+
+
+class CalendarView(APIView):
+    def get(self, request, *args, **kwargs):
+        if 'id' not in kwargs:
+            return Response(data='You need to provide the meeting id', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            meeting = Meeting.objects.get(pk=kwargs['id'])
+            user = User.objects.get(username=request.user)
+            # Make sure the user is a part of the related club
+            if user not in get_all_users_related_to_a_club(meeting.club):
+                return Response(data='The user needs to be a member of the club',
+                                status=status.HTTP_401_UNAUTHORIZED)
+            calendar = Calendar()
+            calendar.add('prodid', '-//Book club event//bookgle.com//')
+            calendar.add('version', '1.0')
+            event = Event()
+            event.add('summary', meeting.name)
+            event.add('dtstart', meeting.time.start_time)
+            event.add('dtend', meeting.time.end_time)
+            event.add('dtstamp', meeting.time.start_time.date())
+            organiser = vCalAddress(f'MAILTO:{meeting.organiser.email}')
+            organiser.params['cn'] = vText(meeting.organiser.username)
+            event.add('organizer', organiser)
+            event['location'] = vText(meeting.link)
+            event.add('url', meeting.link)
+            calendar.add_component(event)
+            return Response(data=calendar.to_ical(), status=status.HTTP_200_OK)
+        except Meeting.DoesNotExist:
+            return Response(data='A meeting with this id does not exist', status=status.HTTP_404_NOT_FOUND)
