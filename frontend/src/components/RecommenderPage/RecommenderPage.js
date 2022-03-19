@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
+import Gravatar from 'react-gravatar'
 import { Button, Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
 import useGetUser from '../../helpers'
 import { HeadingText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
-import { RecommenderContainer } from './RecommenderPageElements'
+import { BookProfile, FilterButton, RecommenderContainer } from './RecommenderPageElements'
 
 
 const RecommenderPage = () => {
   const user = useGetUser();
   if (user) {
     console.log("User ID: " + user.id);
+  }
+
+  const [value, setValue] = useState('');
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
   }
 
   const [bookRecommendations, setBookRecommendations] = useState([])
@@ -108,22 +115,26 @@ const RecommenderPage = () => {
       <Row>
       <Col />
         <Col xs={8}>
-          <Button onClick={returnFictionRecommendations}>Display my Genre Recommendations</Button><br />
-          <Button onClick={returnTop10Recommendations}>Display my Recommendations</Button><br />
-          <Button onClick={returnGlobalTop10Recommendations}>Display my Global Recommendations</Button><br />
-          <Button onClick={returnGlobalTop10FictionRecommendations}>Display my Global Genre Recommendations</Button><br />
-          <HeadingText>Books For You</HeadingText>
-          <RecommenderContainer>
+          <HeadingText>Books For You</HeadingText><br />
+          <FilterButton onClick={returnFictionRecommendations}>Display my Genre Recommendations</FilterButton><br />
+          <FilterButton onClick={returnTop10Recommendations}>Display my Recommendations</FilterButton><br />
+          <FilterButton onClick={returnGlobalTop10Recommendations}>Display my Global Recommendations</FilterButton><br />
+          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Display my Global Genre Recommendations</FilterButton><br />
             <ul>
               {bookRecommendations.map(
                 bookRecommendation =>
                   <li>
-                    {bookRecommendation[0]}
-                    <hr />
+                    <BookProfile>
+                      <Col xs={3}>
+                        <Gravatar email='blah@blah.com' />
+                      </Col>
+                      <Col xs={9}>
+                        {bookRecommendation[0]}
+                      </Col>
+                    </BookProfile>
                   </li>
               )}
             </ul>
-          </RecommenderContainer>
         </Col>
         <Col />
         </Row>
