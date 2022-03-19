@@ -1,83 +1,49 @@
 import React from 'react'
-import {Container, Row, Col, Button} from 'reactstrap';
-import {BookProfile, ProfileContainer, ProfileHeader} from './ClubProfileElements';
+import { Container, Row, Col, Button } from 'reactstrap';
+import { BookProfile, ProfileContainer, ProfileHeader } from './ClubProfileElements';
 import Nav from '../Nav/Nav';
 import ClubProfileTabs from './ClubProfileTabs.js';
 import Gravatar from 'react-gravatar';
+import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
 
-function ProfileBody() {
-    return (
-        <Container fluid style={{margin: "1rem"}}>
-            <Row>
-                <Col/>
-                <Col>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </Col>
-                <Col>
-                    <Gravatar email='blah@blah.com' size={170} style={{borderRadius: "100px", marginLeft: "1rem"}}/>
-                </Col>
-            </Row>
-            <Row>
-                <Button style={{
-                    width: "7rem",
-                    margin: "1rem",
-                    fontFamily: "Source Sans Pro",
-                    borderRadius: "100px",
-                    backgroundColor: "#653FFD",
-                    border: "0px"
-                }}>Apply</Button>
-                <hr style={{width: "34rem", opacity: "0.2"}}></hr>
-            </Row>
-            <Row>
-                <h3 style={{fontFamily: "Source Sans Pro", marginTop: "2rem", fontWeight: "600"}}>Reading History</h3>
-            </Row>
-            <Row>
-                <BookProfile>
-                    <Col xs={4}>
-                        <Gravatar email='blah@blah.com' size={80} style={{margin: "1rem"}}></Gravatar>
-                    </Col>
-                    <Col xs={8}>
-                        <h4 style={{
-                            fontFamily: "Source Sans Pro",
-                            marginTop: "1rem",
-                            lineHeight: "10px",
-                            fontWeight: "600"
-                        }}>To Kill a Mockingbird</h4>
-                        <span
-                            style={{fontFamily: "Source Sans Pro", fontWeight: "600", opacity: "0.7"}}>Harper Lee</span><br/>
-                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...</span>
-                    </Col>
-                </BookProfile>
-            </Row>
-        </Container>
-    );
+export default function ClubProfile() {
+        
+    const { club_id } = useParams(); // Gets the id provided in the URL
+    console.log("Club ID: " + club_id);
+    const [club, setClub] = React.useState(null);
+
+    React.useEffect(() => {
+        axiosInstance.get(`clubs/${club_id}`).then(
+            res => {
+                console.log(res);
+                setClub(res.data);
+            }
+        );
+    }, []);
+
+    if (!club) return null;
+    
+        return(
+            <div>
+                <Container fluid>
+                    <Row style={{ marginBottom:"3rem" }}>
+                        <Nav />
+                    </Row>
+                    <Row>
+                        <Col />
+                        <Col xs={6}>
+                            <ProfileContainer>
+                                <ProfileHeader>
+                                    {club.name}
+                                    <ClubProfileTabs />
+                                </ProfileHeader>
+                            </ProfileContainer>
+                        </Col>
+                        <Col />
+                    </Row>
+                </Container>
+            </div>
+        )
+    
 }
-
-const ClubProfile = () => {
-    return (
-        <div>
-            <Container fluid>
-                <Row style={{marginBottom: "3rem"}}>
-                    <Nav/>
-                </Row>
-                <Row>
-                    <Col/>
-                    <Col xs={6}>
-                        <ProfileContainer>
-                            <ProfileHeader>
-                                Lorem Ipsum
-                                <ClubProfileTabs/>
-                            </ProfileHeader>
-                        </ProfileContainer>
-                    </Col>
-                    <Col/>
-                </Row>
-            </Container>
-        </div>
-    )
-}
-
-export default ClubProfile

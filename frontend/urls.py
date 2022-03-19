@@ -8,8 +8,8 @@ urlpatterns = [
     path('log_in/', index, name="login"),
     path('log_out/', index, name="logout"),
     path('sign_up/', index, name="signup"),
-    path('club_profile/', index, name="clubprofile"),  # /<int:club_id>
-    # path('error/', dino, name="error"),
+    path('club_profile/<int:club_id>', index, name="clubprofile"),  # /<int:club_id>
+    path('error/', dino, name="error"),
     path('chat/<chatID>', index, name="chat"),
     path('chatv2/<chatID>', index, name="chatv2"),
 
