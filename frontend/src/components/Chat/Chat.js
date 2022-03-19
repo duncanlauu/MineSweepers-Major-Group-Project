@@ -85,22 +85,20 @@ class Chat extends React.Component {
     }
 
     renderTimestamp = timestamp => {
-        //broken 
-
-        let prefix = '';
-        const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
-        if (timeDiff < 1) { // less than one minute ago
-            prefix = 'just now...';
-        } else if (timeDiff < 60 && timeDiff > 1) { // less than sixty minutes ago
-            prefix = `${timeDiff} minutes ago`;
-        } else if (timeDiff < 24 * 60 && timeDiff > 60) { // less than 24 hours ago
-            prefix = `${Math.round(timeDiff / 60)} hours ago`;
-        } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) { // less than 7 days ago
-            prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+        let message_date_object = new Date(timestamp);
+        let now_date_object = new Date();
+        let message_date_string = message_date_object.getDate() + "." 
+            + message_date_object.getMonth() + "." + message_date_object.getFullYear();
+        let now_date_string = now_date_object.getDate() + "." 
+            + now_date_object.getMonth() + "." + now_date_object.getFullYear();
+        const isSameDay = message_date_string == now_date_string;
+        let message_time = '';
+        if(isSameDay){
+            message_time += new Date(timestamp).getHours() + ":" + new Date(timestamp).getMinutes();
         } else {
-            prefix = `${new Date(timestamp)}`;
+            message_time = message_date_string
         }
-        return prefix
+        return message_time
     }
 
     renderMessages = (messages) => {
