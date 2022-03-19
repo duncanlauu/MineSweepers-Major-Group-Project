@@ -4,11 +4,12 @@ from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
 from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.genres_view import GenresView
 from .views.recommender_views import RecommenderAPI
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
-from .views.chat_views import ChatListView,ChatLeaveView
+from .views.chat_views import ChatListView, ChatLeaveView
 from .views.club_views import Clubs, SingleClub
 from .views.search_view import SearchView
 
@@ -58,7 +59,7 @@ urlpatterns = [
     path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
     path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club'),
 
-    #Search API
+    # Search API
     path('search/', SearchView.as_view(), name='search'),
 
     # Ratings
@@ -69,4 +70,8 @@ urlpatterns = [
     # Others
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
     path('hello/', HelloWorldView.as_view(), name='hello_world'),
+
+    # Genre API
+    path('genres/', GenresView.as_view(), name='genres'),
+
 ]

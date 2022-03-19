@@ -1,5 +1,5 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import Contact from './Contact';
 import axiosInstance from '../../axios'
 
@@ -24,13 +24,13 @@ export default function Sidepanel(props) {
         axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
             .then(res => {
                 let userChats = res.data;
-                userChats.sort(function(a,b){
+                userChats.sort(function (a, b) {
                     return (b.last_update).localeCompare(a.last_update);
-                  })
+                })
                 console.log(userChats)
                 setChats(userChats)
-            } );
-        
+            });
+
     }
 
     const activeChats = chats.map(c => {
@@ -41,21 +41,21 @@ export default function Sidepanel(props) {
                 name={getChatName(c)}//"asd"//{c.name == "" ? c.name : c.participants}
                 picURL={getChatGravatar(c)}
                 status="busy" // get rid of?
-                chatURL={`/chat/${c.id}`} 
+                chatURL={`/chat/${c.id}`}
                 lastMessage={c.last_message}
                 lastUpdated={c.last_updated}
-                />
+            />
         )
     })
 
-    function getChatName(chat){
+    function getChatName(chat) {
         let chatName = "undefined";
-        if(chat.group_chat == false){
+        if (chat.group_chat == false) {
             console.log(localStorage.username)
             console.log(chat.participants.length)
-            if(chat.participants.length == 2){
-                for(const participant of chat.participants){
-                    if(participant.username != localStorage.username){
+            if (chat.participants.length == 2) {
+                for (const participant of chat.participants) {
+                    if (participant.username != localStorage.username) {
                         chatName = participant.username;
                     }
                 }
@@ -66,7 +66,7 @@ export default function Sidepanel(props) {
         return chatName;
     }
 
-    function getChatGravatar(chat){
+    function getChatGravatar(chat) {
         //TO BE IMPLEMENTED
         return "http://emilcarlsson.se/assets/louislitt.png";
     }
@@ -79,26 +79,26 @@ export default function Sidepanel(props) {
     //     return lastMessage;
     // }
 
-    function getLastUpdatedTime(chat){
+    function getLastUpdatedTime(chat) {
         let lastMessage = "";
-        if(chat.messages.length > 0){
+        if (chat.messages.length > 0) {
             lastMessage = chat.messages.slice(-1).pop().content;
         }
         return lastMessage;
     }
 
-    
 
     return (
-        <div id="sidepanel" >
+        <div id="sidepanel">
             <div id="profile">
                 <div className="wrap">
-                    <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="" />
+                    <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt=""/>
                     <p>Mike Ross</p>
                     <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                     <div id="status-options">
                         <ul>
-                            <li id="status-online" className="active"><span className="status-circle"></span> <p>Online</p></li>
+                            <li id="status-online" className="active"><span className="status-circle"></span>
+                                <p>Online</p></li>
                             <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
                             <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
                             <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
@@ -108,7 +108,7 @@ export default function Sidepanel(props) {
             </div>
             <div id="search">
                 <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <input type="text" placeholder="Search contacts..."/>
             </div>
             <div id="contacts">
                 <ul>

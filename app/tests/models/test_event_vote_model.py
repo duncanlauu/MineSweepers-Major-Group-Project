@@ -1,8 +1,8 @@
-"""Unit tests for the User model"""
-import datetime
+"""Unit tests for the EventVote model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from app.models import User, Book, EventVote
+
 
 class EventVoteModelTest(TestCase):
     """Test the EventVote model"""
@@ -29,10 +29,9 @@ class EventVoteModelTest(TestCase):
     def _assert_event_vote_is_valid(self):
         try:
             self.eventvote.full_clean()
-        except (ValidationError):
-            self.fail('Test user should be valid')
+        except ValidationError:
+            self.fail('Test EventVote should be valid')
 
     def _assert_event_vote_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.eventvote.full_clean()    
-    
+            self.eventvote.full_clean()
