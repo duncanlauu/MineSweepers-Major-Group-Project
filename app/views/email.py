@@ -6,10 +6,11 @@ from djoser.conf import settings
 
 
 class PasswordResetEmail(BaseEmailMessage):
+    """Creates a custom Password Reset Email"""
     template_name = "email/password_reset.html"
 
     def get_context_data(self):
-        # PasswordResetEmail can be deleted
+        """Gets the context data needed for a Password Reset Email"""
         context = super().get_context_data()
 
         user = context.get("user")

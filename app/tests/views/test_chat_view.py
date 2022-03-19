@@ -104,7 +104,7 @@ class ChatViewTest(APITestCase):
         access_token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='JWT ' + access_token)
         response = self.client.delete(leave_default_chat_url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         updated_chat_participants = list(chat.participants.all())
         self.assertEqual(chat_participants, updated_chat_participants)
 

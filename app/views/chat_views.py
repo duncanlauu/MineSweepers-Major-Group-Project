@@ -1,28 +1,21 @@
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
-from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from app.models import Chat
+from app.models import Chat, User
 from app.serializers import ChatSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
-
-User = get_user_model()
-
-
-def get_user(username):
-    user = get_object_or_404(User, username=username)
-    return user
-
+from app.helpers import get_user, get_last_message
 
 class ChatListView(ListAPIView):
+    """API List View for Chat Model"""
     serializer_class = ChatSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        """Get list of chats for a user"""
         username = self.request.query_params.get('username', None)
         if (self.request.user.username != username):
             raise PermissionDenied({"error": ["You can't request other users chats"]})
@@ -33,9 +26,9 @@ class ChatListView(ListAPIView):
             return queryset
 
     def list(self, request, *args, **kwargs):
+        """Adds additional informtion to user chat list"""
         serializer = self.get_serializer(self.get_queryset(), many=True)
         response_list = serializer.data
-
         for response in response_list:
             last_message = get_last_message(response["id"])
             if last_message is None:
@@ -50,9 +43,11 @@ class ChatListView(ListAPIView):
 
 
 class ChatLeaveView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    """API View to leave a chat"""
+    permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
+        """Removes the user from chat participants"""
         try:
             user = request.user
             chat = Chat.objects.get(pk=self.kwargs['pk'])
@@ -60,31 +55,8 @@ class ChatLeaveView(APIView):
                 chat.participants.remove(user)
                 return Response(status=status.HTTP_200_OK)
             else:
-                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)  # maybe change to something else (403?)
+                return Response(status=status.HTTP_403_FORBIDDEN)
 
         except Chat.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-# Helpers
-def get_last_10_messages(chatId):
-    chat = get_object_or_404(Chat, id=chatId)
-    return chat.messages.order_by('-timestamp').all()[:10]
-
-
-def get_all_messages(chatId):
-    chat = get_object_or_404(Chat, id=chatId)
-    return chat.messages.order_by('-timestamp').all()
-
-
-def get_last_message(chatId):
-    chat = get_object_or_404(Chat, id=chatId)
-    last_message_list = chat.messages.order_by('-timestamp').all()[:1]
-    if len(last_message_list) < 1:
-        return None
-    else:
-        return last_message_list[0]  # lol refactor
-
-
-def get_current_chat(chatId):
-    return get_object_or_404(Chat, id=chatId)
