@@ -5,6 +5,7 @@ import useGetUser from '../../helpers'
 import {HeadingText} from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import {RecommenderContainer} from './RecommenderPageElements'
+import {Link} from "@material-ui/core";
 
 
 const ClubRecommendationPage = () => {
@@ -49,7 +50,9 @@ const ClubRecommendationPage = () => {
                             {clubRecommendations.map(
                                 clubRecommendation =>
                                     <li>
-                                        {clubRecommendation['club']['name']}
+                                        <a href={`/club_profile/${clubRecommendation['club']['id']}`}>
+                                            {clubRecommendation['club']['name']}
+                                        </a>
                                         <hr/>
                                     </li>
                             )}
