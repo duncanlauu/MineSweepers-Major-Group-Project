@@ -5,7 +5,7 @@ from surprise import SVD
 
 from app.management.commands.seed import seed_books, seed_users, seed_clubs, seed_ratings
 from app.models import Club, BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, \
-    UserRecommendation, User, ClubRecommendation, Book
+    UserRecommendation, User, ClubRecommendation
 from app.recommender_system.books_recommender import get_top_n, get_top_n_for_genre, get_top_n_for_club, \
     get_top_n_for_club_for_genre, get_global_top_n, get_global_top_n_for_genre, get_top_between_m_and_n, \
     get_top_between_m_and_n_for_genre, get_top_between_m_and_n_for_club, get_top_between_m_and_n_for_club_for_genre, \
@@ -298,10 +298,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_n_for_genre_test(self):
@@ -318,10 +317,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_n_for_club_test(self):
@@ -339,10 +337,9 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['club'], self.club.id)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_n_for_club_for_genre_test(self):
@@ -360,10 +357,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['club'], self.club.id)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_n_global_test(self):
@@ -380,9 +376,8 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
             self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
             self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
@@ -401,9 +396,8 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+        for i in range(0, self.n):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
             self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
             self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
@@ -422,8 +416,7 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -442,8 +435,7 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -462,8 +454,7 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -483,10 +474,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_n_clubs_random_books_test(self):
@@ -504,10 +494,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_n_clubs_genre_books_test(self):
@@ -525,10 +514,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_n_clubs_top_club_books_test(self):
@@ -546,10 +534,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count(), self.n))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_with_wrong_action_test(self):
@@ -590,10 +577,9 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n(self.uid, self.trainset, self.algo, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_between_m_and_n_for_genre_test(self):
@@ -614,10 +600,9 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n_for_genre(self.uid, self.trainset, self.algo, self.genre, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_between_m_and_n_for_club_test(self):
@@ -639,10 +624,9 @@ class RecommenderAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         top_n = get_top_between_m_and_n_for_club(self.club.id, self.trainset, self.algo, pred_lookup, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['club'], self.club.id)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_between_m_and_n_for_club_for_genre_test(self):
@@ -665,10 +649,9 @@ class RecommenderAPITestCase(APITestCase):
         top_n = get_top_between_m_and_n_for_club_for_genre(self.club.id, self.trainset, self.algo, pred_lookup,
                                                            self.genre, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['club'], self.club.id)
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['rating'], top_n[i][1])
 
     def _get_top_between_m_and_n_global_test(self):
@@ -689,9 +672,8 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_global_top_between_m_and_n(self.dataframe, self.trainset.global_mean, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+        for i in range(0, self.n - m):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
             self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
             self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
@@ -715,9 +697,8 @@ class RecommenderAPITestCase(APITestCase):
         top_n = get_global_top_between_m_and_n_for_genre(self.dataframe, self.trainset.global_mean, self.genre, m,
                                                          self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Book.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
-            self.assertEqual(recommendations[i]['book']['ISBN'], top_n[i][0])
+        for i in range(0, self.n - m):
+            self.assertEqual(recommendations[i]['book'], top_n[i][0])
             self.assertEqual(recommendations[i]['flat_rating'], top_n[i][1])
             self.assertEqual(recommendations[i]['number_of_ratings'], top_n[i][2])
             self.assertEqual(recommendations[i]['weighted_rating'], top_n[i][3])
@@ -740,8 +721,7 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n_users_by_favourite_books(self.uid, self.trainset, self.algo, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -764,8 +744,7 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n_users_double_random(self.uid, self.trainset, self.algo, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -788,8 +767,7 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n_users_for_a_genre(self.uid, self.trainset, self.algo, self.genre, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(User.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
             self.assertEqual(recommendations[i]['recommended_user']['id'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
@@ -814,10 +792,9 @@ class RecommenderAPITestCase(APITestCase):
         top_n = get_top_between_m_and_n_clubs_using_top_items_for_a_user(self.uid, self.algo, self.trainset, clubs, m,
                                                                          self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_between_m_and_n_clubs_random_books_test(self):
@@ -840,10 +817,9 @@ class RecommenderAPITestCase(APITestCase):
         top_n = get_top_between_m_and_n_clubs_using_random_items(self.uid, self.algo, self.trainset, clubs, m,
                                                                  self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_between_m_and_n_clubs_genre_books_test(self):
@@ -866,10 +842,9 @@ class RecommenderAPITestCase(APITestCase):
         top_n = get_top_between_m_and_n_clubs_for_a_genre(self.uid, self.algo, self.trainset, clubs, self.genre, m,
                                                           self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _get_top_between_m_and_n_clubs_top_club_books_test(self):
@@ -891,10 +866,9 @@ class RecommenderAPITestCase(APITestCase):
         recommendations = list(response.data)
         top_n = get_top_between_m_and_n_clubs_using_clubs_books(self.uid, self.algo, clubs, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
-        self.assertEqual(len(recommendations), min(Club.objects.count() - m, self.n - m))
-        for i in range(0, len(recommendations)):
+        for i in range(0, self.n - m):
             self.assertEqual(recommendations[i]['user'], self.uid)
-            self.assertEqual(recommendations[i]['club']['id'], top_n[i][0])
+            self.assertEqual(recommendations[i]['club'], top_n[i][0])
             self.assertEqual(recommendations[i]['diff'], top_n[i][1])
 
     def _assert_correct(self, response, top_n):

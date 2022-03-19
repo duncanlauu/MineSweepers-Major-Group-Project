@@ -8,7 +8,7 @@ from app.models import BookRecommendation, BookRecommendationForClub, GlobalBook
     Club, ClubRecommendation, User, Book
 from app.recommender_system.books_recommender import get_global_top_n, get_top_between_m_and_n, \
     get_top_between_m_and_n_for_genre, get_top_between_m_and_n_for_club, get_top_between_m_and_n_for_club_for_genre, \
-    get_global_top_between_m_and_n_for_genre, get_global_top_between_m_and_n
+    get_global_top_between_m_and_n_for_genre
 from app.recommender_system.file_management import load_trained_model, get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, dump_trained_model, test_model
 from app.recommender_system.people_recommender import get_top_between_m_and_n_users_by_favourite_books, \
@@ -186,7 +186,7 @@ class RecommenderAPI(APIView):
                 m = kwargs['m']
                 n = kwargs['n']
                 clear_previous_global_recommendations()
-                top_n = get_global_top_between_m_and_n(dataframe, trainset.global_mean, m, n)
+                top_n = get_global_top_n(dataframe, trainset.global_mean, n)
                 save_global_book_recommendations(top_n)
             elif action == 'top_n_global_for_genre':
                 m = kwargs['m']
