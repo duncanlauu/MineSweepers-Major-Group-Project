@@ -5,6 +5,7 @@ from app.models import User
 
 
 class PasswordResetTest(APITestCase):
+    """Tests of the Reset Email"""
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json']
 

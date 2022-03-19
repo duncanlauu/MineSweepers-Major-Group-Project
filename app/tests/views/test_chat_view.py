@@ -4,6 +4,7 @@ from app.models import User, Chat
 
 
 class ChatViewTest(APITestCase):
+    """Tests of the Chat API"""
     fixtures = [
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/default_chat.json',

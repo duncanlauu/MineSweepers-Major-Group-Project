@@ -10,6 +10,8 @@ from channels.routing import URLRouter
 
 
 class WebsocketConsumerTest(TransactionTestCase):
+    """Tests Websocket Chat Consumer"""
+
     fixtures = [
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/default_chat.json',
