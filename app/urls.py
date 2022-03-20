@@ -4,7 +4,7 @@ from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
 from .views.authentication_views import GetCurrentUserView
 from .views.recommender_views import RecommenderAPI
-from .views.scheduling_view import SchedulingView, CalendarView
+from .views.scheduling_views import SchedulingView, CalendarView, MeetingsView
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
@@ -76,4 +76,7 @@ urlpatterns = [
 
     path('calendar/', CalendarView.as_view(), name='calendar'),
     path('calendar/<int:id>', CalendarView.as_view(), name='calendar_with_id'),
+
+    path('meetings/', MeetingsView.as_view(), name='meetings'),
+    path('meetings/<int:id>', MeetingsView.as_view(), name='meetings_with_id'),
 ]
