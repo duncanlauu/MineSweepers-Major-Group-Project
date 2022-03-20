@@ -21,7 +21,6 @@ class ClubModelTestCase(TestCase):
         self.new_user = User.objects.get(username='jakedoe')
         self.book = Book.objects.get(pk="0380715899")
 
-
     def test_valid_club(self):
         self._assert_club_is_valid()
 
@@ -37,7 +36,7 @@ class ClubModelTestCase(TestCase):
         self.club.name = 'x' * 51
         self._assert_club_is_invalid()
 
-    def  test_description_can_be_blank(self):
+    def test_description_can_be_blank(self):
         self.club.description = ''
         self._assert_club_is_valid()
 
@@ -102,7 +101,7 @@ class ClubModelTestCase(TestCase):
         self.assertEqual(self.club.admins.count(), 2)
         self.club.remove_admin(self.new_user)
         self.assertEqual(self.club.admins.count(), 1)
-    
+
     def test_admin_count(self):
         self.assertEqual(self.club.admin_count(), self.club.admins.count())
         self.club.add_admin(self.new_user)
@@ -160,15 +159,13 @@ class ClubModelTestCase(TestCase):
         self.assertEqual(self.club.book_count(), self.club.books.count())
         self.club.add_book(self.book)
         self.assertEqual(self.club.book_count(), self.club.books.count())
-    
+
     def _assert_club_is_valid(self):
         try:
             self.club.full_clean()
-        except (ValidationError):
+        except ValidationError:
             self.fail('Test club should be valid')
 
     def _assert_club_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.club.full_clean()
-
-   
