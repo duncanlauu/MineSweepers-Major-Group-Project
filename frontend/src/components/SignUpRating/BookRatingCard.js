@@ -9,21 +9,22 @@ export default function BookRatingCard(props){
     const title = props.title
     const author = props.author
     const image = props.image
-    const id = props.id
+    const id  = props.id
 
     const [rate, setRating] = useState(0)
+    //const [id, setId] = useState(props.id)
 
 
 
     const ratingChanged = (newRating) => {
         setRating(newRating)
-        props.parentCallBack({id: rate})
-        console.log(rate)
+        props.parentCallBack({id, rate})
+
       }
 
     const clearRating = () => {
         setRating(0)
-        console.log(rate)
+
     }
 
 

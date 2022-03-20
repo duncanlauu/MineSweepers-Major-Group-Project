@@ -1,38 +1,65 @@
 import {Card, CardBody, CardImg} from 'reactstrap'
 import Rater from 'react-rater'
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import axiosInstance from '../../axios';
 import BookRatingCard from './BookRatingCard';
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 
 
-export default function SignUpRating(){
+export default function SignUpRating(props){
+
+    const [ratings, setRatings] = useState({})
+    const [topBooks, setTopBooks] = useState("")
+
+    useEffect (() => {
+        getTopBooks()
+    }, []);
+    
+
+
+
+    const getTopBooks = () => {
+        axiosInstance
+        .get("/recommender/1/13/top_n_global/")
+        .then((res) => {
+            setTopBooks(res.data.incoming)
+            console.log(res.data.incoming)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+    
+
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", ratings)
-        navigate("/log_in/")
         
+
+        axiosInstance.post("/recommender/retrain")
+        navigate("/log_in/")
     }
 
-    const [ratings, setRatings] = useState({})
+    
 
    
 
-    const handleChange = (childData) => {
-        const { id, rating } = childData;
-        if(rating > 0){
-        setState(prevState => ({
+    const handleChange = ({id, rate}) => {
+        console.log("Child data:  id:" + id + " rating: " + rate)
+        if(rate > 0){
+        setRatings(prevState => ({
             ...prevState,
-            [id]: rating
+            [id]: rate
         }));
+        console.log("new ratings: " + JSON.stringify(ratings))
         } else {
-            const copyRatings = {...this.state.ratings}
+            const copyRatings = {...ratings}
             delete copyRatings[id] 
-            setState({ratings: copyRatings})
+            setRatings(copyRatings)
         }
+        console.log("Ratings: " + JSON.stringify(ratings))
     };
 
 
@@ -40,9 +67,11 @@ export default function SignUpRating(){
 
 
   
-
+const displayBooks = (e) => {
+    console.log(topBooks)
 
     return(
+
         <>
         <Row>
             <Navbar color="light" expand="md" light>
@@ -54,17 +83,14 @@ export default function SignUpRating(){
         <Container fluid>
             <Row style={{marginTop: "6rem"}}>
                 <Col>
-                    <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={2} parentCallBack ={handleChange}/> 
-                </Col>
+                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={2} parentCallBack={handleChange}/> 
+                </Col> 
                 <Col>
-                    <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={3} parentCallBack ={handleChange}/> 
-                </Col>
+                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={3} parentCallBack={handleChange}/> 
+                </Col> 
                 <Col>
-                    <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={4} parentCallBack ={handleChange}/> 
-                </Col>
-                <Col>
-                    <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={5} parentCallBack ={handleChange}/> 
-                </Col>
+                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={4} parentCallBack={handleChange}/> 
+                </Col> 
             </Row>  
             <Row>
                 <Col sm={{size: 10, offset: 5}}>
@@ -85,6 +111,15 @@ export default function SignUpRating(){
 
         </>
             
+
     );
+}
+
+
+return( 
+    <>
+    {displayBooks(props)}
+    </>
+)
 
 }
