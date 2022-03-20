@@ -3,43 +3,68 @@ import Rater from 'react-rater'
 import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import axiosInstance from '../../axios';
+
 import BookRatingCard from './BookRatingCard';
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
+import useGetUser from "../../helpers";
 
 
 export default function SignUpRating(props){
 
     const [ratings, setRatings] = useState({})
-    const [topBooks, setTopBooks] = useState("")
+    const [topBooks, setTopBooks] = useState([])
+    const user =  useGetUser();
 
-    useEffect (() => {
-        getTopBooks()
+
+
+    useEffect(() => {
+        getTopBooks();
     }, []);
-    
-
-
 
     const getTopBooks = () => {
-        axiosInstance
-        .get("/recommender/1/13/top_n_global/")
-        .then((res) => {
-            setTopBooks(res.data.incoming)
-            console.log(res.data.incoming)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+                axiosInstance
+                    .get(`/recommender/0/12/top_n_global/`, {})
+                    .then((res) => {
+                        let book_list = []
+                        for (let i = 0; i < res.data.length; ++i) {
+                            book_list.push({id: res.data[i]['book'], name: res.data[i]['book']})
+                        }
+                        setTopBooks(book_list)
+                        console.log("Book list: " + book_list)
+                        console.log(topBooks) 
+                    }).catch((err) => {
+                    console.log(err)
+                })
+        
     }
     
 
     const navigate = useNavigate();
 
+    const createRatings = () => {
+        for(let i =0; i<topBooks.length; ++i){
+            axiosInstance.post("",{
+                user_id: user.id,
+                book_id: topBooks[i].id,
+                rating: ratings[topBooks[i].id]
+            }).catch((err) => {
+                console.log(err)
+            })         
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+        createRatings().then( response =>{
+            axiosInstance.post("/recommender/retrain").then(() => {
+                navigate("/log_in/")
+            }).catch((err) => {
+                console.log(err)
+            })
+        })
 
-        axiosInstance.post("/recommender/retrain")
-        navigate("/log_in/")
+        
+        
     }
 
     
@@ -47,19 +72,20 @@ export default function SignUpRating(props){
    
 
     const handleChange = ({id, rate}) => {
-        console.log("Child data:  id:" + id + " rating: " + rate)
+        //console.log("Child data:  id:" + id + " rating: " + rate)
         if(rate > 0){
         setRatings(prevState => ({
             ...prevState,
             [id]: rate
         }));
-        console.log("new ratings: " + JSON.stringify(ratings))
+        //console.log("new ratings: " + JSON.stringify(ratings))
         } else {
             const copyRatings = {...ratings}
             delete copyRatings[id] 
             setRatings(copyRatings)
+            console.log("Ratings after deletion: " + JSON.stringify(ratings))
         }
-        console.log("Ratings: " + JSON.stringify(ratings))
+        //console.log("Books: " + JSON.stringify(topBooks, null))
     };
 
 
@@ -68,7 +94,6 @@ export default function SignUpRating(props){
 
   
 const displayBooks = (e) => {
-    console.log(topBooks)
 
     return(
 
@@ -84,12 +109,6 @@ const displayBooks = (e) => {
             <Row style={{marginTop: "6rem"}}>
                 <Col>
                 <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={2} parentCallBack={handleChange}/> 
-                </Col> 
-                <Col>
-                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={3} parentCallBack={handleChange}/> 
-                </Col> 
-                <Col>
-                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={4} parentCallBack={handleChange}/> 
                 </Col> 
             </Row>  
             <Row>
