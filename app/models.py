@@ -105,6 +105,8 @@ class User(AbstractUser):
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
+            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
+
             new_chat = Chat.objects.create()
             new_chat.participants.add(self)
             new_chat.participants.add(other_user)
@@ -145,24 +147,27 @@ class Post(models.Model):
 
     def upvote_post(self):
         self.upvotes += 1
+        self.save()
 
     def downvote_post(self):
         self.downvotes += 1
-
-    def add_comment(self, comment):
-        self.comment_set.add(comment)
+        self.save()
 
     def modify_image_link(self, link):
         self.image_link = link
+        self.save()
 
     def modify_book_link(self, link):
         self.book_link = link
+        self.save()
 
     def modify_content(self, new_content):
         self.content = new_content
+        self.save()
 
     def modify_title(self, new_title):
         self.title = new_title
+        self.save()
 
 
 class Response(models.Model):
@@ -174,9 +179,11 @@ class Response(models.Model):
 
     def upvote(self):
         self.upvotes += 1
+        self.save()
 
     def downvote(self):
         self.downvotes += 1
+        self.save()
 
     class Meta:
         abstract = True
@@ -212,8 +219,7 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.PositiveIntegerField(
-        validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
@@ -227,10 +233,12 @@ class Book(models.Model):
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(
-        validators=[MaxValueValidator(10), MinValueValidator(1)])
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # ? not sure how to test this
+    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
+
+    def update_rating(self, new_rating):
+        self.rating = new_rating
+        self.save()
 
 
 def get_new_club_chat():

@@ -1,7 +1,5 @@
-from unittest import mock
 from rest_framework import serializers
-from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, \
-    GlobalBookRecommendation, BookRecommendationForClub, Club, Book, Post, Comment, Reply, Meeting
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -83,6 +81,24 @@ class BookRecommendationForClubSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'
+
+
 class UserRecommendationSerializer(serializers.ModelSerializer):
     recommended_user = SimpleUserSerializer()
 
@@ -106,22 +122,9 @@ class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
         model = GlobalBookRecommendation
         fields = '__all__'
 
-
-class PostSerializer(serializers.ModelSerializer):
+class BookRatingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Post
-        fields = '__all__'
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
-
-
-class ReplySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reply
+        model = BookRating
         fields = '__all__'
 
 

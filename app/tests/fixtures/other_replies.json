@@ -3,7 +3,7 @@
     "model": "app.Reply",
     "pk": 2,
     "fields": {
-      "author": 1,
+      "author": 2,
       "comment": 1,
       "content": "This is another test reply to a comment.",
       "upvotes": 0,
