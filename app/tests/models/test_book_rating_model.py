@@ -10,7 +10,8 @@ class BookRatingModelTest(TestCase):
     fixtures = [
         'app/tests/fixtures/default_book_rating.json',
         'app/tests/fixtures/default_book.json',
-        'app/tests/fixtures/default_user.json'
+        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/other_users.json'
     ]
 
     def setUp(self):

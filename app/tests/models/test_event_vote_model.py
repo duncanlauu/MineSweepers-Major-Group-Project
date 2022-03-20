@@ -10,6 +10,7 @@ class EventVoteModelTest(TestCase):
     fixtures = [
         'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_event_vote.json'
     ]
 
