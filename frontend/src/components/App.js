@@ -19,6 +19,8 @@ import CreateClub from "./CreateClub/CreateClub";
 import Layout from "./Layout/Layout";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
+import Scheduling from "./Scheduling/Scheduling";
+import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
 
 export default class App extends Component {
@@ -52,6 +54,8 @@ export default class App extends Component {
                   <Route path="chat/:chatID" element={<ChatWrapper/>}/>
                   <Route path="/chat/" element={<ChatWrapper/>}/>
                   <Route path='hello' element={<Hello/>}/>
+                  <Route path="/scheduling/" element={<Scheduling/>}/>
+                  <Route path="/meetings/" element={<Meetings/>}/>
                   <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
                 </Route>
 

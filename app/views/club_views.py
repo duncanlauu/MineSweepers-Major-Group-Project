@@ -1,9 +1,4 @@
-from app.models import Club, User, Chat
-from app.helpers import remove_user_from_club, user_in_club, user_is_banned
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from app.models import Club, User
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response

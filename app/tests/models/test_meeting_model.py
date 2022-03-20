@@ -1,87 +1,96 @@
-"""Unit tests for the Meeting model"""
+"""Unit tests for the meeting model"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from app.models import Meeting
-from django.utils import timezone
 
 
 class MeetingModelTest(TestCase):
     """Test the meeting model"""
 
     fixtures = [
-        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/default_time_period.json',
+        'app/tests/fixtures/other_time_periods.json',
+        'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/default_meeting.json',
-        'app/tests/fixtures/other_meetings.json',
-
     ]
 
     def setUp(self):
-        self.meeting = Meeting.objects.get(id=1)
+        self.meeting = Meeting.objects.get(pk=1)
 
-    def test_valid_meeting(self):
-        self._assert_meeting_is_valid()
+    def test_name_cannot_be_blank(self):
+        self.meeting.name = ''
+        self._assert_invalid_meeting()
 
-    def test_start_time_cannot_be_blank(self):
-        self.meeting.start_time = ''
-        self._assert_meeting_is_invalid()
+    def test_name_cannot_be_none(self):
+        self.meeting.name = None
+        self._assert_invalid_meeting()
 
-    def test_end_time_cannot_be_blank(self):
-        self.meeting.end_time = ''
-        self._assert_meeting_is_invalid()
+    def test_name_can_be_50_char_long(self):
+        self.meeting.name = 50 * 'x'
+        self._assert_valid_meeting()
 
-    def test_start_time_cannot_be_past_date(self):
-        self.meeting.start_time = timezone.now() - timezone.timedelta(days=1)
-        self._assert_meeting_is_invalid()
+    def test_name_cannot_be_over_50_char_long(self):
+        self.meeting.name = 51 * 'x'
+        self._assert_invalid_meeting()
 
-    def test_end_time_cannot_be_past_date(self):
-        self.meeting.end_time = timezone.now() - timezone.timedelta(days=1)
-        self._assert_meeting_is_invalid()
+    def test_description_can_be_blank(self):
+        self.meeting.description = ''
+        self._assert_valid_meeting()
 
-    def test_discussion_leader_cannot_be_null(self):
-        self.meeting.discussion_leader = None
-        self._assert_meeting_is_invalid()
+    def test_description_can_be_none(self):
+        self.meeting.description = None
+        self._assert_valid_meeting()
 
-    def test_location_may_be_blank(self):
-        self.meeting.location = ''
-        self._assert_meeting_is_valid()
+    def test_description_can_be_500_char_long(self):
+        self.meeting.description = 500 * 'x'
+        self._assert_valid_meeting()
 
-    def test_location_need_not_be_unique(self):
-        second_meeting = Meeting.objects.get(id=2)
-        self.meeting.location = second_meeting.location
-        self._assert_meeting_is_valid()
+    def test_description_cannot_be_over_500_char_long(self):
+        self.meeting.description = 501 * 'x'
+        self._assert_invalid_meeting()
 
-    def test_location_may_contain_70_characters(self):
-        self.meeting.location = 'x' * 70
-        self._assert_meeting_is_valid()
+    def test_club_cannot_be_none(self):
+        self.meeting.club = None
+        self._assert_invalid_meeting()
 
-    def test_location_must_not_contain_more_than_70_characters(self):
-        self.meeting.location = 'x' * 71
-        self._assert_meeting_is_invalid()
+    def test_book_can_be_none(self):
+        self.meeting.book = None
+        self._assert_valid_meeting()
 
-    def test_link_may_be_blank(self):
+    def test_time_can_be_none(self):
+        self.time = None
+        self._assert_valid_meeting()
+
+    def test_organiser_cannot_be_none(self):
+        self.meeting.organiser = None
+        self._assert_invalid_meeting()
+
+    def test_attendees_can_be_empty(self):
+        self.meeting.attendees.set([])
+        self._assert_valid_meeting()
+
+    def test_link_can_be_blank(self):
         self.meeting.link = ''
-        self._assert_meeting_is_valid()
+        self._assert_valid_meeting()
 
-    def test_link_must_be_unique(self):
-        second_meeting = Meeting.objects.get(id=2)
-        self.meeting.link = second_meeting.link
-        self._assert_meeting_is_invalid()
+    def test_link_can_be_500_char_long(self):
+        self.meeting.link = 500 * 'x'
+        self._assert_valid_meeting()
 
-    def test_link_may_contain_500_characters(self):
-        self.meeting.link = 'x' * 500
-        self._assert_meeting_is_valid()
+    def test_link_cannot_be_over_500_char_long(self):
+        self.meeting.link = 501 * 'x'
+        self._assert_invalid_meeting()
 
-    def test_link_must_not_contain_more_than_500_characters(self):
-        self.meeting.link = 'x' * 501
-        self._assert_meeting_is_invalid()
-
-    def _assert_meeting_is_valid(self):
+    def _assert_valid_meeting(self):
         try:
             self.meeting.full_clean()
         except ValidationError:
-            self.fail('Test meeting should be valid')
+            self.fail("The meeting should be valid")
 
-    def _assert_meeting_is_invalid(self):
+    def _assert_invalid_meeting(self):
         with self.assertRaises(ValidationError):
             self.meeting.full_clean()

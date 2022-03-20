@@ -1,4 +1,6 @@
 import datetime
+from operator import itemgetter
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
 from django.core.validators import RegexValidator
@@ -49,16 +51,12 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=500, blank=True)
     location = models.CharField(max_length=70, blank=True)
-    birthday = models.DateField(
-        validators=[PastDateValidator], blank=False, null=True)
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # ? sure how to test this
-    # blank true for development purposes.
-    liked_books = models.ManyToManyField(
-        'Book', related_name='liked_books', blank=True)
-    # blank true for development purposes.
-    read_books = models.ManyToManyField(
-        'Book', related_name='read_books', blank=True)
+    birthday = models.DateField(validators=[PastDateValidator], blank=False, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
+    liked_books = models.ManyToManyField('Book', related_name='liked_books',
+                                         blank=True)  # blank true for development purposes.
+    read_books = models.ManyToManyField('Book', related_name='read_books',
+                                        blank=True)  # blank true for development purposes.
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
     friends = models.ManyToManyField("User", blank=True)
 
@@ -102,19 +100,18 @@ class User(AbstractUser):
             FriendRequest.objects.create(sender=self, receiver=other_user)
 
     def accept_friend_request(self, other_user):
-        request_exists = self.incoming_friend_requests.filter(
-            sender=other_user).exists()
+        request_exists = self.incoming_friend_requests.filter(sender=other_user).exists()
         is_friend = other_user in self.friends.all()
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
+            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
+
             new_chat = Chat.objects.create()
             new_chat.participants.add(self)
             new_chat.participants.add(other_user)
-            FriendRequest.objects.filter(
-                sender=other_user, receiver=self).delete()
-            FriendRequest.objects.filter(
-                sender=self, receiver=other_user).delete()
+            FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
+            FriendRequest.objects.filter(sender=self, receiver=other_user).delete()
 
     def reject_friend_request(self, other_user):
         FriendRequest.objects.filter(sender=other_user, receiver=self).delete()
@@ -150,24 +147,27 @@ class Post(models.Model):
 
     def upvote_post(self):
         self.upvotes += 1
+        self.save()
 
     def downvote_post(self):
         self.downvotes += 1
-
-    def add_comment(self, comment):
-        self.comment_set.add(comment)
+        self.save()
 
     def modify_image_link(self, link):
         self.image_link = link
+        self.save()
 
     def modify_book_link(self, link):
         self.book_link = link
+        self.save()
 
     def modify_content(self, new_content):
         self.content = new_content
+        self.save()
 
     def modify_title(self, new_title):
         self.title = new_title
+        self.save()
 
 
 class Response(models.Model):
@@ -179,9 +179,11 @@ class Response(models.Model):
 
     def upvote(self):
         self.upvotes += 1
+        self.save()
 
     def downvote(self):
         self.downvotes += 1
+        self.save()
 
     class Meta:
         abstract = True
@@ -217,8 +219,7 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.PositiveIntegerField(
-        validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
@@ -232,54 +233,12 @@ class Book(models.Model):
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField(
-        validators=[MaxValueValidator(10), MinValueValidator(1)])
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # ? not sure how to test this
+    rating = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
 
-
-# Meeting class
-class Meeting(models.Model):
-    start_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
-    end_time = models.DateTimeField(
-        blank=False, validators=[FutureDateValidator])
-    discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=70, blank=True)
-    link = models.CharField(max_length=500, unique=True, blank=True)
-
-
-# Vote class
-class Vote(models.Model):
-    event_vote = models.ManyToManyField('EventVote', related_name='event_vote')
-    start_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
-    end_time = models.DateTimeField(
-        validators=[FutureDateValidator], blank=False)
-
-    def add_event_vote(self, event_vote):
-        self.event_vote.add(event_vote)
-
-    def remove_event_vote(self, event_vote):
-        self.event_vote.remove(event_vote)
-
-    def event_vote_count(self):
-        return self.event_vote.count()
-
-
-# Club event class
-class ClubEvent(models.Model):
-    club_id = models.ForeignKey('Club', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    voting_time = models.ForeignKey(Vote, on_delete=models.CASCADE)
-    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    description = models.CharField(max_length=500, blank=True)
-
-
-# EventVote class
-class EventVote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    def update_rating(self, new_rating):
+        self.rating = new_rating
+        self.save()
 
 
 def get_new_club_chat():
@@ -303,21 +262,16 @@ class ClubManager(models.Manager):
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=500, blank=True)
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # ? not sure how to test this
-    owner = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='owner')
+    created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(User, related_name='members', blank=True)
     admins = models.ManyToManyField(User, related_name='admins', blank=True)
-    applicants = models.ManyToManyField(
-        User, related_name='applicants', blank=True)
-    banned_users = models.ManyToManyField(
-        User, related_name='banned_users', blank=True)
+    applicants = models.ManyToManyField(User, related_name='applicants', blank=True)
+    banned_users = models.ManyToManyField(User, related_name='banned_users', blank=True)
     books = models.ManyToManyField('Book', related_name='books', blank=True)
     visibility = models.BooleanField(default=True)
     public = models.BooleanField(default=True)
-    club_chat = models.ForeignKey(
-        'Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
+    club_chat = models.ForeignKey('Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
 
     objects = ClubManager()
 
@@ -406,6 +360,9 @@ class Message(models.Model):
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.author.username
+
 
 class Chat(models.Model):
     name = models.CharField(max_length=50, blank=True)
@@ -454,3 +411,88 @@ class GlobalBookRecommendation(models.Model):
     flat_rating = models.FloatField()
     genre = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class TimePeriod(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+
+class TimeVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE)
+
+
+class BookVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
+class Meeting(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, blank=True)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True, null=True)
+    time = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, blank=True, null=True)
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    attendees = models.ManyToManyField(User, related_name='attendees', blank=True)
+    link = models.CharField(max_length=500, blank=True)
+
+
+def generate_link():
+    return 'We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)'
+
+
+class VotingPeriod(models.Model):
+    time_period = models.ForeignKey(TimePeriod, on_delete=models.CASCADE, related_name='voting_time')
+    book_votes = models.ManyToManyField(BookVote, blank=True)
+    time_votes = models.ManyToManyField(TimeVote, blank=True)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    proposed_books = models.ManyToManyField(Book, blank=True)
+    proposed_times = models.ManyToManyField(TimePeriod, blank=True)
+
+    def fill_in_the_meeting(self):
+        book = self.get_book_vote()
+        time = self.get_time_vote()
+        link = generate_link()
+        self.meeting.book = book
+        self.meeting.time = time
+        self.meeting.link = link
+        self.meeting.save()
+
+    def get_book_vote(self):
+        books_and_votes = {}
+        for book_vote in self.book_votes.all():
+            if book_vote.book in books_and_votes:
+                books_and_votes[book_vote.book] += 1
+            else:
+                books_and_votes[book_vote.book] = 1
+        books_and_votes_list = []
+        for book, num in books_and_votes.items():
+            books_and_votes_list.append((book, num))
+        books_and_votes_list.sort(key=itemgetter(1), reverse=True)
+        return books_and_votes_list[0][0]
+
+    def get_time_vote(self):
+        times_and_votes = {}
+        for time_vote in self.time_votes.all():
+            if time_vote.time_period in times_and_votes:
+                times_and_votes[time_vote.time_period] += 1
+            else:
+                times_and_votes[time_vote.time_period] = 1
+        times_and_votes_list = []
+        for time, num in times_and_votes.items():
+            times_and_votes_list.append((time, num))
+        times_and_votes_list.sort(key=itemgetter(1), reverse=True)
+        return times_and_votes_list[0][0]
+
+
+def get_all_users_related_to_a_club(club):
+    """Get all related users to a club"""
+
+    if not isinstance(club, Club):
+        club = Club.objects.get(pk=club)
+    users = list(club.members.all())
+    users.extend(club.admins.all())
+    users.append(club.owner)
+    return users

@@ -28,7 +28,7 @@ django-widget-tweaks==1.4.8
 djangorestframework==3.13.1
 djangorestframework-simplejwt==4.8.0
 djoser==2.1.0
-Faker~=9.0.0
+Faker==13.1.0
 hiredis==2.0.0
 hyperlink==21.0.0
 idna==2.7
@@ -73,3 +73,4 @@ urllib3==1.24.1
 wrapt==1.10.11
 zope.interface==5.4.0
 pytest~=6.2.5
+icalendar==4.0.9
