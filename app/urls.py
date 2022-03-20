@@ -1,11 +1,12 @@
+from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, \
+    ReplyView
 from django.urls import path, include
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, ReplyView
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
 from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
-from .views.account_views import CreateUser
-from .views.authentication_views import BlacklistTokenView, GetCurrentUserView
+from .views.authentication_views import GetCurrentUserView
 from .views.genres_view import GenresView
 from .views.recommender_views import RecommenderAPI
+from .views.scheduling_views import SchedulingView, CalendarView, MeetingsView
 from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
@@ -74,4 +75,23 @@ urlpatterns = [
     # Genre API
     path('genres/', GenresView.as_view(), name='genres'),
 
+    # Feed
+    path('feed/', FeedView.as_view(), name='feed'),
+    path('posts/', AllPostsView.as_view(), name='all_posts'),
+    path('posts/<int:post_id>', PostView.as_view(), name='post'),
+    path('posts/<int:post_id>/comments/', AllCommentsView.as_view(), name='all_comments'),
+    path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
+    path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
+    path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply'),
+
+    # Scheduling API
+    path('scheduling/', SchedulingView.as_view(), name='scheduling'),
+    path('scheduling/<int:id>/', SchedulingView.as_view(), name='scheduling_with_id'),
+    path('scheduling/<int:id>/<str:action>/', SchedulingView.as_view(), name='scheduling_update'),
+
+    path('calendar/', CalendarView.as_view(), name='calendar'),
+    path('calendar/<int:id>', CalendarView.as_view(), name='calendar_with_id'),
+
+    path('meetings/', MeetingsView.as_view(), name='meetings'),
+    path('meetings/<int:id>', MeetingsView.as_view(), name='meetings_with_id'),
 ]

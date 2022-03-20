@@ -8,7 +8,7 @@ const baseURL = 'http://127.0.0.1:8000/api/' // this is the basic API url. Exten
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    timeout: 5000, // in case connection is not possible
+    timeout: 35000, // in case connection is not possible
     // Adjusting to the auth header types specified in settings for JWT:
     headers: {
         Authorization: localStorage.getItem('access_token')

@@ -1,0 +1,33 @@
+[
+  {
+    "model": "app.VotingPeriod",
+    "pk": 1,
+    "fields": {
+      "time_period": 1,
+      "book_votes": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "time_votes": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "meeting": 1,
+      "proposed_books": [
+        "0195153448",
+        "0380715899"
+      ],
+      "proposed_times": [
+        2,
+        3,
+        4
+      ]
+    }
+  }
+]
