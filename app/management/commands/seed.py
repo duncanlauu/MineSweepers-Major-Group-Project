@@ -1,6 +1,6 @@
 import random
 import time
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.utils.timezone import make_aware
 from faker import Faker
@@ -200,7 +200,9 @@ def create_meeting(club, faker, counter):
     name = club.name + f' meeting #{counter}'
     book = Book.objects.all()[random.randint(0, Book.objects.count() - 1)]
     users = get_all_users_related_to_a_club(club)
-    start_time = faker.date_time_between(start_date='-1y', end_date='+1y')
+    # All meetings are between 14 and 20 (because my test meeting at 2:11 am looked really silly)
+    start_time = datetime.combine(faker.date_between(start_date='-1y', end_date='+1y'),
+                                  datetime.min.time()) + timedelta(hours=random.randint(14, 20))
     time_period = TimePeriod.objects.create(
         start_time=make_aware(start_time),
         end_time=make_aware(start_time + timedelta(hours=1))
