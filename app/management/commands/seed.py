@@ -1,11 +1,14 @@
 import random
 import time
+from datetime import timedelta
 
+from django.utils.timezone import make_aware
 from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
-from app.models import Book, User, BookRating, Club
+from app.models import Book, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
+    TimePeriod, Post
 
 
 class Command(BaseCommand):
@@ -16,6 +19,9 @@ class Command(BaseCommand):
         time_function(seed_users)
         time_function(seed_ratings)
         time_function(seed_clubs)
+        time_function(seed_friends)
+        time_function(seed_meetings)
+        time_function(seed_posts)
 
 
 def seed_books():
@@ -118,6 +124,48 @@ def seed_clubs(num_of_clubs=15):
             print("This club name was already taken")
 
 
+def seed_friends():
+    """Seed a number of friends"""
+
+    min_number_of_friends = 2
+    max_number_of_friends = 10
+    for user in User.objects.all():
+        num_of_friends = random.randint(min_number_of_friends, max_number_of_friends)
+        potential_friends = get_n_random_users(num_of_friends)
+        if user in potential_friends:
+            potential_friends.remove(user)
+        for friend in potential_friends:
+            user.add_friend(friend)
+        user.save()
+        print(f'Created all friends for {user}')
+
+
+def seed_meetings():
+    """Seed a number of meetings"""
+
+    min_number_of_meetings = 1
+    max_number_of_meetings = 8
+    faker = Faker('en_GB')
+    for club in Club.objects.all():
+        num_of_meetings = random.randint(min_number_of_meetings, max_number_of_meetings)
+        for i in range(0, num_of_meetings):
+            create_meeting(club, faker, i)
+        print(f'Created all meetings for {club}')
+
+
+def seed_posts():
+    """Seed a number of posts"""
+
+    min_number_of_posts = 3
+    max_number_of_posts = 7
+    faker = Faker('en_GB')
+    for user in User.objects.all():
+        num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
+        for i in range(0, num_of_posts):
+            create_post(user, faker)
+        print(f'Created all posts for {user}')
+
+
 def create_user(faker, books):
     """Create a user with random data from faker and randomly liked and read books"""
 
@@ -144,6 +192,43 @@ def create_user(faker, books):
     liked_books = get_n_random_books_from(n=15, books=read_books)
     user.read_books.set(read_books)
     user.liked_books.set(liked_books)
+
+
+def create_meeting(club, faker, counter):
+    """Create a meeting"""
+
+    name = club.name + f' meeting #{counter}'
+    book = Book.objects.all()[random.randint(0, Book.objects.count() - 1)]
+    users = get_all_users_related_to_a_club(club)
+    start_time = faker.date_time_between(start_date='-1y', end_date='+1y')
+    time_period = TimePeriod.objects.create(
+        start_time=make_aware(start_time),
+        end_time=make_aware(start_time + timedelta(hours=1))
+    )
+    random.shuffle(users)
+    meeting = Meeting.objects.create(
+        name=name,
+        description=faker.text(random.randint(50, 500)),
+        club=club,
+        book=book,
+        organiser=users[0],
+        link=generate_link(),
+        time=time_period
+    )
+    meeting.attendees.set(users[1: random.randint(2, len(users))])
+    meeting.save()
+
+
+def create_post(user, faker):
+    """Create a post"""
+
+    Post.objects.create(
+        author=user,
+        title=faker.text(random.randint(10, 100)),
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5)
+    )
 
 
 def get_n_random_books_from(n, books):
