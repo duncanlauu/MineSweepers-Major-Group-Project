@@ -1,16 +1,30 @@
 [
-  {
-    "model": "app.Book",
-    "pk": "0380715899",
-    "fields": {
-      "title": "A Soldier of the Great War",
-      "author": "Mark Helprin",
-      "publication_date": "1992",
-      "publisher": "Avon Books",
-      "image_links_large": "http://images.amazon.com/images/P/0380715899.01.LZZZZZZZ.jpg",
-      "image_links_medium": "http://images.amazon.com/images/P/0380715899.01.MZZZZZZZ.jpg",
-      "image_links_small": "http://images.amazon.com/images/P/0380715899.01.THUMBZZZ.jpg",
-      "genre": "Fiction"
+    {
+        "model": "app.Book",
+        "pk": "0380715899",
+        "fields": {
+            "title": "A Soldier of the Great War",
+            "author": "Mark Helprin",
+            "publication_date": "1992",
+            "publisher": "Avon Books",
+            "image_links_large": "http://images.amazon.com/images/P/0380715899.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0380715899.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0380715899.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        }
+    },
+    {
+        "model": "app.Book",
+        "pk": "00000000001",
+        "fields": {
+            "title": "Test Book 1",
+            "author": "Test Author",
+            "publication_date": "2000",
+            "publisher": "Test Books",
+            "image_links_large": "http://www.example.com",
+            "image_links_medium": "http://www.example.com",
+            "image_links_small": "http://www.example.com",
+            "genre": "Test"
+        }
     }
-  }
 ]

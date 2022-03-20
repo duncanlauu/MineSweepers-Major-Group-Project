@@ -29,7 +29,6 @@ class BookAdmin(admin.ModelAdmin):
         'ISBN', 'title', 'author', 'publisher'
     ]
 
-
 admin.site.register(Chat)
 admin.site.register(Message)
 
