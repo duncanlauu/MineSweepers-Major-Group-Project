@@ -50,7 +50,7 @@ export default function SignUp() {
                 // read_books: [],
             })
             .then((res) => {
-                navigate("/log_in/") // pushes the user to the login page. Add some error checking.
+                navigate("/sign_up/rating") // pushes the user to the login page. Add some error checking.
                 console.log(res)
                 console.log(res.data)
             })

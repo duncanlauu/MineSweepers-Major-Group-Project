@@ -19,6 +19,7 @@ import CreateClub from "./CreateClub/CreateClub";
 import Layout from "./Layout/Layout";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
+import SignUpRating from "./SignUpRating/SignUpRating";
 
 export default class App extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class App extends Component {
                 <Route path='sign_up' element={<SignUp />}></Route>
                 <Route path='password_reset' element={<PasswordReset />}></Route>
                 <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
+                <Route path='sign_up/rating' element={<SignUpRating />}></Route>
                 {/* <Route path='unauthorized' element={<Unauthorized />}></Route> */}
 
                 {/* protected routes */}
