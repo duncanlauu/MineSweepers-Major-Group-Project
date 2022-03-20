@@ -20,6 +20,7 @@ import Layout from "./Layout/Layout";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
 import Scheduling from "./Scheduling/Scheduling";
+import Meetings from "./Meetings/Meetings";
 
 export default class App extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ export default class App extends Component {
                   <Route path="/chat/" element={<ChatWrapper/>}/>
                   <Route path='hello' element={<Hello/>}/>
                   <Route path="/scheduling/" element={<Scheduling/>}/>
+                  <Route path="/meetings/" element={<Meetings/>}/>
                 </Route>
 
                 {/* catch all */}
