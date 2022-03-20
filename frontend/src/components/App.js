@@ -21,6 +21,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
 import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
+import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ export default class App extends Component {
                   <Route path='hello' element={<Hello/>}/>
                   <Route path="/scheduling/" element={<Scheduling/>}/>
                   <Route path="/meetings/" element={<Meetings/>}/>
+                  <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
                 </Route>
 
                 {/* catch all */}
