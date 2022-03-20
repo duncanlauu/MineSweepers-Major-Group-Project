@@ -1,4 +1,5 @@
 """Unit tests for the Meeting model"""
+import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from app.models import Meeting
@@ -79,7 +80,7 @@ class MeetingModelTest(TestCase):
     def _assert_meeting_is_valid(self):
         try:
             self.meeting.full_clean()
-        except ValidationError:
+        except (ValidationError):
             self.fail('Test meeting should be valid')
 
     def _assert_meeting_is_invalid(self):

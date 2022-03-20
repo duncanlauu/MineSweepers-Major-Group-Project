@@ -48,7 +48,6 @@ def get_filtered_dataframe_from_file(file_path):
     logging.debug(file_dataframe)
     return file_dataframe
 
-
 def append_database_to_file_dataset(file_dataframe):
     """Append the ratings from the database to the ones in the csv"""
 

@@ -1,12 +1,12 @@
 import datetime
+from email.policy import default
+from pickle import TRUE
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager as AbstractUserManager
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
-from django.db.models import Q
-
 
 # It uses datetime.date which only uses the date
 def PastDateValidator(date):
@@ -18,20 +18,6 @@ def PastDateValidator(date):
 def FutureDateValidator(date):
     if date < timezone.now():
         raise ValidationError("Date cannot be in the past")
-
-
-# User Manager class
-class UserManager(AbstractUserManager):
-    def search(self, query=None):
-        qs = self.get_queryset()
-        if query is not None:
-            or_lookup = (Q(username__icontains=query) |
-                         Q(first_name__icontains=query) |
-                         Q(last_name__icontains=query) |
-                         Q(email__icontains=query)
-                         )
-            qs = qs.filter(or_lookup).distinct()
-        return qs
 
 
 # User class
@@ -61,8 +47,6 @@ class User(AbstractUser):
         'Book', related_name='read_books', blank=True)
     clubs = models.ManyToManyField('Club', related_name='clubs', blank=True)
     friends = models.ManyToManyField("User", blank=True)
-
-    objects = UserManager()
 
     def add_liked_book(self, book):
         self.liked_books.add(book)
@@ -96,7 +80,7 @@ class User(AbstractUser):
 
     def send_friend_request(self, other_user):
         request_exists = FriendRequest.objects.filter(
-            Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).exists()
+            sender=self, receiver=other_user).exists()
         is_friend = other_user in self.friends.all()
         if not request_exists and not is_friend:
             FriendRequest.objects.create(sender=self, receiver=other_user)
@@ -131,87 +115,6 @@ class FriendRequest(models.Model):
         User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-class Post(models.Model):
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts')
-    club = models.ForeignKey(
-        "Club", on_delete=models.SET_NULL, blank=True, null=True)
-    title = models.CharField(max_length=100, blank=False)
-    content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    image_link = models.CharField(max_length=500, blank=True)
-    book_link = models.CharField(max_length=500, blank=True)
-
-    class Meta:
-        ordering = ['-created_at']
-
-    def upvote_post(self):
-        self.upvotes += 1
-
-    def downvote_post(self):
-        self.downvotes += 1
-
-    def add_comment(self, comment):
-        self.comment_set.add(comment)
-
-    def modify_image_link(self, link):
-        self.image_link = link
-
-    def modify_book_link(self, link):
-        self.book_link = link
-
-    def modify_content(self, new_content):
-        self.content = new_content
-
-    def modify_title(self, new_title):
-        self.title = new_title
-
-
-class Response(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def upvote(self):
-        self.upvotes += 1
-
-    def downvote(self):
-        self.downvotes += 1
-
-    class Meta:
-        abstract = True
-
-
-class Comment(Response):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
-    def add_reply(self, reply):
-        self.reply_set.add(reply)
-
-
-class Reply(Response):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-
-
-# Book Manager class
-class BookManager(models.Manager):
-    def search(self, query=None):
-        qs = self.get_queryset()
-        if query is not None:
-            or_lookup = (Q(title__icontains=query) |
-                         Q(author__icontains=query) |
-                         Q(publisher__icontains=query) |
-                         Q(genre__icontains=query)
-                         )
-            qs = qs.filter(or_lookup).distinct()
-        return qs
-
-
 # Book class
 class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
@@ -225,9 +128,6 @@ class Book(models.Model):
     image_links_small = models.CharField(max_length=500)
     genre = models.CharField(max_length=50, blank=False)
 
-    objects = BookManager()
-
-
 # Book Ratings class
 class BookRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -236,7 +136,6 @@ class BookRating(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(1)])
     created_at = models.DateTimeField(
         auto_now_add=True)  # ? not sure how to test this
-
 
 # Meeting class
 class Meeting(models.Model):
@@ -247,7 +146,6 @@ class Meeting(models.Model):
     discussion_leader = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=70, blank=True)
     link = models.CharField(max_length=500, unique=True, blank=True)
-
 
 # Vote class
 class Vote(models.Model):
@@ -265,7 +163,6 @@ class Vote(models.Model):
 
     def event_vote_count(self):
         return self.event_vote.count()
-
 
 # Club event class
 class ClubEvent(models.Model):
@@ -286,19 +183,6 @@ def get_new_club_chat():
     new_club_chat = Chat.objects.create(group_chat=True)
     return new_club_chat
 
-
-# Club Manager class
-class ClubManager(models.Manager):
-    def search(self, query=None):
-        qs = self.get_queryset()
-        if query is not None:
-            or_lookup = (Q(name__icontains=query) |
-                         Q(description__icontains=query)
-                         )
-            qs = qs.filter(or_lookup).distinct()
-        return qs
-
-
 # Club class
 class Club(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -318,8 +202,6 @@ class Club(models.Model):
     public = models.BooleanField(default=True)
     club_chat = models.ForeignKey(
         'Chat', related_name='club_chat', on_delete=models.CASCADE, default=get_new_club_chat)
-
-    objects = ClubManager()
 
     def save(self, *args, **kwargs):
         is_new = not self.pk
@@ -343,6 +225,8 @@ class Club(models.Model):
         return self.members.count()
 
     def add_admin(self, user):
+        self.remove_member(user)
+        self.remove_applicant(user)
         self.admins.add(user)
 
     def remove_admin(self, user):
@@ -364,12 +248,15 @@ class Club(models.Model):
         return self.members.count() + self.admins.count() + 1
 
     def add_banned_user(self, user):
+        # self.remove_member(user)
+        self.members.remove(user)
         user.remove_club(self)
         self.banned_users.add(user)
-
+        
     def remove_banned_user(self, user):
         user.add_club(self)
         self.banned_users.remove(user)
+        self.add_member(user)
 
     def banned_user_count(self):
         return self.banned_users.count()
@@ -397,14 +284,22 @@ class Club(models.Model):
 
     def transfer_ownership(self, user):
         self.add_admin(self.owner)
+        self.remove_admin(user)
+        self.remove_member(user)
         self.owner = user
+        self.save()
+        
 
 
 # Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
-    author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
-    content = models.CharField(max_length=1000)
+    author = models.ForeignKey(
+        User, related_name='messages', on_delete=models.CASCADE)
+    content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.author.username
 
 
 class Chat(models.Model):
@@ -412,7 +307,9 @@ class Chat(models.Model):
     participants = models.ManyToManyField(User, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
     group_chat = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{}".format(self.pk)
 
 
 class BookRecommendation(models.Model):

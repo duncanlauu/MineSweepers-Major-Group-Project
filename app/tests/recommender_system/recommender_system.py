@@ -4,15 +4,14 @@ from surprise import SVD
 
 from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users
 from app.models import User
-from app.recommender_system.books_recommender import get_top_n, get_top_n_for_k, get_global_top_n, \
-    get_top_n_for_genre, get_top_n_for_k_for_genre, get_global_top_n_for_genre, get_top_n_for_club, \
-    get_top_n_for_club_for_genre
+from app.recommender_system.books_recommender import get_top_n, get_top_n_for_k, get_global_top_n, get_top_n_for_genre, \
+    get_top_n_for_k_for_genre, get_global_top_n_for_genre, get_top_n_for_club, get_top_n_for_club_for_genre
 from app.recommender_system.file_management import *
 from django.test import TestCase
 
-from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, \
-    get_top_n_users_double_random, get_top_n_users_for_a_genre, get_top_n_clubs_using_random_items, \
-    get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
+from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, get_top_n_users_double_random, \
+    get_top_n_users_for_a_genre, get_top_n_clubs_using_random_items, get_top_n_clubs_using_top_items_for_a_user, \
+    get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
 
 
 class RecommenderSystemTestCase(TestCase):

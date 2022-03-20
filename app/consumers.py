@@ -2,37 +2,34 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import Message
-from app.views.chat_views import get_user, get_current_chat, get_all_messages
+from .models import User, Message, Chat
+from app.views.chat_views import get_last_10_messages, get_user, get_current_chat
 
 
 class ChatConsumer(WebsocketConsumer):
 
     def fetch_messages(self, data):
-        request_user = get_user(data['username'])
-        current_chat = get_current_chat(data['chatId'])
-        if request_user in current_chat.participants.all():
-            messages = get_all_messages(data['chatId'])
-            content = {
-                'command': 'messages',
-                'messages': self.messages_to_json(messages)
-            }
-            self.send_message(content)
+        messages = get_last_10_messages(data['chatId'])
+        content = {
+            'command': 'messages',
+            'messages': self.messages_to_json(messages)
+        }
+        self.send_message(content)
 
     def new_message(self, data):
+        print(data)
         user = get_user(data['from'])
         message = Message.objects.create(
             author=user,
             content=data['message'])
         current_chat = get_current_chat(data['chatId'])
-        if user in current_chat.participants.all():
-            current_chat.messages.add(message)
-            current_chat.save()
-            content = {
-                'command': 'new_message',
-                'message': self.message_to_json(message)
-            }
-            return self.send_chat_message(content)
+        current_chat.messages.add(message)
+        current_chat.save()
+        content = {
+            'command': 'new_message',
+            'message': self.message_to_json(message)
+        }
+        return self.send_chat_message(content)
 
     def messages_to_json(self, messages):
         result = []
@@ -71,6 +68,7 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         self.commands[data['command']](self, data)
+
 
     def send_chat_message(self, message):
         async_to_sync(self.channel_layer.group_send)(
