@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import {SignUpContainer, FormLayout} from "./SignUpStyle";
 
@@ -7,6 +7,15 @@ import {useNavigate} from "react-router";
 
 
 export default function SignUp() {
+    
+    const [firstNameErr, setFirstNameErr] = useState("")
+    const [lastNameErr, setLastNameErr] = useState("")
+    const [usernameErr, setUsernameErr] = useState("")
+    const [emailErr, setEmailErr] = useState("")
+    const [passwordErr, setPasswordErr] = useState("")
+    const [bioErr, setBioErr] = useState("")
+    const [locationErr, setLocationErr] = useState("")
+    const [birthdayErr, setBirthdayErr] = useState("")
 
     const navigate = useNavigate();
 
@@ -19,8 +28,6 @@ export default function SignUp() {
         bio: '',
         location: '',
         birthday: '',
-        // liked_books: [],
-        // read_books: [],
     })
 
     const [formData, updateFormData] = useState(initialFormData)
@@ -46,13 +53,21 @@ export default function SignUp() {
                 bio: formData.bio,
                 location: formData.location,
                 birthday: formData.birthday,
-                // liked_books: [],
-                // read_books: [],
             })
             .then((res) => {
                 navigate("/log_in/") // pushes the user to the login page. Add some error checking.
                 console.log(res)
                 console.log(res.data)
+            })
+            .catch((e) => {
+                setFirstNameErr(e.response.data.first_name)
+                setLastNameErr(e.response.data.last_name)
+                setUsernameErr(e.response.data.username)
+                setEmailErr(e.response.data.email)
+                setPasswordErr(e.response.data.password)
+                setBioErr(e.response.data.bio)
+                setLocationErr(e.response.data.location)
+                setBirthdayErr(e.response.data.birthday)
             })
     }
 
@@ -89,6 +104,7 @@ export default function SignUp() {
                                                 style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
+                                        <div>{firstNameErr}</div>
                                     </Col>
                                     <Col xs="6">
                                         <FormGroup>
@@ -100,6 +116,7 @@ export default function SignUp() {
                                                 style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
+                                        <div>{lastNameErr}</div>
                                     </Col>
                                 </Row>
 
@@ -112,6 +129,7 @@ export default function SignUp() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{usernameErr}</div>
 
                                 <FormGroup>
                                     <Label for="email"> Email </Label>
@@ -123,6 +141,7 @@ export default function SignUp() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{emailErr}</div>
 
                                 <FormGroup>
                                     <Label for="password"> Password </Label>
@@ -134,6 +153,7 @@ export default function SignUp() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{passwordErr}</div>
 
                                 <FormGroup>
                                     <Label for="bio"> Bio </Label>
@@ -144,6 +164,7 @@ export default function SignUp() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{bioErr}</div>
 
                                 <Row>
                                     <Col xs="8">
@@ -156,6 +177,7 @@ export default function SignUp() {
                                                 style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
+                                        <div>{locationErr}</div>
                                     </Col>
                                     <Col xs="4">
                                         <FormGroup>
@@ -168,6 +190,7 @@ export default function SignUp() {
                                                 style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
+                                        <div>{birthdayErr}</div>
                                     </Col>
                                 </Row>
 

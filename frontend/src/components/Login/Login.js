@@ -55,6 +55,9 @@ export default function SignIn() {
                 console.log(response);
                 console.log(response.data);
             })
+            .catch((e) => {
+                setErrMsg("Invalid username/password")
+            })
     }
 
     return (
