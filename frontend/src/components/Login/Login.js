@@ -9,6 +9,7 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 import axiosInstance from '../../axios'
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCircularProgressUtilityClass } from '@mui/material'
+import Nav from '../Nav/Nav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -66,13 +67,9 @@ export default function SignIn() {
     }
 
     return (
-        <div>
+        <div style={{ overflowX:"hidden" }}>
             <Row>
-                <Navbar color="light" expand="md" light>
-                    <NavbarBrand href="/">
-                        <h1> bookgle </h1>
-                    </NavbarBrand>
-                </Navbar>
+                <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -86,7 +83,7 @@ export default function SignIn() {
                         </ParaText>
 
                         <LoginContainer>
-                            <form>
+                            <form style={{ width:"80%" }}>
                                 <FormGroup>
                                     <Label><ParaText>Username</ParaText></Label>
                                     <Input

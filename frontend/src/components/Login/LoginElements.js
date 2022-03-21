@@ -17,10 +17,13 @@ export const ParaText = styled.text`
 
 export const LoginContainer = styled.div`
     background-color: #FFF;
-    height: 20rem;
+    height: 23rem;
     width: 40rem;
     border-radius: 10px;
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 export const Form = styled.form`
