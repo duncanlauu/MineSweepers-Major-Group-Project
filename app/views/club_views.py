@@ -39,7 +39,7 @@ class SingleClub(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def update(self, request, club):
-        serializer = ClubSerializer(club, data=request.data)
+        serializer = ClubSerializer(club, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
