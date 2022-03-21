@@ -4,7 +4,7 @@ import logging
 import time
 from operator import itemgetter
 
-from app.recommender_system.file_management import get_all_related_users
+from app.models import get_all_users_related_to_a_club
 from app.recommender_system.genre_algo import get_books_from_iexact_genre, get_isbns_for_a_genre
 
 
@@ -59,7 +59,7 @@ def get_top_n_for_club(club, trainset, algo, pred_lookup, n=10):
 def get_top_between_m_and_n_for_club(club, trainset, algo, pred_lookup, m=0, n=10):
     """Get the top books between m and n for a club"""
 
-    uids = get_all_related_users(club)
+    uids = get_all_users_related_to_a_club(club)
     return get_top_between_m_and_n_for_k(uids, trainset, algo, pred_lookup, m, n)
 
 
@@ -72,7 +72,7 @@ def get_top_n_for_club_for_genre(club, trainset, algo, pred_lookup, genre, n=10)
 def get_top_between_m_and_n_for_club_for_genre(club, trainset, algo, pred_lookup, genre, m=0, n=10):
     """Get the top books between m and n for a club"""
 
-    uids = get_all_related_users(club)
+    uids = get_all_users_related_to_a_club(club)
     return get_top_between_m_and_n_for_k_for_genre(uids, trainset, algo, pred_lookup, genre, m, n)
 
 
@@ -213,7 +213,7 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
 
     """
     return rating * number_of_votes / (number_of_votes + minimum_number_of_votes) + \
-        minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
+           minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
 def get_top_n_test(trainset, algo):

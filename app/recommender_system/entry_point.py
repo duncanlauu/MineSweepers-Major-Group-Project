@@ -1,9 +1,9 @@
-"""The entry point script for testing the recommender system
+"""
+The entry point script for testing the recommender system
 
 It loads the model and runs some tests
-"""
-import time
 
+"""
 from surprise import SVD
 
 from app.recommender_system.books_recommender import get_top_n_test, get_top_n_for_k_test, get_top_n_global_test, \
@@ -13,7 +13,8 @@ from app.recommender_system.file_management import *
 
 
 def recommender_system_tests():
-    """Run all the tests for the recommending system
+    """
+    Run all the tests for the recommending system
 
     First load the trained model, then run
     get_top_n_test, get_top_n_for_k_test, get_top_n_global_test and get_top_n_users_test
