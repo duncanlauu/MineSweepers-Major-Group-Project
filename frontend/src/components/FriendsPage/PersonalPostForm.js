@@ -31,7 +31,7 @@ export default function PersonalPostForm(props) {
         
         axiosInstance
             .post("posts/", {
-                club_id : formData.club_id,
+                club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
                 image_link : formData.image_link,

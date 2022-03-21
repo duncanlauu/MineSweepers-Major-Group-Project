@@ -1,187 +1,13 @@
-// import React, { useState, useEffect, useRef } from "react"
-// import axiosInstance from '../../axios'
-// import { Row, Col, Button, Input, FormGroup, Label } from "reactstrap"
-
-// import { useNavigate } from "react-router";
-// import { PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElements";
-// import PostComments from "./PostComments";
-
-// export default function PersonalPosts(props) {
-//     console.log(props)
-
-//     const [myPersonalPosts, setPersonalPosts] = useState("");
-//     const [commentsUnderPost, setCommentsUnderPost] = useState("")
-
-//     const [writtenComment, updateWrittenComment] = useState("dummy")
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         getPersonalPosts()
-//     }, []);
-
-//     const handleCommentChange = (e) => {
-//         updateWrittenComment({
-//             writtenComment,
-//             [e.target.name]: e.target.value,
-//         })
-//     }
-
-//     const getPersonalPosts = () => {
-//         axiosInstance
-//             .get("posts/")
-//             .then((res) => {
-//                 const allPersonalPosts = res.data.posts;
-//                 setPersonalPosts(allPersonalPosts)
-//                 //navigate("/log_in/")
-//             })
-//             .catch(error => console.error(error));
-//     }
-
-//     const getPost = (post_id, e) => {
-//         axiosInstance
-//             .get(`posts/${post_id}`)
-//             .then((res) => {
-//                 //navigate("/log_in/")
-//                 console.log(res.data.post)
-//                 //console.log(writtenComment)
-//             })
-//             .catch(error => console.error(error));
-//     }
-
-//     const deletePost = (post_id, e) => {
-//         axiosInstance
-//             .delete(`posts/${post_id}`)
-//             .then((res) => {
-//                 //navigate("/log_in/")
-//                 console.log(res)
-//                 removeFromPage(e)
-//                 //console.log(writtenComment)
-//             })
-//             .catch(error => console.error(error));
-//     }
-
-//     const removeFromPage = (e) => {
-//         const id = parseInt(e.target.getAttribute("name"))
-//         setPersonalPosts(myPersonalPosts.filter(item => item.id !== id));
-//     }
-
-//     const getCommentsUnderPost = (post_id) => {
-//         axiosInstance
-//             .get(`posts/${post_id}/comments/`)
-//             .then((res) => {
-//                 console.log(res.data)
-//                 const allCommentsUnderPost = res.data.comments;
-//                 setCommentsUnderPost(allCommentsUnderPost)
-//             })
-//     }
-
-//     const commentsRef = useRef();
-
-//     const uploadComment = (post_id, e) => {
-//         console.log(writtenComment.myComment)
-//         axiosInstance
-//             .post(`posts/${post_id}/comments/`, {
-//                 content: writtenComment.myComment,
-//             })
-//             .then((res) => {
-//                 console.log(res.data)
-//                 const comment = { author: localStorage.username, content: writtenComment.myComment }
-//                 commentsRef.current.addComment(comment)
-//                 console.log("adding post in parent: ", comment)
-//                 // navigate("/home/")
-//                 // navigate("/friends_page/")
-//                 // call setCommentsUnderPost in PostComments
-//             })
-//     }
-
-//     const displayPersonalPosts = (e) => {
-//         if (myPersonalPosts.length > 0) {
-//             console.log(myPersonalPosts);
-//             return (
-//                 myPersonalPosts.map((personalPost, index) => {
-//                     console.log(personalPost);
-//                     return (
-//                         <div className="personalPost" key={personalPost.id}>
-//                             <SinglePostContainer>
-//                                 <Row>
-//                                     <Col>
-//                                         <PostTitle>
-//                                             <h2> {personalPost.title} </h2>
-//                                         </PostTitle>
-//                                     </Col>
-//                                     <Col>
-//                                         <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-//                                             X
-//                                         </Button>
-//                                     </Col>
-//                                 </Row>
-
-//                                 <PostContent>
-//                                     <h4> {personalPost.content} </h4>
-//                                 </PostContent>
-
-//                                 <div>
-//                                     <h5> Comment section </h5>
-//                                     <PostComments ref={commentsRef} personalPost={personalPost} />
-//                                 </div>
-
-//                                 <Row>
-
-//                                     <Input type="textarea" rows="1"
-//                                         id="myComment"
-//                                         name="myComment"
-//                                         onChange={handleCommentChange}
-//                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
-//                                     />
-
-//                                 </Row>
-//                                 <Row>
-//                                     <Col xs="6">
-//                                         <Row>
-//                                             <Button onClick={(e) => uploadComment(personalPost.id, e)}>
-//                                                 <p> Send </p>
-//                                             </Button>
-//                                         </Row>
-
-//                                     </Col>
-//                                     <Col xs="3">
-//                                         <Button onClick={(e) => getCommentsUnderPost(personalPost.id, e)}>
-//                                             <p> Show </p>
-//                                         </Button>
-//                                     </Col>
-
-//                                 </Row>
-
-//                                 <Row>
-//                                     <Button onClick={(e) => getPost(personalPost.id)}>
-//                                         <p> Get Info </p>
-//                                     </Button>
-//                                 </Row>
-//                             </SinglePostContainer>
-//                         </div>
-//                     )
-//                 })
-//             )
-//         } else {
-//             return (<h5> You don't have any posts yet. </h5>)
-
-//         }
-//     }
-//     return (
-//         <>
-//             {displayPersonalPosts(props)}
-//         </>
-//     )
-
-// }
-
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
-import { Row, Col, Button, Input, InputGroup, InputGroupButton, FormGroup, Label, Card, CardBody, CardTitle, CardText, CardFooter, CardHeader, UncontrolledCollapse } from "reactstrap"
+import { Row, Col, Button, Input, InputGroup, InputGroupButton, FormGroup, Label, Card, CardBody, CardTitle, CardText, CardFooter, CardHeader, UncontrolledCollapse, Modal, ModalHeader, ModalBody } from "reactstrap"
 
 import { useNavigate } from "react-router";
 import { PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElements";
 import PostComments from "./PostComments";
+import PersonalPostForm from "./PersonalPostForm";
+import PersonalPostEditor from "./PersonalPostEditor";
+import PostModal from "./PostModal";
 
 export default function PersonalPosts(props) {
     console.log(props)
@@ -191,6 +17,14 @@ export default function PersonalPosts(props) {
 
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const navigate = useNavigate();
+
+    const [isModalVisible, setModalVisibility] = useState(false)
+
+    const [personalPostID, setPersonalPostID] = useState()
+
+    const changeModalVisibility = () => {
+        setModalVisibility(!isModalVisible);
+    }
 
     useEffect(() => {
         getPersonalPosts()
@@ -273,6 +107,9 @@ export default function PersonalPosts(props) {
     }
 
 
+    ///----------------- --------------
+
+
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
             console.log(myPersonalPosts);
@@ -287,8 +124,9 @@ export default function PersonalPosts(props) {
                             <div className="personalPost" key={personalPost.id}>
                                 <Card style={{ marginBottom: "1rem", marginRight: "1rem", marginTop: "1rem"}}>
                                     <CardHeader style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                        <Button style={{marginRight: "1rem"}}>
+                                        <Button style={{marginRight: "1rem"}} onClick={changeModalVisibility(personalPost.id)}>
                                             Edit
+                                            
                                         </Button>
                                         <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
                                             X
@@ -332,9 +170,25 @@ export default function PersonalPosts(props) {
                                         </Row>    
                                     </CardFooter>
                                 </Card>
+
+                                {/* PostModal personalPostID currentPersonalPostID */}
+                                <Modal
+                                    isOpen = {isModalVisible}
+                                    toggle = {changeModalVisibility}
+                                    style={{
+                                        left: 0,
+                                        top: 100
+                                    }}
+                                >
+                                    <ModalBody style={{overflowY: "scroll"}}>
+                                        <PersonalPostEditor personalPost={personalPost}/>
+                                    </ModalBody>
+                                </Modal>
+                                {/* <PostModal personalPostID={personalPost.id}/> */}
                             </div>
                     )
                 })
+
             )
         } else {
             return (<h5> You don't have any posts yet. </h5>)

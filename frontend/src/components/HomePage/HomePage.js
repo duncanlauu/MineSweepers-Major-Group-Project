@@ -12,7 +12,13 @@ import Gravatar from 'react-gravatar'
 import Nav from '../Nav/Nav'
 import { Link } from 'react-router-dom'
 
+import useGetUser from "../../helpers";
+import FeedPage from '../FriendsPage/FeedPage'
+
 const HomePage = () => {
+    const currentUser = useGetUser();
+    console.log("Buenos Dias Home")
+    console.log("Current user logged in: " + currentUser.id)
     return (
         <Container fluid>
             <Row style={{ marginBottom: "3rem" }}>
@@ -22,6 +28,7 @@ const HomePage = () => {
                 <Col />
                 <Col xs={5}>
                     <FeedContainer>
+                        <FeedPage />
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
