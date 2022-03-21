@@ -18,12 +18,12 @@ export const ParaText = styled.text`
 
 export const LoginContainer = styled.div`
     background-color: #FFF;
-    height: 20rem;
-    width: 40rem;
+    height: 16rem;
+    width: 30rem;
     border-radius: 10px;
     margin-top: 1rem;
 `
- 
+
 export const Form = styled.form`
     padding-left: 2rem;
     padding-right: 2rem;

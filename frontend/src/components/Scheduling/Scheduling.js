@@ -3,12 +3,9 @@ import axiosInstance from "../../axios";
 import {Button, Col, Container, FormGroup, Input, Label, Row} from "reactstrap";
 import {FormLayout, HeadingText, ParaText, SignUpContainer} from "../CreateClub/CreateClubElements";
 import useGetUser from "../../helpers";
-import { useParams } from 'react-router-dom'
 
-export default function ClubScheduling() {
-    const { club_id } = useParams();
-    console.log("Club ID on Scheduling: " + club_id);
 
+export default function Scheduling() {
     const user = useGetUser();
     const [books, setBooks] = useState([]);
     const [bookData, setBookData] = useState([]);
@@ -19,10 +16,10 @@ export default function ClubScheduling() {
 
     const getRecommendedBooks = () => {
         axiosInstance
-            .post(`recommender/0/10/${club_id}/top_n_for_club/`, {})
+            .post('recommender/0/10/3/top_n_for_club/', {})
             .then(() => {
                 axiosInstance
-                    .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
+                    .get('recommender/0/10/3/top_n_for_club/', {})
                     .then((res) => {
                         let book_list = []
                         for (let i = 0; i < res.data.length; ++i) {
@@ -63,7 +60,7 @@ export default function ClubScheduling() {
             .post(`scheduling/`, {
                 name: formData.name,
                 description: formData.description,
-                club: club_id,
+                club: 3,
                 organiser: user.id,
                 attendees: [2, 8, 110],
                 book: bookData,
@@ -74,6 +71,16 @@ export default function ClubScheduling() {
             .then((res) => {
                 console.log(res.data)
             })
+
+
+        // axiosInstance
+        //     .get('singleclub/3', {})
+        //     .then((res) => {
+        //         club = res.data
+        //         console.log(res)
+        //     })
+
+
     }
 
     let booksList = books.length > 0

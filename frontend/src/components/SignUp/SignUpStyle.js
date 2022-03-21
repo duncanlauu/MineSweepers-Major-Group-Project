@@ -7,8 +7,6 @@ height: 34rem;
 width: 40rem;
 border-radius: 10px;
 margin-top: 1rem;
-overflow-y: scroll;
-overflow-x: hidden;
 `
 
 export const FormLayout = styled.form`
