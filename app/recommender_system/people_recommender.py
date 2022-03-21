@@ -218,6 +218,7 @@ def get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n=10):
         items = list((book.ISBN for book in club.books.all()))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
+    remove_incorrect_clubs(clubs_with_diffs)
     return clubs_with_diffs[m:n]
 
 
@@ -234,8 +235,17 @@ def get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid):
     for club in clubs:
         uids = list((user.id for user in get_all_users_related_to_a_club(club)))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
+    remove_incorrect_clubs(clubs_with_diffs)
     clubs_with_diffs.sort(key=itemgetter(1))
     return clubs_with_diffs[m:n]
+
+
+def remove_incorrect_clubs(clubs_with_diffs):
+    """Remove the clubs for which we have -1 as diff"""
+
+    for club, diff in clubs_with_diffs:
+        if diff == -1:
+            clubs_with_diffs.remove((club, diff))
 
 
 def get_top_n_users_test(algo, trainset, genre='fiction'):
