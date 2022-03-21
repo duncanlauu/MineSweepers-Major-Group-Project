@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div>
+  <div
+    className="container-fluid"
+  >
+    <div
+      className="row"
+      style={
+        Object {
+          "marginTop": "10rem",
+        }
+      }
+    >
+      <div
+        className="col"
+      />
+      <div
+        className="col"
+      >
+        <text
+          className="sc-bdvvtL zooZt"
+        >
+          Welcome to
+        </text>
+        <br />
+        <text
+          className="sc-gsDKAQ kOppkk"
+        >
+          bookgle
+        </text>
+        <br />
+        <a
+          href="/log_in"
+          onClick={[Function]}
+        >
+          <button
+            className="sc-dkPtRN eZIjW"
+          >
+            LOG IN
+          </button>
+          <br />
+        </a>
+        <a
+          href="/sign_up"
+          onClick={[Function]}
+        >
+          <button
+            className="sc-dkPtRN eZIjW"
+          >
+            SIGN UP
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
