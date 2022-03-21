@@ -40,7 +40,6 @@ export default function SignIn() {
             })
             .catch((e) => {
                 setEmailErr(e.response.data.email)
-                console.log(localStorage.getItem('access_token'))
             })
     }
 
