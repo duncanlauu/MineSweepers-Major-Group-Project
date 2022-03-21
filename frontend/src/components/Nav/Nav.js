@@ -1,16 +1,16 @@
 import React from 'react'
-import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input } from 'reactstrap'
-import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
-import { BiUserCircle } from "@react-icons/all-files/bi/BiUserCircle"
-import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
-import { GrGroup } from "@react-icons/all-files/gr/GrGroup"
-import { AiOutlineBook } from '@react-icons/all-files/ai/AiOutlineBook'
+import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
+import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
+import {BiUserCircle} from "@react-icons/all-files/bi/BiUserCircle"
+import {AiOutlinePlus} from "@react-icons/all-files/ai/AiOutlinePlus";
+import {GrGroup} from "@react-icons/all-files/gr/GrGroup"
+import {AiOutlineBook} from '@react-icons/all-files/ai/AiOutlineBook'
 import Box from '@mui/material/Box';
-import { IconButton } from '@mui/material';
+import {IconButton} from '@mui/material';
 import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { NavMenu, SearchContainer, SearchResult, SearchText } from './NavElements';
+import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../axios';
@@ -60,9 +60,14 @@ class Nav extends React.Component {
     render() {
         return (
             <div>
-                <Container fluid style={{ backgroundColor:"#fff", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                    <Link to="/home/" style={{ color: "#000" }}>
-                        <NavbarBrand style={{ fontFamily:"Source Sans Pro", fontWeight:"600" }}>bookgle</NavbarBrand>
+                <Container fluid style={{
+                    backgroundColor: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                }}>
+                    <Link to="/home/" style={{color: "#000"}}>
+                        <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
                     </Link>
                     <Button 
                         type='button' 
@@ -80,34 +85,36 @@ class Nav extends React.Component {
                         </Box>
                     </Button>
                     <NavMenu>
-                    <Link to="/create_club/" style={{ color: "#000" }}>
-                        <Button 
-                            type='button'
-                            style={{
-                                backgroundColor:"#653FFD",
-                                fontFamily:"Source Sans Pro",
-                                fontWeight:"500",
-                                alignItems:"center",
-                                justifyContent:"space-around",
-                                marginRight:"2rem",
-                            }}
-                            ><AiOutlinePlus 
-                                style={{ backgroundColor:"#4F30CC", 
-                                         borderRadius:"2px", 
-                                         height:"2rem", 
-                                         width:"2rem", 
-                                         marginRight: "1rem" }}/>New Club</Button>
-                            </Link>
-                        <ChatBubbleOutline fontSize='large' />
-                        <Link to="/notifications/" style={{ color: "#000" }}>
-                            <NotificationsNoneIcon fontSize='large' />
+                        <Link to="/create_club/" style={{color: "#000"}}>
+                            <Button
+                                type='button'
+                                style={{
+                                    backgroundColor: "#653FFD",
+                                    fontFamily: "Source Sans Pro",
+                                    fontWeight: "500",
+                                    alignItems: "center",
+                                    justifyContent: "space-around",
+                                    marginRight: "2rem",
+                                }}
+                            ><AiOutlinePlus
+                                style={{
+                                    backgroundColor: "#4F30CC",
+                                    borderRadius: "2px",
+                                    height: "2rem",
+                                    width: "2rem",
+                                    marginRight: "1rem"
+                                }}/>New Club</Button>
                         </Link>
-                        <AccountCircleIcon fontSize='large' />
+                        <ChatBubbleOutline fontSize='large'/>
+                        <Link to="/notifications/" style={{color: "#000"}}>
+                            <NotificationsNoneIcon fontSize='large'/>
+                        </Link>
+                        <AccountCircleIcon fontSize='large'/>
                     </NavMenu>
                 </Container>
-                <Modal 
-                    isOpen={this.state.modal} 
-                    toggle={this.toggle} 
+                <Modal
+                    isOpen={this.state.modal}
+                    toggle={this.toggle}
                     className={this.props.className}
                     style={{
                         left: 0,
@@ -139,39 +146,51 @@ class Nav extends React.Component {
                 </ModalHeader>
                     <ModalBody style={{ overflowY:"scroll" }}>
                         {/* User Search Results */}
-                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
-                            <BiUserCircle />
-                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Users</span>
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <BiUserCircle/>
+                            <span style={{
+                                fontFamily: "Source Sans Pro",
+                                fontWeight: "600",
+                                marginLeft: "3px"
+                            }}>Users</span>
                         </Box>
                         <SearchResult>
-                            <Gravatar email='blah@blah.com' />
+                            <Gravatar email='blah@blah.com'/>
                             <SearchText>
-                                Pamela M. Beesly<br />
-                                <span style={{ fontWeight:"500", fontSize:"small" }}>pambeesly@dundermifflin.org</span>
+                                Pamela M. Beesly<br/>
+                                <span style={{fontWeight: "500", fontSize: "small"}}>pambeesly@dundermifflin.org</span>
                             </SearchText>
                         </SearchResult>
                         {/* Club Search Results */}
-                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
-                            <GrGroup />
-                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Clubs</span>
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <GrGroup/>
+                            <span style={{
+                                fontFamily: "Source Sans Pro",
+                                fontWeight: "600",
+                                marginLeft: "3px"
+                            }}>Clubs</span>
                         </Box>
                         <SearchResult>
-                            <Gravatar email='blah@blah.com' />
+                            <Gravatar email='blah@blah.com'/>
                             <SearchText>
-                                SlytherintoLibraries<br />
-                                <span style={{ fontWeight:"500", fontSize:"small" }}>21 Members</span>
+                                SlytherintoLibraries<br/>
+                                <span style={{fontWeight: "500", fontSize: "small"}}>21 Members</span>
                             </SearchText>
                         </SearchResult>
                         {/* Club Search Results */}
-                        <Box sx={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
-                            <AiOutlineBook />
-                            <span style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginLeft:"3px" }}>Books</span>
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <AiOutlineBook/>
+                            <span style={{
+                                fontFamily: "Source Sans Pro",
+                                fontWeight: "600",
+                                marginLeft: "3px"
+                            }}>Books</span>
                         </Box>
                         <SearchResult>
-                            <Gravatar email='blah@blah.com' />
+                            <Gravatar email='blah@blah.com'/>
                             <SearchText>
-                                Bob the Builder<br />
-                                <span style={{ fontWeight:"500", fontSize:"small" }}>Keith Chapman</span>
+                                Bob the Builder<br/>
+                                <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
                             </SearchText>
                         </SearchResult>
                     </ModalBody>

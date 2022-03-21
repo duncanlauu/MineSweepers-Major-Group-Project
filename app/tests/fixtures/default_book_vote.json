@@ -1,0 +1,10 @@
+[
+  {
+    "model": "app.BookVote",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "book": "0195153448"
+    }
+  }
+]

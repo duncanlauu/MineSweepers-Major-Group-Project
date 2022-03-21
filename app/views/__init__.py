@@ -3,3 +3,4 @@ from .authentication_views import *
 from .static_views import *
 from .club_views import *
 from .search_view import *
+from .rating_views import *

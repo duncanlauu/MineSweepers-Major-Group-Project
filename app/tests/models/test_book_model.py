@@ -98,8 +98,8 @@ class BookModelTest(TestCase):
     def _assert_book_is_valid(self):
         try:
             self.book.full_clean()
-        except (ValidationError):
-            self.fail('Test user should be valid')
+        except ValidationError:
+            self.fail('Test book should be valid')
 
     def _assert_book_is_invalid(self):
         with self.assertRaises(ValidationError):

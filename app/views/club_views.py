@@ -1,9 +1,4 @@
-from app.models import Club, User, Chat
-from app.helpers import remove_user_from_club, user_in_club, user_is_banned
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from app.models import Club, User
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -12,15 +7,14 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class Clubs(APIView):
-
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
+    def get(self, request):
         clubs = Club.objects.filter(visibility=True)
         serializer = ClubSerializer(clubs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, format=None):
+    def post(self, request):
         partial_club = request.data
         partial_club['owner'] = request.user.id
         serializer = ClubSerializer(data=partial_club)
@@ -33,9 +27,7 @@ class Clubs(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class SingleClub(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -46,12 +38,11 @@ class SingleClub(APIView):
         except Club.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-
     def update(self, request, club):
         serializer = ClubSerializer(club, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):
@@ -61,7 +52,7 @@ class SingleClub(APIView):
         club = Club.objects.get(pk=kwargs['id'])
 
         user = User.objects.get(pk=kwargs['user_id'])
-        
+
         if user:
             club.remove_user_from_club(user)
             if action == 'accept':
@@ -91,20 +82,17 @@ class SingleClub(APIView):
             elif action == 'transfer':
                 club.transfer_ownership(user)
                 return self.update(request, club)
-            
+
             else:
                 return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
-                
+
         elif action == 'update':
             return self.update(request, club)
 
         else:
             return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
-                
-       
 
     def delete(self, request, *args, **kwargs):
         club = Club.objects.get(pk=kwargs['id'])
         club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-

@@ -16,6 +16,7 @@ import json
 # source : https://www.codingforentrepreneurs.com/blog/a-multiple-model-django-search-engine
 
 class SearchView(ListView, APIView):
+    """This is an API for search"""
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
