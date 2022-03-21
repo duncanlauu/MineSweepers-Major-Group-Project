@@ -1,0 +1,34 @@
+[
+  {
+    "model": "app.TimePeriod",
+    "pk": 2,
+    "fields": {
+      "start_time": "2022-03-12T18:00:00+00:00",
+      "end_time": "2022-03-12T19:00:00+00:00"
+    }
+  },
+  {
+    "model": "app.TimePeriod",
+    "pk": 3,
+    "fields": {
+      "start_time": "2022-03-12T18:00:00+00:00",
+      "end_time": "2022-03-12T19:00:00+00:00"
+    }
+  },
+  {
+    "model": "app.TimePeriod",
+    "pk": 4,
+    "fields": {
+      "start_time": "2022-03-12T20:00:00+00:00",
+      "end_time": "2022-03-12T21:00:00+00:00"
+    }
+  },
+  {
+    "model": "app.TimePeriod",
+    "pk": 5,
+    "fields": {
+      "start_time": "2022-03-12T21:00:00+00:00",
+      "end_time": "2022-03-12T22:00:00+00:00"
+    }
+  }
+]

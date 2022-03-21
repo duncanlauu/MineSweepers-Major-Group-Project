@@ -1,0 +1,11 @@
+[
+  {
+    "model": "app.FriendRequest",
+    "pk": 1,
+    "fields": {
+      "sender": 1,
+      "receiver": 4,
+      "created_at": "2013-03-16T17:41:28+00:00"
+    }
+  }
+]
