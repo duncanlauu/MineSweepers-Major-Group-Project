@@ -48,10 +48,10 @@ export default function SignUpRating(props){
     const navigate = useNavigate();
 
     const createRatings = () => {
-        for(let i =0; i<topBooks.length; ++i){
+        for (let [id, rating] of Object.entries(ratings)){
             axiosInstance.post("/ratings/",{
-                book: topBooks[i].id,
-                rating: ratings[topBooks[i].id] * 2
+                book: id,
+                rating: rating * 2
             }).then((res) => {
                 console.log(res)
             })
