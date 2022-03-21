@@ -8,8 +8,8 @@ import { IoIosArrowForward } from 'react-icons/io'
 
 const HomePage = () => {
     return (
-        <Container fluid>
-        <Row style={{ marginBottom:"3rem" }}>
+        <Container fluid style={{ padding:"0px" }}>
+        <Row style={{ marginBottom:"3rem", width:"100%" }}>
             <Nav />
         </Row>
         <Row>

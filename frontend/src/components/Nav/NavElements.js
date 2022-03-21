@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 export const NavMenu = styled.div`
     display: flex;
-    height: 3rem;
-    width: 10rem;
+    height: 100%;
+    float: right;
     justify-content: center;
     align-items: center;
-    margin-right: 5rem;
     > * {
         margin-right: 1rem;
     }

@@ -55,7 +55,7 @@ export default function SignIn() {
     }
 
     return (
-        <div>
+        <div style={{ overflow:"hidden" }}>
             <Row>
                 <Navbar color="light" expand="md" light>
                     <NavbarBrand href="/">

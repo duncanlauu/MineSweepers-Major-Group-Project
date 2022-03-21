@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand } from 'reactstrap'
 import { SignUpContainer, FormLayout, HeadingText, ParaText } from "./CreateClubElements";
 import axiosInstance from '../../axios'
+import Nav from "../Nav/Nav";
 
 export default function CreateClub() {
   const navigate = useNavigate();
@@ -44,14 +45,14 @@ export default function CreateClub() {
   return (
 
 
-    <div id="ParentDiv">
+    <div id="ParentDiv" style={{ overflow:"hidden" }}>
 
       <Row>
-        
+        <Nav />
       </Row>
 
 
-      <Container fluid>
+      <Container fluid style={{ padding:"0px" }}>
         <Row style={{ marginTop: "6rem" }}>
           <Col />
           <Col>

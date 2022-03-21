@@ -32,7 +32,7 @@ class Nav extends React.Component {
     render() {
         return (
             <div>
-                <Container fluid style={{ backgroundColor:"#fff", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <Container fluid style={{ backgroundColor:"#fff", display:"flex", alignItems:"center", justifyContent:"space-between", margin:"0px" }}>
                     <Link to="/home/" style={{ color: "#000" }}>
                         <NavbarBrand style={{ fontFamily:"Source Sans Pro", fontWeight:"600" }}>bookgle</NavbarBrand>
                     </Link>
@@ -43,7 +43,7 @@ class Nav extends React.Component {
                             border:"0px",
                         }} 
                         onClick={this.toggle}>
-                        <Box style={{ backgroundColor:"#ECECEC", height:"3rem", width:"30rem", display:"flex", borderRadius:"100px", alignItems:"center", justifyContent:"flex-end" }}>
+                        <Box style={{ backgroundColor:"#ECECEC", height:"3rem", width:"40rem", display:"flex", borderRadius:"100px", alignItems:"center", justifyContent:"flex-end" }}>
                         <IconButton type='submit'>
                         <BiSearch />
                         </IconButton>
