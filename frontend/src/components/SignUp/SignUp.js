@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import {SignUpContainer, FormLayout} from "./SignUpStyle";
+import { HeadingText, ParaText } from "../Login/LoginElements";
+import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
@@ -9,6 +12,11 @@ import {useNavigate} from "react-router";
 export default function SignUp() {
 
     const navigate = useNavigate();
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const togglePassword = () => {
+      setPasswordVisible(!passwordVisible);
+    }
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
         username: '',
@@ -73,9 +81,10 @@ export default function SignUp() {
                 <Row style={{marginTop: "6rem"}}>
                     <Col/>
                     <Col>
-                        <h1> Sign up for your account </h1>
-                        <p> If you already have one, log in "here" </p>
-
+                        <HeadingText>Create an account</HeadingText><br />
+                        <ParaText>If you already have one, you can log in <Link to="/log_in/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
+                        </Link> .
+                        </ParaText>
                         <SignUpContainer>
                             <FormLayout> {/*  might have to add more info here */}
                                 <Row>

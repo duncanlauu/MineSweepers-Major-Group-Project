@@ -3,9 +3,12 @@ import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBra
 import { HeadingText, LoginContainer, ParaText } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
+import { Link } from 'react-router-dom'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 
 import axiosInstance from '../../axios'
 import { useNavigate, useLocation } from "react-router-dom";
+import { getCircularProgressUtilityClass } from '@mui/material'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -22,6 +25,11 @@ export default function SignIn() {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const togglePassword = () => {
+        setPasswordVisible(!passwordVisible);
+    }
 
     useEffect(() => {
         usernameRef.current.focus()
@@ -72,13 +80,15 @@ export default function SignIn() {
                     <Col />
                     <Col>
                         <HeadingText>Sign into your account</HeadingText><br />
-                        <ParaText>If you haven't created one yet, you can do so here <FaExternalLinkAlt
-                            style={{ height: "15px", color: "#0057FF" }} /> .</ParaText>
+                        <ParaText>
+                            If you haven't created one yet, you can do so <Link to="/sign_up/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
+                            </Link> .
+                        </ParaText>
 
                         <LoginContainer>
                             <form>
                                 <FormGroup>
-                                    <Label>Username</Label>
+                                    <Label><ParaText>Username</ParaText></Label>
                                     <Input
                                         name="username"
                                         onChange={(e) => setUser(e.target.value)}
@@ -89,20 +99,31 @@ export default function SignIn() {
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label>Password</Label>
+                                    <Label><ParaText>Password</ParaText></Label>
+                                    <Container fluid style={{ display: "flex", flexDirection: "row", padding: "0px" }}>
                                     <Input
                                         name="password"
-                                        type="text"
+                                        type={passwordVisible ? "text" : "password"}
                                         onChange={(e) => setPassword(e.target.value)}
                                         value={password}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         required
                                     />
+                                    <Button 
+                                        onClick={togglePassword}
+                                        style={{ backgroundColor: "#653FFD" }}>
+                                    {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }
+                                    </Button>
+                                    </Container>
                                 </FormGroup>
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 4 }}>
-                                        <Button type="submit" onClick={handleSubmit}
-                                            style={{ backgroundColor: "#653FFD", width: "7rem" }}>Sign In</Button>
+                                        <Button 
+                                            type="submit" 
+                                            onClick={handleSubmit}
+                                            style={{ backgroundColor: "#653FFD", width: "7rem" }}>
+                                            Log In
+                                        </Button>
                                     </Col>
                                 </FormGroup>
                             </form>

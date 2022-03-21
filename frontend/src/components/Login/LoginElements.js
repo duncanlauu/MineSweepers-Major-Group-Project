@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export const HeadingText = styled.text`
@@ -18,8 +17,8 @@ export const ParaText = styled.text`
 
 export const LoginContainer = styled.div`
     background-color: #FFF;
-    height: 16rem;
-    width: 30rem;
+    height: 20rem;
+    width: 40rem;
     border-radius: 10px;
     margin-top: 1rem;
 `
