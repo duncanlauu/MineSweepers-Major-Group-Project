@@ -47,7 +47,7 @@ export default class App extends Component {
                 <Route element={<RequireAuth />}>
                   <Route path='home' element={<HomePage/>}/>
                   <Route path='log_out' element={<Logout/>}/>
-                  <Route path='club_profile' element={<ClubProfile/>}/>
+                  <Route path='club_profile/:club_id' element={<ClubProfile />}></Route>
                   <Route path='create_club' element={<CreateClub/>}/>
                   <Route path='notifications' element={<Notifications/>}/>
                   <Route path='friends_page' element={<FriendsPage/>}/>
