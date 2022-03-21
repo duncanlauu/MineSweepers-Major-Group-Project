@@ -3,8 +3,8 @@
     "model": "app.Comment",
     "pk": 2,
     "fields": {
-      "author": 2,
-      "post": 1,
+      "author": 1,
+      "post": 2,
       "content": "This is another test comment.",
       "upvotes": 0,
       "downvotes": 0,
@@ -15,8 +15,8 @@
     "model": "app.Comment",
     "pk": 3,
     "fields": {
-      "author": 2,
-      "post": 1,
+      "author": 1,
+      "post": 2,
       "content": "and another test comment...",
       "upvotes": 0,
       "downvotes": 0,

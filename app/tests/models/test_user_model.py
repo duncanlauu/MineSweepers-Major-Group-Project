@@ -2,7 +2,7 @@
 import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book, FriendRequest
+from app.models import User, Book
 
 
 class UserModelTest(TestCase):
@@ -17,7 +17,6 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
         self.book = Book.objects.get(pk="0195153448")
-        self.friend = User.objects.get(username='jakedoe')
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -31,7 +30,7 @@ class UserModelTest(TestCase):
         self._assert_user_is_valid()
 
     def test_username_cannot_be_over_50_characters_long(self):
-        self.user.username = 'j' + 'x' * 50
+        self.user.username = 'j'+'x' * 50
         self._assert_user_is_invalid()
 
     def test_username_must_be_unique(self):
@@ -179,127 +178,23 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.read_books.count(), 0)
 
     def test_liked_book_count(self):
-        self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
+        self.assertEqual(self.user.liked_books_count(),
+                         self.user.liked_books.count())
         self.user.add_liked_book(self.book)
-        self.assertEqual(self.user.liked_books_count(), self.user.liked_books.count())
+        self.assertEqual(self.user.liked_books_count(),
+                         self.user.liked_books.count())
 
     def test_read_book_count(self):
-        self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
+        self.assertEqual(self.user.read_books_count(),
+                         self.user.read_books.count())
         self.user.add_read_book(self.book)
-        self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
-
-    def test_valid_add_friend(self):
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        friend_count_before = self.user.friends.count()
-        self.user.add_friend(self.friend)
-        friend_count_after = self.user.friends.count()
-        self.assertEqual(friend_count_before + 1, friend_count_after)
-        self.assertTrue(self.user.friends.filter(username=self.friend.username).exists())
-
-    def test_valid_remove_friend(self):
-        self.user.add_friend(self.friend)
-        self.assertTrue(self.user.friends.filter(username=self.friend.username).exists())
-        friend_count_before = self.user.friends.count()
-        self.user.remove_friend(self.friend)
-        friend_count_after = self.user.friends.count()
-        self.assertEqual(friend_count_before - 1, friend_count_after)
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-
-    def test_valid_send_friend_request(self):
-        self.user.send_friend_request(self.friend)
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertTrue(FriendRequest.objects.filter(sender=self.user, receiver=self.friend).exists())
-
-    def test_send_friend_request_to_friend(self):
-        self.user.add_friend(self.friend)
-        self.assertTrue(self.user.friends.filter(username=self.friend.username).exists())
-        self.user.send_friend_request(self.friend)
-        self.assertFalse(FriendRequest.objects.filter(sender=self.user, receiver=self.friend).exists())
-
-    def test_send_friend_request_with_existing_request(self):
-        FriendRequest.objects.create(sender=self.user, receiver=self.friend)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.send_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
-    def test_send_friend_request_to_a_user_who_already_sent_self_a_request(self):
-        FriendRequest.objects.create(sender=self.friend, receiver=self.user)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.send_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
-    def test_valid_accept_friend_request(self):
-        FriendRequest.objects.create(sender=self.friend, receiver=self.user)
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertFalse(self.friend.friends.filter(username=self.user.username).exists())
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.accept_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertTrue(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertTrue(self.friend.friends.filter(username=self.user.username).exists())
-        self.assertEqual(friend_request_count_before - 1, friend_request_count_after)
-
-    def test_accept_friend_request_when_user_is_already_friends(self):
-        self.user.add_friend(self.friend)
-        self.assertTrue(self.user.friends.filter(username=self.friend.username).exists())
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.accept_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
-    def test_accept_friend_request_when_there_are_no_incoming_requests(self):
-        # outgoing request
-        FriendRequest.objects.create(sender=self.user, receiver=self.friend)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.accept_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
-    def test_valid_reject_friend_request(self):
-        FriendRequest.objects.create(sender=self.friend, receiver=self.user)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.reject_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertFalse(self.friend.friends.filter(username=self.user.username).exists())
-        self.assertEqual(friend_request_count_before - 1, friend_request_count_after)
-
-    def test_reject_friend_request_with_a_non_existing_request(self):
-        # outgoing request
-        FriendRequest.objects.create(sender=self.user, receiver=self.friend)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.reject_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertFalse(self.friend.friends.filter(username=self.user.username).exists())
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
-    def test_cancel_friend_request(self):
-        FriendRequest.objects.create(sender=self.user, receiver=self.friend)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.cancel_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertFalse(self.friend.friends.filter(username=self.user.username).exists())
-        self.assertEqual(friend_request_count_before - 1, friend_request_count_after)
-
-    def test_cancel_friend_request_with_a_non_existing_request(self):
-        # incoming request
-        FriendRequest.objects.create(sender=self.friend, receiver=self.user)
-        friend_request_count_before = FriendRequest.objects.count()
-        self.user.cancel_friend_request(self.friend)
-        friend_request_count_after = FriendRequest.objects.count()
-        self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
-        self.assertFalse(self.friend.friends.filter(username=self.user.username).exists())
-        self.assertEqual(friend_request_count_before, friend_request_count_after)
-
+        self.assertEqual(self.user.read_books_count(),
+                         self.user.read_books.count())
 
     def _assert_user_is_valid(self):
         try:
             self.user.full_clean()
-        except ValidationError:
+        except (ValidationError):
             self.fail('Test user should be valid')
 
     def _assert_user_is_invalid(self):

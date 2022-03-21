@@ -11,8 +11,7 @@
           "location": "London, UK",
           "birthday": "2000-01-01",
           "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-          "created_at": "2013-03-16T17:41:29+00:00",
-          "friends": [1]
+          "created_at": "2013-03-16T17:41:29+00:00"
         }
     },
     {
@@ -27,8 +26,7 @@
         "location": "London, UK",
         "birthday": "1987-05-21",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2014-05-16T17:41:29+00:00",
-        "friends": [1]
+        "created_at": "2014-05-16T17:41:29+00:00"
       }
     },
     {
@@ -43,8 +41,7 @@
         "location": "London, UK",
         "birthday": "1985-03-15",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2012-07-11T17:41:29+00:00",
-        "friends": [1]
+        "created_at": "2012-07-11T17:41:29+00:00"
       }
     },
     {
@@ -59,8 +56,7 @@
         "location": "London, UK",
         "birthday": "1983-02-20",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2018-11-09T17:41:29+00:00",
-        "friends": []
+        "created_at": "2018-11-09T17:41:29+00:00"
       }
     },
     {
@@ -75,38 +71,8 @@
         "location": "London, UK",
         "birthday": "1980-01-10",
         "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2009-01-15T17:41:29+00:00",
-        "friends": []
-      }
-    },
-    {
-      "pk": 7,
-      "model": "app.User",
-      "fields": {
-        "first_name":"Amanda",
-        "last_name":"Doe",
-        "username" : "amandadoe",
-        "email" : "amandadoe@example.org",
-        "bio": "Hello, I'm Amanda Doe.",
-        "location": "London, UK",
-        "birthday": "1980-01-10",
-        "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
-        "created_at": "2009-01-15T17:41:29+00:00"
-      }
-    },
-      {
-      "pk": 8,
-      "model": "app.User",
-      "fields": {
-        "first_name":"Steve",
-        "last_name":"Doe",
-        "username" : "stevedoe",
-        "email" : "stevedoe@example.org",
-        "bio": "Hello, I'm Steve Doe.",
-        "location": "London, UK",
-        "birthday": "1980-01-10",
-        "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
         "created_at": "2009-01-15T17:41:29+00:00"
       }
     }
+
 ]
