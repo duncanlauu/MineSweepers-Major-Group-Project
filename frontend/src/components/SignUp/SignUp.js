@@ -4,11 +4,14 @@ import {SignUpContainer, FormLayout} from "./SignUpStyle";
 
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
+import useAuth from '../hooks/useAuth';
 
 
 export default function SignUp() {
 
     const navigate = useNavigate();
+
+    const { setAuth } = useAuth();
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
         username: '',
@@ -32,6 +35,8 @@ export default function SignUp() {
         })
     }
 
+    
+
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("submitting", formData)
@@ -50,9 +55,24 @@ export default function SignUp() {
                 // read_books: [],
             })
             .then((res) => {
-                navigate("/sign_up/rating") // pushes the user to the login page. Add some error checking.
-                console.log(res)
-                console.log(res.data)
+                axiosInstance
+                .post(`token/`, {
+                    username:  formData.username,
+                    password:  formData.password,
+                })
+                .then((response) => {
+                    const access_token = response.data.access
+                    const refresh_token = response.data.refresh
+                    const username = formData.username
+                    localStorage.setItem('access_token', access_token) // receiving the tokens from the api
+                    localStorage.setItem('refresh_token', refresh_token)
+                    localStorage.setItem('username', username) // might not be necessary
+                    axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
+                        'JWT ' + localStorage.getItem('access_token')
+                    
+                    setAuth({ username })
+                    navigate("/sign_up/rating/")
+                })
             })
     }
 

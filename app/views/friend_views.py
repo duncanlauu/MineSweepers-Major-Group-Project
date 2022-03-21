@@ -7,46 +7,30 @@ from app.models import User
 
 class FriendsView(APIView):
     """API View of friends of user"""
-
-    # permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         """Get list of friends of current user"""
         friends = request.user.friends.values()
-        non_friends = User.objects.exclude(id__in=[friend["id"] for friend in friends.all()]).values()
-        # non_friends = request.user.friends.values()
+        non_friends = User.objects.exclude(id__in = [friend["id"] for friend in friends.all()]).values()
         return Response({'friends': friends, "non_friends": non_friends}, status=status.HTTP_200_OK)
 
 
 class FriendView(APIView):
+    """API View of a friend of user"""
     permission_classes = [IsAuthenticated]
-
-    # add allowed methods
-
-    # def get(self, request):
-    #     return Response(status=status.HTTP_200_OK)
 
     def delete(self, request, other_user_id):
         """Delete a friend based on request parameter"""
         try:
             user = request.user
-            other_user_id = self.kwargs['other_user_id']
             other_user = User.objects.get(pk=other_user_id)
             user.remove_friend(other_user)
             other_user.remove_friend(user)
-            # add throw error user doesnt exist?
-            print("deleted user: ", other_user_id)
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-# def get(self, request, *args, **kwargs):
-#         # There is nothing to validate or save here. Instead, we just want the
-#         # serializer to handle turning our `User` object into something that
-#         # can be JSONified and sent to the client.
-#         serializer = self.serializer_class(request.user)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class FriendRequestsView(APIView):
     """API View of friend requests related to user"""
@@ -64,11 +48,10 @@ class FriendRequestsView(APIView):
         try:
             user = request.user
             other_user_id = request.data['other_user_id']
-            other_user = User.objects.get(pk=other_user_id)
+            other_user = User.objects.get(id=other_user_id)
             user.send_friend_request(other_user)
-            print("Request sent to user: ", other_user_id)
             return Response(status=status.HTTP_200_OK)
-        except KeyError:
+        except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
@@ -76,7 +59,7 @@ class FriendRequestsView(APIView):
         try:
             user = request.user
             other_user_id = request.data['other_user_id']
-            other_user = User.objects.get(pk=other_user_id)
+            other_user = User.objects.get(id=other_user_id)
             if request.data['action'] == 'accept':
                 user.accept_friend_request(other_user)
                 return Response(status=status.HTTP_200_OK)
@@ -88,5 +71,5 @@ class FriendRequestsView(APIView):
                 return Response(status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-        except KeyError:
+        except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

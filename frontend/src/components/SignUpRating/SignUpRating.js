@@ -13,7 +13,7 @@ export default function SignUpRating(props){
 
     const [ratings, setRatings] = useState({})
     const [topBooks, setTopBooks] = useState([])
-    const user =  useGetUser();
+
 
 
 
@@ -23,15 +23,21 @@ export default function SignUpRating(props){
 
     const getTopBooks = () => {
                 axiosInstance
-                    .get(`/recommender/0/12/top_n_global/`, {})
-                    .then((res) => {
-                        let book_list = []
-                        for (let i = 0; i < res.data.length; ++i) {
-                            book_list.push({id: res.data[i]['book'], name: res.data[i]['book']})
+                    .post(`/recommender/0/12/top_n_global/`, {})
+                    .then(() => {
+                        axiosInstance
+                        .get(`/recommender/0/12/top_n_global/`, {})
+                        .then((res) => {
+                            let books =[]
+                            res.data.map((book) => {
+                                books.push(book.book)
+                            })
+                            console.log(books)
+                            setTopBooks(books)
                         }
-                        setTopBooks(book_list)
-                        console.log("Book list: " + book_list)
-                        console.log(topBooks) 
+                        ).catch((err) => {
+                        console.log(err)
+                })
                     }).catch((err) => {
                     console.log(err)
                 })
@@ -43,9 +49,8 @@ export default function SignUpRating(props){
 
     const createRatings = () => {
         for(let i =0; i<topBooks.length; ++i){
-            axiosInstance.post("",{
-                user_id: user.id,
-                book_id: topBooks[i].id,
+            axiosInstance.post("/ratings/",{
+                book: topBooks[i].id,
                 rating: ratings[topBooks[i].id]
             }).catch((err) => {
                 console.log(err)
@@ -57,7 +62,7 @@ export default function SignUpRating(props){
         e.preventDefault()
         createRatings().then( response =>{
             axiosInstance.post("/recommender/retrain").then(() => {
-                navigate("/log_in/")
+                navigate("/home/")
             }).catch((err) => {
                 console.log(err)
             })
@@ -66,6 +71,8 @@ export default function SignUpRating(props){
         
         
     }
+
+    
 
     
 
@@ -83,14 +90,30 @@ export default function SignUpRating(props){
             const copyRatings = {...ratings}
             delete copyRatings[id] 
             setRatings(copyRatings)
-            console.log("Ratings after deletion: " + JSON.stringify(ratings))
         }
         //console.log("Books: " + JSON.stringify(topBooks, null))
     };
 
 
    
+    const createRows = () => {
+        let rows =[]
+        for (let i=0; i<3; ++i){
+            let row = []
+            for (let j=0; j<4; ++j){
+                row.push(
+                    <Col md="3">
+                       <BookRatingCard id={topBooks[i*4+j].ISBN} title={topBooks[i*4+j].title} author={topBooks[i*4+j].author}
+                        image ={topBooks[i*4+j].image_links_large} parentCallBack={handleChange}/>
+                    </Col>
+                )
+                
+            }
+        rows.push(<Row style={{marginTop: "6rem"}}>{row}</Row>)
+        }
 
+        return rows
+}
 
   
 const displayBooks = (e) => {
@@ -106,11 +129,7 @@ const displayBooks = (e) => {
             </Navbar>
         </Row>
         <Container fluid>
-            <Row style={{marginTop: "6rem"}}>
-                <Col>
-                <BookRatingCard image ='https://picsum.photos/318/270' title='Simon book' author='Simon' id={2} parentCallBack={handleChange}/> 
-                </Col> 
-            </Row>  
+                {createRows()}
             <Row>
                 <Col sm={{size: 10, offset: 5}}>
                     <Button
@@ -134,11 +153,27 @@ const displayBooks = (e) => {
     );
 }
 
-
+if(topBooks.length > 0){
 return( 
     <>
     {displayBooks(props)}
     </>
 )
-
+}else{
+    return (
+        <div id="ParentDiv">
+                <Row>
+                </Row>
+                <Container fluid>
+                    <Row style={{marginTop: "6rem"}}>
+                        <Col/>
+                        <Col>
+                           <>Hi</>
+                        </Col>
+                        <Col/>
+                    </Row>
+                </Container>
+            </div>
+    )
+}
 }
