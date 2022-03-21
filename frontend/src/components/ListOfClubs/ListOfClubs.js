@@ -1,65 +1,153 @@
-import React from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col, Button, CardImg, CardBody, CardTitle, CardSubtitle, Card } from 'reactstrap'
 import { HeadingText, ParaText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import axiosInstance from '../../axios'
 import Gravatar from 'react-gravatar'
+import { ClubProfile } from '../ClubProfile/ClubProfileElements'
+import {VariableWidthGrid} from 'react-variable-width-grid'
+import { Link } from 'react-router-dom'
 
-function IndividualClubsCard(props) {
+// function IndividualClubsCard(props) {
+//   return (
+//     // <Container fluid>
+//     //   <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
+//     //   <HeadingText>{props.name}</HeadingText>
+//     //   <Button>Apply</Button>
+//     // </Container>
+    
+//   )
+// }
+
+// export default class ListOfClubs extends React.Component {
+
+//   constructor() {
+//     super();
+
+//     this.state = {
+//       clubs: []
+//     }
+//   }
+
+//   componentDidMount() {
+//     axiosInstance.get(`clubs/`).then(
+//       response => {
+//         console.log(response)
+//         this.setState({
+//           clubs: response.data
+//         });
+//       }
+//     )
+//   }
+
+//   render() {
+//     return (
+//       <Container fluid>
+//         <Row style={{ marginBottom: "3rem" }}>
+//             <Nav />
+//         </Row>
+//         <Row>
+//             <Col />
+//             <Col xs={8}>
+//                 <HeadingText>Club Database</HeadingText>
+//                 <ul>
+//                   {this.state.clubs.map(club =>
+//                       <li>
+//                         <IndividualClubsCard
+//                           name={club.name}
+//                         />
+//                       </li>
+//                     )
+//                   }
+//                 </ul>
+//             </Col>
+//             <Col />
+//         </Row>
+//       </Container>
+//     )
+//   }
+// }
+
+function IndividualClubBox(props) {
+  return(
+    <Container fluid style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
+      Name<br />
+      Members
+      <Button>Visit</Button>
+    </Container>
+  );
+}
+
+
+function ListOfClubs() {
+  const [clubs, setClubs] = useState([]);
+  const columnsPerRow = 4;
+
+  const getClubs = () => {
+    axiosInstance
+      .get(`clubs/`)
+      .then(res => {
+        console.log(res);
+        setClubs(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  const getColumnsForRow = () => {
+    const items = clubs.map((club, index) => {
+      if (index % columnsPerRow === 0) {
+        return (
+          <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <Gravatar email='blah@blah.com' style={{ borderRadius:"100px", marginTop:"1rem" }} />
+            <CardBody>
+              <CardTitle>{club.name}</CardTitle>
+              <CardSubtitle>{club.id}</CardSubtitle>
+              <Link to={`/club_profile/${club.id}`}>
+                <Button>Visit Profile</Button>
+              </Link>
+            </CardBody>
+          </Card>
+        );
+      }
+      return (
+        <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <Gravatar email='blah@blah.com' style={{ borderRadius:"100px", marginTop:"1rem" }} />
+          <CardBody>
+            <CardTitle>{club.name}</CardTitle>
+            <CardSubtitle>{club.id}</CardSubtitle>
+            <Link to={`/club_profile/${club.id}`}>
+                <Button>Visit Profile</Button>
+              </Link>
+          </CardBody>
+        </Card>
+      );
+    })
+
+    return <VariableWidthGrid>{items}</VariableWidthGrid>
+  }
+
+  useEffect(() => {
+    getClubs();
+  }, [])
+
   return (
     <Container fluid>
-      <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
-      <HeadingText>{props.name}</HeadingText>
-      <Button>Apply</Button>
+      <Row style={{ marginBottom: "3rem" }}>
+        <Nav />
+      </Row>
+      <Row xs={1} md={columnsPerRow}>
+        <Col xs={2} />
+        <Col xs={8}>
+          <HeadingText>Club Database</HeadingText>
+          {getColumnsForRow()}
+        </Col>
+        <Col xs={2} />
+      </Row>
     </Container>
   )
 }
 
-export default class ListOfClubs extends React.Component {
-
-  constructor() {
-    super();
-
-    this.state = {
-      clubs: []
-    }
-  }
-
-  componentDidMount() {
-    axiosInstance.get(`clubs/`).then(
-      response => {
-        console.log(response)
-        this.setState({
-          clubs: response.data
-        });
-      }
-    )
-  }
-
-  render() {
-    return (
-      <Container fluid>
-        <Row style={{ marginBottom: "3rem" }}>
-            <Nav />
-        </Row>
-        <Row>
-            <Col />
-            <Col xs={8}>
-                <HeadingText>Club Database</HeadingText>
-                <ul>
-                  {this.state.clubs.map(club =>
-                      <li>
-                        <IndividualClubsCard
-                          name={club.name}
-                        />
-                      </li>
-                    )
-                  }
-                </ul>
-            </Col>
-            <Col />
-        </Row>
-      </Container>
-    )
-  }
-}
+export default ListOfClubs

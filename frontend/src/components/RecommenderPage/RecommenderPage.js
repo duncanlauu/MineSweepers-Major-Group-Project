@@ -114,12 +114,13 @@ const RecommenderPage = () => {
       </Row>
       <Row>
       <Col />
-        <Col xs={8}>
+        <Col xs={6}>
           <HeadingText>Books For You</HeadingText><br />
           <FilterButton onClick={returnFictionRecommendations}>Display my Genre Recommendations</FilterButton><br />
           <FilterButton onClick={returnTop10Recommendations}>Display my Recommendations</FilterButton><br />
           <FilterButton onClick={returnGlobalTop10Recommendations}>Display my Global Recommendations</FilterButton><br />
           <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Display my Global Genre Recommendations</FilterButton><br />
+          
             <ul>
               {bookRecommendations.map(
                 bookRecommendation =>
