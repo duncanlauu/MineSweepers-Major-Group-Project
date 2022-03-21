@@ -8,7 +8,7 @@ function ClubApplicants() {
         <div style={{alignContent: "center", justifyContent: "center"}}>
             <BookProfile>
                 <Col xs={3}>
-                    <Gravatar email='blah@blah.com' size={70}></Gravatar>
+                    <Gravatar email='blah@blah.com' size={70}/>
                 </Col>
                 <Col xs={9}>
                 </Col>

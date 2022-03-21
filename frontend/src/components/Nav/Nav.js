@@ -21,6 +21,7 @@ class Nav extends React.Component {
             modal: false
         };
         this.toggle = this.toggle.bind(this);
+        this.isAuthenticated = this.props.isAuthenticated;
     }
 
     toggle() {
@@ -41,7 +42,9 @@ class Nav extends React.Component {
                     <Link to="/home/" style={{color: "#000"}}>
                         <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
                     </Link>
-                    <Button
+                    {this.isAuthenticated ?
+                        <>
+                        <Button
                         type='button'
                         style={{
                             backgroundColor: "#FFF",
@@ -89,6 +92,9 @@ class Nav extends React.Component {
                         </Link>
                         <AccountCircleIcon fontSize='large'/>
                     </NavMenu>
+                        </>
+                        : <></>
+                    }
                 </Container>
                 <Modal
                     isOpen={this.state.modal}
@@ -175,3 +181,7 @@ class Nav extends React.Component {
 }
 
 export default Nav
+
+Nav.defaultProps = {
+    isAuthenticated: true
+}

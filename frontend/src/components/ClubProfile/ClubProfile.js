@@ -29,7 +29,7 @@ function ProfileBody() {
                     backgroundColor: "#653FFD",
                     border: "0px"
                 }}>Apply</Button>
-                <hr style={{width: "34rem", opacity: "0.2"}}></hr>
+                <hr style={{width: "34rem", opacity: "0.2"}}/>
             </Row>
             <Row>
                 <h3 style={{fontFamily: "Source Sans Pro", marginTop: "2rem", fontWeight: "600"}}>Reading History</h3>
@@ -37,7 +37,7 @@ function ProfileBody() {
             <Row>
                 <BookProfile>
                     <Col xs={4}>
-                        <Gravatar email='blah@blah.com' size={80} style={{margin: "1rem"}}></Gravatar>
+                        <Gravatar email='blah@blah.com' size={80} style={{margin: "1rem"}}/>
                     </Col>
                     <Col xs={8}>
                         <h4 style={{

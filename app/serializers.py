@@ -122,7 +122,14 @@ class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
         model = GlobalBookRecommendation
         fields = '__all__'
 
+
 class BookRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRating
+        fields = '__all__'
+
+
+class MeetingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
         fields = '__all__'
