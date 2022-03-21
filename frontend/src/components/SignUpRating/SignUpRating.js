@@ -51,8 +51,11 @@ export default function SignUpRating(props){
         for(let i =0; i<topBooks.length; ++i){
             axiosInstance.post("/ratings/",{
                 book: topBooks[i].id,
-                rating: ratings[topBooks[i].id]
-            }).catch((err) => {
+                rating: ratings[topBooks[i].id] * 2
+            }).then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
                 console.log(err)
             })         
         }
@@ -60,13 +63,10 @@ export default function SignUpRating(props){
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        createRatings().then( response =>{
-            axiosInstance.post("/recommender/retrain").then(() => {
-                navigate("/home/")
-            }).catch((err) => {
-                console.log(err)
-            })
-        })
+        createRatings()
+        console.log("submitting", ratings)
+        //navigate("/home/")
+            
 
         
         
