@@ -6,7 +6,7 @@ export const NavMenu = styled.div`
     width: 10rem;
     justify-content: center;
     align-items: center;
-    margin-right: 5rem;
+    margin-right: 8rem;
     > * {
         margin-right: 1rem;
     }
