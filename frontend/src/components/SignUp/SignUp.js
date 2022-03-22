@@ -3,7 +3,7 @@ import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBran
 import {SignUpContainer, FormLayout} from "./SignUpStyle";
 
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 
 
 export default function SignUp() {
@@ -33,7 +33,7 @@ export default function SignUp() {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("submitting", formData)
-
+        
         axiosInstance
             .post(`user/sign_up/`, { // the url is expanded to api/user/sign_up/. Creating key-value pairs in JSON format that the API then can work with.
                 username: formData.username,
@@ -48,10 +48,11 @@ export default function SignUp() {
                 // read_books: [],
             })
             .then((res) => {
-                navigate("/log_in/") // pushes the user to the login page. Add some error checking.
+                navigate("/log_in/")// pushes the user to the login page. Add some error checking.
                 console.log(res)
                 console.log(res.data)
             })
+            
     }
 
     // Todo: move styles to a CSS file?
