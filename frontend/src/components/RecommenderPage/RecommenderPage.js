@@ -144,10 +144,10 @@ const RecommenderPage = () => {
       <Col />
         <Col xs={6}>
           <HeadingText>Books For You</HeadingText><br />
-          <FilterButton onClick={returnFictionRecommendations}>Display my Genre Recommendations</FilterButton><br />
-          <FilterButton onClick={returnTop10Recommendations}>Display my Recommendations</FilterButton><br />
-          <FilterButton onClick={returnGlobalTop10Recommendations}>Display my Global Recommendations</FilterButton><br />
-          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Display my Global Genre Recommendations</FilterButton><br />
+          <FilterButton onClick={returnFictionRecommendations}>My Genre Recommendations</FilterButton><br />
+          <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br />
+          <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br />
+          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global Genre Top 10</FilterButton><br />
           <LoadingIndicator />
           
             <ul>
