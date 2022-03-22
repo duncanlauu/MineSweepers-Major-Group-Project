@@ -5,8 +5,11 @@ import {BookProfile} from './ClubProfileElements';
 import axiosInstance from '../../axios';
 import { useParams } from 'react-router-dom';
 import useGetUser from '../../helpers';
+import {useNavigate} from "react-router";
 
 const LandingProfile = () => {
+
+    const navigate = useNavigate()
 
     const { club_id } = useParams();
     console.log("Club ID: " + club_id);
@@ -83,6 +86,13 @@ const LandingProfile = () => {
                     <Col xs={8}>
                     </Col>
                 </BookProfile>
+            </Row>
+            <Row>
+                <Button
+                    onClick={(e) => navigate(`/scheduling/${club_id}`)}
+                    >
+                        Schedule a meeting
+                </Button>
             </Row>
         </Container>
     );
