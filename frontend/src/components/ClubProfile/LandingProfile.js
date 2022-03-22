@@ -5,11 +5,8 @@ import {BookProfile} from './ClubProfileElements';
 import axiosInstance from '../../axios';
 import { useParams } from 'react-router-dom';
 import useGetUser from '../../helpers';
-import {useNavigate} from "react-router";
 
 const LandingProfile = () => {
-
-    const navigate = useNavigate()
 
     const { club_id } = useParams();
     console.log("Club ID: " + club_id);
