@@ -6,7 +6,7 @@ import {HeadingText} from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import {RecommenderContainer} from './RecommenderPageElements'
 import {Link} from "@material-ui/core";
-import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
 
 const ClubRecommendationPage = () => {
@@ -18,10 +18,9 @@ const ClubRecommendationPage = () => {
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function returnTop10Recommendations() {
-        axiosInstance
-        .post(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`, {})
-        .then(res => {
-            trackPromise(
+        trackPromise(axiosInstance
+            .post(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`, {})
+            .then(res => {
                 axiosInstance
                     .get(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`)
                     .then(res => {
@@ -29,16 +28,17 @@ const ClubRecommendationPage = () => {
                         setClubRecommendations(res.data)
                     })
                     .catch(error => {
-                        console.log(error);
-                    })
-            )
-        })
-        .catch(error => {
-            console.log(error);
-        })
+                            console.log(error);
+                        }
+                    )
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        )
     }
 
-    const LoadingIndicator = (props) => {
+    const LoadingIndicator = () => {
 
         const {promiseInProgress} = usePromiseTracker();
 
@@ -68,7 +68,7 @@ const ClubRecommendationPage = () => {
                 <Col xs={8}>
                     <Button onClick={returnTop10Recommendations}>Display my Recommendations</Button><br/>
                     <HeadingText>Clubs For You</HeadingText>
-                    <LoadingIndicator />
+                    <LoadingIndicator/>
                     <RecommenderContainer>
                         <ul>
                             {clubRecommendations.map(
