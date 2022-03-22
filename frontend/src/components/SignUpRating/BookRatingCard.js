@@ -16,14 +16,19 @@ export default function BookRatingCard(props){
 
 
 
-    const ratingChanged = (newRating) => {
+    const ratingChanged = async (newRating) => {
+        console.log("Rating changed: " + newRating + " previous rating: " + rate)
+        props.parentCallBack([id], newRating)
         setRating(newRating)
-        props.parentCallBack({id, rate})
+        
+        
 
       }
 
     const clearRating = () => {
         setRating(0)
+        props.parentCallBack([id], 0)
+        
 
     }
 

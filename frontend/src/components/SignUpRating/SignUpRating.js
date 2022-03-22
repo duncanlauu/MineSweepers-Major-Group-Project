@@ -13,6 +13,7 @@ export default function SignUpRating(props){
 
     const [ratings, setRatings] = useState({})
     const [topBooks, setTopBooks] = useState([])
+    const[toggle , setToggle] = useState(true)
 
 
 
@@ -61,37 +62,25 @@ export default function SignUpRating(props){
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
         createRatings()
-        console.log("submitting", ratings)
-        //navigate("/home/")
-            
+        //await axiosInstance.post("/recommender/retrain", {})
+        navigate("/home/")
 
-        
-        
     }
 
-    
-
-    
-
-   
-
-    const handleChange = ({id, rate}) => {
-        //console.log("Child data:  id:" + id + " rating: " + rate)
+    const handleChange = ([id], rate) => {
+        
         if(rate > 0){
-        setRatings(prevState => ({
-            ...prevState,
-            [id]: rate
-        }));
-        //console.log("new ratings: " + JSON.stringify(ratings))
+            ratings[id] = rate
         } else {
-            const copyRatings = {...ratings}
-            delete copyRatings[id] 
-            setRatings(copyRatings)
-        }
-        //console.log("Books: " + JSON.stringify(topBooks, null))
+            delete ratings[id]
+        }   
+        setRatings(ratings)
+        setToggle(Object.keys(ratings).length === 0)
+        console.log("submitting", ratings)
+
     };
 
 
@@ -135,7 +124,7 @@ const displayBooks = (e) => {
                     <Button
                     type="submit"
                     className="submit"
-                    disabled={Object.keys(ratings).length === 0}
+                    disabled={toggle}
                     onClick={handleSubmit}
                     style={{backgroundColor: "#653FFD", width: "7rem"}}
                     >
