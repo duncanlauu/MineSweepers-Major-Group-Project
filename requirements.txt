@@ -84,5 +84,4 @@ whitenoise==6.0.0
 wrapt==1.10.11
 zope.interface==5.4.0
 psycopg2
-pytest~=6.2.5
 icalendar==4.0.9
