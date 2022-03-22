@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from app.models import User
 
-class PasswordResetTest(APITestCase):
 
+class PasswordResetTest(APITestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json']
 
@@ -12,13 +12,13 @@ class PasswordResetTest(APITestCase):
     send_reset_password_email_url = "/api/auth/users/reset_password/"
     confirm_reset_password_url = "/api/auth/users/reset_password_confirm/"
 
-
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
         self.login_data = {
             "username": self.user.username,
             "password": self.user.password,
         }
+
     # Test case based on: https://saasitive.com/tutorial/django-rest-framework-reset-password/
     def test_reset_password(self):
         data = {"email": self.user.email}

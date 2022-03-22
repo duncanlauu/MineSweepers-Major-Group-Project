@@ -1,4 +1,3 @@
-from email import message
 import pytest
 import json
 from django.conf.urls import url
@@ -9,8 +8,8 @@ from channels.db import database_sync_to_async
 from channels.testing import WebsocketCommunicator
 from channels.routing import URLRouter
 
-class WebsocketConsumerTest(TransactionTestCase):
 
+class WebsocketConsumerTest(TransactionTestCase):
     fixtures = [
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/default_chat.json',
@@ -22,9 +21,8 @@ class WebsocketConsumerTest(TransactionTestCase):
 
     default_chat_url = "ws/chat/1/"
     application = URLRouter([
-            url(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer.as_asgi()),
-        ])
-
+        url(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer.as_asgi()),
+    ])
 
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
@@ -37,7 +35,7 @@ class WebsocketConsumerTest(TransactionTestCase):
     @pytest.mark.asyncio
     async def test_connect_to_websocket(self):
         communicator = WebsocketCommunicator(
-            application= self.application, path=self.default_chat_url
+            application=self.application, path=self.default_chat_url
         )
         connected, subprotocol = await communicator.connect()
         assert connected
@@ -46,15 +44,15 @@ class WebsocketConsumerTest(TransactionTestCase):
     @pytest.mark.asyncio
     async def test_fetch_messages(self):
         communicator = WebsocketCommunicator(
-            application= self.application, path=self.default_chat_url
+            application=self.application, path=self.default_chat_url
         )
         connected, subprotocol = await communicator.connect()
         assert connected
 
         await communicator.send_json_to({
-            "command": "fetch_messages", 
-            "username":self.user.username, 
-            "chatId":self.default_chat.id
+            "command": "fetch_messages",
+            "username": self.user.username,
+            "chatId": self.default_chat.id
         })
         json_response = await communicator.receive_from()
         chat_messages = json.loads(json_response)["messages"]
@@ -67,15 +65,15 @@ class WebsocketConsumerTest(TransactionTestCase):
         new_message_content = "New Message Content"
         number_of_chat_messages_before = await self._get_chat_messages_count(self.default_chat)
         communicator = WebsocketCommunicator(
-            application= self.application, path=self.default_chat_url
+            application=self.application, path=self.default_chat_url
         )
         connected, subprotocol = await communicator.connect()
         assert connected
         await communicator.send_json_to({
-            "command": "new_message", 
-            "from":self.user.username, 
-            "message":new_message_content, 
-            "chatId":self.default_chat.id
+            "command": "new_message",
+            "from": self.user.username,
+            "message": new_message_content,
+            "chatId": self.default_chat.id
         })
         json_response = await communicator.receive_from()
         new_message = json.loads(json_response)["message"]
@@ -88,18 +86,17 @@ class WebsocketConsumerTest(TransactionTestCase):
 
         await communicator.disconnect()
 
-    
     @database_sync_to_async
     def _get_chat_messages_count(self, chat):
         return chat.messages.count()
-    
+
     @database_sync_to_async
     def _get_chat_messages(self, chat):
         return list(chat.messages.all())
 
     @database_sync_to_async
     def _get_chat_message_by_id(self, id):
-        return Message.objects.get(id = id)
+        return Message.objects.get(id=id)
 
     @database_sync_to_async
     def _get_message_author(self, message):

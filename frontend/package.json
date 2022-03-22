@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "https://book-club-minesweepers.herokuapp.com/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -52,6 +51,8 @@
     "react-dom": "^17.0.2",
     "react-gravatar": "^2.6.3",
     "react-icons": "^4.3.1",
+    "react-loader-spinner": "^6.0.0-0",
+    "react-promise-tracker": "^2.1.0",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "reactstrap": "^9.0.1",

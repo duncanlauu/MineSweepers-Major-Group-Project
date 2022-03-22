@@ -13,11 +13,11 @@ class Chat extends React.Component {
     currentUser = null;
 
     initialiseChat() {
-        this.setState({ chatID: this.props.chatID })
+        this.setState({chatID: this.props.chatID})
         this.currentUser = localStorage.username
         WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
-        if(this.state.chatID != undefined) {
+        if (this.state.chatID != undefined) {
             this.waitForSocketConnection(() => {
                 WebSocketInstance.fetchMessages(
                     this.currentUser,
@@ -50,16 +50,16 @@ class Chat extends React.Component {
 
     addMessage(message) {
         if (!(JSON.stringify(message) === JSON.stringify(this.state.messages[this.state.messages.length - 1]))) { //fix duplicate messages when sending, horrible implementation
-            this.setState({ messages: [...this.state.messages, message] });
+            this.setState({messages: [...this.state.messages, message]});
         }
     }
 
     setMessages(messages) {
-        this.setState({ messages: messages.reverse() });
+        this.setState({messages: messages.reverse()});
     }
 
     messageChangeHandler = (event) => {
-        this.setState({ message: event.target.value });
+        this.setState({message: event.target.value});
     }
 
     sendMessageHandler = (e) => {
@@ -71,7 +71,7 @@ class Chat extends React.Component {
             chatId: this.props.chatID,
         };
         WebSocketInstance.newChatMessage(messageObject);
-        this.setState({ message: '' });
+        this.setState({message: ''});
     }
 
     leaveChatHandler = (e) => {
@@ -109,16 +109,16 @@ class Chat extends React.Component {
         return messages.map((message, i, arr) => (
             <li
                 key={message.id}
-                style={{ marginBottom: arr.length - 1 === i ? '300px' : '15px' }}
+                style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png" /> 
+                <img src="http://emilcarlsson.se/assets/mikeross.png"/>
                 <p>
                     <small>
                         {message.author}
                     </small>
-                    <br />
+                    <br/>
                     {message.content}
-                    <br />
+                    <br/>
                     <small>
                         {this.renderTimestamp(message.timestamp)}
                     </small>
@@ -128,7 +128,7 @@ class Chat extends React.Component {
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEnd.scrollIntoView({behavior: "smooth"});
     }
 
     componentDidMount() {
@@ -154,7 +154,7 @@ class Chat extends React.Component {
         console.log(newProps.chatID);
 
         if (newProps.chatID !== prevState.chatID) {
-            return { chatID: newProps.chatID };
+            return {chatID: newProps.chatID};
         } else {
             return null
         }
@@ -173,15 +173,17 @@ class Chat extends React.Component {
                 <div className="messages">
                     {invalidChatID
                         ? <h3>Select a chat! or refactor this to select a chat?</h3>
-                        : <div></div>
+                        : <div/>
                     }
                     <ul id="chat-log">
                         {
                             messages &&
                             this.renderMessages(messages)
                         }
-                        <div style={{ float: "left", clear: "both" }}
-                            ref={(el) => { this.messagesEnd = el; }}>
+                        <div style={{float: "left", clear: "both"}}
+                             ref={(el) => {
+                                 this.messagesEnd = el;
+                             }}>
                         </div>
                     </ul>
                 </div>
@@ -194,7 +196,7 @@ class Chat extends React.Component {
                                 required
                                 id="chat-message-input"
                                 type="text"
-                                placeholder="Write your message..." />
+                                placeholder="Write your message..."/>
                             <i className="fa fa-paperclip attachment" aria-hidden="true"></i>
                             <button id="chat-message-submit" className="submit">
                                 <i className="fa fa-paper-plane" aria-hidden="true"></i>

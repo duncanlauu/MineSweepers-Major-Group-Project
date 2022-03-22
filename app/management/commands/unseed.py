@@ -1,5 +1,15 @@
 from django.core.management.base import BaseCommand
-from app.models import Book, User, Club
+from app.models import Book, User, BookRating, TimePeriod, Meeting, Post, Club
+
+
+def print_info():
+    print(f'Number of users: {User.objects.count()}')
+    print(f'Number of books: {Book.objects.count()}')
+    print(f'Number of book ratings: {BookRating.objects.count()}')
+    print(f'Number of clubs: {Club.objects.count()}')
+    print(f'Number of posts: {Post.objects.count()}')
+    print(f'Number of meetings: {Meeting.objects.count()}')
+    print(f'Number of time periods: {TimePeriod.objects.count()}')
 
 
 class Command(BaseCommand):
@@ -7,6 +17,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Do not remove superusers
+        print_info()
         User.objects.filter(is_superuser=False, is_staff=False).delete()
         Book.objects.all().delete()
-        Club.objects.all().delete()
+        TimePeriod.objects.all().delete()
+        print_info()
