@@ -14,6 +14,8 @@ export default function SignIn() {
         email: '',
     });
 
+    const [emailErr, setEmailErr] = useState('')
+
     const [formData, updateFormData] = useState(initialFormData)
 
     const handleChange = (e) => {
@@ -35,6 +37,9 @@ export default function SignIn() {
             .then((response) => {
                 console.log(response)
                 navigate("/home") // should go to a webiste that says password reset email sent
+            })
+            .catch((e) => {
+                setEmailErr(e.response.data.email)
             })
     }
 
@@ -65,6 +70,7 @@ export default function SignIn() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{emailErr}</div>
                                 <FormGroup>
                                     <Col sm={{size: 10, offset: 4}}>
                                         <Button type="submit" onClick={handleSubmit}
