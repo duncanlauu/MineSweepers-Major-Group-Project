@@ -9,7 +9,8 @@ from app.models import User
 class GenresViewTestCase(APITestCase):
     """Tests of the genres API"""
 
-    fixtures = ['app/tests/fixtures/default_user.json']
+    fixtures = ['app/tests/fixtures/default_user.json',
+                'app/tests/fixtures/other_users.json']
 
     def setUp(self):
         seed_books()
