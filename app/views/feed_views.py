@@ -64,20 +64,15 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            if post.author == user:
-                # can edit post if user is author of post
+            if request.data['action'] == 'edit' and post.author == user:
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            if is_post_visible_to_user(user, post):  
-                # anyone other than user that can view the post can upvote or downvote post
+            if is_post_visible_to_user(user, post):
                 if request.data['action'] == 'upvote':
-                    post.upvote_post()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    post.downvote_post()
+                    post.upvote_post(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -152,7 +147,7 @@ class CommentView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
-            if comment.author == request.user:
+            if request.data['action'] == 'edit' and comment.author == request.user:
                 serializer = CommentSerializer(comment, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
@@ -160,10 +155,7 @@ class CommentView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post:
                 if request.data['action'] == 'upvote':
-                    comment.upvote()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    comment.downvote()
+                    comment.upvote(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -243,24 +235,18 @@ class ReplyView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
-            # TODO: what happens when user tries to upvote their own reply, serializers.errors does not
-            #       return anything
-            if reply.author == request.user:
-                reply_serializer = ReplySerializer(Reply, data=request.data, partial=True)
+            if request.data['action'] == 'edit' and reply.author == request.user:
+                reply_serializer = ReplySerializer(reply, data=request.data, partial=True)
                 if reply_serializer.is_valid():
-                    # TODO: Edit reply does not save here, throws 400
                     reply_serializer.save()
                     return Response(reply_serializer.data, status=status.HTTP_200_OK)
                 return Response(reply_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post and reply.comment == comment:
                 if request.data['action'] == 'upvote':
-                    reply.upvote()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    reply.downvote()
+                    reply.upvote(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except Reply.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # TODO: refactor, comment id not used
