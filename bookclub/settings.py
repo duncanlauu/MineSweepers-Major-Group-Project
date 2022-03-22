@@ -103,17 +103,36 @@ WSGI_APPLICATION = 'bookclub.wsgi.application'
 #         }
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dco7p9s2fp0tam',
-        'USER': 'uflcnzgmessgqt',
-        'PASSWORD': '75f008b5946201dc800a281426e86990a7077799f1913e0d8233d8d72641f2786',
-        'HOST': 'ec2-52-49-68-244.eu-west-1.compute.amazonaws.comm',
-        'PORT': 5432,
+if 'test' in sys.argv:
+    #Configuration for test database
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'dbh123gjgqbd04',
+            'USER': 'ipukcjnejhfwed',
+            'PASSWORD': '10193bd10981ee6c18b6198031a62f5a6a8ddf9e42a49792d2b59d22c9726e18',
+            'HOST': 'ec2-99-80-170-190.eu-west-1.compute.amazonaws.com',
+            'PORT': 5432,
+            'TEST': {
+                'NAME': 'dbh123gjgqbd04', #This is an important entry
+            }
+        }
     }
-}
+else:
+    #Default configuration
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'dco7p9s2fp0tam',
+            'USER': 'uflcnzgmessgqt',
+            'PASSWORD': '75f008b5946201dc800a281426e86990a7077799f1913e0d8233d8d72641f2786',
+            'HOST': 'ec2-52-49-68-244.eu-west-1.compute.amazonaws.comm',
+            'PORT': 5432,
+            'TEST': {
+                'NAME': 'dco7p9s2fp0tam', #This is an important entry
+            }
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
