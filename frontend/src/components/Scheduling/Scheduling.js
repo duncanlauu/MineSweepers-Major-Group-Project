@@ -27,9 +27,11 @@ export default function Scheduling() {
     }, []);
 
     const getRecommendedBooks = () => {
+        console.log("0")
         axiosInstance
             .post(`recommender/0/10/${club_id}/top_n_for_club/`, {})
             .then(() => {
+                console.log("1")
                 axiosInstance
                     .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
                     .then((res) => {
@@ -82,8 +84,6 @@ export default function Scheduling() {
                 navigate(`/club_profile/${club_id}`)
             })
             .catch((e) => {
-                console.log("asdsdasds")
-                console.log(e.response.data)
                 setNameErr(e.response.data.name)
                 setDescriptionErr(e.response.data.description)
                 setBookErr(e.response.data.book)

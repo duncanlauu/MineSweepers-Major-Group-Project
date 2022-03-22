@@ -75,7 +75,7 @@ export default function SignIn() {
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" style="font-size:50px;">{errMsg}</p>
+                <h2 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</h2>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>

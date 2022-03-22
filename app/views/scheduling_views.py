@@ -47,19 +47,28 @@ class SchedulingView(APIView):
                 if data['organiser'] in data['attendees']:
                     data['attendees'].remove(data['organiser'])
             if 'book' in request.data:
-                data['book'] = Book.objects.get(title=request.data['book']).ISBN
-                time = TimePeriod.objects.create(
-                    start_time=request.data['start_time'],
-                    end_time=request.data['end_time']
-                )
-                data['time_id'] = time.pk
+                try:
+                    data['book'] = Book.objects.get(title=request.data['book']).ISBN
+                except Book.DoesNotExist:
+                    data['book'] = ''
+                errors = {}
+                if request.data['start_time'] == '':
+                    errors['start_time'] = 'This field must not be blank'
+                if request.data['end_time'] == '':
+                    errors['end_time'] = 'This field must not be blank'
+                if len(errors) == 0:
+                    time = TimePeriod.objects.create(
+                        start_time=request.data['start_time'],
+                        end_time=request.data['end_time']
+                    )
+                    data['time_id'] = time.pk
                 data['link'] = request.data['link']
                 serializer = MeetingSerializer(data=data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({**serializer.errors, **errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 serializer = MeetingSerializer(data=data)
                 if serializer.is_valid():
