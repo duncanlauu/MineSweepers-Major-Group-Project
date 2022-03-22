@@ -98,7 +98,7 @@ class GenreAlgoTest(TestCase):
 
     def _test_get_top_n_merged_genres_with_books(self):
         top_genres_with_books = get_top_n_merged_genres_with_books()
-        # check top 5 books of each of the top 5 genres that all books have the 
+        # check top 5 books of each of the top 5 genres that all books have the
         # same genre or a subgenre as the corresponding genre in the tuple
         for genre, books_list in top_genres_with_books[:5]:
             for book in books_list[:5]:
