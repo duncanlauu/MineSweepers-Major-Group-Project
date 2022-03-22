@@ -11,6 +11,8 @@ import {
 import Gravatar from 'react-gravatar'
 import Nav from '../Nav/Nav'
 import { Link } from 'react-router-dom'
+import { ParaText } from './HomePageElements'
+import { IoIosArrowForward } from 'react-icons/io'
 
 const HomePage = () => {
     return (
@@ -26,7 +28,10 @@ const HomePage = () => {
                 </Col>
                 <Col xs={4}>
                     <HeadingText>Our Recommendations</HeadingText><br />
-                    <Heading2Text>Books</Heading2Text>
+                    <Heading2Text>Books</Heading2Text><br />
+                    <Link to="/recommendations/" style={{ color: '#653FFD', textDecoration: 'none', fontSize:"15px" }}>
+                        <ParaText><IoIosArrowForward />See all recommendations</ParaText>
+                    </Link>
                     <RecommendationContainer>
                         <Gravatar email='blah@blah.com' size={65} />
                         <RecommendationInfo />
