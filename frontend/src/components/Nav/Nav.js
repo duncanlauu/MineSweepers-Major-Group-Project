@@ -13,6 +13,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
+import PersonalPostForm from '../FriendsPage/PersonalPostForm';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -21,12 +22,22 @@ class Nav extends React.Component {
             modal: false
         };
         this.toggle = this.toggle.bind(this);
+        this.state = {
+            postModal: false
+        };
+        this.changeModalVisibility = this.changeModalVisibility.bind(this);
     }
 
     toggle() {
         this.setState({
             modal: !this.state.modal
         });
+    }
+
+    changeModalVisibility() {
+        this.setState({
+            postModal: !this.state.postModal
+        })
     }
 
     render() {
@@ -63,6 +74,9 @@ class Nav extends React.Component {
                         </Box>
                     </Button>
                     <NavMenu>
+                        <Button style={{marginRight: "1rem"}} onClick={this.changeModalVisibility}>
+                            New Post                    
+                        </Button>
                         <Link to="/create_club/" style={{color: "#000"}}>
                             <Button
                                 type='button'
@@ -87,7 +101,9 @@ class Nav extends React.Component {
                         <Link to="/notifications/" style={{color: "#000"}}>
                             <NotificationsNoneIcon fontSize='large'/>
                         </Link>
-                        <AccountCircleIcon fontSize='large'/>
+                        <Link to="/friends_page/" style={{color: "#000"}}>
+                            <AccountCircleIcon fontSize='large'/>
+                        </Link>
                     </NavMenu>
                 </Container>
                 <Modal
@@ -167,6 +183,21 @@ class Nav extends React.Component {
                                 <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
                             </SearchText>
                         </SearchResult>
+                    </ModalBody>
+                </Modal>
+
+
+                <Modal
+                    isOpen = {this.state.postModal}
+                    toggle = {this.changeModalVisibility}
+                    style={{
+                    left: 0,
+                    top: 100
+                }}
+                >
+
+                <ModalBody style={{overflowY: "scroll"}}>
+                    <PersonalPostForm/>
                     </ModalBody>
                 </Modal>
             </div>

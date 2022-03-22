@@ -7,7 +7,9 @@ export default function FriendList(props) {
     const [myFriends, setFriends] = useState("")
 
     useEffect(() => {
-        getAllFriends();
+        getAllFriends()
+        const id = setInterval(getAllFriends, 1000)
+        return () => clearInterval(id)
     }, []);
 
     const getAllFriends = () => {
@@ -25,7 +27,7 @@ export default function FriendList(props) {
             .delete(`friend/${id}`)
             .then((res) => {
                 console.log(res)
-                removeFromPage(e) // remove friend with id from myFriends state
+                 // remove friend with id from myFriends state
             })
             .catch(error => console.error(error));
     }

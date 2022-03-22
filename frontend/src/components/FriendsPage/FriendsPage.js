@@ -14,6 +14,7 @@ import useGetUser from "../../helpers";
 import PersonalPosts from "./PersonalPosts";
 import PersonalPostForm from "./PersonalPostForm";
 import FeedPage from "./FeedPage";
+import {Nav as MainNav} from "../Nav/Nav";
 
 
 export default function FriendsPage() {
@@ -23,12 +24,6 @@ export default function FriendsPage() {
   const currentUser = useGetUser();
   console.log("Buenos Dias")
   console.log("Current user logged in: " + currentUser.id)
-
-  // const [myFriendRequests, setFriendRequests] = useState("");
-
-  // useEffect(() => {
-  //   getAllFriendRequests();
-  // }, []);
 
   const [currentActiveTab, setCurrentActiveTab] = useState("1");
 
@@ -45,7 +40,6 @@ export default function FriendsPage() {
 
   };
 
-
   return (
     <div id="ParentDiv">
 
@@ -56,6 +50,10 @@ export default function FriendsPage() {
           </NavbarBrand>
         </Navbar>
       </Row>
+
+      {/* <Row style={{ marginBottom: "3rem" }}>
+          <MainNav />
+      </Row> */}
 
       <Container fluid>
         <Row style={{ marginTop: "6rem" }}>
@@ -87,68 +85,60 @@ export default function FriendsPage() {
 
             <div>
               <Nav tabs style={tabsStyle}> 
-              <NavItem>
+              {/* <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
                       <h5> Feed </h5>
                       
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
 
-                <NavItem>
+                {/* <NavItem>
                   <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
                      <h5> Books </h5>
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
 
                 <NavItem>
-                  <NavLink className={classnames({active: currentActiveTab === "3"})} onClick={() => {toggle("3");}}>
-                      <h5> Friends </h5>
-                  </NavLink>
-                </NavItem>
-
-                <NavItem>
-                  <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
-                      <h5> Find friends </h5>
-                  </NavLink>
-                </NavItem>
-
-                <NavItem>
-                  <NavLink className={classnames({active: currentActiveTab === "5"})} onClick={() => {toggle("5");}}>
+                  <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
                       <h5> Posts </h5>
                   </NavLink>
                 </NavItem>
 
                 <NavItem>
-                  <NavLink className={classnames({active: currentActiveTab === "6"})} onClick={() => {toggle("6");}}>
-                      <h5> Posting </h5>
+                  <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
+                      <h5> Friends </h5>
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "3"})} onClick={() => {toggle("3");}}>
+                      <h5> Find friends </h5>
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink className={classnames({active: currentActiveTab === "4"})} onClick={() => {toggle("4");}}>
+                      <h5> Add Post </h5>
                   </NavLink>
                 </NavItem>
               </Nav>
+
+              
               <TabContent activeTab={currentActiveTab}>
+                
                 <TabPane tabId="1">
-                  <Row>
-                    <Col sm="12">
-                      <h1> Feed Page </h1>
-                      <PostsContainer>
-                        {/* <PersonalPosts /> */}
-                        <FeedPage/>
-                      </PostsContainer>
-                    </Col>
-                  </Row>
-                </TabPane>
+                      <h1> My Posts </h1>
+                      {/* <PostsContainer>
+                        <PersonalPosts /> 
+                      </PostsContainer> */}
+
+                      <CardGroup>
+                        <PersonalPosts /> 
+                      </CardGroup>
+
+                    </TabPane>
                 
                 <TabPane tabId="2">
-                  <Row>
-                    <Col sm="12">
-                      <h1> Books Page </h1>
-                    </Col>
-                  </Row>
-                </TabPane>
-                
-                <TabPane tabId="3">
-                  
-                  {/* FriendPage content */}
-
 
                     <h3> Friend Requests </h3>
                     
@@ -164,48 +154,24 @@ export default function FriendsPage() {
 
                     </TabPane>
 
-                    <TabPane tabId="4">
+                <TabPane tabId="3">
                       
                       <NonFriendsListContainer>
                         <NonFriendList />
                       </NonFriendsListContainer>
 
-                    </TabPane>
+                </TabPane>
 
-
-
-
-
-
-
-
-
-
-
-
-                    <TabPane tabId="5">
-                      <h1> My Posts </h1>
-                      {/* <PostsContainer>
-                        <PersonalPosts /> 
-                      </PostsContainer> */}
-
-                      <CardGroup>
-                        <PersonalPosts /> 
-                      </CardGroup>
-
-                    </TabPane>
-
-                    <TabPane tabId="6">
+                <TabPane tabId="4">
 
                       <PostsContainer>
                         <PersonalPostForm />
                       </PostsContainer>
 
-                    </TabPane>
-                  </TabContent>
-                </div>
+                </TabPane>
+              </TabContent>
+            </div>
 
-    
           </Col>
           <Col />
         </Row>

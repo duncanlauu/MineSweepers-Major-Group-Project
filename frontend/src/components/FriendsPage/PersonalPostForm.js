@@ -38,8 +38,8 @@ export default function PersonalPostForm(props) {
                 book_link : formData.image_link
             })
             .then((res) => {
-                navigate("/home/")
                 navigate("/friends_page/")
+                navigate("/home/")
             })
     }
     

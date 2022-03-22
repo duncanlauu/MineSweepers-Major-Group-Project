@@ -29,6 +29,9 @@ export default function FriendRequests(props) {
                     action: "reject"
                 }
             })
+            .then(() => {
+                getAllFriendRequests()
+            })
     }
 
     const acceptFriendRequest = (sender, e) => {
@@ -38,6 +41,9 @@ export default function FriendRequests(props) {
                     other_user_id: sender,
                     action: "accept"
                 }
+            })
+            .then(() => {
+                getAllFriendRequests()
             })
     }
 

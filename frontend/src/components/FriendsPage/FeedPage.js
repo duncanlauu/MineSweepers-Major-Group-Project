@@ -3,15 +3,13 @@ import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, FormGroup, Label, Card, CardBody, CardTitle, CardText, CardFooter, CardHeader, UncontrolledCollapse } from "reactstrap"
 
 import { useNavigate } from "react-router";
-import { PostCommentsSection, PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElements";
+import { FeedContent, PostCommentsSection, PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElements";
 import PostComments from "./PostComments";
 
 export default function FeedPage(props) {
     console.log(props)
 
-    //const [myPersonalPosts, setPersonalPosts] = useState("");
     const [myFeedPosts, setFeedPosts] = useState("");
-    const [commentsUnderPost, setCommentsUnderPost] = useState("")
 
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const navigate = useNavigate();
@@ -28,9 +26,6 @@ export default function FeedPage(props) {
                 console.log(res.data)
                 const allFeedPosts = res.data.posts;
                 setFeedPosts(allFeedPosts)
-                // const allFeedPosts = res.data;
-                // setFeedPosts(allFeedPosts)
-                //navigate("/log_in/")
             })
             .catch(error => console.error(error));
     }
@@ -42,26 +37,25 @@ export default function FeedPage(props) {
         })
     }
 
-    const getPost = (post_id, e) => {
-        axiosInstance
-            .get(`posts/${post_id}`)
-            .then((res) => {
-                //navigate("/log_in/")
-                console.log(res.data.post)
-                //console.log(writtenComment)
-            })
-            .catch(error => console.error(error));
-    }
+    // const getPost = (post_id, e) => {
+    //     axiosInstance
+    //         .get(`posts/${post_id}`)
+    //         .then((res) => {
+    //             //navigate("/log_in/")
+    //             console.log(res.data.post)
+    //         })
+    //         .catch(error => console.error(error));
+    // }
 
-    const getCommentsUnderPost = (post_id) => {
-        axiosInstance
-            .get(`posts/${post_id}/comments/`)
-            .then((res) => {
-                console.log(res.data)
-                const allCommentsUnderPost = res.data.comments;
-                setCommentsUnderPost(allCommentsUnderPost)
-            })
-    }
+    // const getCommentsUnderPost = (post_id) => {
+    //     axiosInstance
+    //         .get(`posts/${post_id}/comments/`)
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             const allCommentsUnderPost = res.data.comments;
+    //             setCommentsUnderPost(allCommentsUnderPost)
+    //         })
+    // }
 
     const commentsRef = useRef([]);
 
@@ -77,9 +71,6 @@ export default function FeedPage(props) {
                 console.log(commentsRef.current[index])
                 commentsRef.current[index].addComment(comment)
                 console.log("adding post in parent: ", comment)
-                // navigate("/home/")
-                // navigate("/friends_page/")
-                // call setCommentsUnderPost in PostComments
             })
     }
 
@@ -89,7 +80,11 @@ export default function FeedPage(props) {
             console.log(myFeedPosts);
             return (
                 myFeedPosts.map((feedPost, index) => {
+                    console.log("please")
                     console.log(feedPost);
+
+                    console.log("Hallelujah")
+                    console.log("Feed post: " , feedPost)
                     // used to have unique togglers
                     const togglerId = "toggler" + feedPost.id;
                     const HashtagTogglerId = "#" + togglerId;
@@ -97,13 +92,31 @@ export default function FeedPage(props) {
                     return (
                         <div className="feedPost" key={feedPost.id}>
 
-                            <Card style={{ marginBottom: "1rem", marginRight: "1rem", marginTop: "1rem"}}>
+                            <Card style={{ marginBottom: "1rem",
+                                marginRight: "1rem",
+                                marginTop: "1rem",
+                                marginLeft: "1rem",
+                                backgroundColor: "#fff",
+                                borderRadius: "10px"}}
+                            >
                                 <CardHeader>
-                                    <h3> @{feedPost.author_id} </h3>
+                                    <Row>
+                                        <Col>
+                                            <h3> @{feedPost.author_id} </h3>
+                                        </Col>
+                                        <Col>
+                                            {feedPost.club_id != null &&
+                                                <h3> Club: {feedPost.club_id} </h3>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    
                                 </CardHeader>
                                 <CardBody>
                                     <CardTitle> <h2> {feedPost.title} </h2> </CardTitle>
-                                    <CardText> <h4> {feedPost.content} </h4> </CardText>
+                                    <CardText>    
+                                        <h4> {feedPost.content} </h4> 
+                                    </CardText>
 
                                     <Button color="primary" id={togglerId} style={{marginBottom: "1rem"}}>
                                         See comments
@@ -131,13 +144,6 @@ export default function FeedPage(props) {
                                     
                                     </Row>
                                 </CardBody>
-                                <CardFooter>  
-                                    <Row> 
-                                        <Button onClick={(e) => getPost(feedPost.id)}>
-                                            <p> Get Info </p>
-                                        </Button>
-                                    </Row>    
-                                </CardFooter>
                             </Card>
                         </div>
                     )
@@ -145,7 +151,6 @@ export default function FeedPage(props) {
             )
         } else {
             return (<h5> You don't have any posts yet. </h5>)
-
         }
     }
     return (
@@ -153,6 +158,5 @@ export default function FeedPage(props) {
             {displayFeedPosts(props)}
         </>
     )
-
 }
 

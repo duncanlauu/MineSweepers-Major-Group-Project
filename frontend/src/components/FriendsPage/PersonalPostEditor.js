@@ -8,33 +8,16 @@ import { useNavigate } from "react-router";
 export default function PersonalPostEditor(props) {
     //console.log(props)
 
-    const [formData, updateFormData] = useState()
+    const [formData, updateFormData] = useState(props.personalPost)
     const [writtenComment, updateWrittenComment] = useState()
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         updateFormData({
           ...formData, 
-          [e.target.name]: e.target.value.trim(), 
+          [e.target.name]: e.target.value, 
         })
       }
-
-    // const getPost = (post_id, e) => {
-    //     console.log("ccccc")
-    //     console.log(props.personalPost.id)
-    //     axiosInstance
-    //         .get(`posts/${props.personalPost.id}`)
-    //         .then((res) => {
-    //             //navigate("/log_in/")
-    //             console.log("A")
-    //             console.log(res.data.id)
-    //             console.log(props.personalPost.id)
-    //             const currentPost = props.
-    //             console.log("B")
-    //             //console.log(writtenComment)
-    //         })
-    //         .catch(error => console.error(error));
-    // }
 
     const handleEditRequest = (e) => {
         e.preventDefault()
@@ -71,6 +54,7 @@ export default function PersonalPostEditor(props) {
                                 name="title"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.title}
                             />
                             <p></p>
                         </FormGroup>
@@ -82,6 +66,7 @@ export default function PersonalPostEditor(props) {
                                 name="content"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.content}
                             />
                         </FormGroup>
                         
@@ -94,6 +79,7 @@ export default function PersonalPostEditor(props) {
                                     name="club_id" 
                                     onChange={handleChange}
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    value={formData.club}
                                 />
                             </FormGroup>
                         </Col>
@@ -106,6 +92,7 @@ export default function PersonalPostEditor(props) {
                                     name="image_link"
                                     onChange={handleChange}
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    value={formData.image_link}
                                 />
                             </FormGroup>
                         </Col>
@@ -118,6 +105,7 @@ export default function PersonalPostEditor(props) {
                                 name="book_link"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.book_link}
                             />
                         </FormGroup>
 

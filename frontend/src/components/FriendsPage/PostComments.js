@@ -3,62 +3,8 @@ import axiosInstance from '../../axios'
 import { Row, Col, Button } from "reactstrap"
 import { Navigate } from "react-router"
 import { useNavigate } from "react-router" 
-
-// export default function PostComments(props) {
-
-//     const navigate = useNavigate();
-//     const [commentsUnderPost, setCommentsUnderPost] = useState([]);
-
-//     useEffect(() => {
-//         getCommentsUnderPost()
-//     }, []);
-
-//     useEffect(() => {
-//         displayCommentsUnderPost()
-//     }, [commentsUnderPost])
-
-//     const getCommentsUnderPost = () => {
-//         console.log(props.personalPost.id)
-//         axiosInstance
-//             .get(`posts/${props.personalPost.id}/comments/`)
-//             .then((res) => {
-//                 console.log(res.data)
-//                 const allCommentsUnderPost = res.data;
-//                 setCommentsUnderPost(allCommentsUnderPost.comments);
-//             })
-//     }
-
-//     const displayCommentsUnderPost = (e) => {
-//         if (commentsUnderPost.length > 0) {
-//             console.log(commentsUnderPost);
-//             return (
-//                 commentsUnderPost.map((singleComment, index) => {
-//                     console.log(singleComment);
-//                     return (
-//                         <div className="singleComment" key={singleComment.id}>
-//                             <Row>
-//                                 <Col>
-//                                     <h2> {singleComment.author} </h2>
-
-//                                     <h4> {singleComment.content} </h4>
-//                                 </Col>
-//                             </Row>
-//                         </div>
-//                     )
-//                 })
-//             )
-//         } else {
-//             return (<h5> You don't have any comments yet. </h5>)
-//         }
-//     }
-
-//     return (
-//         <>
-//             {displayCommentsUnderPost()}
-//         </>
-//     )
-
-// }
+import useGetUser from "../../helpers"
+import CommentReplies from "./CommentReplies"
 
 const PostComments = forwardRef((props, ref) => {
 
@@ -72,14 +18,11 @@ const PostComments = forwardRef((props, ref) => {
 
     const [commentsUnderPost, setCommentsUnderPost] = useState([]);
     const navigate = useNavigate();
+    const currentUser = useGetUser();
 
     useEffect(() => {
         getCommentsUnderPost()
     }, []);
-
-    // useEffect(() => {
-    //     displayCommentsUnderPost()
-    // }, [commentsUnderPost])
 
     const getCommentsUnderPost = () => {
         console.log(props.personalPost.id)
@@ -97,7 +40,7 @@ const PostComments = forwardRef((props, ref) => {
             .delete(`posts/${props.personalPost.id}/comments/${comment_id}`)
             .then((res) => {
                 console.log(res)
-                removeCommentFromPage(e) // remove friend with id from myFriends state
+                removeCommentFromPage(e) 
             })
             .catch(error => console.error(error));
     }
@@ -128,12 +71,18 @@ const PostComments = forwardRef((props, ref) => {
                                 </Row>
                                    
                                 </Col>
-                                <Col>
-                                    <Button name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)}>
-                                        X {singleComment.id}
-                                    </Button>
-                                </Col>
+                                {singleComment.author_id == currentUser.id  &&
+                                     <Col>
+                                        <Button name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)}>
+                                            <p> x </p>
+                                        </Button>
+                                    </Col>
+                                }
+                                
                             </Row>
+                            {/* <Row>
+                                <CommentReplies commentID={singleComment.id} postID={props.personalPost.id}/>
+                            </Row> */}
                         </div>
                     )
                 })

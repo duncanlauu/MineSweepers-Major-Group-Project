@@ -7,23 +7,19 @@ import { PostContent, PostTitle, SinglePostContainer } from "./FriendsPageElemen
 import PostComments from "./PostComments";
 import PersonalPostForm from "./PersonalPostForm";
 import PersonalPostEditor from "./PersonalPostEditor";
-import PostModal from "./PostModal";
 
 export default function PersonalPosts(props) {
     console.log(props)
 
     const [myPersonalPosts, setPersonalPosts] = useState("");
-    const [commentsUnderPost, setCommentsUnderPost] = useState("")
 
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const navigate = useNavigate();
 
-    const [isModalVisible, setModalVisibility] = useState(false)
+    const [isModalVisible, setModalVisibility] = useState(null)
 
-    const [personalPostID, setPersonalPostID] = useState()
-
-    const changeModalVisibility = () => {
-        setModalVisibility(!isModalVisible);
+    const changeModalVisibility = (index) => {
+        setModalVisibility(index);
     }
 
     useEffect(() => {
@@ -48,16 +44,16 @@ export default function PersonalPosts(props) {
             .catch(error => console.error(error));
     }
 
-    const getPost = (post_id, e) => {
-        axiosInstance
-            .get(`posts/${post_id}`)
-            .then((res) => {
-                //navigate("/log_in/")
-                console.log(res.data.post)
-                //console.log(writtenComment)
-            })
-            .catch(error => console.error(error));
-    }
+    // const getPost = (post_id, e) => {
+    //     axiosInstance
+    //         .get(`posts/${post_id}`)
+    //         .then((res) => {
+    //             //navigate("/log_in/")
+    //             console.log(res.data.post)
+    //             //console.log(writtenComment)
+    //         })
+    //         .catch(error => console.error(error));
+    // }
 
     const deletePost = (post_id, e) => {
         axiosInstance
@@ -74,16 +70,6 @@ export default function PersonalPosts(props) {
     const removeFromPage = (e) => {
         const id = parseInt(e.target.getAttribute("name"))
         setPersonalPosts(myPersonalPosts.filter(item => item.id !== id));
-    }
-
-    const getCommentsUnderPost = (post_id) => {
-        axiosInstance
-            .get(`posts/${post_id}/comments/`)
-            .then((res) => {
-                console.log(res.data)
-                const allCommentsUnderPost = res.data.comments;
-                setCommentsUnderPost(allCommentsUnderPost)
-            })
     }
 
     const commentsRef = useRef([]);
@@ -107,9 +93,6 @@ export default function PersonalPosts(props) {
     }
 
 
-    ///----------------- --------------
-
-
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
             console.log(myPersonalPosts);
@@ -124,7 +107,7 @@ export default function PersonalPosts(props) {
                             <div className="personalPost" key={personalPost.id}>
                                 <Card style={{ marginBottom: "1rem", marginRight: "1rem", marginTop: "1rem"}}>
                                     <CardHeader style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                        <Button style={{marginRight: "1rem"}} onClick={changeModalVisibility(personalPost.id)}>
+                                        <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility(index)}>
                                             Edit
                                             
                                         </Button>
@@ -162,19 +145,18 @@ export default function PersonalPosts(props) {
                                                         
                                         </Row>
                                     </CardBody>
-                                    <CardFooter>  
+                                    {/* <CardFooter>  
                                         <Row> 
                                             <Button onClick={(e) => getPost(personalPost.id)}>
                                                 <p> Get Info </p>
                                             </Button>
                                         </Row>    
-                                    </CardFooter>
+                                    </CardFooter> */}
                                 </Card>
 
-                                {/* PostModal personalPostID currentPersonalPostID */}
                                 <Modal
-                                    isOpen = {isModalVisible}
-                                    toggle = {changeModalVisibility}
+                                    isOpen = {isModalVisible == index}
+                                    toggle = {() => changeModalVisibility(null)}
                                     style={{
                                         left: 0,
                                         top: 100
@@ -184,7 +166,6 @@ export default function PersonalPosts(props) {
                                         <PersonalPostEditor personalPost={personalPost}/>
                                     </ModalBody>
                                 </Modal>
-                                {/* <PostModal personalPostID={personalPost.id}/> */}
                             </div>
                     )
                 })

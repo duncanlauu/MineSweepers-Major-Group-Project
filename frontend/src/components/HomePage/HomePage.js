@@ -28,7 +28,7 @@ const HomePage = () => {
                 <Col />
                 <Col xs={5}>
                     <FeedContainer>
-                        <FeedPage />
+                        <FeedPage/>
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
