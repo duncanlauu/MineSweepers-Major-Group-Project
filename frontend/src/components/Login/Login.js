@@ -75,7 +75,7 @@ export default function SignIn() {
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" style="font-size:50px;">{errMsg}</p>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>
@@ -116,6 +116,7 @@ export default function SignIn() {
                                     </Button>
                                     </Container>
                                 </FormGroup>
+
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 4 }}>
                                         <Button 
