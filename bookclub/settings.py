@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import os
+import os, sys
 from pathlib import Path
 from datetime import timedelta
 import django_heroku
