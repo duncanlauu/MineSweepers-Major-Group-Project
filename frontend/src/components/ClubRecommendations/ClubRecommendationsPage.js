@@ -46,7 +46,9 @@ const ClubRecommendationPage = () => {
                     <Button onClick={returnTop10Recommendations}>Display my Recommendations</Button><br/>
                     <HeadingText>Clubs For You</HeadingText>
                     <RecommenderContainer>
-                        <ul>
+                        <ul
+                            data-testid="recommender_container"
+                        >
                             {clubRecommendations.map(
                                 clubRecommendation =>
                                     <li>

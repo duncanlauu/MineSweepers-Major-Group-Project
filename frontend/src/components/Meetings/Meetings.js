@@ -65,7 +65,10 @@ export default function Meetings() {
         );
     } else {
         return (
-            <div id="ParentDiv">
+            <div
+                id="ParentDiv"
+                data-testid="waiting_message"
+            >
                 <Row>
                 </Row>
                 <Container fluid>

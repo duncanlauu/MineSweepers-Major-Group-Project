@@ -197,7 +197,8 @@ export default function Scheduling() {
         );
     } else {
         return (
-            <div id="ParentDiv">
+            <div id="ParentDiv"
+                data-testid="waiting_message_component">
                 <Row>
                 </Row>
                 <Container fluid>
