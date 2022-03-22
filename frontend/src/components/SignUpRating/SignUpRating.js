@@ -7,6 +7,8 @@ import axiosInstance from '../../axios';
 import BookRatingCard from './BookRatingCard';
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import useGetUser from "../../helpers";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import {Oval} from 'react-loader-spinner';
 
 
 export default function SignUpRating(props){
@@ -42,6 +44,27 @@ export default function SignUpRating(props){
                     }).catch((err) => {
                     console.log(err)
                 })
+
+                trackPromise(
+                    axiosInstance
+                    .post(`/recommender/0/12/top_n_global/`, {})
+                    .then(() => {
+                        axiosInstance
+                        .get(`/recommender/0/12/top_n_global/`, {})
+                        .then((res) => {
+                            let books =[]
+                            res.data.map((book) => {
+                                books.push(book.book)
+                            })
+                            console.log(books)
+                        }
+                        ).catch((err) => {
+                        console.log(err)
+                })
+                    }).catch((err) => {
+                    console.log(err)
+                })
+                );
         
     }
     
@@ -104,6 +127,28 @@ export default function SignUpRating(props){
         return rows
 }
 
+
+const LoadingIndicator = (props) => {
+
+    const { promiseInProgress } = usePromiseTracker();
+
+      return (
+          promiseInProgress &&
+          <Container>
+            <div style={{
+                display: 'flex',
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100" />
+            </div>
+          </Container>
+      )
+  }
+
+
   
 const displayBooks = (e) => {
 
@@ -157,7 +202,7 @@ return(
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                           <>Hi</>
+                        <LoadingIndicator />
                         </Col>
                         <Col/>
                     </Row>

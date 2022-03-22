@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from icalendar import Calendar, Event, vCalAddress, vText
 
 from app.models import Meeting, VotingPeriod, TimePeriod, BookVote, TimeVote, User, \
-    get_all_users_related_to_a_club
+    get_all_users_related_to_a_club, Club, Book
 from app.serializers import MeetingSerializer
 
 
@@ -32,13 +32,19 @@ class SchedulingView(APIView):
     def post(self, request):
         try:
             data = {'name': request.data['name'], 'description': request.data['description'],
-                    'club': request.data['club'], 'organiser': request.data['organiser'],
-                    'attendees': (request.data.getlist('attendees') if isinstance(request.data, QueryDict)
-                                  else request.data['attendees'])}
+                    'club': int(request.data['club']), 'organiser': request.data['organiser']}
             # Make sure the user is the organiser of the meeting
             if User.objects.get(username=request.user).id != int(request.data['organiser']):
                 return Response(data='The user needs to be the organiser of the meeting',
                                 status=status.HTTP_401_UNAUTHORIZED)
+            if 'attendees' in request.data:
+                data['attendees'] = (
+                    request.data.getlist('attendees') if isinstance(request.data, QueryDict) else
+                    request.data['attendees'])
+            else:
+                data['attendees'] = list((user.id for user in
+                                          get_all_users_related_to_a_club(Club.objects.get(pk=data['club']))))
+                data['attendees'].remove(data['organiser'])
             serializer = MeetingSerializer(data=data)
             if serializer.is_valid():
                 new_meeting = serializer.save()
@@ -56,18 +62,20 @@ class SchedulingView(APIView):
                              else request.data['proposed_times']))
                         voting_period.save()
                     else:
-                        new_meeting.book_id = request.data['book']
+                        new_meeting.book_id = Book.objects.get(title=request.data['book']).ISBN
                         time = TimePeriod.objects.create(
                             start_time=request.data['start_time'],
                             end_time=request.data['end_time']
                         )
                         new_meeting.time_id = time.pk
                         new_meeting.link = request.data['link']
+                        print(new_meeting)
                         new_meeting.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
+            print("key error")
             return Response('You need to provide all necessary arguments', status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):

@@ -1,10 +1,15 @@
 import React, {useState} from "react";
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import {SignUpContainer, FormLayout} from "./SignUpStyle";
+import { HeadingText, ParaText } from "../Login/LoginElements";
+import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
 import useAuth from '../hooks/useAuth';
+import Nav from "../Nav/Nav";
 
 
 export default function SignUp() {
@@ -12,6 +17,10 @@ export default function SignUp() {
     const navigate = useNavigate();
 
     const { setAuth } = useAuth();
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const togglePassword = () => {
+      setPasswordVisible(!passwordVisible);
+    }
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
         username: '',
@@ -78,30 +87,24 @@ export default function SignUp() {
 
     // Todo: move styles to a CSS file?
     return (
-        <div id="ParentDiv">
-
+        <div id="ParentDiv" style={{ overflowX:"hidden" }}>
             <Row>
-                <Navbar color="light" expand="md" light>
-                    <NavbarBrand href="/">
-                        <h1> bookgle </h1>
-                    </NavbarBrand>
-                </Navbar>
+                <Nav isAuthenticated={false} />
             </Row>
-
-
-            <Container fluid>
-                <Row style={{marginTop: "6rem"}}>
+            <Container fluid style={{ overflowX:"hidden", overflowY: "hidden" }}>
+                <Row style={{marginTop: "3rem"}}>
                     <Col/>
                     <Col>
-                        <h1> Sign up for your account </h1>
-                        <p> If you already have one, log in "here" </p>
-
-                        <SignUpContainer>
+                        <HeadingText>Create an account</HeadingText><br />
+                        <ParaText>If you already have one, you can log in <Link to="/log_in/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
+                        </Link> .
+                        </ParaText>
+                        <SignUpContainer style={{ overflowY:"scroll", overflowX:"hidden" }}>
                             <FormLayout> {/*  might have to add more info here */}
                                 <Row>
                                     <Col xs="6">
                                         <FormGroup>
-                                            <Label for="first_name"> First Name </Label>
+                                            <Label for="first_name"><ParaText>First Name</ParaText></Label>
                                             <Input
                                                 id="first_name"
                                                 name="first_name" // name to target from JS
@@ -112,7 +115,7 @@ export default function SignUp() {
                                     </Col>
                                     <Col xs="6">
                                         <FormGroup>
-                                            <Label for="last_name"> Last Name </Label>
+                                            <Label for="last_name"><ParaText>Last Name</ParaText></Label>
                                             <Input
                                                 id="last_name"
                                                 name="last_name"
@@ -124,7 +127,7 @@ export default function SignUp() {
                                 </Row>
 
                                 <FormGroup>
-                                    <Label for="username"> User Name </Label>
+                                    <Label for="username"><ParaText>Username</ParaText></Label>
                                     <Input
                                         id="username"
                                         name="username"
@@ -134,7 +137,7 @@ export default function SignUp() {
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Label for="email"> Email </Label>
+                                    <Label for="email"><ParaText>Email</ParaText></Label>
                                     <Input
                                         type="email"
                                         id="email"
@@ -145,18 +148,25 @@ export default function SignUp() {
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Label for="password"> Password </Label>
+                                    <Label for="password"><ParaText>Password</ParaText></Label>
+                                    <Container fluid style={{ display: "flex", flexDirection: "row", padding: "0px" }}>
                                     <Input
-                                        type="password"
+                                        type={passwordVisible ? "text" : "password"}
                                         id="password"
                                         name="password"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
+                                    <Button 
+                                        onClick={togglePassword}
+                                        style={{ backgroundColor: "#653FFD" }}>
+                                        {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }
+                                    </Button>
+                                    </Container>
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Label for="bio"> Bio </Label>
+                                    <Label for="bio"><ParaText>Bio</ParaText></Label>
                                     <Input
                                         id="bio"
                                         name="bio"
@@ -168,7 +178,7 @@ export default function SignUp() {
                                 <Row>
                                     <Col xs="8">
                                         <FormGroup>
-                                            <Label for="location"> Location </Label>
+                                            <Label for="location"><ParaText>Location</ParaText></Label>
                                             <Input
                                                 id="location"
                                                 name="location"
@@ -179,7 +189,7 @@ export default function SignUp() {
                                     </Col>
                                     <Col xs="4">
                                         <FormGroup>
-                                            <Label for="birthday"> Birthday </Label>
+                                            <Label for="birthday"><ParaText>Birthday</ParaText></Label>
                                             <Input
                                                 id="birthday"
                                                 type="date"
@@ -192,12 +202,12 @@ export default function SignUp() {
                                 </Row>
 
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 5}}>
+                                    <Col sm={{size: 10, offset: 4}}>
                                         <Button
                                             type="submit"
                                             className="submit"
                                             onClick={handleSubmit}
-                                            style={{backgroundColor: "#653FFD", width: "7rem"}}
+                                            style={{backgroundColor: "#653FFD", width: "7rem", marginBottom:"1rem"}}
                                         >
                                             Sign Up
                                         </Button>

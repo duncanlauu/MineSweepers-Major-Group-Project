@@ -115,6 +115,7 @@ class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
         model = GlobalBookRecommendation
         fields = '__all__'
 
+
 class BookRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookRating
