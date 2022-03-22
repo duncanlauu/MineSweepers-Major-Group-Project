@@ -87,13 +87,6 @@ const LandingProfile = () => {
                     </Col>
                 </BookProfile>
             </Row>
-            <Row>
-                <Button
-                    onClick={(e) => navigate(`/scheduling/${club_id}`)}
-                    >
-                        Schedule a meeting
-                </Button>
-            </Row>
         </Container>
     );
 }
