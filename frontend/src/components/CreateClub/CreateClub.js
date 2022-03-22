@@ -63,6 +63,7 @@ export default function CreateClub() {
                                     <Label for="name">Name </Label>
                                     <Input
                                         id="name"
+                                        data-testid="name"
                                         name="name"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
@@ -73,6 +74,7 @@ export default function CreateClub() {
                                     <Label for="description"> description </Label>
                                     <Input
                                         id="description"
+                                        data-testid="description"
                                         name="description"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
