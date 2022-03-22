@@ -30,9 +30,7 @@ import { createMemoryHistory } from 'history';
 
     render(<BrowserRouter>
             <SignUp/>
-            </BrowserRouter>) 
-
-
+            </BrowserRouter>)
 
     const firstName = screen.getByTestId("first_name")
     const lastName = screen.getByTestId("last_name")
@@ -62,11 +60,6 @@ import { createMemoryHistory } from 'history';
     expect(birthday.value).toBe("2000-01-01")
     
     userEvent.click(submit)
-    
-    
-
-
-
   })
 
 test("unsuccesful sign up", () => {
@@ -103,6 +96,5 @@ test("unsuccesful sign up", () => {
     
     
     userEvent.click(submit)
-
 })
 
