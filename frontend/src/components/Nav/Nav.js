@@ -12,15 +12,20 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
 import Gravatar from 'react-gravatar';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import axiosInstance from '../../axios';
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            search: '', 
+
         };
         this.toggle = this.toggle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.isAuthenticated = this.props.isAuthenticated;
     }
 
@@ -29,6 +34,29 @@ class Nav extends React.Component {
             modal: !this.state.modal
         });
     }
+    
+    handleChange(e) {
+        this.setState({
+            search: e.target.value
+            
+        });
+        console.log(this.state.search)
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("submitting")
+    
+        axiosInstance
+          .get(`search/`, { 
+            params: {  search_query: this.state.search} 
+           
+          })
+          .then((res) => { 
+            console.log(res)
+            console.log(res.data)
+          })
+      }
 
     render() {
         return (
@@ -50,19 +78,13 @@ class Nav extends React.Component {
                             backgroundColor: "#FFF",
                             border: "0px",
                         }}
+                        text = {this.state.search}
                         onClick={this.toggle}>
-                        <Box style={{
-                            backgroundColor: "#ECECEC",
-                            height: "3rem",
-                            width: "30rem",
-                            display: "flex",
-                            borderRadius: "100px",
-                            alignItems: "center",
-                            justifyContent: "flex-end"
-                        }}>
-                            <IconButton type='submit'>
-                                <BiSearch/>
-                            </IconButton>
+                        <Box style={{ backgroundColor:"#ECECEC", height:"3rem", width:"30rem", display:"flex", borderRadius:"100px", alignItems:"center", justifyContent:"flex-end" }}>
+                        <IconButton type='submit'>
+                            {this.state.search === '' ? <SearchText> </SearchText> : <SearchText>{this.state.search}</SearchText>}
+                        <BiSearch />
+                        </IconButton>
                         </Box>
                     </Button>
                     <NavMenu>
@@ -105,26 +127,30 @@ class Nav extends React.Component {
                         top: 100
                     }}
                 >
-                    <ModalHeader toggle={this.toggle}>
-                        <SearchContainer>
-                            <BiSearch style={{height: "2rem", width: "2rem"}}/>
-                            <Input
-                                type='text'
-                                placeholder='Search...'
-                                style={{
-                                    height: "5rem",
-                                    width: "25rem",
-                                    outline: "none",
-                                    border: "0",
-                                    boxShadow: "none",
-                                    padding: "none",
-                                    fontFamily: "Source Sans Pro",
-                                    fontSize: "20px"
-                                }}
-                            />
-                        </SearchContainer>
-                    </ModalHeader>
-                    <ModalBody style={{overflowY: "scroll"}}>
+                <ModalHeader toggle={this.toggle}>
+                    <SearchContainer>
+                        <BiSearch style={{ height:"2rem", width:"2rem" }} onClick={this.handleSubmit}/>
+                        
+
+                        <Input 
+                            type='text'
+                            placeholder='Search...'
+                            style={{
+                                height: "5rem",
+                                width: "25rem",
+                                outline: "none",
+                                border: "0",
+                                boxShadow: "none",
+                                padding: "none",
+                                fontFamily: "Source Sans Pro",
+                                fontSize: "20px"
+                            }}
+                            onChange={this.handleChange}
+                            value={this.state.search}
+                        />
+                    </SearchContainer>
+                </ModalHeader>
+                    <ModalBody style={{ overflowY:"scroll" }}>
                         {/* User Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <BiUserCircle/>
