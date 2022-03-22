@@ -94,13 +94,24 @@ WSGI_APPLICATION = 'bookclub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'TEST': {
+#             'NAME': 'dbh123gjgqbd04', #This is an important entry
+#         }
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'TEST': {
-            'NAME': 'dbh123gjgqbd04', #This is an important entry
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dco7p9s2fp0tam',
+        'USER': 'uflcnzgmessgqt',
+        'PASSWORD': '75f008b5946201dc800a281426e86990a7077799f1913e0d8233d8d72641f2786',
+        'HOST': 'ec2-52-49-68-244.eu-west-1.compute.amazonaws.comm',
+        'PORT': 5432,
     }
 }
 
