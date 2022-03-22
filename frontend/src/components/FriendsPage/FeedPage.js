@@ -13,10 +13,21 @@ export default function FeedPage(props) {
 
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const navigate = useNavigate();
+    const [posterName, setPosterName] = useState("");
 
     useEffect(() => {
         getFeedPosts()
     }, []);
+
+    const getPostCreatorName = (author_id) => {
+        
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            //console.log("The post creator is: " + res.data.username)
+            setPosterName(res.data.username)
+        })
+        .catch(error => console.error(error));
+    }
 
     const getFeedPosts = () => {
         axiosInstance
@@ -89,6 +100,10 @@ export default function FeedPage(props) {
                     const togglerId = "toggler" + feedPost.id;
                     const HashtagTogglerId = "#" + togglerId;
 
+                    console.log("QQWQW")
+                    console.log(feedPost.author_id)
+                    getPostCreatorName(feedPost.author_id)
+
                     return (
                         <div className="feedPost" key={feedPost.id}>
 
@@ -102,7 +117,7 @@ export default function FeedPage(props) {
                                 <CardHeader>
                                     <Row>
                                         <Col>
-                                            <h3> @{feedPost.author_id} </h3>
+                                            <h3> @{posterName} </h3>
                                         </Col>
                                         <Col>
                                             {feedPost.club_id != null &&

@@ -8,8 +8,8 @@ export default function FriendList(props) {
 
     useEffect(() => {
         getAllFriends()
-        const id = setInterval(getAllFriends, 1000)
-        return () => clearInterval(id)
+        // const id = setInterval(getAllFriends, 1000)
+        // return () => clearInterval(id)
     }, []);
 
     const getAllFriends = () => {
@@ -24,10 +24,10 @@ export default function FriendList(props) {
 
     const deleteFriend = (id, e) => {
         axiosInstance
-            .delete(`friend/${id}`)
+            .delete(`friends/${id}`)
             .then((res) => {
                 console.log(res)
-                 // remove friend with id from myFriends state
+                 removeFromPage(e)
             })
             .catch(error => console.error(error));
     }
