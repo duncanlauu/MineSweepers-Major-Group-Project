@@ -19,6 +19,7 @@ const ClubProfile = () => {
             .then(res => {
                 console.log(res);
                 setClub(res.data);
+                console.log("Club Data: " + res.data);
             })
             .catch(err => {
                 console.log(err);

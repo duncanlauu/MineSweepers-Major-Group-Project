@@ -22,6 +22,7 @@ import RequireAuth from "./RequireAuth/RequireAuth";
 import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
+import RecommenderPage from "./RecommenderPage/RecommenderPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ export default class App extends Component {
                   <Route path='hello' element={<Hello/>}/>
                   <Route path="/scheduling/" element={<Scheduling/>}/>
                   <Route path="/meetings/" element={<Meetings/>}/>
+                  <Route path="/recommendations/" element={<RecommenderPage />}></Route>
                   <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
                 </Route>
 
