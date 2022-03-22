@@ -1735,4 +1735,9 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,pycharm,sublimetext,visualstudio,visualstudiocode,xcode
 staticfiles
 
+# Code coverage
 frontend/coverage/*
+
+# auto generated react files
+package-lock.json
+frontend/static/frontend/main.js
