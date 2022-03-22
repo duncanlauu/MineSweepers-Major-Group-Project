@@ -44,7 +44,8 @@ class SchedulingView(APIView):
             else:
                 data['attendees'] = list((user.id for user in
                                           get_all_users_related_to_a_club(Club.objects.get(pk=data['club']))))
-                data['attendees'].remove(data['organiser'])
+                if data['organiser'] in data['attendees']:
+                    data['attendees'].remove(data['organiser'])
             serializer = MeetingSerializer(data=data)
             if serializer.is_valid():
                 new_meeting = serializer.save()

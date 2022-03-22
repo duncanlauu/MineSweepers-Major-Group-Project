@@ -82,6 +82,8 @@ export default function Scheduling() {
                 navigate(`/club_profile/${club_id}`)
             })
             .catch((e) => {
+                console.log("asdsdasds")
+                console.log(e.response.data)
                 setNameErr(e.response.data.name)
                 setDescriptionErr(e.response.data.description)
                 setBookErr(e.response.data.book)
