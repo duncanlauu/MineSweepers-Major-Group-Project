@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 
 import useGetUser from "../../helpers";
 import FeedPage from '../FriendsPage/FeedPage'
+import FeedPostList from '../FriendsPage/FeedPostList'
 
 const HomePage = () => {
     const currentUser = useGetUser();
@@ -28,7 +29,8 @@ const HomePage = () => {
                 <Col />
                 <Col xs={5}>
                     <FeedContainer>
-                        <FeedPage/>
+                        {/* <FeedPage/> */}
+                        <FeedPostList/>
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
