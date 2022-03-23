@@ -23,10 +23,6 @@ class LandingPageTestCase(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # cls.user1 = User.objects.create_user(
-        #     cls.USER1_USERNAME, cls.USER1_EMAIL, cls.USER1_PASSWORD
-        # )
-
         chrome_options = Options()
 
         #for headless testing
@@ -38,8 +34,6 @@ class LandingPageTestCase(LiveServerTestCase):
             executable_path="app/tests/selenium/chromedriver", options=chrome_options
         )
         cls.browser.delete_all_cookies()
-
-        
 
     @classmethod
     def tearDownClass(cls):
@@ -155,85 +149,12 @@ class LandingPageTestCase(LiveServerTestCase):
         self.assertEqual(number_of_chats_after, number_of_chats_before+1)
 
 
-
-    # def test_friends_page(self):
-    #     self.browser.get(f"{self.live_server_url}/friends_page")
-    #     self.assertEquals(self.browser.title, "Bookgle")
-    #     self.wait_until_element_found("//a[@href='/log_in']")
-        # self.wait_until_element_found("//a[@href='/sign_up']")
-        # self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-        # self.wait_until_element_found("//button[.='Log In']")
-        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-        # # Log in
-        # self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        # self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        # self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        # self.wait_until_element_found("//button[.='New Club']")
-        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-
-    # @override_settings(DEBUG=True) 
-    # def test_log_in_with_wrong_password(self):
-    #     self.browser.get(f"{self.live_server_url}/")
-    #     self.assertEquals(self.browser.title, "Bookgle")
-    #     self.wait_until_element_found("//a[@href='/log_in']")
-    #     self.wait_until_element_found("//a[@href='/sign_up']")
-    #     self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-    #     self.wait_until_element_found("//button[.='Log In']")
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-    #     # Log in
-    #     self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-    #     self.browser.find_element_by_name("password").send_keys("WrongPassword")
-    #     self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-    #     self.wait_until_element_found("//button[.='Log inn']")
-    #     # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-
-    #     # Update from develop for error messages and test for them
-
-
-        
-
-#     XPath is a very flexible and powerful tool. For example, you can:
-
+# XPath is a very flexible and powerful tool. For example, you can:
 # Select elements by ID: "//input[@id='id_title']"
 # Select elements by any other attribute: "//div[@aria-label='Blank']"
 # Select elements by innerText: "//button[.='Save']"
 # Select elements by CSS class and innerText: "//button[contains(@class,'btn-primary')][.='Save']"
 # Select the first element by innerText: "(//button[.='yes'])[1]"
-
-
-    # @classmethod
-    # def setUpClass(self):
-    #     super().setUpClass()
-    #     self.driver = webdriver.Chrome("app/tests/selenium/chromedriver")
-    #     self.driver.implicitly_wait(10)
-    #     # cls.selenium = webdriver.Chrome("app/tests/selenium/chromedriver")
-    #     # cls.selenium.implicitly_wait(10)
-
-    # @classmethod
-    # def tearDownClass(self):
-    #     self.driver.quit()
-    #     super().tearDownClass()
-
-    # def test_title(self):
-    #     # self.selenium.get('%s%s' % (self.live_server_url, '/'))
-    #     self.driver.get('%s%s' % (self.live_server_url, '/'))
-    #     self.assertEquals(self.driver.title, "Bookgle")
-
-    # def test_log_in_button(self):
-    #     self.selenium.get('%s%s' % (self.live_server_url, '/'))
-    #     self.selenium.
-        # username_input = self.selenium.find_element_by_name("log_in")
-
-    # def test_sign_in_button(self):
-    #     self.selenium.get('%s%s' % (self.live_server_url, '/'))
-    #     self.assertEquals(self.selenium.title, "Bookgle")
-
-    # def test_title(self):
-    #     driver = 
-        
-    #     driver.get(self.live_server_url)
-    #     # driver.get('http://127.0.0.1:8000/')
-    #     assert "Bookgle" in driver.title
 
     #from source: --
     def wait_until_element_found(self, xpath):
@@ -242,5 +163,4 @@ class LandingPageTestCase(LiveServerTestCase):
         )
 
     def wait_a_little(self, seconds=2):
-        if SHOW_BROWSER:
-            sleep(seconds)
+        sleep(seconds)
