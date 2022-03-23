@@ -16,57 +16,108 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         time_function(seed_books)
+        time_function(seed_default_objects)
         time_function(seed_users)
         time_function(seed_ratings)
         time_function(seed_clubs)
         time_function(seed_friends)
         time_function(seed_meetings)
         time_function(seed_posts)
-        time_function(seed_default_objects)
 
 
 def seed_default_objects():
     """Seed a couple of default users"""
 
-    User.objects.create(
+    jeb = User.objects.create(
         username="Jeb",
         first_name="Jebediah",
         last_name="Kerman",
         email="jeb@example.org",
         bio="I love chess! I mean books, I love books.",
         location="Somewhere in space I guess",
-        birthday=datetime(year=2011, month=6, day=24)
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
-    User.objects.create(
+    billie = User.objects.create(
         username="Billie",
         first_name="Billie",
         last_name="Kerman",
         email="billie@example.org",
         bio="Never read Fitzgerald? You Gatsby kidding me!",
         location="Actually I'm currently in an undisclosed location.",
-        birthday=datetime(year=2011, month=6, day=24)
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
-    User.objects.create(
+    bob = User.objects.create(
         username="Bob",
         first_name="Bob",
         last_name="Kerman",
         email="bob@example.org",
         bio="My weekend is fully booked.",
         location="London. Just kidding, space!",
-        birthday=datetime(year=2011, month=6, day=24)
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
-    User.objects.create(
+    val = User.objects.create(
         username="Val",
         first_name="Valentina",
         last_name="Kerman",
         email="val@example.org",
         bio="Books are lit! (like literature)",
         location="Somewhere else in space, huh?",
-        birthday=datetime(year=2011, month=6, day=24)
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
+
+    books = list(Book.objects.all())
+    add_read_and_liked_books(books, jeb)
+    add_read_and_liked_books(books, billie)
+    add_read_and_liked_books(books, bob)
+    add_read_and_liked_books(books, val)
+    val.add_friend(jeb)
+    val.add_friend(bob)
+    val.add_friend(billie)
+    jeb.add_friend(val)
+    jeb.add_friend(bob)
+    jeb.add_friend(billie)
+    bob.add_friend(jeb)
+    bob.add_friend(val)
+    bob.add_friend(billie)
+    billie.add_friend(jeb)
+    billie.add_friend(bob)
+    billie.add_friend(val)
+
+    kerbal = Club.objects.create(
+        name="Kerbal book club",
+        description="After our success with space programmes, we decided to start a book club",
+        owner=jeb
+    )
+    kerbal.admins.set([bob])
+    kerbal.members.set([val, billie])
+    kerbal.books.set(get_n_random_books_from(10, books))
+    kerbal.save()
+
+    time_period = TimePeriod.objects.create(
+        start_time="2013-05-16T17:00:00+00:00",
+        end_time="2013-05-16T18:00:00+00:00"
+    )
+
+    meeting = Meeting.objects.create(
+        name="Kerbal book meeting number 1",
+        description="Reading books but also space, what else could you possibly need?",
+        club=kerbal,
+        book=get_n_random_books_from(1, books)[0],
+        time=time_period,
+        organiser=jeb,
+        link=generate_link()
+    )
+
+    meeting.attendees.set([val, billie, bob])
+    meeting.save()
+
 
 
 def seed_books():
@@ -125,7 +176,7 @@ def seed_users(number=150):
 def seed_ratings():
     """Seed a random number of ratings for each user"""
 
-    min_num_of_ratings = 2
+    min_num_of_ratings = 4
     max_num_of_ratings = 20
 
     users = User.objects.all()
@@ -233,10 +284,17 @@ def create_user(faker, books):
         password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
+    add_read_and_liked_books(books, user)
+
+
+def add_read_and_liked_books(books, user):
+    """Add read and liked books to a user"""
+
     read_books = get_n_random_books_from(n=35, books=books)
     liked_books = get_n_random_books_from(n=15, books=read_books)
     user.read_books.set(read_books)
     user.liked_books.set(liked_books)
+    user.save()
 
 
 def create_meeting(club, faker, counter):
