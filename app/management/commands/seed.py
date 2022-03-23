@@ -22,6 +22,51 @@ class Command(BaseCommand):
         time_function(seed_friends)
         time_function(seed_meetings)
         time_function(seed_posts)
+        time_function(seed_default_objects)
+
+
+def seed_default_objects():
+    """Seed a couple of default users"""
+
+    User.objects.create(
+        username="Jeb",
+        first_name="Jebediah",
+        last_name="Kerman",
+        email="jeb@example.org",
+        bio="I love chess! I mean books, I love books.",
+        location="Somewhere in space I guess",
+        birthday=datetime(year=2011, month=6, day=24)
+    )
+
+    User.objects.create(
+        username="Billie",
+        first_name="Billie",
+        last_name="Kerman",
+        email="billie@example.org",
+        bio="Never read Fitzgerald? You Gatsby kidding me!",
+        location="Actually I'm currently in an undisclosed location.",
+        birthday=datetime(year=2011, month=6, day=24)
+    )
+
+    User.objects.create(
+        username="Bob",
+        first_name="Bob",
+        last_name="Kerman",
+        email="bob@example.org",
+        bio="My weekend is fully booked.",
+        location="London. Just kidding, space!",
+        birthday=datetime(year=2011, month=6, day=24)
+    )
+
+    User.objects.create(
+        username="Val",
+        first_name="Valentina",
+        last_name="Kerman",
+        email="val@example.org",
+        bio="Books are lit! (like literature)",
+        location="Somewhere else in space, huh?",
+        birthday=datetime(year=2011, month=6, day=24)
+    )
 
 
 def seed_books():
