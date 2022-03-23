@@ -5,13 +5,13 @@ from rest_framework.response import Response
 from app.serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticated
 
-class Book(APIView):
+class Books(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         try:
-            book = Book.objects.get(pk=kwargs['ISBN'])
+            book = Book.objects.get(ISBN=kwargs['ISBN'])
             serializer = BookSerializer(book)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Book.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

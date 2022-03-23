@@ -13,6 +13,7 @@ from .views.authentication_views import BlacklistTokenView
 from .views.chat_views import ChatListView, ChatLeaveView
 from .views.club_views import Clubs, SingleClub
 from .views.search_view import SearchView
+from .views.book_views import Books
 
 app_name = 'app'
 
@@ -23,6 +24,9 @@ urlpatterns = [
 
     # Reset User Password
     path('auth/', include('djoser.urls')),
+
+    # Books
+    path('book/<str:ISBN>',Books.as_view(), name="retrieve_book"),
 
     # Friends
     path('friends/', FriendsView.as_view(), name='friends'),
