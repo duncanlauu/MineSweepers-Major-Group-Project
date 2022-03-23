@@ -4,6 +4,8 @@ import {Button, Col, Container, FormGroup, Input, Label, Row} from "reactstrap";
 import {FormLayout, HeadingText, ParaText, SchedulingContainer} from "./SchedulingElements";
 import useGetUser from "../../helpers";
 import {useNavigate, useParams} from "react-router";
+import {usePromiseTracker, trackPromise} from "react-promise-tracker";
+import {Oval} from 'react-loader-spinner';
 
 
 export default function Scheduling() {
@@ -20,20 +22,44 @@ export default function Scheduling() {
     }, []);
 
     const getRecommendedBooks = () => {
-        axiosInstance
-            .post(`recommender/0/10/${club_id}/top_n_for_club/`, {})
-            .then(() => {
-                axiosInstance
-                    .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
-                    .then((res) => {
-                        console.log(res)
-                        let book_list = []
-                        for (let i = 0; i < res.data.length; ++i) {
-                            book_list.push({id: res.data[i]['book']['ISBN'], name: res.data[i]['book']['title']})
-                        }
-                        setBooks(book_list)
-                    })
-            })
+        trackPromise(
+            axiosInstance
+                .post(`recommender/0/10/${club_id}/top_n_for_club/`, {})
+                .then(() => {
+                        axiosInstance
+                            .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
+                            .then((res) => {
+                                    console.log(res)
+                                    let book_list = []
+                                    for (let i = 0; i < res.data.length; ++i) {
+                                        book_list.push({id: res.data[i]['book']['ISBN'], name: res.data[i]['book']['title']})
+                                    }
+                                    setBooks(book_list)
+                                }
+                            )
+                    }
+                )
+        )
+    }
+
+    const LoadingIndicator = () => {
+
+        const {promiseInProgress} = usePromiseTracker();
+
+        return (
+            promiseInProgress &&
+            <Container>
+                <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100"/>
+                </div>
+            </Container>
+        )
     }
 
     const initialFormData = Object.freeze({
@@ -198,7 +224,8 @@ export default function Scheduling() {
                         <Col>
                             <HeadingText
                                 data-testid="waiting_message"
-                            >Please wait about 20 seconds for the book recommendations</HeadingText>
+                            >Please wait for the book recommendations</HeadingText>
+                            <LoadingIndicator/>
                         </Col>
                         <Col/>
                     </Row>

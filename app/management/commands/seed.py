@@ -7,6 +7,8 @@ from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
+
+from app.management.commands.unseed import print_info
 from app.models import Book, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
     TimePeriod, Post
 
@@ -22,6 +24,7 @@ class Command(BaseCommand):
         time_function(seed_friends)
         time_function(seed_meetings)
         time_function(seed_posts)
+        print_info()
 
 
 def seed_books():
@@ -33,9 +36,10 @@ def seed_books():
 
     # Load data from csv file
     filepath = 'app/files/BX_Books_genres.csv'
+    # filepath = 'app/files/BX-Book-genres-deployed.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = 3000#len(df)
+    total = len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]
