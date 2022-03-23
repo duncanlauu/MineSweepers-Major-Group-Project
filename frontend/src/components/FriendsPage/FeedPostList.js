@@ -28,7 +28,7 @@ export default function FeedPostList(props){
                 myFeedPosts.map((feedPost, index) => {
                     return(
                         <div className="SingleFeedPost" key={feedPost.id}>
-                            <SingleFeedPost feedPost={feedPost}/>
+                            <SingleFeedPost feedPost={feedPost} />
                         </div>
                     )
                 })

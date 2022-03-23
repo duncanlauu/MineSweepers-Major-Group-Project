@@ -22,6 +22,7 @@ import RequireAuth from "./RequireAuth/RequireAuth";
 import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
+import UserProfile from "./FriendsPage/UserProfile";
 
 export default class App extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ export default class App extends Component {
                   <Route path='club_profile' element={<ClubProfile/>}/>
                   <Route path='create_club' element={<CreateClub/>}/>
                   <Route path='notifications' element={<Notifications/>}/>
-                  <Route path='friends_page' element={<FriendsPage/>}/>
+                  <Route path='friends_page' element={<UserProfile/>}/>
                   <Route path="chat/:chatID" element={<ChatWrapper/>}/>
                   <Route path="/chat/" element={<ChatWrapper/>}/>
                   <Route path='hello' element={<Hello/>}/>

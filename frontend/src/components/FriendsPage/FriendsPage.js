@@ -11,10 +11,9 @@ import FriendList from "./FriendList";
 import FriendRequests from "./FriendRequests";
 import NonFriendList from "./NonFriendList";
 import useGetUser from "../../helpers";
-import PersonalPosts from "./PersonalPosts";
 import PersonalPostForm from "./PersonalPostForm";
-import FeedPage from "./FeedPage";
 import {Nav as MainNav} from "../Nav/Nav";
+import PersonalPostList from "./PersonalPostList";
 
 
 export default function FriendsPage() {
@@ -37,7 +36,6 @@ export default function FriendsPage() {
     marginBottom: "1rem",
     width: "70rem",
     marginTop: "1rem",
-
   };
 
   return (
@@ -50,6 +48,8 @@ export default function FriendsPage() {
           </NavbarBrand>
         </Navbar>
       </Row>
+
+
 
       {/* <Row style={{ marginBottom: "3rem" }}>
           <MainNav />
@@ -132,8 +132,12 @@ export default function FriendsPage() {
                         <PersonalPosts /> 
                       </PostsContainer> */}
 
-                      <CardGroup>
+                      {/* <CardGroup>
                         <PersonalPosts /> 
+                      </CardGroup> */}
+
+                      <CardGroup>
+                        <PersonalPostList/>
                       </CardGroup>
 
                     </TabPane>

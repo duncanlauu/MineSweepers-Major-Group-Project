@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Row, Col, Button} from "reactstrap"
 import axiosInstance from '../../axios'
-
+import Gravatar from "react-gravatar";
 import {useNavigate} from "react-router";
 
 export default function NonFriendList(props) {
@@ -50,10 +50,18 @@ export default function NonFriendList(props) {
                     return (
                         <div className="friend" key={nonFriend.id}>
                             <Row>
-                                <Col>
-                                    <h3 className="friend_username"> {nonFriend.username} </h3>
+                                <Col xs="2">
+                                    <Gravatar email='user@example.com' size={20} style={{ 
+                                                borderRadius: "50px",
+                                                marginTop: "1rem",
+                                                marginBottom: "1rem"
+                                            }} 
+                                        />
                                 </Col>
-                                <Col>
+                                <Col xs="5">
+                                    <h5 className="friend_username"> {nonFriend.username} </h5>
+                                </Col>
+                                <Col xs="5">
                                     <Button onClick={(e) => postFriendRequest(nonFriend.id)}>
                                         <p> Follow </p>
                                     </Button>

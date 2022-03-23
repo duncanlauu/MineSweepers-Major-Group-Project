@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
-import PostComments from "./PostComments"
+import PostCommentList from "./PostCommentList"
 
 export default function SingleFeedPost(props) {
 
@@ -81,16 +81,16 @@ export default function SingleFeedPost(props) {
                 </CardText>
 
                 <Button color="primary" id={togglerID} style={{marginBottom: "1rem"}}>
-                    See comments
+                    Comment section
                 </Button>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{height: "12rem", overflowY: "scroll", marginBottom: "2rem"}}>
-                        <PostComments ref={el => commentsRef.current[0] = el}  personalPost={feedPost} />
+                        <PostCommentList post={feedPost}/>
                     </div>
                 </UncontrolledCollapse>
 
-                <Row>
+                {/* <Row>
                     <Col xs="9">
                         <Input type="textarea" rows="1"
                             id="myComment"
@@ -104,7 +104,7 @@ export default function SingleFeedPost(props) {
                             <p> Send </p>
                         </Button>
                     </Col>
-                </Row>
+                </Row> */}
 
             </Card>
         </div>
