@@ -35,8 +35,8 @@ def seed_books():
     """
 
     # Load data from csv file
-    filepath = 'app/files/BX_Books_genres.csv'
-    # filepath = 'app/files/BX-Book-genres-deployed.csv'
+    # filepath = 'app/files/BX_Books_genres.csv'
+    filepath = 'app/files/BX-Book-genres-deployed.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
     total = len(df)
