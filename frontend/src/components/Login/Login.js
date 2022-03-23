@@ -18,7 +18,7 @@ export default function SignIn() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/home"
+    const from = location.state?.from?.pathname || "/home" 
 
     const usernameRef = useRef();
     const errRef = useRef();
