@@ -20,8 +20,8 @@ export default function CommentReplyList(props){
             .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
                 console.log("Sick replies:::")
-                console.log(res.data)
-                const allRepliesUnderComment = res.data;
+                console.log(res.data.replies)
+                const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
             })
     }
@@ -39,14 +39,12 @@ export default function CommentReplyList(props){
         console.log(currentPost.id)
         console.log(currentComment.id)
         axiosInstance
-            .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies`, {
+            .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-                console.log("YESS")
-                // console.log(res.data)
-                // getRepliesUnderComments()
-
+                console.log(res.data)
+                getRepliesUnderComments()
             })
     }
 
@@ -75,7 +73,7 @@ export default function CommentReplyList(props){
                         console.log(reply);
                         return (
                             <div key={reply.id}> 
-                                <p> Reply!!! </p>
+                                <p> {reply.content} </p>
                                 {/* <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
                                     updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
                                 /> */}
