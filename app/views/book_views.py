@@ -14,4 +14,4 @@ class Books(APIView):
             serializer = BookSerializer(book)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Book.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(data='There is no book with the requested ISBN',status=status.HTTP_400_BAD_REQUEST)

@@ -66,12 +66,16 @@ class ChatSerializer(serializers.ModelSerializer):
 
 
 class BookRecommendationSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
     class Meta:
         model = BookRecommendation
         fields = '__all__'
 
 
 class BookRecommendationForClubSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
     class Meta:
         model = BookRecommendationForClub
         fields = '__all__'
@@ -104,6 +108,8 @@ class UserRecommendationSerializer(serializers.ModelSerializer):
 
 
 class ClubRecommendationSerializer(serializers.ModelSerializer):
+    club = ClubSerializer()
+
     class Meta:
         model = ClubRecommendation
         fields = '__all__'
