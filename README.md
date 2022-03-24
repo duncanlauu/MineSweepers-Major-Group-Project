@@ -119,3 +119,7 @@ $ pip3 uninstall numpy
 [confirm uninstallation with Y]
 $ pip3 install numpy 
 ```
+
+## Sources
++ The packages in requirements.txt
++ frontend/src/components/Meetings/Meetings.js lines 30-35 are adapted from https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
