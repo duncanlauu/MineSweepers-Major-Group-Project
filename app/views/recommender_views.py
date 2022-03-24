@@ -6,13 +6,13 @@ from surprise import SVD
 
 from app.models import BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, UserRecommendation, \
     Club, ClubRecommendation, User, Book
-from app.recommender_system.books_recommender import get_global_top_n, get_top_between_m_and_n, \
+from app.recommender_system.books_recommender import get_top_between_m_and_n, \
     get_top_between_m_and_n_for_genre, get_top_between_m_and_n_for_club, get_top_between_m_and_n_for_club_for_genre, \
     get_global_top_between_m_and_n_for_genre, get_global_top_between_m_and_n
 from app.recommender_system.file_management import load_trained_model, get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, dump_trained_model, test_model
 from app.recommender_system.people_recommender import get_top_between_m_and_n_users_by_favourite_books, \
-    get_top_between_m_and_n_users_double_random, get_top_between_m_and_n_users_for_a_genre, \
+    get_top_between_m_and_n_users_random, get_top_between_m_and_n_users_for_a_genre, \
     get_top_between_m_and_n_clubs_using_top_items_for_a_user, get_top_between_m_and_n_clubs_using_random_items, \
     get_top_between_m_and_n_clubs_for_a_genre, get_top_between_m_and_n_clubs_using_clubs_books
 from app.serializers import BookRecommendationSerializer, ClubRecommendationSerializer, \
@@ -207,7 +207,7 @@ class RecommenderAPI(APIView):
                 uid = kwargs['id']
                 n = kwargs['n']
                 clear_previous_user_recommendations(uid, 'random_books')
-                top_n = get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n)
+                top_n = get_top_between_m_and_n_users_random(uid, trainset, algo, m, n)
                 save_user_recommendations(top_n, uid, method='random_books')
             elif action == 'top_n_users_genre_books':
                 m = kwargs['m']

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from app.serializers import ClubSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class Clubs(APIView):
@@ -28,7 +28,7 @@ class Clubs(APIView):
 
 
 class SingleClub(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         try:
@@ -39,7 +39,7 @@ class SingleClub(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def update(self, request, club):
-        serializer = ClubSerializer(club, data=request.data)
+        serializer = ClubSerializer(club, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

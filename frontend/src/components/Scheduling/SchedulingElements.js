@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
+export const FormContainer = styled.div`
+    background-color: #fff;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+`
+
 export const HeadingText = styled.text`
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 30px;
@@ -13,27 +22,25 @@ export const ParaText = styled.text`
     font-size: 17px;
     font-weight: 500;
     color: #071C4E;
-`
+    `
 
-export const LoginContainer = styled.div`
+export const SchedulingContainer = styled.div`
     background-color: #FFF;
-    height: 23rem;
-    width: 40rem;
+    height: 45rem;
+    width: 65rem;
     border-radius: 10px;
     margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+    `
 
-export const Form = styled.form`
+export const FormLayout = styled.form`
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 2rem;
+    padding-bottom: 1rem;
+    align-items: center;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 500;
     font-size: 17px;
     line-height: 17px;
     justify-content: center;
-    align-items: center;
 `

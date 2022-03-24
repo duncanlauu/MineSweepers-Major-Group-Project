@@ -21,9 +21,7 @@ def get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, m=0, n
 
     """
 
-    users = get_actual_users(trainset)
-    if trainset.to_inner_uid(uid) in users:
-        users.remove(trainset.to_inner_uid(uid))
+    users = get_actual_users(trainset, uid)
     max_number_of_items = int(100000 / len(users))
 
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
@@ -37,12 +35,10 @@ def get_top_n_users_by_favourite_books(uid, trainset, algo, n=10):
     return get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, 0, n)
 
 
-def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
-    """Get the top between m and n users for a user using random users and random items"""
+def get_top_between_m_and_n_users_random(uid, trainset, algo, m, n=10):
+    """Get the top between m and n users for a user using random items"""
 
-    users = get_actual_users(trainset)
-    if trainset.to_inner_uid(uid) in users:
-        users.remove(trainset.to_inner_uid(uid))
+    users = get_actual_users(trainset, uid)
     max_number_of_items = int(100000 / len(users))
 
     items = get_random_n_items(trainset, max_number_of_items)
@@ -50,18 +46,16 @@ def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
     return get_top_between_m_and_n_users_for_given_items_and_given_users(algo, items, m, n, uid, users)
 
 
-def get_top_n_users_double_random(uid, trainset, algo, n=10):
-    """Get the top users for a user using random users and random items"""
+def get_top_n_users_random(uid, trainset, algo, n=10):
+    """Get the top users for a user using random items"""
 
-    return get_top_between_m_and_n_users_double_random(uid, trainset, algo, 0, n)
+    return get_top_between_m_and_n_users_random(uid, trainset, algo, 0, n)
 
 
 def get_top_between_m_and_n_users_for_a_genre(uid, trainset, algo, genre, m, n=10):
     """Get the top between m and n users for a user using items from a given genre"""
 
-    users = get_random_n_users(trainset, 100)
-    if uid in users:
-        users.remove(trainset.to_inner_uid(uid))
+    users = get_actual_users(trainset, uid)
     max_number_of_items = int(100000 / len(users))
 
     all_items = get_isbns_for_a_genre(genre, trainset)
@@ -120,22 +114,25 @@ def get_random_n_items_from_a_list(items, n):
     return items[0:n]
 
 
-def get_random_n_users(trainset, n=100):
-    """Get random n users"""
+def get_actual_users(trainset, uid):
+    """Get the users from the database for whom we have ratings in the trainset
 
-    users = get_actual_users(trainset)
-    # To be able to test it, I seed with the same number each time
-    seed(10)
-    shuffle(users)
-    return users[0:n]
+    Filter out current friends and people for whom we have friend invites.
 
-
-def get_actual_users(trainset):
-    """Get the users from the database for whom we have ratings in the trainset"""
+    """
 
     database_users = (user.id for user in list(User.objects.all()))
-    all_trainset_users = trainset.all_users()
-    return list(set(all_trainset_users).intersection(database_users))
+    all_trainset_users = (trainset.to_raw_uid(user) for user in trainset.all_users())
+    users_with_ratings = list(set(all_trainset_users).intersection(database_users))
+    people_we_already_know = [uid]
+    user = User.objects.get(pk=uid)
+    people_we_already_know.extend(list(user.id for user in user.friends.all()))
+    people_we_already_know.extend(list(request.sender.id for request in user.incoming_friend_requests.all()))
+    people_we_already_know.extend(list(request.receiver.id for request in user.outgoing_friend_requests.all()))
+
+    users_with_ratings_we_do_not_know = set(users_with_ratings).difference(people_we_already_know)
+
+    return users_with_ratings_we_do_not_know
 
 
 def get_average_diff_for_list_of_users(uid1, uids, algo, items):
@@ -218,6 +215,7 @@ def get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n=10):
         items = list((book.ISBN for book in club.books.all()))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
     clubs_with_diffs.sort(key=itemgetter(1))
+    remove_incorrect_clubs(clubs_with_diffs)
     return clubs_with_diffs[m:n]
 
 
@@ -234,8 +232,17 @@ def get_top_between_m_and_n_clubs_for_items(algo, clubs, items, m, n, uid):
     for club in clubs:
         uids = list((user.id for user in get_all_users_related_to_a_club(club)))
         clubs_with_diffs.append((club.id, get_average_diff_for_list_of_users(uid, uids, algo, items)))
+    remove_incorrect_clubs(clubs_with_diffs)
     clubs_with_diffs.sort(key=itemgetter(1))
     return clubs_with_diffs[m:n]
+
+
+def remove_incorrect_clubs(clubs_with_diffs):
+    """Remove the clubs for which we have -1 as diff"""
+
+    for club, diff in clubs_with_diffs:
+        if diff == -1:
+            clubs_with_diffs.remove((club, diff))
 
 
 def get_top_n_users_test(algo, trainset, genre='fiction'):
@@ -271,7 +278,7 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
         logging.debug(f'{user} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_users_double_random(uid=276726, algo=algo, trainset=trainset)
+    top_n = get_top_n_users_random(uid=276726, algo=algo, trainset=trainset)
     end = time.time()
     logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
 
