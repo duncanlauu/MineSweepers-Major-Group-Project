@@ -40,6 +40,7 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class ClubSerializer(serializers.ModelSerializer):
+    owner = UserSerializer()
     class Meta:
         model = Club
         fields = '__all__'

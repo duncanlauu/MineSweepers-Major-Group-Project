@@ -26,6 +26,7 @@ import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
 import RecommenderPage from "./RecommenderPage/RecommenderPage";
+import ListOfClubs from "./ListOfClubs/ListOfClubs";
 import BookProfilePage from "./BookProfilePage/BookProfilePage";
 
 
@@ -67,6 +68,7 @@ export default class App extends Component {
                       <Route path="/recommendations/" element={<RecommenderPage />} />
                       <Route path='recommend_clubs' element={<ClubRecommendationPage />} />
                       <Route path='book_profile/:book_id' element={<BookProfilePage />} />
+                      <Route path="/all_clubs/" element={<ListOfClubs/>}/>
                     </Route>
                   </Route>
 

@@ -7,14 +7,16 @@ from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
-from app.models import Book, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
+from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
     TimePeriod, Post
+from app.management.commands.helpers import print_info
 
 
 class Command(BaseCommand):
-    """A seeder class for seeding books, users and user ratings"""
+    """A seeder class for seeding all model instances"""
 
     def handle(self, *args, **options):
+        """Main function to seed and time everything"""
         time_function(seed_books)
         time_function(seed_default_objects)
         time_function(seed_users)
@@ -22,7 +24,8 @@ class Command(BaseCommand):
         time_function(seed_clubs)
         time_function(seed_friends)
         time_function(seed_meetings)
-        time_function(seed_posts)
+        time_function(seed_feed)
+        print_info()
 
 
 def seed_default_objects():
@@ -145,7 +148,7 @@ def seed_books():
         book_db.image_links_small = book['Image-URL-S']
         book_db.genre = book['Genre']
         if (i + 1) % 10000 == 0:
-            print(f'{i + 1}/{total} inserted...')
+            print(f'{i + 1}/{total} books inserted...')
         books_db.append(book_db)
     Book.objects.bulk_create(books_db)
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
@@ -249,17 +252,42 @@ def seed_meetings():
         print(f'Created all meetings for {club}')
 
 
-def seed_posts():
-    """Seed a number of posts"""
+def seed_feed():
+    """Main seeder for seeding posts, comments, and replies"""
 
-    min_number_of_posts = 3
-    max_number_of_posts = 7
+    min_number_of_posts = 0
+    max_number_of_posts = 2
     faker = Faker('en_GB')
     for user in User.objects.all():
         num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
         for i in range(0, num_of_posts):
-            create_post(user, faker)
+            post = create_post(user, faker)
+            seed_comments_and_replies(post, user)
         print(f'Created all posts for {user}')
+
+def seed_comments_and_replies(post, user):
+    """Helper to seed a number of comments and replies for a post"""
+    min_number_of_comments = 0
+    max_number_of_comments = 1
+    faker = Faker('en_GB')
+    for friend in user.friends.all():
+        num_of_comments = random.randint(min_number_of_comments, max_number_of_comments)
+        for i in range(0, num_of_comments):
+            comment = create_comment(friend, faker, post)
+            seed_replies(comment, user)
+        print(f'Created all comments for {friend}')
+
+
+def seed_replies(comment, user):
+    """Helper to seed a number of replies for a comment"""
+    min_number_of_replies = 0
+    max_number_of_replies = 1
+    faker = Faker('en_GB')
+    for friend in user.friends.all():
+        num_of_replies = random.randint(min_number_of_replies, max_number_of_replies)
+        for i in range(0, num_of_replies):
+            create_reply(friend, faker, comment)
+        print(f'Created all replies for {friend}')
 
 
 def create_user(faker, books):
@@ -327,12 +355,34 @@ def create_meeting(club, faker, counter):
 def create_post(user, faker):
     """Create a post"""
 
-    Post.objects.create(
+    return Post.objects.create(
         author=user,
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
         upvotes=random.randint(0, 5),
         downvotes=random.randint(0, 5)
+    )
+
+def create_comment(user, faker, post):
+    """Create a comment"""
+
+    return Comment.objects.create(
+        author=user,
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5),
+        post=post
+    )
+
+def create_reply(user, faker, comment):
+    """Create a reply"""
+
+    return Reply.objects.create(
+        author=user,
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5),
+        comment=comment
     )
 
 
