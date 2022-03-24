@@ -6,9 +6,9 @@ import useGetUser from "../../helpers";
 import { DataContainer, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPostList";
-import FriendRequests from "./FriendRequests";
-import FriendList from "./FriendList";
 import NonFriendList from "./NonFriendList";
+import FriendsList from "./FriendsList";
+import FriendRequestList from "./FriendRequestList";
 
 const UserProfile = () => {
 
@@ -101,10 +101,10 @@ const UserProfile = () => {
 
                                 <TabPane tabId="2">
                                     <h3> Friend Requests </h3>
-                                    <FriendRequests/>
+                                    <FriendRequestList/>
 
                                     <h3> Friends </h3>
-                                    <FriendList />
+                                    <FriendsList />
                                 </TabPane>
 
                             </TabContent>
