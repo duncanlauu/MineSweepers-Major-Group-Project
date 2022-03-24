@@ -96,8 +96,8 @@ const BookProfilePage = () => {
             })  
         }else{
             console.log("update rating")
-            axiosInstance.put(`/ratings/${previousRating.id}`,{
-                rating: rating * 2
+            axiosInstance.put(`/ratings/${previousRating.id}/`,{
+                'rating': rating * 2
             })
             .then((res) => {
                 console.log(res)
@@ -131,7 +131,7 @@ const BookProfilePage = () => {
                         onClick={handleSubmit}
                         style={{backgroundColor: "#653FFD", width: "14rem", margin: "auto"}}
                         >
-                                Submit Rating
+                              {clearable ? "Submit rating" : "Update rating"}
                         </Button>
                     </Col>
                     <Col>
