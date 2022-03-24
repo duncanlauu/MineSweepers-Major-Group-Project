@@ -64,6 +64,9 @@ export default function SignIn() {
                 console.log(response);
                 console.log(response.data);
             })
+            .catch((e) => {
+                setErrMsg("Invalid username/password")
+            })
     }
 
     return (
@@ -72,7 +75,7 @@ export default function SignIn() {
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h2 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</h2>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>
@@ -113,6 +116,7 @@ export default function SignIn() {
                                     </Button>
                                     </Container>
                                 </FormGroup>
+
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 4 }}>
                                         <Button 

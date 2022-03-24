@@ -51,6 +51,7 @@ class SearchView(ListView, APIView):
             start = time.time()
             recommended_club_results = get_top_between_m_and_n_clubs_for_search(request.user, ordered_books,
                                                                                 club_results, algo, 0, 20)
+
             recommended_user_results = get_top_between_m_and_n_users_for_search(request.user, ordered_books, trainset,
                                                                                 algo, 0, 20)
 
