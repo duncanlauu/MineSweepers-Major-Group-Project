@@ -7,21 +7,120 @@ from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
-from app.models import Book, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
+from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
     TimePeriod, Post
+from app.management.commands.helpers import print_info
 
 
 class Command(BaseCommand):
-    """A seeder class for seeding books, users and user ratings"""
+    """A seeder class for seeding all model instances"""
 
     def handle(self, *args, **options):
+        """Main function to seed and time everything"""
         time_function(seed_books)
+        time_function(seed_default_objects)
         time_function(seed_users)
         time_function(seed_ratings)
         time_function(seed_clubs)
         time_function(seed_friends)
         time_function(seed_meetings)
-        time_function(seed_posts)
+        time_function(seed_feed)
+        print_info()
+
+
+def seed_default_objects():
+    """Seed a couple of default users"""
+
+    jeb = User.objects.create(
+        username="Jeb",
+        first_name="Jebediah",
+        last_name="Kerman",
+        email="jeb@example.org",
+        bio="I love chess! I mean books, I love books.",
+        location="Somewhere in space I guess",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    billie = User.objects.create(
+        username="Billie",
+        first_name="Billie",
+        last_name="Kerman",
+        email="billie@example.org",
+        bio="Never read Fitzgerald? You Gatsby kidding me!",
+        location="Actually I'm currently in an undisclosed location.",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    bob = User.objects.create(
+        username="Bob",
+        first_name="Bob",
+        last_name="Kerman",
+        email="bob@example.org",
+        bio="My weekend is fully booked.",
+        location="London. Just kidding, space!",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    val = User.objects.create(
+        username="Val",
+        first_name="Valentina",
+        last_name="Kerman",
+        email="val@example.org",
+        bio="Books are lit! (like literature)",
+        location="Somewhere else in space, huh?",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    books = list(Book.objects.all())
+    add_read_and_liked_books(books, jeb)
+    add_read_and_liked_books(books, billie)
+    add_read_and_liked_books(books, bob)
+    add_read_and_liked_books(books, val)
+    val.add_friend(jeb)
+    val.add_friend(bob)
+    val.add_friend(billie)
+    jeb.add_friend(val)
+    jeb.add_friend(bob)
+    jeb.add_friend(billie)
+    bob.add_friend(jeb)
+    bob.add_friend(val)
+    bob.add_friend(billie)
+    billie.add_friend(jeb)
+    billie.add_friend(bob)
+    billie.add_friend(val)
+
+    kerbal = Club.objects.create(
+        name="Kerbal book club",
+        description="After our success with space programmes, we decided to start a book club",
+        owner=jeb
+    )
+    kerbal.admins.set([bob])
+    kerbal.members.set([val, billie])
+    kerbal.books.set(get_n_random_books_from(10, books))
+    kerbal.save()
+
+    time_period = TimePeriod.objects.create(
+        start_time="2013-05-16T17:00:00+00:00",
+        end_time="2013-05-16T18:00:00+00:00"
+    )
+
+    meeting = Meeting.objects.create(
+        name="Kerbal book meeting number 1",
+        description="Reading books but also space, what else could you possibly need?",
+        club=kerbal,
+        book=get_n_random_books_from(1, books)[0],
+        time=time_period,
+        organiser=jeb,
+        link=generate_link()
+    )
+
+    meeting.attendees.set([val, billie, bob])
+    meeting.save()
+
 
 
 def seed_books():
@@ -49,7 +148,7 @@ def seed_books():
         book_db.image_links_small = book['Image-URL-S']
         book_db.genre = book['Genre']
         if (i + 1) % 10000 == 0:
-            print(f'{i + 1}/{total} inserted...')
+            print(f'{i + 1}/{total} books inserted...')
         books_db.append(book_db)
     Book.objects.bulk_create(books_db)
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
@@ -80,7 +179,7 @@ def seed_users(number=150):
 def seed_ratings():
     """Seed a random number of ratings for each user"""
 
-    min_num_of_ratings = 2
+    min_num_of_ratings = 4
     max_num_of_ratings = 20
 
     users = User.objects.all()
@@ -153,17 +252,42 @@ def seed_meetings():
         print(f'Created all meetings for {club}')
 
 
-def seed_posts():
-    """Seed a number of posts"""
+def seed_feed():
+    """Main seeder for seeding posts, comments, and replies"""
 
-    min_number_of_posts = 3
-    max_number_of_posts = 7
+    min_number_of_posts = 0
+    max_number_of_posts = 2
     faker = Faker('en_GB')
     for user in User.objects.all():
         num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
         for i in range(0, num_of_posts):
-            create_post(user, faker)
+            post = create_post(user, faker)
+            seed_comments_and_replies(post, user)
         print(f'Created all posts for {user}')
+
+def seed_comments_and_replies(post, user):
+    """Helper to seed a number of comments and replies for a post"""
+    min_number_of_comments = 0
+    max_number_of_comments = 1
+    faker = Faker('en_GB')
+    for friend in user.friends.all():
+        num_of_comments = random.randint(min_number_of_comments, max_number_of_comments)
+        for i in range(0, num_of_comments):
+            comment = create_comment(friend, faker, post)
+            seed_replies(comment, user)
+        print(f'Created all comments for {friend}')
+
+
+def seed_replies(comment, user):
+    """Helper to seed a number of replies for a comment"""
+    min_number_of_replies = 0
+    max_number_of_replies = 1
+    faker = Faker('en_GB')
+    for friend in user.friends.all():
+        num_of_replies = random.randint(min_number_of_replies, max_number_of_replies)
+        for i in range(0, num_of_replies):
+            create_reply(friend, faker, comment)
+        print(f'Created all replies for {friend}')
 
 
 def create_user(faker, books):
@@ -188,10 +312,17 @@ def create_user(faker, books):
         password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
+    add_read_and_liked_books(books, user)
+
+
+def add_read_and_liked_books(books, user):
+    """Add read and liked books to a user"""
+
     read_books = get_n_random_books_from(n=35, books=books)
     liked_books = get_n_random_books_from(n=15, books=read_books)
     user.read_books.set(read_books)
     user.liked_books.set(liked_books)
+    user.save()
 
 
 def create_meeting(club, faker, counter):
@@ -224,12 +355,34 @@ def create_meeting(club, faker, counter):
 def create_post(user, faker):
     """Create a post"""
 
-    Post.objects.create(
+    return Post.objects.create(
         author=user,
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
         upvotes=random.randint(0, 5),
         downvotes=random.randint(0, 5)
+    )
+
+def create_comment(user, faker, post):
+    """Create a comment"""
+
+    return Comment.objects.create(
+        author=user,
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5),
+        post=post
+    )
+
+def create_reply(user, faker, comment):
+    """Create a reply"""
+
+    return Reply.objects.create(
+        author=user,
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5),
+        comment=comment
     )
 
 
