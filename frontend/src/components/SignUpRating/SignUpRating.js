@@ -1,15 +1,14 @@
 import { Card, CardBody, CardImg } from 'reactstrap'
 import Rater from 'react-rater'
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import axiosInstance from '../../axios';
-
 import BookRatingCard from '../GeneralComponents/BookRatingCard';
-import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
+import { Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand } from 'reactstrap'
 import useGetUser from "../../helpers";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import { Oval } from 'react-loader-spinner';
-
+import useHasRated from '../hooks/useHasRated';
 
 export default function SignUpRating(props) {
 
@@ -17,8 +16,9 @@ export default function SignUpRating(props) {
     const [topBooks, setTopBooks] = useState([])
     const [toggle, setToggle] = useState(true)
 
-
-
+    const { setHasRated } = useHasRated()
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/home"
 
     useEffect(() => {
         getTopBooks();
@@ -89,7 +89,15 @@ export default function SignUpRating(props) {
         e.preventDefault()
         createRatings()
         //await axiosInstance.post("/recommender/retrain", {})
-        navigate("/home/")
+        console.log(from)
+        setHasRated({ hasRated: "true" })
+        localStorage.setItem("hasRated", true)
+        // set local storage here as well
+
+        setRatings({})
+        setTopBooks([])
+        setToggle(true)
+        navigate(from)
     }
 
     const handleChange = ([id], rate) => {
@@ -102,7 +110,6 @@ export default function SignUpRating(props) {
         setRatings(ratings)
         setToggle(Object.keys(ratings).length === 0)
         console.log("submitting", ratings)
-
     };
 
 
@@ -114,8 +121,8 @@ export default function SignUpRating(props) {
             for (let j = 0; j < 4; ++j) {
                 row.push(
                     <Col md="3">
-                       <BookRatingCard id={topBooks[i*4+j].ISBN} title={topBooks[i*4+j].title} author={topBooks[i*4+j].author}
-                        image ={topBooks[i*4+j].image_links_large} parentCallBack={handleChange} clearable ={true} idReturn={true} />
+                        <BookRatingCard id={topBooks[i * 4 + j].ISBN} title={topBooks[i * 4 + j].title} author={topBooks[i * 4 + j].author}
+                            image={topBooks[i * 4 + j].image_links_large} parentCallBack={handleChange} clearable={true} idReturn={true} />
                     </Col>
                 )
 

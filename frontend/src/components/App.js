@@ -18,7 +18,9 @@ import Notifications from "./Notifications/Notifications";
 import CreateClub from "./CreateClub/CreateClub";
 import Layout from "./Layout/Layout";
 import { AuthProvider } from "./context/AuthProvider";
+import { RatingsProvider } from "./context/RatingsProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
+import RequireRatings from "./RequireRating/RequireRating";
 import SignUpRating from "./SignUpRating/SignUpRating";
 import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
@@ -37,45 +39,46 @@ export default class App extends Component {
       <React.StrictMode>
         <BrowserRouter>
           <AuthProvider>
-            <Routes>
-              <Route path='/' element={<Layout />}>
-                {/* public routes */}
-                <Route path='/' element={<LandingPage />} />
-                <Route path='log_in' element={<Login />} />
-                <Route path='sign_up' element={<SignUp />} />
-                <Route path='password_reset' element={<PasswordReset />} />
-                <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
-                {/* <Route path='unauthorized' element={<Unauthorized />}></Route> */}
+            <RatingsProvider>
+              <Routes>
+                <Route path='/' element={<Layout />}>
+                  {/* public routes */}
+                  <Route path='/' element={<LandingPage />} />
+                  <Route path='log_in' element={<Login />} />
+                  <Route path='sign_up' element={<SignUp />} />
+                  <Route path='password_reset' element={<PasswordReset />} />
+                  <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
 
-                {/* protected routes */}
-                <Route element={<RequireAuth />}>
-                  <Route path='sign_up/rating' element={<SignUpRating />}></Route>
-                  <Route path='home' element={<HomePage />} />
-                  <Route path='log_out' element={<Logout />} />
-                  <Route path='club_profile/:club_id' element={<ClubProfile />} />
-                  <Route path='create_club' element={<CreateClub />} />
-                  <Route path='notifications' element={<Notifications />} />
-                  <Route path='friends_page' element={<FriendsPage />} />
-                  <Route path="chat/:chatID" element={<ChatWrapper />} />
-                  <Route path="/chat/" element={<ChatWrapper />} />
-                  <Route path='hello' element={<Hello />} />
-                  <Route path="/scheduling/:club_id" element={<Scheduling />} />
-                  <Route path="/meetings/" element={<Meetings />} />
-                  <Route path="/recommendations/" element={<RecommenderPage />}></Route>
-                  <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
-                  <Route path='book_profile/:book_id' element={<BookProfilePage/>}/>
+                  {/* protected routes */}
+                  <Route element={<RequireAuth />}>
+                    <Route path='sign_up/rating' element={<SignUpRating />} />
+                    <Route path='log_out' element={<Logout />} />
+                    <Route element={<RequireRatings />}>
+                      <Route path='home' element={<HomePage />} />
+                      <Route path='club_profile/:club_id' element={<ClubProfile />} />
+                      <Route path='create_club' element={<CreateClub />} />
+                      <Route path='notifications' element={<Notifications />} />
+                      <Route path='friends_page' element={<FriendsPage />} />
+                      <Route path="chat/:chatID" element={<ChatWrapper />} />
+                      <Route path="/chat/" element={<ChatWrapper />} />
+                      <Route path='hello' element={<Hello />} />
+                      <Route path="/scheduling/:club_id" element={<Scheduling />} />
+                      <Route path="/meetings/" element={<Meetings />} />
+                      <Route path="/recommendations/" element={<RecommenderPage />} />
+                      <Route path='recommend_clubs' element={<ClubRecommendationPage />} />
+                      <Route path='book_profile/:book_id' element={<BookProfilePage />} />
+                    </Route>
+                  </Route>
 
+                  {/* error, catch all */}
+                  <Route path='error' element={<Error404 />} />
+                  <Route path='*' element={<Error404 />} />
                 </Route>
-
-                {/* catch all */}
-                <Route path='error' element={<Error404 />} />
-                <Route path='*' element={<Error404 />} />
-                {/* not sure what to do with error */}
-              </Route>
-            </Routes>
+              </Routes>
+            </RatingsProvider>
           </AuthProvider>
         </BrowserRouter>
-      </React.StrictMode>
+      </React.StrictMode >
     );
   }
 }
