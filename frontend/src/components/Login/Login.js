@@ -62,18 +62,23 @@ export default function SignIn() {
                 setUser('')
                 setPassword('')
 
-                // get request for ratings. Set local storage to bool emtpy/ not empty (hasRated)
-                axiosInstance.get(`ratings/`).then((r) => {
-                    r.data.ratings.length > 0
-                        ? localStorage.setItem('hasRated', true)
-                        : localStorage.setItem('hasRated', false)
-                    setHasRated({ hasRated: localStorage.getItem('hasRated') })
-                })
-
+                axiosInstance
+                    .get(`ratings/`)
+                    .then((r) => {
+                        const rated = r.data.ratings.length > 0
+                        if (rated) {
+                            setHasRated({ hasRated: "true" })
+                        } else {
+                            setHasRated({ hasRated: "false" })
+                        }
+                        localStorage.setItem('hasRated', rated)
+                    })
+                setHasRated({ hasRated: "true" })
                 navigate(from)
                 console.log(response);
                 console.log(response.data);
             })
+
     }
 
     return (
