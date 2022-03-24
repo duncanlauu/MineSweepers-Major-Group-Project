@@ -245,6 +245,40 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_page_redicrects_to_log_in_when_not_logged_in(self):
         pass
 
+    def test_scheduling_page(self):
+        pass
+
+    def test_chat_page(self):
+        '''
+        Unable to test chat frontend functionality (Connecting to websocket) with selenium
+        due to a python multihtreading error when running ChannelsLiveServerTestCase.
+        https://github.com/django/channels/issues/1485 
+        '''
+        # Test navigation to page, selecting chats
+        pass
+
+    def test_hello(self):
+        #???
+        pass
+
+    def test_meetings_page(self):
+        pass
+
+    def test_recommend_clubs_page(self):
+        # ???
+        pass
+
+    def test_404(self):
+        pass
+
+    def test_password_reset_page(self):
+        # needs to be added to log in
+        pass
+
+    def test_password_reset_page(self):
+        # if possible get link from from the django mail thingy
+        pass
+
     # def test_chat_messaging(self): needs separate test case file
     #     # number_of_clubs_before = Club.objects.count()
     #     # number_of_chats_before = Chat.objects.count()
