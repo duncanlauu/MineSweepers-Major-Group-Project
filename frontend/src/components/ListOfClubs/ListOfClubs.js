@@ -8,66 +8,6 @@ import { ClubProfile } from '../ClubProfile/ClubProfileElements'
 import {VariableWidthGrid} from 'react-variable-width-grid'
 import { Link } from 'react-router-dom'
 
-// function IndividualClubsCard(props) {
-//   return (
-//     // <Container fluid>
-//     //   <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
-//     //   <HeadingText>{props.name}</HeadingText>
-//     //   <Button>Apply</Button>
-//     // </Container>
-    
-//   )
-// }
-
-// export default class ListOfClubs extends React.Component {
-
-//   constructor() {
-//     super();
-
-//     this.state = {
-//       clubs: []
-//     }
-//   }
-
-//   componentDidMount() {
-//     axiosInstance.get(`clubs/`).then(
-//       response => {
-//         console.log(response)
-//         this.setState({
-//           clubs: response.data
-//         });
-//       }
-//     )
-//   }
-
-//   render() {
-//     return (
-//       <Container fluid>
-//         <Row style={{ marginBottom: "3rem" }}>
-//             <Nav />
-//         </Row>
-//         <Row>
-//             <Col />
-//             <Col xs={8}>
-//                 <HeadingText>Club Database</HeadingText>
-//                 <ul>
-//                   {this.state.clubs.map(club =>
-//                       <li>
-//                         <IndividualClubsCard
-//                           name={club.name}
-//                         />
-//                       </li>
-//                     )
-//                   }
-//                 </ul>
-//             </Col>
-//             <Col />
-//         </Row>
-//       </Container>
-//     )
-//   }
-// }
-
 function IndividualClubBox(props) {
   return(
     <Container fluid style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -78,7 +18,6 @@ function IndividualClubBox(props) {
     </Container>
   );
 }
-
 
 function ListOfClubs() {
   const [clubs, setClubs] = useState([]);
@@ -101,7 +40,7 @@ function ListOfClubs() {
       if (index % columnsPerRow === 0) {
         return (
           <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <Gravatar email='blah@blah.com' style={{ borderRadius:"100px", marginTop:"1rem" }} />
+            <Gravatar style={{ borderRadius:"100px", marginTop:"1rem" }} />
             <CardBody>
               <CardTitle>{club.name}</CardTitle>
               <CardSubtitle>{club.id}</CardSubtitle>
@@ -114,7 +53,7 @@ function ListOfClubs() {
       }
       return (
         <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <Gravatar email='blah@blah.com' style={{ borderRadius:"100px", marginTop:"1rem" }} />
+          <Gravatar style={{ borderRadius:"100px", marginTop:"1rem" }} />
           <CardBody>
             <CardTitle>{club.name}</CardTitle>
             <CardSubtitle>{club.id}</CardSubtitle>
