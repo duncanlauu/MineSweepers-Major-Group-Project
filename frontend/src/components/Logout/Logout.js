@@ -19,8 +19,6 @@ export default function Logout() {
         localStorage.removeItem('hasRated')
         setAuth({})
         setHasRated({})
-        console.log("logging out")
-        // console.log("Auth user after logging out ", auth.user)
         axiosInstance.defaults.headers['Authorization'] = null; // remove the headers
         navigate('/')
     });

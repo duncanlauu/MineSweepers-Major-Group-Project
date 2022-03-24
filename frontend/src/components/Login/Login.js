@@ -73,7 +73,7 @@ export default function SignIn() {
                         }
                         localStorage.setItem('hasRated', rated)
                     })
-                setHasRated({ hasRated: "true" })
+                setHasRated({ hasRated: "true" }) // additional default call to avoid issues with asynchronous loading.
                 navigate(from)
                 console.log(response);
                 console.log(response.data);
