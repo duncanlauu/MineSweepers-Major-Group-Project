@@ -40,10 +40,10 @@ function ListOfClubs() {
       if (index % columnsPerRow === 0) {
         return (
           <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <Gravatar style={{ borderRadius:"100px", marginTop:"1rem" }} />
+            <Gravatar email={club.owner.email} style={{ borderRadius:"100px", marginTop:"1rem" }} />
             <CardBody>
               <CardTitle>{club.name}</CardTitle>
-              <CardSubtitle>{club.id}</CardSubtitle>
+              <CardSubtitle>{club.members.length} Members</CardSubtitle>
               <Link to={`/club_profile/${club.id}`}>
                 <Button>Visit Profile</Button>
               </Link>
@@ -53,10 +53,10 @@ function ListOfClubs() {
       }
       return (
         <Card key={index} style={{ margin:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <Gravatar style={{ borderRadius:"100px", marginTop:"1rem" }} />
+          <Gravatar email={club.owner.email} style={{ borderRadius:"100px", marginTop:"1rem" }} />
           <CardBody>
             <CardTitle>{club.name}</CardTitle>
-            <CardSubtitle>{club.id}</CardSubtitle>
+            <CardSubtitle>{club.members.length} Members</CardSubtitle>
             <Link to={`/club_profile/${club.id}`}>
                 <Button>Visit Profile</Button>
               </Link>
