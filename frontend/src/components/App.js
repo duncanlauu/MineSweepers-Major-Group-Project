@@ -52,8 +52,8 @@ export default class App extends Component {
                   {/* protected routes */}
                   <Route element={<RequireAuth />}>
                     <Route path='sign_up/rating' element={<SignUpRating />} />
-                    <Route path='log_out' element={<Logout />} />
                     <Route element={<RequireRatings />}>
+                      <Route path='log_out' element={<Logout />} />
                       <Route path='home' element={<HomePage />} />
                       <Route path='club_profile/:club_id' element={<ClubProfile />} />
                       <Route path='create_club' element={<CreateClub />} />
