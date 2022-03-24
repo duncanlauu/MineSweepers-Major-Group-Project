@@ -11,7 +11,7 @@ from app.recommender_system.file_management import *
 from django.test import TestCase
 
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, \
-    get_top_n_users_double_random, get_top_n_users_for_a_genre, get_top_n_clubs_using_random_items, \
+    get_top_n_users_random, get_top_n_users_for_a_genre, get_top_n_clubs_using_random_items, \
     get_top_n_clubs_using_top_items_for_a_user, get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books
 
 
@@ -145,7 +145,7 @@ class RecommenderSystemTestCase(TestCase):
         self._assert_correct_people(top_n)
 
     def _test_get_top_n_users_by_random_books(self):
-        top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
+        top_n = get_top_n_users_random(self.uid, self.trainset, self.algo, self.n)
         self._assert_correct_people(top_n)
 
     def _test_get_top_n_users_for_genre(self):

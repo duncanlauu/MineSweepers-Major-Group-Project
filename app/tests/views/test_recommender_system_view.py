@@ -13,9 +13,9 @@ from app.recommender_system.books_recommender import get_top_n, get_top_n_for_ge
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
 from app.recommender_system.people_recommender import get_top_n_users_by_favourite_books, \
-    get_top_n_users_double_random, get_top_n_users_for_a_genre, get_top_n_clubs_using_top_items_for_a_user, \
+    get_top_n_users_random, get_top_n_users_for_a_genre, get_top_n_clubs_using_top_items_for_a_user, \
     get_top_n_clubs_using_random_items, get_top_n_clubs_for_a_genre, get_top_n_clubs_using_clubs_books, \
-    get_top_between_m_and_n_users_by_favourite_books, get_top_between_m_and_n_users_double_random, \
+    get_top_between_m_and_n_users_by_favourite_books, get_top_between_m_and_n_users_random, \
     get_top_between_m_and_n_users_for_a_genre, get_top_between_m_and_n_clubs_using_random_items, \
     get_top_between_m_and_n_clubs_for_a_genre, get_top_between_m_and_n_clubs_using_clubs_books, \
     get_top_between_m_and_n_clubs_using_top_items_for_a_user
@@ -192,7 +192,7 @@ class RecommenderAPITestCase(APITestCase):
         url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
-        top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
+        top_n = get_top_n_users_random(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
         self._assert_correct(response, top_n)
         self.assertEqual(num_of_recommendations_after - num_of_recommendations_before,
@@ -433,7 +433,7 @@ class RecommenderAPITestCase(APITestCase):
         url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
-        top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
+        top_n = get_top_n_users_random(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
         self._assert_correct(response, top_n)
         # After the previous post clear n items and insert new n items so the number of elements doesn't change
@@ -752,7 +752,7 @@ class RecommenderAPITestCase(APITestCase):
         url = reverse('app:recommender_top_n', kwargs=args)
         num_of_recommendations_before = UserRecommendation.objects.count()
         response = self.client.post(url)
-        top_n = get_top_n_users_double_random(self.uid, self.trainset, self.algo, self.n)
+        top_n = get_top_n_users_random(self.uid, self.trainset, self.algo, self.n)
         num_of_recommendations_after = UserRecommendation.objects.count()
         self._assert_correct(response, top_n)
         # After the previous post clear n items and insert new n items so the number of elements doesn't change
@@ -762,7 +762,7 @@ class RecommenderAPITestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         recommendations = list(response.data)
-        top_n = get_top_between_m_and_n_users_double_random(self.uid, self.trainset, self.algo, m, self.n)
+        top_n = get_top_between_m_and_n_users_random(self.uid, self.trainset, self.algo, m, self.n)
         self.assertEqual(len(top_n), len(recommendations))
         self.assertEqual(len(recommendations), min(User.objects.count() - m, self.n - m))
         for i in range(0, len(recommendations)):
