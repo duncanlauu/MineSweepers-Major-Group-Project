@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
+import { FriendLine } from "./UserProfileElements";
 
 export default function SingleFriend(props) {
 
@@ -23,26 +24,29 @@ export default function SingleFriend(props) {
     }
 
     return (
-        <div className="friend" key={currentFriend.id}>
-            <Row>
-                <Col xs="2">
-                    <Gravatar email='user@example.com' size={20} style={{ 
-                            borderRadius: "50px",
-                            marginTop: "1rem",
-                            marginBottom: "1rem"
-                        }} 
-                    />
-                </Col>
-                <Col>
-                    <h3 className="friend_username"> {currentFriend.username} </h3>
-                    <p className="friend_email"> {currentFriend.email} </p>
-                </Col>
-                <Col>
-                    <Button name={currentFriend.id} onClick={(e) => deleteFriend(currentFriend.id, e)}>
-                        {currentFriend.id}
-                    </Button>
-                </Col>
-            </Row>
+        <div className="friend" key={currentFriend.id} style={{marginBottom: "1rem"}}>
+            <FriendLine>
+                <Row>
+                    <Col xs="2">
+                        <Gravatar email='user@example.com' size={50} style={{ 
+                                borderRadius: "50px",
+                                marginBottom: "1rem"
+                            }} 
+                        />
+                    </Col>
+                    <Col xs="8" style={{display: "flex", justifyContent: "center"}}>
+                        <div style={{height: "5rem"}}>
+                            <h3 className="friend_username"> {currentFriend.username} </h3>
+                        </div>
+                    </Col>
+                    <Col xs="2" style={{display: 'flex', justifyContent: "flex-end"}}>
+                        <Button style={{borderRadius: "20px", height: "5rem"}} name={currentFriend.id} onClick={(e) => deleteFriend(currentFriend.id, e)}>
+                            X
+                        </Button>
+                    </Col>
+                </Row>
+            </FriendLine>
+
         </div>
     )
 }

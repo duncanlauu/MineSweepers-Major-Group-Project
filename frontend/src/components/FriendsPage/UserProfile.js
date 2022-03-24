@@ -3,7 +3,7 @@ import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane, CardGr
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
 import useGetUser from "../../helpers";
-import { DataContainer, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails } from "./UserProfileElements";
+import { DataContainer, DataContainerCard, DataContainerBelowTabs, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails, FriendListContainer } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPostList";
 import NonFriendList from "./NonFriendList";
@@ -66,11 +66,12 @@ const UserProfile = () => {
                         </ProfileInfoContainer>
                     </Col>
 
-                    <Col xs="5">
+                    <Col xs="6">
                         <DataContainer>
+                            <DataContainerCard>
                             <Nav tabs style={{
                                     marginBottom: "1rem",
-                                    width: "90%",
+                                    width: "100%",
                                     marginTop: "1rem"
                                     
                                 }}
@@ -91,28 +92,33 @@ const UserProfile = () => {
                                     </NavLink>
                                 </NavItem>
                             </Nav>
+                            
+                            <DataContainerBelowTabs>
+                                <TabContent activeTab={currentActiveTab}>
+                                    <TabPane tabId="1">
+                                        
+                                            <CardGroup>
+                                                <PersonalPostList/>
+                                            </CardGroup>
+                                        
+                                
+                                    </TabPane>
 
-                            <TabContent activeTab={currentActiveTab}>
-                                <TabPane tabId="1">
-                                    <CardGroup>
-                                        <PersonalPostList/>
-                                    </CardGroup>
-                                </TabPane>
+                                    <TabPane tabId="2">
+                                        <FriendRequestList/>
+                                        
+                                        <FriendListContainer>
+                                            <FriendsList />
+                                        </FriendListContainer>
+                                    </TabPane>
 
-                                <TabPane tabId="2">
-                                    <h3> Friend Requests </h3>
-                                    <FriendRequestList/>
-
-                                    <h3> Friends </h3>
-                                    <FriendsList />
-                                </TabPane>
-
-                            </TabContent>
-
+                                </TabContent>
+                            </DataContainerBelowTabs>
+                        </DataContainerCard>
                         </DataContainer>
                     </Col>
 
-                    <Col xs="4">
+                    <Col xs="3">
                         <FriendRecommenderContainer>
                             <h3> Suggested People </h3>
                             <NonFriendList />

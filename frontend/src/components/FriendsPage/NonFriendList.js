@@ -58,14 +58,14 @@ export default function NonFriendList(props) {
                                             }} 
                                         />
                                 </Col>
-                                <Col xs="5">
+                                <Col xs="6">
                                     <h5 className="friend_username"> {nonFriend.username} </h5>
                                 </Col>
-                                <Col xs="5">
-                                    <Button onClick={(e) => postFriendRequest(nonFriend.id)}>
-                                        <p> Follow </p>
+                                <Col xs="4">
+                                    <Button style={{width: "3rem"}} onClick={(e) => postFriendRequest(nonFriend.id)}>
+                                        <p> ::</p>
                                     </Button>
-                                    <Button onClick={(e) => cancelFriendRequest(nonFriend.id)}>
+                                    <Button style={{width: "2rem"}} onClick={(e) => cancelFriendRequest(nonFriend.id)}>
                                         <p> X </p>
                                     </Button>
                                 </Col>

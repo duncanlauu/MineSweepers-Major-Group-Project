@@ -1,7 +1,6 @@
 // import React, { useEffect, useState } from "react"
 // import { Row, Col, Button } from "reactstrap"
 // import axiosInstance from '../../axios'
-
 // import { useNavigate } from "react-router";
 // import useGetUser from "../../helpers";
 
@@ -13,20 +12,19 @@
 
 //     useEffect(() => {
 //         getRecommendedFriends(props);
-//         //getAllNonFriends();
 //     }, []);
 
 //     const getRecommendedFriends = (props) => {
 //         console.log("Buenos");
 //         console.log(props.currentUser);
-//         // axiosInstance
-//         //     .get(`recommender/10/${props.currentUser.id}/top_n_users_random_books/`)
-//         //     .then((res) => {
-//         //         console.log("Buenos")
-//         //         // const allNonFriends = res.data.non_friends;
-//         //         // setNonFriends(allNonFriends)
-//         //     })
-//         //     .catch(error => console.error(error));
+//         axiosInstance
+//             .get(`recommender/10/${props.currentUser.id}/top_n_users_random_books/`)
+//             .then((res) => {
+//                 console.log("Buenos")
+//                 // const allNonFriends = res.data.non_friends;
+//                 // setNonFriends(allNonFriends)
+//             })
+//             .catch(error => console.error(error));
 //     }
 
 //     const postFriendRequest = (receiver, e) => {
