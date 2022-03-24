@@ -7,13 +7,6 @@ export default function Sidepanel(props) {
 
     const [chats, setChats] = useState([])
 
-    // ? Why are you here
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.token !== null && newProps.username !== null) {
-    //         getUserChats(newProps.token, newProps.username);
-    //     }
-    // }
-
     useEffect(() => {
         getUserChats()
     }, []);
@@ -70,23 +63,6 @@ export default function Sidepanel(props) {
         //TO BE IMPLEMENTED
         return "http://emilcarlsson.se/assets/louislitt.png";
     }
-
-    // function getChatLastMessage(chat){
-    //     let lastMessage = "";
-    //     if(chat.messages.length > 0){
-    //         lastMessage = chat.messages.slice(-1).pop().content;
-    //     }
-    //     return lastMessage;
-    // }
-
-    function getLastUpdatedTime(chat) {
-        let lastMessage = "";
-        if (chat.messages.length > 0) {
-            lastMessage = chat.messages.slice(-1).pop().content;
-        }
-        return lastMessage;
-    }
-
 
     return (
         <div id="sidepanel">

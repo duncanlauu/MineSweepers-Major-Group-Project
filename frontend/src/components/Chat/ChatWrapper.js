@@ -7,7 +7,6 @@ import Sidepanel from './Sidepanel';
 
 export default function ChatWrapper() {
 
-
     let params = useParams();
 
     return (
@@ -19,7 +18,4 @@ export default function ChatWrapper() {
             </div>
         </div>
     );
-}
-
-{/* <Chat chatID={params.chatID} /> */
 }

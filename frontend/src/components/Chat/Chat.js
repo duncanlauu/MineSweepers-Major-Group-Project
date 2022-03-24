@@ -63,10 +63,9 @@ class Chat extends React.Component {
     }
 
     sendMessageHandler = (e) => {
-
         e.preventDefault();
         const messageObject = {
-            from: this.currentUser, //broken
+            from: this.currentUser,
             content: this.state.message,
             chatId: this.props.chatID,
         };
@@ -75,16 +74,17 @@ class Chat extends React.Component {
     }
 
     leaveChatHandler = (e) => {
-        console.log("BYEE")
         axiosInstance
             .delete(`chat/leave/${this.props.chatID}/`)
             .then((res) => {
                 console.log(res)
             })
             .catch(error => console.error(error));
+            //refresh after leaving chat
     }
 
     renderTimestamp = timestamp => {
+        // time like 16:10 shows like 16:1
         let message_date_object = new Date(timestamp);
         let now_date_object = new Date();
         let message_date_string = message_date_object.getDate() + "." 
@@ -126,6 +126,8 @@ class Chat extends React.Component {
     }
 
     scrollToBottom = () => {
+        //broken in different ways on different browsers
+        //works best in Chrome
         this.messagesEnd.scrollIntoView({behavior: "smooth"});
     }
 
@@ -170,7 +172,7 @@ class Chat extends React.Component {
                 </div>
                 <div className="messages">
                     {invalidChatID
-                        ? <h3>Select a chat! or refactor this to select a chat?</h3>
+                        ? <h3>Select a chat!</h3>
                         : <div/>
                     }
                     <ul id="chat-log">
