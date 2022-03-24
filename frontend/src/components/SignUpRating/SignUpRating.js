@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import axiosInstance from '../../axios';
 
-import BookRatingCard from './BookRatingCard';
+import BookRatingCard from '../GeneralComponents/BookRatingCard';
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import useGetUser from "../../helpers";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
@@ -116,7 +116,7 @@ export default function SignUpRating(props){
                 row.push(
                     <Col md="3">
                        <BookRatingCard id={topBooks[i*4+j].ISBN} title={topBooks[i*4+j].title} author={topBooks[i*4+j].author}
-                        image ={topBooks[i*4+j].image_links_large} parentCallBack={handleChange}/>
+                        image ={topBooks[i*4+j].image_links_large} parentCallBack={handleChange} clearable ={true} idReturn={true}/>
                     </Col>
                 )
                 

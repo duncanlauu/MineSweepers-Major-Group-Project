@@ -26,7 +26,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
 
     # Books
-    path('book/<str:ISBN>',Books.as_view(), name="retrieve_book"),
+    path('books/<str:ISBN>',Books.as_view(), name="retrieve_book"),
 
     # Friends
     path('friends/', FriendsView.as_view(), name='friends'),
