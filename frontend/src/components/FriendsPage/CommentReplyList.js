@@ -1,6 +1,7 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
+import SingleCommentReply from "./SingleCommentReply";
 
 export default function CommentReplyList(props){
 
@@ -48,6 +49,10 @@ export default function CommentReplyList(props){
             })
     }
 
+    const updatePageAfterReplyDeletion = (e) => {
+        getRepliesUnderComments()
+    }
+
     const displayCommentsUnderPost = (e) => {
         if (repliesUnderComment.length > 0) {
             console.log(repliesUnderComment);
@@ -73,10 +78,9 @@ export default function CommentReplyList(props){
                         console.log(reply);
                         return (
                             <div key={reply.id}> 
-                                <p> {reply.content} </p>
-                                {/* <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
-                                    updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
-                                /> */}
+                                <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
+                                    reply={reply} updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
+                                />
                             </div>
                         )
                     })}

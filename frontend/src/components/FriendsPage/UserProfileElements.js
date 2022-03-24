@@ -59,7 +59,7 @@ export const FriendListContainer = styled.div`
 export const FriendLine = styled.div`
     height: 5rem;
     width: 100%;
-    background-color: #DCDCDC;
+    background-color: #F5F5F5;
     border-radius: 50px;
 
 `
@@ -72,6 +72,26 @@ export const FriendRecommenderContainer = styled.div`
     overflow-y: scroll;
 `
 
+export const UserNameContainer = styled.div`
+    height: 80%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+`
 
+export const UserNameText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+    color: #585858;
+`
 
-
+export const TabsText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 800;
+    font-size: 25px;
+    color: #585858;
+`

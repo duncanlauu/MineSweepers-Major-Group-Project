@@ -51,7 +51,7 @@ export default function NonFriendList(props) {
                         <div className="friend" key={nonFriend.id}>
                             <Row>
                                 <Col xs="2">
-                                    <Gravatar email='user@example.com' size={20} style={{ 
+                                    <Gravatar email={nonFriend.email} size={20} style={{ 
                                                 borderRadius: "50px",
                                                 marginTop: "1rem",
                                                 marginBottom: "1rem"

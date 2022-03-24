@@ -59,7 +59,6 @@ export default function PostCommentList(props){
                         console.log(comment);
                         return (
                             <div key={comment.id}> 
-                                <p> Privet </p>
                                 <SinglePostComment currentPost={currentPost} comment={comment} 
                                     updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
                                 />

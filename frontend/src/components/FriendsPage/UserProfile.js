@@ -3,7 +3,7 @@ import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane, CardGr
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
 import useGetUser from "../../helpers";
-import { DataContainer, DataContainerCard, DataContainerBelowTabs, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails, FriendListContainer } from "./UserProfileElements";
+import { DataContainer, DataContainerCard, DataContainerBelowTabs, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails, FriendListContainer, TabsText } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPostList";
 import NonFriendList from "./NonFriendList";
@@ -72,22 +72,27 @@ const UserProfile = () => {
                             <Nav tabs style={{
                                     marginBottom: "1rem",
                                     width: "100%",
-                                    marginTop: "1rem"
-                                    
+                                    marginTop: "1rem",
+                                    borderRadius: "100px"
                                 }}
                             >
                                 <NavItem style={{width: "50%"}}>
                                     <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
                                         <div style={{textAlign: "center"}}>
-                                            <h4> <b> Posts </b> </h4>
+                                            <TabsText>
+                                                Posts 
+                                            </TabsText>
                                         </div>
+
                                     </NavLink>
                                 </NavItem>
 
                                 <NavItem style={{width: "50%"}}>
                                     <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
                                         <div style={{textAlign: "center"}}>
-                                            <h4><b> Friends </b></h4>
+                                            <TabsText>
+                                                Friends 
+                                            </TabsText>
                                         </div>
                                     </NavLink>
                                 </NavItem>

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
+import { UserNameContainer, UserNameText } from "./UserProfileElements";
 
 export default function SingleFriendRequest(props) {
 
@@ -39,27 +40,32 @@ export default function SingleFriendRequest(props) {
 
     return (
         <div className="friendRequest" key={friendRequest.sender}>
-            <Row>
+            <Row style={{height: "5rem"}}>
                 <Col xs="2">
-                    <Gravatar email='user@example.com' size={20} style={{ 
+                    <Gravatar email={'user@example.com'} size={50} style={{ 
                             borderRadius: "50px",
-                            marginTop: "1rem",
                             marginBottom: "1rem"
                         }} 
                     />
                 </Col>
-                <Col>
-                    <h3 className="friend_id"> {friendRequest.sender__username} </h3>
+                <Col xs="5" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <UserNameContainer>
+                        <UserNameText>
+                            {friendRequest.sender__username} 
+                        </UserNameText>
+                    </UserNameContainer>
                 </Col>
-                <Col>
+                <Col xs="5" style={{display: "flex", justifyContent: "flex-end"}}>
                     <Row>
                         <Col>
-                            <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}>
+                            <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}
+                                style={{borderRadius: "20px", height: "5rem", marginRight: "1rem", backgroundColor: "green"}} 
+                            >
                                 <p> Accept </p>
                             </Button>
-                        </Col>
-                        <Col>
-                            <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}>
+                            <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}
+                                style={{borderRadius: "20px", height: "5rem", backgroundColor: "red"}} 
+                            >
                                 <p> Reject </p>
                             </Button>
                         </Col>

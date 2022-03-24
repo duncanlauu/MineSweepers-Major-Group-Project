@@ -2,16 +2,19 @@ import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
+import Gravatar from "react-gravatar"
 
 export default function SingleFeedPost(props) {
 
     const [feedPost, setFeedPosts] = useState("")
     const [posterName, setPosterName] = useState("");
+    const [posterEmail, setPosterEmail] = useState("");
     const [writtenComment, updateWrittenComment] = useState("dummy")
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
         getPostCreatorName(props.feedPost.author_id)
+        getPostCreatorEmail(props.feedPost.author_id)
     }, []);
 
     const getPostCreatorName = (author_id) => {
@@ -19,6 +22,15 @@ export default function SingleFeedPost(props) {
         .then((res) => {
             console.log("The post creator is: " + res.data.username)
             setPosterName(res.data.username)
+        })
+        .catch(error => console.error(error));
+    }
+
+    const getPostCreatorEmail = (author_id) => {
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            console.log("The post creator is: " + res.data.username)
+            setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
     }
@@ -59,12 +71,20 @@ export default function SingleFeedPost(props) {
                 backgroundColor: "#fff",
                 borderRadius: "10px"}}
             >
-                <CardHeader>
-                    <Row>
-                        <Col>
+                <CardHeader> 
+                    <Row >
+                        <Col xs="2">
+                            <Gravatar email={posterEmail} size={50} style={{ 
+                                    borderRadius: "50px",
+                                    marginTop: "1rem",
+                                    marginBottom: "1rem"
+                                }} 
+                            />
+                        </Col>
+                        <Col xs="4">
                             <h3> @{posterName} </h3>
                         </Col>
-                        <Col>
+                        <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
                             {feedPost.club_id != null &&
                                 <h3> Club: {feedPost.club_id} </h3>
                             }
