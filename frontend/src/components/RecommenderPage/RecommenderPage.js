@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Gravatar from 'react-gravatar'
-import { Button, Container, Row, Col } from 'reactstrap'
+import { Button, Container, Row, Col, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import axiosInstance from '../../axios'
 import useGetUser from '../../helpers'
 import { HeadingText } from '../Login/LoginElements'
@@ -23,6 +23,28 @@ const RecommenderPage = () => {
   }
 
   const [bookRecommendations, setBookRecommendations] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [dropdownVisible, setDropDownVisible] = useState(false);
+
+  function toggleDropdown() {
+    setDropDownVisible(!dropdownVisible);
+  }
+
+  function getGenres() {
+    axiosInstance
+      .get(`genres?n=10`)
+      .then(res => {
+        console.log(res);
+        setGenres(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  useEffect(() => {
+    getGenres();
+  }, [])
 
   const LoadingIndicator = (props) => {
 
@@ -36,9 +58,10 @@ const RecommenderPage = () => {
                 width: '100%',
                 height: '100%',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                zIndex: '10'
             }}>
-                <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100" />
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="70" width="70" />
             </div>
           </Container>
       )
@@ -90,8 +113,9 @@ const RecommenderPage = () => {
   }
 
   function returnGlobalTop10FictionRecommendations() {
+    const genre = value;
     axiosInstance
-      .post(`recommender/0/10/top_n_global_for_genre/fiction/`, {})
+      .post(`recommender/0/10/top_n_global_for_genre/${genre}/`, {})
       .then(res => {
         console.log(res);
         setBookRecommendations(res.data)
@@ -103,7 +127,7 @@ const RecommenderPage = () => {
 
     trackPromise(
         axiosInstance
-        .get(`recommender/0/10/top_n_global_for_genre/fiction/`)
+        .get(`recommender/0/10/top_n_global_for_genre/${genre}/`)
         .then(res => {
             console.log(res);
         })
@@ -113,8 +137,9 @@ const RecommenderPage = () => {
   }
 
   function returnFictionRecommendations() {
+    const genre = value;
     axiosInstance
-    .post(`recommender/0/10/${user.id}/top_n_for_genre/fiction/`, {})
+    .post(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`, {})
     .then(res => {
       console.log(res);
       setBookRecommendations(res.data)
@@ -125,7 +150,7 @@ const RecommenderPage = () => {
 
     trackPromise(
         axiosInstance
-            .get(`recommender/0/10/${user.id}/top_n_for_genre/fiction/`)
+            .get(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`)
             .then(res => {
             console.log(res);
             })
@@ -144,12 +169,19 @@ const RecommenderPage = () => {
       <Col />
         <Col xs={6}>
           <HeadingText>Books For You</HeadingText><br />
-          <FilterButton onClick={returnFictionRecommendations}>My Genre Recommendations</FilterButton><br />
+          <select 
+            value={value}
+            onChange={(e) => setValue(e.target.value)}>
+            <option />
+            {genres.map(genre =>
+              <option value={genre}>{genre}</option>
+            )}
+          </select><br />
+          <FilterButton onClick={returnFictionRecommendations}>My {value} Recommendations</FilterButton><br />
           <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br />
           <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br />
-          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global Genre Top 10</FilterButton><br />
+          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global {value} Top 10</FilterButton><br />
           <LoadingIndicator />
-          
             <ul>
               {bookRecommendations.map(
                 bookRecommendation =>
