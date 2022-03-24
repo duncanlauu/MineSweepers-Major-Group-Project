@@ -42,7 +42,7 @@ export default function SingleFriendRequest(props) {
         <div className="friendRequest" key={friendRequest.sender}>
             <Row style={{height: "5rem"}}>
                 <Col xs="2">
-                    <Gravatar email={'user@example.com'} size={50} style={{ 
+                    <Gravatar email={friendRequest.sender__email} size={50} style={{ 
                             borderRadius: "50px",
                             marginBottom: "1rem"
                         }} 

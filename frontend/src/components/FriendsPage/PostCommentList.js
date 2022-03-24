@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SinglePostComment from "./SinglePostComment";
+import { CommentLine } from "./UserProfileElements";
 
 export default function PostCommentList(props){
 
@@ -58,10 +59,12 @@ export default function PostCommentList(props){
                     {commentsUnderPost.map((comment, index) => {
                         console.log(comment);
                         return (
-                            <div key={comment.id}> 
-                                <SinglePostComment currentPost={currentPost} comment={comment} 
-                                    updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
-                                />
+                            <div key={comment.id} style={{marginBottom: "1rem"}}> 
+                                <CommentLine>
+                                    <SinglePostComment currentPost={currentPost} comment={comment} 
+                                        updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
+                                    />
+                                </CommentLine>
                             </div>
                         )
                     })}

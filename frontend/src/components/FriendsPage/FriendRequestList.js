@@ -31,7 +31,9 @@ export default function FriendRequestList(props) {
             return (
                 <div> 
                     <div style={{display: 'flex', justifyContent: "flex-end"}}>
-                        <Button color="danger" id="friendRequestToggler" style={{marginBottom: "1rem", borderRadius: "50px"}}>
+                        <Button color="danger" id="friendRequestToggler" 
+                            style={{marginBottom: "1rem", marginTop: "1rem", marginRight: "1rem", borderRadius: "50px"}}
+                        >
                             You have new friend requests: <b>{myFriendRequests.length}</b>
                         </Button>
                     </div>

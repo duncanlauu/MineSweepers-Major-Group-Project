@@ -51,7 +51,7 @@ export const DataContainerBelowTabs = styled.div`
 
 export const FriendListContainer = styled.div`
     height: 100%;
-    width: 100%;
+    width: 95%;
     background-color: #fff;
     border-radius: 10px;
 `
@@ -61,7 +61,6 @@ export const FriendLine = styled.div`
     width: 100%;
     background-color: #F5F5F5;
     border-radius: 50px;
-
 `
 
 export const FriendRecommenderContainer = styled.div`
@@ -94,4 +93,10 @@ export const TabsText = styled.text`
     font-weight: 800;
     font-size: 25px;
     color: #585858;
+`
+export const CommentLine = styled.div`
+    height: 5rem;
+    width: 100%;
+    background-color: #F5F5F5;
+    border-radius: 50px;
 `

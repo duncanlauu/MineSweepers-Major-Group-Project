@@ -32,27 +32,29 @@ export default function SinglePostComment(props) {
 
     return(
         <div className="singleComment" key={singleComment.id}>
-            <Row>
+            <Row style={{height: "5rem"}}>
                 <Col>
                     <Row>
-                        <Col xs="2">
+                        <Col xs="2" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <h4> {singleComment.author_id} </h4>
                         </Col>
-                        <Col xs="6">
+                        <Col xs="6" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <h4> {singleComment.content} </h4>
                         </Col>
-                        <Col xs="2">
-                            <Button  color="primary" id={togglerID} style={{marginBottom: "1rem"}}>
+                        <Col xs="4" style={{display: "flex", justifyContent: "flex-end"}}>
+                            <Button color="primary" id={togglerID} 
+                                style={{height: "5rem", borderRadius: "20px"}}
+                            >
                                 Reply
                             </Button>
-                        </Col>
-                        {singleComment.author_id == currentUser.id  &&
-                            <Col xs="2">
-                                <Button name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} >
+                            {singleComment.author_id == currentUser.id  &&     
+                                <Button name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
+                                    style={{height: "5rem", borderRadius: "50px"}}
+                                >
                                     <p> x </p>
                                 </Button>
-                            </Col>
-                        }
+                            }
+                         </Col>
                     </Row>
                     <Row>
                         <UncontrolledCollapse toggler={HashtagTogglerId}>
