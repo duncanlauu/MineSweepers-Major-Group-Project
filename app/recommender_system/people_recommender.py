@@ -22,8 +22,8 @@ def get_top_between_m_and_n_users_by_favourite_books(uid, trainset, algo, m=0, n
     """
 
     users = get_actual_users(trainset)
-    if trainset.to_inner_uid(uid) in users:
-        users.remove(trainset.to_inner_uid(uid))
+    if uid in users:
+        users.remove(uid)
     max_number_of_items = int(100000 / len(users))
 
     items = list(x[0] for x in get_top_n(uid, trainset, algo, max_number_of_items))
@@ -41,8 +41,8 @@ def get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n=10):
     """Get the top between m and n users for a user using random users and random items"""
 
     users = get_actual_users(trainset)
-    if trainset.to_inner_uid(uid) in users:
-        users.remove(trainset.to_inner_uid(uid))
+    if uid in users:
+        users.remove(uid)
     max_number_of_items = int(100000 / len(users))
 
     items = get_random_n_items(trainset, max_number_of_items)
@@ -59,9 +59,10 @@ def get_top_n_users_double_random(uid, trainset, algo, n=10):
 def get_top_between_m_and_n_users_for_a_genre(uid, trainset, algo, genre, m, n=10):
     """Get the top between m and n users for a user using items from a given genre"""
 
-    users = get_random_n_users(trainset, 100)
+    users = get_random_n_users(trainset, 101)
     if uid in users:
-        users.remove(trainset.to_inner_uid(uid))
+        users.remove(uid)
+    users = users[:100]
     max_number_of_items = int(100000 / len(users))
 
     all_items = get_isbns_for_a_genre(genre, trainset)
@@ -99,6 +100,7 @@ def get_difference_for_two_users(uid1, uid2, algo, items):
     diff = 0
     for iid in items:
         pred1 = algo.predict(uid=uid1, iid=iid)
+        logging.debug(f'Pred by loaded algo uid={pred1.uid}, iid={pred1.iid}, r_ui={pred1.r_ui}, est={pred1.est}, {pred1.details}')
         pred2 = algo.predict(uid=uid2, iid=iid)
         diff += abs(pred1.est - pred2.est)
     return diff
@@ -134,7 +136,7 @@ def get_actual_users(trainset):
     """Get the users from the database for whom we have ratings in the trainset"""
 
     database_users = (user.id for user in list(User.objects.all()))
-    all_trainset_users = trainset.all_users()
+    all_trainset_users = (trainset.to_raw_uid(user) for user in trainset.all_users())
     return list(set(all_trainset_users).intersection(database_users))
 
 

@@ -17,6 +17,13 @@ export default function Scheduling() {
     const [books, setBooks] = useState([]);
     const [bookData, setBookData] = useState([]);
 
+    const [nameErr, setNameErr] = useState('')
+    const [descriptionErr, setDescriptionErr] = useState('')
+    const [bookErr, setBookErr] = useState('')
+    const [startTimeErr, setStartTimeErr] = useState('')
+    const [endTimeErr, setEndTimeErr] = useState('')
+    const [linkErr, setLinkErr] = useState('')
+
     useEffect(() => {
         getRecommendedBooks();
     }, []);
@@ -100,6 +107,24 @@ export default function Scheduling() {
                 console.log(res.data)
                 navigate(`/club_profile/${club_id}`)
             })
+            .catch((e) => {
+                setNameErr(e.response.data.name)
+                setDescriptionErr(e.response.data.description)
+                setBookErr(e.response.data.book)
+                setStartTimeErr(e.response.data.start_time)
+                setEndTimeErr(e.response.data.end_time)
+                setLinkErr(e.response.data.link)
+            })
+
+
+        // axiosInstance
+        //     .get('singleclub/3', {})
+        //     .then((res) => {
+        //         club = res.data
+        //         console.log(res)
+        //     })
+
+
     }
 
     if (books.length > 0) {
@@ -125,6 +150,7 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{nameErr}</div>
 
                                     <FormGroup>
                                         <Label for="description"> Description </Label>
@@ -136,6 +162,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{descriptionErr}</div>
+
 
                                     <FormGroup>
                                         <Label
@@ -154,6 +182,8 @@ export default function Scheduling() {
                                             )}
                                         </select>
                                     </FormGroup>
+                                    <div>{bookErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="start_time"> Start time </Label>
@@ -166,6 +196,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{startTimeErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="end_time"> End time </Label>
@@ -178,6 +210,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{endTimeErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="link"> Meeting link </Label>
@@ -189,6 +223,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{linkErr}</div>
+
 
 
                                     <FormGroup>
