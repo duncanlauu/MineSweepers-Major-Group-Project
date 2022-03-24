@@ -9,6 +9,7 @@ from django.db import IntegrityError, transaction
 from pandas import read_csv
 from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
     TimePeriod, Post
+from app.management.commands.helpers import print_info
 
 
 class Command(BaseCommand):
@@ -461,14 +462,3 @@ def time_function(func):
     func()
     end = time.time()
     print(f'The function took {end - start} seconds')
-
-def print_info():
-    print(f'Number of users: {User.objects.count()}')
-    print(f'Number of books: {Book.objects.count()}')
-    print(f'Number of book ratings: {BookRating.objects.count()}')
-    print(f'Number of clubs: {Club.objects.count()}')
-    print(f'Number of posts: {Post.objects.count()}')
-    print(f'Number of comments: {Comment.objects.count()}')
-    print(f'Number of replies: {Reply.objects.count()}')
-    print(f'Number of meetings: {Meeting.objects.count()}')
-    print(f'Number of time periods: {TimePeriod.objects.count()}')
