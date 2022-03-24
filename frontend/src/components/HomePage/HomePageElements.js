@@ -19,10 +19,11 @@ export const ParaText = styled.text`
 `
 
 export const FeedContainer = styled.div`
-    height: 100%;
+    height: 50rem;
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
+    overflow-y: scroll;
 `
 
 export const RecommendationContainer = styled.div`

@@ -45,15 +45,15 @@ export default function PersonalPostForm(props) {
         
         axiosInstance
             .post("posts/", {
-                club_id : formData.club_id,
+                club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
                 image_link : formData.image_link,
                 book_link : formData.book_link
             })
             .then((res) => {
-                navigate("/home/")
                 navigate("/friends_page/")
+                navigate("/home/")
             })
             .catch((e) => {
                 console.log(e.response.data)
