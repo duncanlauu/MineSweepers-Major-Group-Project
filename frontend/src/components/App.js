@@ -23,6 +23,7 @@ import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
 import RecommenderPage from "./RecommenderPage/RecommenderPage";
+import ListOfClubs from "./ListOfClubs/ListOfClubs";
 
 export default class App extends Component {
   constructor(props) {
@@ -59,6 +60,7 @@ export default class App extends Component {
                   <Route path="/meetings/" element={<Meetings/>}/>
                   <Route path="/recommendations/" element={<RecommenderPage />}></Route>
                   <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
+                  <Route path="/all_clubs/" element={<ListOfClubs />}></Route>
                 </Route>
 
                 {/* catch all */}
