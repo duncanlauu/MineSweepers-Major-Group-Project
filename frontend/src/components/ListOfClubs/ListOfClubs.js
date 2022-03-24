@@ -8,17 +8,6 @@ import { ClubProfile } from '../ClubProfile/ClubProfileElements'
 import {VariableWidthGrid} from 'react-variable-width-grid'
 import { Link } from 'react-router-dom'
 
-function IndividualClubBox(props) {
-  return(
-    <Container fluid style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
-      <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
-      Name<br />
-      Members
-      <Button>Visit</Button>
-    </Container>
-  );
-}
-
 function ListOfClubs() {
   const [clubs, setClubs] = useState([]);
   const columnsPerRow = 4;
