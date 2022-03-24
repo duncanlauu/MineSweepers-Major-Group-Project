@@ -1,9 +1,57 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Container, Row, Col, Button} from 'reactstrap';
 import Gravatar from 'react-gravatar';
 import {BookProfile} from './ClubProfileElements';
+import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
+import useGetUser from '../../helpers';
 
 const LandingProfile = () => {
+
+    const { club_id } = useParams();
+    console.log("Club ID: " + club_id);
+
+    const currentUser = useGetUser();
+    const user_id = currentUser.id
+    console.log("User ID: " + user_id);
+
+    const [applied, setApplied] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const applyStyle = {
+        width: "17rem",
+        margin: "1rem",
+        fontFamily: "Source Sans Pro",
+        borderRadius: "5px",
+        backgroundColor: "#653FFD",
+        border: "2px solid #653DDF",
+    }
+
+    const appliedStyle = {
+        width: "17rem",
+        margin: "1rem",
+        fontFamily: "Source Sans Pro",
+        borderRadius: "5px",
+        backgroundColor: "#fff",
+        border: "2px solid #653DDF",
+        color: "#653FFD"
+    }
+
+    let buttonState = applied ? "Applied" : "Apply"
+
+    function applyToClub(id, user_id, e) {
+        const action = 'apply'
+        axiosInstance
+            .put(`singleclub/${id}/${action}/${user_id}`, {})
+            .then(res => {
+                console.log(res);
+                setApplied(true);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     return (
         <Container fluid>
             <Row style={{display: "flex"}}>
@@ -18,14 +66,11 @@ const LandingProfile = () => {
                 </Col>
             </Row>
             <Row>
-                <Button style={{
-                    width: "7rem",
-                    margin: "1rem",
-                    fontFamily: "Source Sans Pro",
-                    borderRadius: "100px",
-                    backgroundColor: "#653FFD",
-                    border: "0px"
-                }}>Apply</Button>
+                <Button
+                    onClick={(e) => applyToClub(club_id, user_id)}
+                    style={applied ? appliedStyle : applyStyle}>
+                        {buttonState}
+                    </Button>
             </Row>
             <Row>
                 <h3 style={{fontFamily: "Source Sans Pro", marginTop: "2rem", fontWeight: "600"}}>Reading History</h3>

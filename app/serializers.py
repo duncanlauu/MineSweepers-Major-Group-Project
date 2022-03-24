@@ -1,7 +1,5 @@
-from unittest import mock
 from rest_framework import serializers
-from .models import Message, User, Chat, BookRecommendation, UserRecommendation, ClubRecommendation, \
-    GlobalBookRecommendation, BookRecommendationForClub, Club, Book, Post, Comment, Reply
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -68,34 +66,18 @@ class ChatSerializer(serializers.ModelSerializer):
 
 
 class BookRecommendationSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
     class Meta:
         model = BookRecommendation
         fields = '__all__'
 
 
 class BookRecommendationForClubSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
     class Meta:
         model = BookRecommendationForClub
-        fields = '__all__'
-
-
-class UserRecommendationSerializer(serializers.ModelSerializer):
-    recommended_user = SimpleUserSerializer()
-
-    class Meta:
-        model = UserRecommendation
-        fields = '__all__'
-
-
-class ClubRecommendationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ClubRecommendation
-        fields = '__all__'
-
-
-class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GlobalBookRecommendation
         fields = '__all__'
 
 
@@ -114,4 +96,40 @@ class CommentSerializer(serializers.ModelSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
+        fields = '__all__'
+
+
+class UserRecommendationSerializer(serializers.ModelSerializer):
+    recommended_user = SimpleUserSerializer()
+
+    class Meta:
+        model = UserRecommendation
+        fields = '__all__'
+
+
+class ClubRecommendationSerializer(serializers.ModelSerializer):
+    club = ClubSerializer()
+
+    class Meta:
+        model = ClubRecommendation
+        fields = '__all__'
+
+
+class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
+    class Meta:
+        model = GlobalBookRecommendation
+        fields = '__all__'
+
+
+class BookRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookRating
+        fields = '__all__'
+
+
+class MeetingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
         fields = '__all__'

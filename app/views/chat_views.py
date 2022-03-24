@@ -17,7 +17,7 @@ class ChatListView(ListAPIView):
     def get_queryset(self):
         """Get list of chats for a user"""
         username = self.request.query_params.get('username', None)
-        if (self.request.user.username != username):
+        if self.request.user.username != username:
             raise PermissionDenied({"error": ["You can't request other users chats"]})
         else:
             queryset = Chat.objects.all()

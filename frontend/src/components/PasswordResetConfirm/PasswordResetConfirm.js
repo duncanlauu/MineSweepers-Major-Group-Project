@@ -17,6 +17,9 @@ export default function SignIn() {
         re_new_password: ''
     });
 
+    const [newPasswordErr, setNewPasswordErr] = useState('')
+    const [ReNewPasswordErr, setReNewPasswordErr] = useState('')
+
     const [formData, updateFormData] = useState(initialFormData)
 
     const handleChange = (e) => {
@@ -48,6 +51,12 @@ export default function SignIn() {
                 navigate("/log_in/") // should go to a webiste that says password reset succesful and ask you to log in
                 //or maybe even log you out if you are logged in
             })
+            .catch((e) => {
+                console.log(e.response.data)
+                setNewPasswordErr(e.response.data.new_password)
+                setReNewPasswordErr(e.response.data.re_new_password)
+                if (e.response.data.non_field_errors) setReNewPasswordErr(e.response.data.non_field_errors)
+            })
     }
 
     return (
@@ -77,6 +86,7 @@ export default function SignIn() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{newPasswordErr}</div>
                                 <FormGroup>
                                     <Label>Confirm New Password:</Label>
                                     <Input
@@ -85,6 +95,7 @@ export default function SignIn() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{ReNewPasswordErr}</div>
                                 <FormGroup>
                                     <Col sm={{size: 10, offset: 4}}>
                                         <Button type="submit" onClick={handleSubmit}

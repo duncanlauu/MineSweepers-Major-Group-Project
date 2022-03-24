@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import ClubApplicants from './ClubApplicants';
 import ClubFeed from './ClubFeed';
 import LandingProfile from './LandingProfile';
+import ClubScheduling from './ClubScheduling';
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -53,8 +54,9 @@ function ClubProfileTabs() {
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
                     <Tab label="Profile" {...a11yProps(0)} />
-                    <Tab label="Applicants" {...a11yProps(1)} />
+                    <Tab label="Members" {...a11yProps(1)} />
                     <Tab label="Feed" {...a11yProps(2)} />
+                    <Tab label="Meetings" {...a11yProps(3)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -65,6 +67,9 @@ function ClubProfileTabs() {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <ClubFeed/>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <ClubScheduling/>
             </TabPanel>
         </Box>
     );

@@ -1,11 +1,14 @@
 import random
 import time
+from datetime import timedelta, datetime
 
+from django.utils.timezone import make_aware
 from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
-from app.models import Book, User, BookRating, Club
+from app.models import Book, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
+    TimePeriod, Post
 
 
 class Command(BaseCommand):
@@ -13,9 +16,108 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         time_function(seed_books)
+        time_function(seed_default_objects)
         time_function(seed_users)
         time_function(seed_ratings)
         time_function(seed_clubs)
+        time_function(seed_friends)
+        time_function(seed_meetings)
+        time_function(seed_posts)
+
+
+def seed_default_objects():
+    """Seed a couple of default users"""
+
+    jeb = User.objects.create(
+        username="Jeb",
+        first_name="Jebediah",
+        last_name="Kerman",
+        email="jeb@example.org",
+        bio="I love chess! I mean books, I love books.",
+        location="Somewhere in space I guess",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    billie = User.objects.create(
+        username="Billie",
+        first_name="Billie",
+        last_name="Kerman",
+        email="billie@example.org",
+        bio="Never read Fitzgerald? You Gatsby kidding me!",
+        location="Actually I'm currently in an undisclosed location.",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    bob = User.objects.create(
+        username="Bob",
+        first_name="Bob",
+        last_name="Kerman",
+        email="bob@example.org",
+        bio="My weekend is fully booked.",
+        location="London. Just kidding, space!",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    val = User.objects.create(
+        username="Val",
+        first_name="Valentina",
+        last_name="Kerman",
+        email="val@example.org",
+        bio="Books are lit! (like literature)",
+        location="Somewhere else in space, huh?",
+        birthday=datetime(year=2011, month=6, day=24),
+        password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    )
+
+    books = list(Book.objects.all())
+    add_read_and_liked_books(books, jeb)
+    add_read_and_liked_books(books, billie)
+    add_read_and_liked_books(books, bob)
+    add_read_and_liked_books(books, val)
+    val.add_friend(jeb)
+    val.add_friend(bob)
+    val.add_friend(billie)
+    jeb.add_friend(val)
+    jeb.add_friend(bob)
+    jeb.add_friend(billie)
+    bob.add_friend(jeb)
+    bob.add_friend(val)
+    bob.add_friend(billie)
+    billie.add_friend(jeb)
+    billie.add_friend(bob)
+    billie.add_friend(val)
+
+    kerbal = Club.objects.create(
+        name="Kerbal book club",
+        description="After our success with space programmes, we decided to start a book club",
+        owner=jeb
+    )
+    kerbal.admins.set([bob])
+    kerbal.members.set([val, billie])
+    kerbal.books.set(get_n_random_books_from(10, books))
+    kerbal.save()
+
+    time_period = TimePeriod.objects.create(
+        start_time="2013-05-16T17:00:00+00:00",
+        end_time="2013-05-16T18:00:00+00:00"
+    )
+
+    meeting = Meeting.objects.create(
+        name="Kerbal book meeting number 1",
+        description="Reading books but also space, what else could you possibly need?",
+        club=kerbal,
+        book=get_n_random_books_from(1, books)[0],
+        time=time_period,
+        organiser=jeb,
+        link=generate_link()
+    )
+
+    meeting.attendees.set([val, billie, bob])
+    meeting.save()
+
 
 
 def seed_books():
@@ -74,7 +176,7 @@ def seed_users(number=150):
 def seed_ratings():
     """Seed a random number of ratings for each user"""
 
-    min_num_of_ratings = 2
+    min_num_of_ratings = 4
     max_num_of_ratings = 20
 
     users = User.objects.all()
@@ -118,6 +220,48 @@ def seed_clubs(num_of_clubs=15):
             print("This club name was already taken")
 
 
+def seed_friends():
+    """Seed a number of friends"""
+
+    min_number_of_friends = 2
+    max_number_of_friends = 10
+    for user in User.objects.all():
+        num_of_friends = random.randint(min_number_of_friends, max_number_of_friends)
+        potential_friends = get_n_random_users(num_of_friends)
+        if user in potential_friends:
+            potential_friends.remove(user)
+        for friend in potential_friends:
+            user.add_friend(friend)
+        user.save()
+        print(f'Created all friends for {user}')
+
+
+def seed_meetings():
+    """Seed a number of meetings"""
+
+    min_number_of_meetings = 1
+    max_number_of_meetings = 8
+    faker = Faker('en_GB')
+    for club in Club.objects.all():
+        num_of_meetings = random.randint(min_number_of_meetings, max_number_of_meetings)
+        for i in range(0, num_of_meetings):
+            create_meeting(club, faker, i)
+        print(f'Created all meetings for {club}')
+
+
+def seed_posts():
+    """Seed a number of posts"""
+
+    min_number_of_posts = 3
+    max_number_of_posts = 7
+    faker = Faker('en_GB')
+    for user in User.objects.all():
+        num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
+        for i in range(0, num_of_posts):
+            create_post(user, faker)
+        print(f'Created all posts for {user}')
+
+
 def create_user(faker, books):
     """Create a user with random data from faker and randomly liked and read books"""
 
@@ -140,10 +284,56 @@ def create_user(faker, books):
         password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
+    add_read_and_liked_books(books, user)
+
+
+def add_read_and_liked_books(books, user):
+    """Add read and liked books to a user"""
+
     read_books = get_n_random_books_from(n=35, books=books)
     liked_books = get_n_random_books_from(n=15, books=read_books)
     user.read_books.set(read_books)
     user.liked_books.set(liked_books)
+    user.save()
+
+
+def create_meeting(club, faker, counter):
+    """Create a meeting"""
+
+    name = club.name + f' meeting #{counter}'
+    book = Book.objects.all()[random.randint(0, Book.objects.count() - 1)]
+    users = get_all_users_related_to_a_club(club)
+    # All meetings are between 14 and 20 (because my test meeting at 2:11 am looked really silly)
+    start_time = datetime.combine(faker.date_between(start_date='-1y', end_date='+1y'),
+                                  datetime.min.time()) + timedelta(hours=random.randint(14, 20))
+    time_period = TimePeriod.objects.create(
+        start_time=make_aware(start_time),
+        end_time=make_aware(start_time + timedelta(hours=1))
+    )
+    random.shuffle(users)
+    meeting = Meeting.objects.create(
+        name=name,
+        description=faker.text(random.randint(50, 500)),
+        club=club,
+        book=book,
+        organiser=users[0],
+        link=generate_link(),
+        time=time_period
+    )
+    meeting.attendees.set(users[1: random.randint(2, len(users))])
+    meeting.save()
+
+
+def create_post(user, faker):
+    """Create a post"""
+
+    Post.objects.create(
+        author=user,
+        title=faker.text(random.randint(10, 100)),
+        content=faker.text(random.randint(50, 500)),
+        upvotes=random.randint(0, 5),
+        downvotes=random.randint(0, 5)
+    )
 
 
 def get_n_random_books_from(n, books):
