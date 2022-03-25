@@ -256,3 +256,17 @@ class ReplyView(APIView):
             reply.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class ClubFeedView(APIView):
+    """API View to get club feed"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, club_id):
+        try:
+            club = Club.objects.get(id=club_id)
+            posts = Post.objects.filter(club=club)
+            serializer = PostSerializer(posts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+

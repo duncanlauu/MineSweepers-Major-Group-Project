@@ -1,6 +1,6 @@
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
-from app.models import Post, User, Comment, Reply
+from app.models import Club, Post, User, Comment, Reply
 from django.forms.models import model_to_dict
 
 
@@ -442,3 +442,14 @@ class FeedAPIViewTestCase(APITestCase):
         response = self.client.delete(reverse('app:reply', kwargs=args))
         self.assertEqual(response.status_code, 400)
         self.assertTrue(Reply.objects.filter(pk=1).exists())
+
+    def test_get_club_feed(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        response = self.client.get(reverse('app:club_feed', kwargs={'club_id': 1}))
+        club = Club.objects.get(id=1)
+        posts = Post.objects.filter(club=club)
+        actual_post_ids = [post.id for post in posts]
+        post_ids = [post['id'] for post in response.data]
+        self.assertEqual(len(actual_post_ids), len(post_ids))
+        self.assertSetEqual(set(actual_post_ids), set(post_ids))
+

@@ -24,6 +24,13 @@ class FriendsAPITestCase(APITestCase):
         self.assertIn(2, friends_ids)
         self.assertIn(3, friends_ids)
 
+    def test_get_all_other_user_friends(self):
+        response = self.client.get(reverse('app:other_user_friends', kwargs={'other_user_id': 1}))
+        self.assertEqual(response.status_code, 200)
+        friend_ids = [friend['id'] for friend in response.data['friends']]
+        self.assertIn(2, friend_ids)
+        self.assertIn(3, friend_ids)
+
     def test_delete_friend(self):
         response = self.client.delete(reverse('app:single_friend',
                            kwargs={'other_user_id': 2}))
