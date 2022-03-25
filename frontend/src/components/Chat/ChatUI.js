@@ -8,7 +8,7 @@ import Sidepanel2 from './Sidepanel2'
 
 function ChatUI() {
 
-    const { chat_id } = useParams();
+    let params = useParams();
 
   return (
     <Container fluid>
@@ -34,7 +34,7 @@ function ChatUI() {
                             or a club you're part of.
                         </EmptyChatText>
                     </EmptyChatContainer> */}
-                    <Chat2 chatId = {chat_id} />
+                    <Chat2 chatID={params.chatID} />
                 </ChatContainer>
             </Col>
             <Col xs={1} />
