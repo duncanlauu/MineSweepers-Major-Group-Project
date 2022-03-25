@@ -55,6 +55,7 @@ urlpatterns = [
     path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply'),
+    path('feed/clubs/<int:id>', ClubFeedView.as_view())
 
     # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
@@ -92,10 +93,8 @@ urlpatterns = [
     path('scheduling/', SchedulingView.as_view(), name='scheduling'),
     path('scheduling/<int:id>/', SchedulingView.as_view(), name='scheduling_with_id'),
     path('scheduling/<int:id>/<str:action>/', SchedulingView.as_view(), name='scheduling_update'),
-
     path('calendar/', CalendarView.as_view(), name='calendar'),
     path('calendar/<int:id>', CalendarView.as_view(), name='calendar_with_id'),
-
     path('meetings/', MeetingsView.as_view(), name='meetings'),
     path('meetings/<int:id>', MeetingsView.as_view(), name='meetings_with_id'),
 ]

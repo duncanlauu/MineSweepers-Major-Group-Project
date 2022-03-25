@@ -412,3 +412,5 @@ class FeedAPIViewTestCase(APITestCase):
     #
     # def test_delete_reply_as_non_author(self):
     #     pass
+
+    def test_
