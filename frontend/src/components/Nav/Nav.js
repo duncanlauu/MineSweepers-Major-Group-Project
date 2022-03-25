@@ -54,6 +54,17 @@ class Nav extends React.Component {
         })
     }
 
+    getSearchResults() {
+        axiosInstance
+            .get(`search/`)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     handleSubmit = (e) => {
         e.preventDefault()
         console.log("submitting")
@@ -100,40 +111,23 @@ class Nav extends React.Component {
                                     alignItems: "center",
                                     justifyContent: "flex-end"
                                 }}>
+                                    {this.state.search === '' 
+                                    ? <SearchText> </SearchText> 
+                                    : <SearchText>{this.state.search}</SearchText>}
                                     <IconButton type='submit'>
-                                        {this.state.search === '' ? <SearchText> </SearchText> :
-                                            <SearchText>{this.state.search}</SearchText>}
                                         <BiSearch/>
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <Button style={{marginRight: "1rem"}} onClick={this.changeModalVisibility}>
-                                    New Post
-                                </Button>
+                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
+                                </div>
                                 <Link to="/create_club/" style={{color: "#000"}}>
-                                    <Button
-                                        type='button'
-                                        style={{
-                                            backgroundColor: "#653FFD",
-                                            fontFamily: "Source Sans Pro",
-                                            fontWeight: "500",
-                                            alignItems: "center",
-                                            justifyContent: "space-around",
-                                            marginRight: "2rem",
-                                        }}
-                                    ><AiOutlinePlus
-                                        style={{
-                                            backgroundColor: "#4F30CC",
-                                            borderRadius: "2px",
-                                            height: "2rem",
-                                            width: "2rem",
-                                            marginRight: "1rem"
-                                        }}/>New Club</Button>
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
                                 </Link>
-                                <ChatBubbleOutline fontSize='large'/>
-                                <Link to="/notifications/" style={{color: "#000"}}>
-                                    <NotificationsNoneIcon fontSize='large'/>
+                                <Link to="/chat2/" style={{color: "#000"}}>
+                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats' style={{ marginLeft:"1rem" }} />
                                 </Link>
                                 <Link to="/friends_page/" style={{color: "#000"}}>
                                     <AccountCircleIcon fontSize='large'/>
@@ -155,8 +149,6 @@ class Nav extends React.Component {
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
                             <BiSearch style={{height: "2rem", width: "2rem"}} onClick={this.handleSubmit}/>
-
-
                             <Input
                                 type='text'
                                 placeholder='Search...'

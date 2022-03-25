@@ -27,6 +27,7 @@ import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPag
 import UserProfile from "./FriendsPage/UserProfile";
 import RecommenderPage from "./RecommenderPage/RecommenderPage";
 import ListOfClubs from "./ListOfClubs/ListOfClubs";
+import ChatUI from "./Chat/ChatUI";
 import BookProfilePage from "./BookProfilePage/BookProfilePage";
 
 
@@ -62,6 +63,8 @@ export default class App extends Component {
                                             <Route path='friends_page' element={<UserProfile/>}/>
                                             <Route path="chat/:chatID" element={<ChatWrapper/>}/>
                                             <Route path="/chat/" element={<ChatWrapper/>}/>
+                                            <Route path="/chat2/" element={<ChatUI/>}/>
+                                            <Route path="/chat2/:chatID" element={<ChatUI/>}/>
                                             <Route path='hello' element={<Hello/>}/>
                                             <Route path="/scheduling/:club_id" element={<Scheduling/>}/>
                                             <Route path="/meetings/" element={<Meetings/>}/>
