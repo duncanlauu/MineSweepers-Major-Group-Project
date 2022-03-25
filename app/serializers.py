@@ -132,6 +132,8 @@ class BookRatingSerializer(serializers.ModelSerializer):
 
 
 class MeetingSerializer(serializers.ModelSerializer):
+    book = BookSerializer(required=False)
+
     class Meta:
         model = Meeting
         fields = '__all__'
