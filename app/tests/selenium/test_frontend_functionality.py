@@ -1,8 +1,10 @@
 from time import sleep
 from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 from django.test import override_settings
 from app.models import User, Club, Chat
+from django.core.management import call_command
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -25,6 +27,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Call collectstatic before running live server
+        call_command('collectstatic', verbosity=0, interactive=False)
         chrome_options = Options()
 
         #for headless testing
@@ -36,19 +40,14 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             executable_path="app/tests/selenium/chromedriver", options=chrome_options
         )
         cls.browser.delete_all_cookies()
-        # cls.browser.get("chrome://settings/clearBrowserData")
-        # cls.browser.find_element_by_xpath("//settings-ui").send_keys(Keys.ENTER)
 
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
         cls.browser.quit()
-        # … delete subscription for the user …
-        # cls.user1.delete()
 
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
-        # cls.default_chat = Chat.objects.get(pk=1)
         self.login_data = {
             "username": self.user.username,
             "password": "Password123",
