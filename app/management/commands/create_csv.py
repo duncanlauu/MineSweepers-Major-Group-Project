@@ -17,7 +17,7 @@ def create_ratings_file():
 
 
 def create_books_file():
-    number = 4000
+    number = 3000
     file_path = 'app/files/BX-Book-Ratings-filtered.csv'
     dataframe = get_combined_data(file_path)
     data = get_dataset_from_dataframe(dataframe)

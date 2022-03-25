@@ -59,7 +59,7 @@ def seed_books():
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
-def seed_users(number=150):
+def seed_users(number=60):
     """Seed all the users
 
     NOTE: Takes about a minute on a macbook air
@@ -101,7 +101,7 @@ def seed_ratings():
     print('----- ALL RATINGS INSERTED TO DATABASE -----')
 
 
-def seed_clubs(num_of_clubs=15):
+def seed_clubs(num_of_clubs=10):
     """Seed a number of clubs in the application"""
 
     min_num_of_members = 2
