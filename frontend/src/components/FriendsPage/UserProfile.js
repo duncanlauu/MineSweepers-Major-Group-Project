@@ -9,6 +9,7 @@ import PersonalPostList from "./PersonalPostList";
 import NonFriendList from "./NonFriendList";
 import FriendsList from "./FriendsList";
 import FriendRequestList from "./FriendRequestList";
+import BookRatingsList from "./BookRatingsList";
 
 const UserProfile = () => {
 
@@ -76,7 +77,7 @@ const UserProfile = () => {
                                     borderRadius: "100px"
                                 }}
                             >
-                                <NavItem style={{width: "50%"}}>
+                                <NavItem style={{width: "33%"}}>
                                     <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
                                         <div style={{textAlign: "center"}}>
                                             <TabsText>
@@ -87,7 +88,7 @@ const UserProfile = () => {
                                     </NavLink>
                                 </NavItem>
 
-                                <NavItem style={{width: "50%"}}>
+                                <NavItem style={{width: "33%"}}>
                                     <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
                                         <div style={{textAlign: "center"}}>
                                             <TabsText>
@@ -96,6 +97,17 @@ const UserProfile = () => {
                                         </div>
                                     </NavLink>
                                 </NavItem>
+
+                                <NavItem style={{width: "34%"}}>
+                                    <NavLink className={classnames({active: currentActiveTab === "3"})} onClick={() => {toggle("3");}}>
+                                        <div style={{textAlign: "center"}}>
+                                            <TabsText>
+                                                Book Ratings 
+                                            </TabsText>
+                                        </div>
+                                    </NavLink>
+                                </NavItem>
+
                             </Nav>
                             
                             <DataContainerBelowTabs>
@@ -115,6 +127,11 @@ const UserProfile = () => {
                                         <FriendListContainer>
                                             <FriendsList />
                                         </FriendListContainer>
+                                    </TabPane>
+
+                                    <TabPane tabId="3">
+                                        
+                                        <BookRatingsList />
                                     </TabPane>
 
                                 </TabContent>
