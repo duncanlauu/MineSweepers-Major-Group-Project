@@ -3,6 +3,8 @@ import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
+import { FeedPostContainer } from "./UserProfileElements"
+import { border } from "@mui/system"
 
 export default function SingleFeedPost(props) {
 
@@ -64,68 +66,85 @@ export default function SingleFeedPost(props) {
 
     return(
         <div className="feedPost" key={feedPost.id}>
+
+            {/* <FeedPostContainer style={{ marginBottom: "1rem",
+                marginRight: "1rem",
+                marginLeft: "1rem",
+                marginTop: "1rem",
+                borderRadius: "20px"}}
+            >
+                <Row style={{width: "100%", marginLeft: "0px", marginRight: "0px"}}>
+                    <Col xs="1" style={{display: "flex", justifyContent: "flex-start"}}>
+                        <Gravatar email={posterEmail} size={20} style={{ 
+                                borderRadius: "50px", marginTop: "1rem"
+                            }} 
+                        />
+                    </Col>
+                    <Col xs="4">
+                        <h5> @{posterName} </h5>
+                    </Col>
+                     <Col xs="7" style={{display: "flex", justifyContent: "flex-end"}}>
+                        {feedPost.club_id != null &&
+                            <h5> Club: {feedPost.club_id} </h5>
+                        }
+                    </Col>
+                    <hr style={{width: "100%", border: "1px solid rgba(0,0,0,.125)"}}/>
+                </Row>
+                <Row>
+                    Something else
+                </Row>
+            </FeedPostContainer> */}
+            
             <Card style={{ marginBottom: "1rem",
                 marginRight: "1rem",
                 marginTop: "1rem",
                 marginLeft: "1rem",
                 backgroundColor: "#fff",
-                borderRadius: "10px"}}
+                borderRadius: "10px",
+                border: "3px solid rgba(0,0,0,.125)"}}
             >
                 <CardHeader> 
                     <Row >
-                        <Col xs="2">
-                            <Gravatar email={posterEmail} size={50} style={{ 
+                        <Col xs="1">
+                            <Gravatar email={posterEmail} size={30} style={{ 
                                     borderRadius: "50px",
-                                    marginTop: "1rem",
-                                    marginBottom: "1rem"
+                                    marginTop: "0rem",
+                                    marginBottom: "0rem"
                                 }} 
                             />
                         </Col>
                         <Col xs="4">
-                            <h3> @{posterName} </h3>
+                            <h5><b> @{posterName} </b></h5>
                         </Col>
                         <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
                             {feedPost.club_id != null &&
-                                <h3> Club: {feedPost.club_id} </h3>
+                                <h5> <b> Club: {feedPost.club_id} </b></h5>
                             }
                         </Col>
                     </Row>
                 </CardHeader>
 
+                
                 <CardBody>
-                    <CardTitle> <h2> {feedPost.title} </h2> </CardTitle>
+                    <div style={{height: "2rem", display: 'flex', justifyContent: "center"}}>
+                        <CardTitle> <h5> {feedPost.title} </h5> </CardTitle>
+                    </div>
+
+
+                    <CardText>    
+                        <h5> {feedPost.content} </h5> 
+                    </CardText>
                 </CardBody>
-
-                <CardText>    
-                    <h4> {feedPost.content} </h4> 
-                </CardText>
-
-                <Button color="primary" id={togglerID} style={{marginBottom: "1rem"}}>
-                    Comment section
+                
+                <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
+                    view all comments
                 </Button>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
-                    <div style={{height: "12rem", overflowY: "scroll", marginBottom: "2rem"}}>
+                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
                         <PostCommentList post={feedPost}/>
                     </div>
                 </UncontrolledCollapse>
-
-                {/* <Row>
-                    <Col xs="9">
-                        <Input type="textarea" rows="1"
-                            id="myComment"
-                            name="myComment"
-                            onChange={handleCommentChange}
-                            style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                        />
-                    </Col>
-                    <Col xs="3">
-                        <Button onClick={(e) => uploadComment(feedPost.id, e, 0)}>
-                            <p> Send </p>
-                        </Button>
-                    </Col>
-                </Row> */}
-
             </Card>
         </div>
     )

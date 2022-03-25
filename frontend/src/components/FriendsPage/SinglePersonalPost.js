@@ -6,6 +6,7 @@ import {
 } from "reactstrap"
 import PersonalPostEditor from "./PersonalPostEditor"
 import PostCommentList from "./PostCommentList"
+import { PostContainer } from "./UserProfileElements"
 
 export default function SinglePersonalPost(props) {
 
@@ -83,25 +84,9 @@ export default function SinglePersonalPost(props) {
                             <PostCommentList post={personalPost}/>
                         </div>
                     </UncontrolledCollapse>
-
-                    {/* <Row>
-                        <Col>
-                            <Input type="textarea" rows="1"
-                                id="myComment"
-                                name="myComment"
-                                onChange={handleCommentChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            /> 
-                        </Col>
-                        <Col>
-                            <Button onClick={(e) => uploadComment(personalPost.id, e, 0)}>
-                                <p> Send </p>
-                            </Button> 
-                        </Col>
-                    </Row> */}
                 </CardBody>
             </Card>
-
+            
             <Modal
                 isOpen = {isModalVisible}
                 toggle = {() => changeModalVisibility()}

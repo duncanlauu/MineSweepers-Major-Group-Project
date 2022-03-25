@@ -25,7 +25,7 @@ export const ProfileInfoDetails = styled.div`
 `
 
 export const DataContainer = styled.div`
-    height: 50rem;
+    height: 60rem;
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
@@ -95,8 +95,27 @@ export const TabsText = styled.text`
     color: #585858;
 `
 export const CommentLine = styled.div`
-    height: 5rem;
+    height: 100%;
     width: 100%;
     background-color: #F5F5F5;
-    border-radius: 50px;
+    border-radius: 20px;
+`
+
+export const ReplyLine = styled.div`
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 20px;
+`
+
+export const FeedPostContainer = styled.div`
+    min-height: 20rem;
+    border: 3px solid rgba(0,0,0,.125)
+`
+
+export const CommentSectionContainer = styled.div`
+    max-height: 20rem;
+    width: 90%;
+    border-radius: 20px;
+    overflow-y: scroll;
 `
