@@ -18,6 +18,7 @@ export const BookProfile = styled.div`
     margin-bottom: 1rem;
     justify-content: center;
     align-items: center;
+    font-size: 15px;
 `
 
 export const FilterButton = styled.button`
