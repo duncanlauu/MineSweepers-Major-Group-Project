@@ -2,7 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SinglePostComment from "./SinglePostComment";
-import { CommentLine } from "./UserProfileElements";
+import { CommentLine, CommentSectionContainer } from "./UserProfileElements";
 
 export default function PostCommentList(props){
 
@@ -56,54 +56,68 @@ export default function PostCommentList(props){
             console.log(commentsUnderPost);
             return (
                 <div>
-                    {commentsUnderPost.map((comment, index) => {
-                        console.log(comment);
-                        return (
-                            <div key={comment.id} style={{marginBottom: "1rem"}}> 
-                                <CommentLine>
-                                    <SinglePostComment currentPost={currentPost} comment={comment} 
-                                        updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
-                                    />
-                                </CommentLine>
-                            </div>
-                        )
-                    })}
-                    <Row>
-                        <Col xs="9">
-                            <Input type="textarea" rows="1"
-                                id="myComment"
-                                name="myComment"
-                                onChange={handleCommentChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            /> 
-                        </Col>
-                        <Col xs="3">
-                            <Button  onClick={(e) => uploadComment(e, 0)}>
-                                <p> Send </p>
-                            </Button> 
-                        </Col>
-                    </Row>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <CommentSectionContainer>
+                            {commentsUnderPost.map((comment, index) => {
+                                console.log(comment);
+                                return (
+                                    <div key={comment.id} style={{marginBottom: "1rem"}}>
+                                        <CommentLine>
+                                            <SinglePostComment currentPost={currentPost} comment={comment} 
+                                                updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
+                                            />
+                                        </CommentLine> 
+                                    </div>
+                                )
+                            })}
+                        </CommentSectionContainer>
+                    </div>
+                
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <Row style={{marginTop: "1rem"}}>
+                            <Col xs="9">
+                                <Input type="textarea" rows="1"
+                                    id="myComment"
+                                    name="myComment"
+                                    placeholder="Leave a comment here..."
+                                    onChange={handleCommentChange}
+                                    style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
+                                />     
+                            </Col>
+                            <Col xs="3">
+                                <Button  onClick={(e) => uploadComment(e, 0)}
+                                    style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
+                                >
+                                    <p> Send </p>
+                                </Button> 
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
             )
         } else {
             return (
                 <div>
-                    <h5> You don't have any comments yet. </h5>
-                    <Row>
-                        <Col xs="9">
-                            <Input type="textarea" rows="1"
-                                id="myComment"
-                                name="myComment"
-                                onChange={handleCommentChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            /> 
-                        </Col>
-                        <Col xs="3">
-                            <Button onClick={(e) => uploadComment(e, 0)}>
-                                <p> Send </p>
-                            </Button> 
-                        </Col>
-                    </Row>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <Row style={{marginTop: "1rem"}}>
+                            <Col xs="9">
+                                <Input type="textarea" rows="1"
+                                    id="myComment"
+                                    name="myComment"
+                                    placeholder="Leave a comment here..."
+                                    onChange={handleCommentChange}
+                                    style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
+                                />     
+                            </Col>
+                            <Col xs="3">
+                                <Button  onClick={(e) => uploadComment(e, 0)}
+                                    style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
+                                >
+                                    <p> Send </p>
+                                </Button> 
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
             )
         }

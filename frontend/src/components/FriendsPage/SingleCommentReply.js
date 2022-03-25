@@ -18,7 +18,7 @@ export default function SingleCommentReply(props) {
 
     const deleteComment = (comment_id, e) => {
         axiosInstance
-            .delete(`posts/${currentPost.id}/comments/${comment_id}`)
+            .delete(`posts/${currentPost.id}/comments/${singleComment.id}/replies/${singleReply.id}`)
             .then((res) => {
                 console.log(res)
                 props.updatePageAfterReplyDeletion()
@@ -28,18 +28,20 @@ export default function SingleCommentReply(props) {
 
     return(
         <div className="singleComment" key={singleReply.id}>
-            <Row>
+            <Row style={{marginBottom: "1rem"}}>
                 <Col>
                     <Row>
                         <Col xs="2">
-                            <h4> {singleReply.id} </h4>
+                            <h6> {singleReply.id} </h6>
                         </Col>
-                        <Col xs="6">
-                            <h4> {singleReply.content} </h4>
+                        <Col xs="8">
+                            <h6> {singleReply.content} </h6>
                         </Col>
                         {singleComment.author_id == currentUser.id  &&
-                            <Col xs="2">
-                                <Button name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} >
+                            <Col xs="2" style={{display: "flex", justifyContent: "flex-end"}}>
+                                <Button color="danger" name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} 
+                                    style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
+                                >
                                     <p> x </p>
                                 </Button>
                             </Col>
