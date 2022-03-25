@@ -5,63 +5,34 @@ import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
 
 
-export default function PersonalPostForm(props) {
-    console.log(props)
+export default function PersonalPostEditor(props) {
+    //console.log(props)
 
-    const [titleErr, setTitleErr] = useState('')
-    const [contentErr, setContentErr] = useState('')
-    const [clubIDErr, setClubIDErr] = useState('')
-    const [imageLinkErr, setImageLinkErr] = useState('')
-    const [bookLinkErr, setBookLinkErr] = useState('')
-
-    const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
-        club_id : '',
-        title : '',
-        content : '', 
-        image_link : '',
-        book_link : ''
-    })
-
-    const [formData, updateFormData] = useState(initialFormData)
+    const [formData, updateFormData] = useState(props.personalPost)
     const [writtenComment, updateWrittenComment] = useState()
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         updateFormData({
           ...formData, 
-          [e.target.name]: e.target.value.trim(), 
+          [e.target.name]: e.target.value, 
         })
       }
 
-    //   const handleCommentChange = (e) => {
-    //     updateWrittenComment({
-    //       ...writtenComment, 
-    //       [e.target.name]: e.target.value.trim(), 
-    //     })
-    //   }
-
-    const handlePostFriendRequest = (e) => {
+    const handleEditRequest = (e) => {
         e.preventDefault()
-        
+
         axiosInstance
-            .post("posts/", {
+            .put(`posts/${props.personalPost.id}`, {
                 club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
                 image_link : formData.image_link,
-                book_link : formData.book_link
+                book_link : formData.image_link
             })
             .then((res) => {
-                navigate("/friends_page/")
                 navigate("/home/")
-            })
-            .catch((e) => {
-                console.log(e.response.data)
-                setTitleErr(e.response.data.title)
-                setContentErr(e.response.data.content)
-                setClubIDErr(e.response.data.club_id)
-                setBookLinkErr(e.response.data.book_link)
-                setImageLinkErr(e.response.data.image_link)
+                navigate("/friends_page/")
             })
     }
     
@@ -70,7 +41,7 @@ export default function PersonalPostForm(props) {
             <Container fluid>
             <Row>
                 <Col>
-                    <h1> Upload Post </h1>
+                    <h1> Edit Post </h1>
                     
 
                     <Container>
@@ -83,9 +54,10 @@ export default function PersonalPostForm(props) {
                                 name="title"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.title}
                             />
+                            <p></p>
                         </FormGroup>
-                        <div>{titleErr}</div>
 
                         <FormGroup>
                             <Label for="content"> Content </Label>
@@ -94,10 +66,9 @@ export default function PersonalPostForm(props) {
                                 name="content"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.content}
                             />
                         </FormGroup>
-                        <div>{contentErr}</div>
-
                         
                         <Row>
                         <Col xs="3">
@@ -108,10 +79,9 @@ export default function PersonalPostForm(props) {
                                     name="club_id" 
                                     onChange={handleChange}
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    value={formData.club}
                                 />
                             </FormGroup>
-                            <div>{clubIDErr}</div>
-
                         </Col>
 
                         <Col xs="9">
@@ -122,10 +92,9 @@ export default function PersonalPostForm(props) {
                                     name="image_link"
                                     onChange={handleChange}
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                    value={formData.image_link}
                                 />
                             </FormGroup>
-                            <div>{imageLinkErr}</div>
-
                         </Col>
                         </Row>
 
@@ -136,20 +105,19 @@ export default function PersonalPostForm(props) {
                                 name="book_link"
                                 onChange={handleChange}
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                value={formData.book_link}
                             />
                         </FormGroup>
-                        <div>{bookLinkErr}</div>
-
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>
                                 <Button
                                 type="submit"
                                 className="submit"
-                                onClick={handlePostFriendRequest}
+                                onClick={handleEditRequest}
                                 style={{ width: "7rem" }}
                                 >
-                                Post!
+                                Save
                                 </Button>
                             </Col>
                         </FormGroup> 

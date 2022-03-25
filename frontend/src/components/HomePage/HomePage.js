@@ -14,7 +14,13 @@ import { Link } from 'react-router-dom'
 import { ParaText } from './HomePageElements'
 import { IoIosArrowForward } from 'react-icons/io'
 
+import useGetUser from "../../helpers";
+import FeedPostList from '../FriendsPage/FeedPostList'
+
 const HomePage = () => {
+    const currentUser = useGetUser();
+    console.log("Buenos Dias Home")
+    console.log("Current user logged in: " + currentUser.id)
     return (
         <Container fluid>
             <Row style={{ marginBottom: "3rem" }}>
@@ -24,6 +30,7 @@ const HomePage = () => {
                 <Col />
                 <Col xs={5}>
                     <FeedContainer>
+                        <FeedPostList/>
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
