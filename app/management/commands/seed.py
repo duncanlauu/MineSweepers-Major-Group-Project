@@ -368,32 +368,45 @@ def create_meeting(club, faker, counter):
 def create_post(user, faker):
     """Create a post"""
 
+    min_num_of_likes = 5
+    max_num_of_likes = 15
+    num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
+    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+
     return Post.objects.create(
         author=user,
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
+        upvotes=users_who_likes,
     )
 
 def create_comment(user, faker, post):
     """Create a comment"""
 
+    min_num_of_likes = 5
+    max_num_of_likes = 15
+    num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
+    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+
     return Comment.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5),
+        upvotes=users_who_likes,
         post=post
     )
 
 def create_reply(user, faker, comment):
     """Create a reply"""
 
+    min_num_of_likes = 5
+    max_num_of_likes = 15
+    num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
+    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+
     return Reply.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5),
+        upvotes=users_who_likes,
         comment=comment
     )
 
