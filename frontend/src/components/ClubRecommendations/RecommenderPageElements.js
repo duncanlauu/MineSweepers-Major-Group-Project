@@ -17,4 +17,5 @@ export const ClubProfile = styled.div`
     margin-bottom: 1rem;
     justify-content: center;
     align-items: center;
+    font-size: 15px;
 `

@@ -9,7 +9,7 @@ import {Link} from "@material-ui/core";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
 import Gravatar from "react-gravatar";
-import {ClubProfile} from "../ClubProfile/ClubProfileElements";
+import {ClubProfile} from "./RecommenderPageElements";
 
 const ClubRecommendationPage = () => {
     const user = useGetUser();
