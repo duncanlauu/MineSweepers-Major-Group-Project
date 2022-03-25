@@ -2,7 +2,7 @@ from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, 
     ReplyView
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView, OtherUserFriendsView
-from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
+from app.views.rating_views import AllRatingsView, OtherUserRatingsView, RatingView, BookRatingsView
 from .views.authentication_views import GetCurrentUserView
 from .views.genres_view import GenresView
 from .views.recommender_views import RecommenderAPI
@@ -72,6 +72,7 @@ urlpatterns = [
     path('ratings/', AllRatingsView.as_view(), name='user_ratings'),
     path('ratings/<int:rating_id>/', RatingView.as_view(), name='rating'),
     path('books/<str:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings'),
+    path('ratings/other_user/<int:other_user_id>', OtherUserRatingsView.as_view(), name='other_user_ratings'),
 
     # Others
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
