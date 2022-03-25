@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useParams } from "react";
 import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane, CardGroup} from 'reactstrap'
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
@@ -10,11 +10,36 @@ import NonFriendList from "./NonFriendList";
 import FriendsList from "./FriendsList";
 import FriendRequestList from "./FriendRequestList";
 import SuggestedUserList from "./SuggestedUserList";
+import axios from "axios";
+import axiosInstance from "../../axios";
 
 const UserProfile = () => {
 
-    const currentUser = useGetUser();
+    
+    const [currentUser, setCurrentUser] = useState("")
     const [currentActiveTab, setCurrentActiveTab] = useState("1");
+
+    const { user_id } = useParams();
+    console.log("user ID: " + user_id);
+  
+
+    useEffect(() => {
+        const loggedInUser = useGetUser();
+        if(user_id != loggedInUser.id && typeof(user_id) != undefined && user_id.length > 0){
+            axiosInstance
+            .get(`user/get_update/${user_id}/`)
+            .then(res => {
+                console.log("User is: ", res.data)
+                setCurrentUser(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }else{
+            setCurrentUser(loggedInUser)
+        }
+
+    }, [])
 
     const toggle = (tab) => {
         if (currentActiveTab !== tab) {

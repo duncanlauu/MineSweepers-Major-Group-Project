@@ -64,7 +64,7 @@ export default function SingleSuggestedUser(props) {
                     />
                  </Col>
                 <Col xs="6">
-                    <h5 className="friend_username"> {suggestedUserName} </h5>
+                    <h5 className="friend_username"> {suggestedUserName} {currentSuggestedUser.id} </h5>
                 </Col>
                 <Col xs="4">
                     <Button style={{width: "3rem"}} onClick={(e) => postFriendRequest(currentSuggestedUser.id)}>
