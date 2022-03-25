@@ -371,14 +371,19 @@ def create_post(user, faker):
     min_num_of_likes = 5
     max_num_of_likes = 15
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
-    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+    friends = list(user.friends.all())
+    random.shuffle(friends)
+    users_who_likes = friends[:num_of_likes]
 
-    return Post.objects.create(
+    post = Post.objects.create(
         author=user,
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
-        upvotes=users_who_likes,
     )
+    
+    post.upvotes.set(users_who_likes)
+    return post
+
 
 def create_comment(user, faker, post):
     """Create a comment"""
@@ -386,14 +391,18 @@ def create_comment(user, faker, post):
     min_num_of_likes = 5
     max_num_of_likes = 15
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
-    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+    friends = list(user.friends.all())
+    random.shuffle(friends)
+    users_who_likes = friends[:num_of_likes]
 
-    return Comment.objects.create(
+    comment = Comment.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=users_who_likes,
         post=post
     )
+
+    comment.upvotes.set(users_who_likes)
+    return comment
 
 def create_reply(user, faker, comment):
     """Create a reply"""
@@ -401,14 +410,18 @@ def create_reply(user, faker, comment):
     min_num_of_likes = 5
     max_num_of_likes = 15
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
-    users_who_likes = random.shuffle(list(user.friends.all()))[:num_of_likes]
+    friends = list(user.friends.all())
+    random.shuffle(friends)
+    users_who_likes = friends[:num_of_likes]
 
-    return Reply.objects.create(
+    reply = Reply.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=users_who_likes,
         comment=comment
     )
+    
+    reply.upvotes.set(users_who_likes)
+    return reply
 
 
 def get_n_random_books_from(n, books):

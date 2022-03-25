@@ -419,7 +419,6 @@ class FeedAPIViewTestCase(APITestCase):
         reply = Reply.objects.get(pk=1)
         self.assertNotEqual(reply.content, 'new test reply content')
 
-    # TODO: implement after refactoring view
     def test_delete_reply_as_reply_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 2}
