@@ -49,15 +49,23 @@ margin-right: 1rem;
 overflow-y: scroll;
 `
 
-export const PostContent = styled.div`
-background-color: #ccc;
-height: 8rem;
-width: 100%;
-border-radius: 10px;
-margin-top: 1rem;
-margin-left: 1rem;
-margin-right: 1rem;
-overflow-y: scroll;
+// export const PostContent = styled.div`
+// background-color: #ccc;
+// height: 8rem;
+// width: 100%;
+// border-radius: 10px;
+// margin-top: 1rem;
+// margin-left: 1rem;
+// margin-right: 1rem;
+// overflow-y: scroll;
+// `
+
+export const FeedContent = styled.div`
+    height: 10rem;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow-y: scroll;
 `
 
 export const PostTitle = styled.div`

@@ -45,7 +45,7 @@ class SearchTestCase(APITestCase):
         self.assertLessEqual(len(results['books']), 10)
         self.assertLessEqual(len(results['users']), 10)
         self.assertLessEqual(len(results['clubs']), 10)
-        self.assertEqual(len(results['recommended_clubs']), Club.objects.count())
+        self.assertEqual(len(results['recommended_clubs']), Club.objects.count() - len(results['clubs']))
         self.assertEqual(len(results['recommended_users']), 20)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -56,7 +56,7 @@ class SearchTestCase(APITestCase):
         self.assertEqual(len(results['books']), 0)
         self.assertEqual(len(results['users']), 0)
         self.assertEqual(len(results['clubs']), 0)
-        self.assertEqual(len(results['recommended_clubs']), Club.objects.count())
+        self.assertLessEqual(len(results['recommended_clubs']), Club.objects.count())
         self.assertEqual(len(results['recommended_users']), 20)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

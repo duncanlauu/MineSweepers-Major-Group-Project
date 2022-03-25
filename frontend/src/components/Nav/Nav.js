@@ -13,14 +13,24 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
+import PersonalPostForm from '../FriendsPage/PersonalPostForm';
+import axiosInstance from '../../axios';
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            search: '',
+
         };
         this.toggle = this.toggle.bind(this);
+        this.state = {
+            postModal: false
+        };
+        this.changeModalVisibility = this.changeModalVisibility.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.isAuthenticated = this.props.isAuthenticated;
     }
 
@@ -28,6 +38,35 @@ class Nav extends React.Component {
         this.setState({
             modal: !this.state.modal
         });
+    }
+
+    handleChange(e) {
+        this.setState({
+            search: e.target.value
+
+        });
+        console.log(this.state.search)
+    }
+
+    changeModalVisibility() {
+        this.setState({
+            postModal: !this.state.postModal
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("submitting")
+
+        axiosInstance
+            .get(`search/`, {
+                params: {search_query: this.state.search}
+
+            })
+            .then((res) => {
+                console.log(res)
+                console.log(res.data)
+            })
     }
 
     render() {
@@ -44,54 +83,62 @@ class Nav extends React.Component {
                     </Link>
                     {this.isAuthenticated ?
                         <>
-                        <Button
-                        type='button'
-                        style={{
-                            backgroundColor: "#FFF",
-                            border: "0px",
-                        }}
-                        onClick={this.toggle}>
-                        <Box style={{
-                            backgroundColor: "#ECECEC",
-                            height: "3rem",
-                            width: "30rem",
-                            display: "flex",
-                            borderRadius: "100px",
-                            alignItems: "center",
-                            justifyContent: "flex-end"
-                        }}>
-                            <IconButton type='submit'>
-                                <BiSearch/>
-                            </IconButton>
-                        </Box>
-                    </Button>
-                    <NavMenu>
-                        <Link to="/create_club/" style={{color: "#000"}}>
                             <Button
                                 type='button'
                                 style={{
-                                    backgroundColor: "#653FFD",
-                                    fontFamily: "Source Sans Pro",
-                                    fontWeight: "500",
-                                    alignItems: "center",
-                                    justifyContent: "space-around",
-                                    marginRight: "2rem",
+                                    backgroundColor: "#FFF",
+                                    border: "0px",
                                 }}
-                            ><AiOutlinePlus
-                                style={{
-                                    backgroundColor: "#4F30CC",
-                                    borderRadius: "2px",
-                                    height: "2rem",
-                                    width: "2rem",
-                                    marginRight: "1rem"
-                                }}/>New Club</Button>
-                        </Link>
-                        <ChatBubbleOutline fontSize='large'/>
-                        <Link to="/notifications/" style={{color: "#000"}}>
-                            <NotificationsNoneIcon fontSize='large'/>
-                        </Link>
-                        <AccountCircleIcon fontSize='large'/>
-                    </NavMenu>
+                                text={this.state.search}
+                                onClick={this.toggle}>
+                                <Box style={{
+                                    backgroundColor: "#ECECEC",
+                                    height: "3rem",
+                                    width: "30rem",
+                                    display: "flex",
+                                    borderRadius: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end"
+                                }}>
+                                    <IconButton type='submit'>
+                                        {this.state.search === '' ? <SearchText> </SearchText> :
+                                            <SearchText>{this.state.search}</SearchText>}
+                                        <BiSearch/>
+                                    </IconButton>
+                                </Box>
+                            </Button>
+                            <NavMenu>
+                                <Button style={{marginRight: "1rem"}} onClick={this.changeModalVisibility}>
+                                    New Post
+                                </Button>
+                                <Link to="/create_club/" style={{color: "#000"}}>
+                                    <Button
+                                        type='button'
+                                        style={{
+                                            backgroundColor: "#653FFD",
+                                            fontFamily: "Source Sans Pro",
+                                            fontWeight: "500",
+                                            alignItems: "center",
+                                            justifyContent: "space-around",
+                                            marginRight: "2rem",
+                                        }}
+                                    ><AiOutlinePlus
+                                        style={{
+                                            backgroundColor: "#4F30CC",
+                                            borderRadius: "2px",
+                                            height: "2rem",
+                                            width: "2rem",
+                                            marginRight: "1rem"
+                                        }}/>New Club</Button>
+                                </Link>
+                                <ChatBubbleOutline fontSize='large'/>
+                                <Link to="/notifications/" style={{color: "#000"}}>
+                                    <NotificationsNoneIcon fontSize='large'/>
+                                </Link>
+                                <Link to="/friends_page/" style={{color: "#000"}}>
+                                    <AccountCircleIcon fontSize='large'/>
+                                </Link>
+                            </NavMenu>
                         </>
                         : <></>
                     }
@@ -107,7 +154,9 @@ class Nav extends React.Component {
                 >
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
-                            <BiSearch style={{height: "2rem", width: "2rem"}}/>
+                            <BiSearch style={{height: "2rem", width: "2rem"}} onClick={this.handleSubmit}/>
+
+
                             <Input
                                 type='text'
                                 placeholder='Search...'
@@ -121,6 +170,8 @@ class Nav extends React.Component {
                                     fontFamily: "Source Sans Pro",
                                     fontSize: "20px"
                                 }}
+                                onChange={this.handleChange}
+                                value={this.state.search}
                             />
                         </SearchContainer>
                     </ModalHeader>
@@ -173,6 +224,21 @@ class Nav extends React.Component {
                                 <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
                             </SearchText>
                         </SearchResult>
+                    </ModalBody>
+                </Modal>
+
+
+                <Modal
+                    isOpen={this.state.postModal}
+                    toggle={this.changeModalVisibility}
+                    style={{
+                        left: 0,
+                        top: 100
+                    }}
+                >
+
+                    <ModalBody style={{overflowY: "scroll"}}>
+                        <PersonalPostForm/>
                     </ModalBody>
                 </Modal>
             </div>

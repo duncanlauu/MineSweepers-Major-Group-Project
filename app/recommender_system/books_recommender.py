@@ -216,11 +216,11 @@ def get_weighted_rating(rating, number_of_votes, global_mean, minimum_number_of_
            minimum_number_of_votes * global_mean / (number_of_votes + minimum_number_of_votes)
 
 
-def get_top_n_test(trainset, algo):
+def get_top_n_test(trainset, algo, uid):
     """A test for getting the top n books for a user"""
 
     start = time.time()
-    top_n = get_top_n(uid=1276726, trainset=trainset, n=10, algo=algo)
+    top_n = get_top_n(uid=uid, trainset=trainset, n=10, algo=algo)
     end = time.time()
     logging.debug(f'Finished predicting top n for a user in {end - start} seconds')
 
@@ -243,11 +243,11 @@ def get_top_n_test(trainset, algo):
     # assert top_n == top_n_actual
 
 
-def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup):
+def get_top_n_for_k_test(trainset, algo, pred_uid_and_iid_lookup, uids):
     """A test for getting the top n books for k users"""
 
     start = time.time()
-    top_n_for_k = get_top_n_for_k(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723],
+    top_n_for_k = get_top_n_for_k(uids=uids,
                                   trainset=trainset,
                                   n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup)
     end = time.time()
@@ -301,11 +301,11 @@ def get_top_n_global_test(trainset, dataset):
         # The weighted rating is different because the global mean is different
 
 
-def get_top_n_for_genre_test(trainset, algo, genre):
+def get_top_n_for_genre_test(trainset, algo, genre, uid):
     """A test for getting the top n books for a user for a given genre"""
 
     start = time.time()
-    top_n = get_top_n_for_genre(uid=1276726, trainset=trainset, n=10, algo=algo, genre=genre)
+    top_n = get_top_n_for_genre(uid=uid, trainset=trainset, n=10, algo=algo, genre=genre)
     end = time.time()
     logging.debug(f'Finished predicting top n for a user for a genre in {end - start} seconds')
     # NOTE: The assertions only work for one particular training, they might be incorrect if you retrain the model
@@ -327,11 +327,11 @@ def get_top_n_for_genre_test(trainset, algo, genre):
         logging.debug(f'{item} with rating {rating}')
 
 
-def get_top_n_for_k_for_genre_test(trainset, algo, pred_uid_and_iid_lookup, genre):
+def get_top_n_for_k_for_genre_test(trainset, algo, pred_uid_and_iid_lookup, genre, uids):
     """A test for getting the top n books for k users for a given genre"""
 
     start = time.time()
-    top_n_for_k = get_top_n_for_k_for_genre(uids=[1276726, 1276736, 1276729, 1276704, 1276709, 1276721, 1276723],
+    top_n_for_k = get_top_n_for_k_for_genre(uids=uids,
                                             trainset=trainset,
                                             n=10, algo=algo, pred_lookup=pred_uid_and_iid_lookup, genre=genre)
     end = time.time()

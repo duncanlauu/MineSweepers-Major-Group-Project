@@ -3,6 +3,7 @@ import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBra
 import { HeadingText, LoginContainer, ParaText } from './LoginElements'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
+import useHasRated from '../hooks/useHasRated'
 import { Link } from 'react-router-dom'
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 
@@ -15,7 +16,7 @@ import Nav from '../Nav/Nav'
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
     const { setAuth } = useAuth();
-
+    const { setHasRated } = useHasRated();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/home"
@@ -53,26 +54,42 @@ export default function SignIn() {
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
-                localStorage.setItem('username', user) // might not be necessary
+                localStorage.setItem('username', user)
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
                 console.log("From: ", from)
                 setAuth({ user })
                 setUser('')
                 setPassword('')
+
+                axiosInstance
+                    .get(`ratings/`)
+                    .then((r) => {
+                        const rated = r.data.ratings.length > 0
+                        if (rated) {
+                            setHasRated({ hasRated: "true" })
+                        } else {
+                            setHasRated({ hasRated: "false" })
+                        }
+                        localStorage.setItem('hasRated', rated)
+                    })
+                setHasRated({ hasRated: "true" }) // additional default call to avoid issues with asynchronous loading.
                 navigate(from)
                 console.log(response);
                 console.log(response.data);
             })
+            .catch((e) => {
+                setErrMsg("Invalid username/password")
+            })
     }
 
     return (
-        <div style={{ overflowX:"hidden" }}>
+        <div style={{ overflowX: "hidden" }}>
             <Row>
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h2 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</h2>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>
@@ -83,7 +100,7 @@ export default function SignIn() {
                         </ParaText>
 
                         <LoginContainer>
-                            <form style={{ width:"80%" }}>
+                            <form style={{ width: "80%" }}>
                                 <FormGroup>
                                     <Label><ParaText>Username</ParaText></Label>
                                     <Input
@@ -98,25 +115,26 @@ export default function SignIn() {
                                 <FormGroup>
                                     <Label><ParaText>Password</ParaText></Label>
                                     <Container fluid style={{ display: "flex", flexDirection: "row", padding: "0px" }}>
-                                    <Input
-                                        name="password"
-                                        type={passwordVisible ? "text" : "password"}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        value={password}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                        required
-                                    />
-                                    <Button 
-                                        onClick={togglePassword}
-                                        style={{ backgroundColor: "#653FFD" }}>
-                                    {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }
-                                    </Button>
+                                        <Input
+                                            name="password"
+                                            type={passwordVisible ? "text" : "password"}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            value={password}
+                                            style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                            required
+                                        />
+                                        <Button
+                                            onClick={togglePassword}
+                                            style={{ backgroundColor: "#653FFD" }}>
+                                            {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
+                                        </Button>
                                     </Container>
                                 </FormGroup>
+
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 4 }}>
-                                        <Button 
-                                            type="submit" 
+                                        <Button
+                                            type="submit"
                                             onClick={handleSubmit}
                                             style={{ backgroundColor: "#653FFD", width: "7rem" }}>
                                             Log In
