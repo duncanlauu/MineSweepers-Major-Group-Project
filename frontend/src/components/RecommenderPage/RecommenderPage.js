@@ -135,6 +135,19 @@ const RecommenderPage = () => {
     );
   }
 
+  //DELETE THIS
+  function retrainModel() {
+    axiosInstance
+      .post(`recommender/retrain/`, {})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+  }
+
   return (
     <Container fluid>
       <Row style={{ marginBottom: "3rem" }}>
@@ -144,6 +157,7 @@ const RecommenderPage = () => {
       <Col />
         <Col xs={6}>
           <HeadingText>Books For You</HeadingText><br />
+          <FilterButton onClick={retrainModel}>Retrain Model</FilterButton><br />
           <FilterButton onClick={returnFictionRecommendations}>My Genre Recommendations</FilterButton><br />
           <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br />
           <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br />
