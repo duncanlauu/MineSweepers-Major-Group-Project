@@ -373,7 +373,6 @@ def create_post(user, faker):
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
         upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5)
     )
 
 def create_comment(user, faker, post):
