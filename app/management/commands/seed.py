@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
 from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
-    TimePeriod, Post, FriendRequest
+    TimePeriod, Post
 from app.management.commands.helpers import print_info
 
 
@@ -123,7 +123,6 @@ def seed_default_objects():
     meeting.save()
 
 
-
 def seed_books():
     """Seed all the books from the csv file with genres
 
@@ -186,7 +185,8 @@ def seed_ratings():
     users = User.objects.all()
     for user in users:
         read_books = user.read_books.all()
-        rated_books = get_n_random_books_from(random.randint(min_num_of_ratings, max_num_of_ratings), list(read_books))
+        rated_books = get_n_random_books_from(random.randint(
+            min_num_of_ratings, max_num_of_ratings), list(read_books))
         for book in rated_books:
             BookRating.objects.create(
                 user=user,
@@ -215,9 +215,11 @@ def seed_clubs(num_of_clubs=15):
         try:
             club = create_club(faker)
             club = generate_club_users(club, random.randint(min_num_of_members, max_num_of_members),
-                                       random.randint(min_num_of_admins, max_num_of_admins),
+                                       random.randint(
+                                           min_num_of_admins, max_num_of_admins),
                                        random.randint(min_num_of_applicants, max_num_of_applicants))
-            club = generate_club_books(club, random.randint(min_num_of_books, max_num_of_books), books)
+            club = generate_club_books(club, random.randint(
+                min_num_of_books, max_num_of_books), books)
             club.save()
             print(f'{i + 1}/{num_of_clubs} club has been created')
         except IntegrityError:
@@ -230,7 +232,8 @@ def seed_friends():
     min_number_of_friends = 2
     max_number_of_friends = 10
     for user in User.objects.all():
-        num_of_friends = random.randint(min_number_of_friends, max_number_of_friends)
+        num_of_friends = random.randint(
+            min_number_of_friends, max_number_of_friends)
         potential_friends = get_n_random_users(num_of_friends)
         if user in potential_friends:
             potential_friends.remove(user)
@@ -239,14 +242,17 @@ def seed_friends():
         user.save()
         print(f'Created all friends for {user}')
 
+
 def seed_friend_requests():
     """Seed a number of friend requests"""
 
     min_number_of_friend_requests = 2
     max_number_of_friend_requests = 10
     for user in User.objects.all():
-        num_of_friend_requests = random.randint(min_number_of_friend_requests, max_number_of_friend_requests)
-        potential_non_friends = get_n_random_non_friends(num_of_friend_requests, user)
+        num_of_friend_requests = random.randint(
+            min_number_of_friend_requests, max_number_of_friend_requests)
+        potential_non_friends = get_n_random_non_friends(
+            num_of_friend_requests, user)
         for non_friend in potential_non_friends:
             user.send_friend_request(non_friend)
         print(f'Created all friend requests for {user}')
@@ -259,7 +265,8 @@ def seed_meetings():
     max_number_of_meetings = 8
     faker = Faker('en_GB')
     for club in Club.objects.all():
-        num_of_meetings = random.randint(min_number_of_meetings, max_number_of_meetings)
+        num_of_meetings = random.randint(
+            min_number_of_meetings, max_number_of_meetings)
         for i in range(0, num_of_meetings):
             create_meeting(club, faker, i)
         print(f'Created all meetings for {club}')
@@ -278,13 +285,15 @@ def seed_feed():
             seed_comments_and_replies(post, user)
         print(f'Created all posts for {user}')
 
+
 def seed_comments_and_replies(post, user):
     """Helper to seed a number of comments and replies for a post"""
     min_number_of_comments = 0
     max_number_of_comments = 1
     faker = Faker('en_GB')
     for friend in user.friends.all():
-        num_of_comments = random.randint(min_number_of_comments, max_number_of_comments)
+        num_of_comments = random.randint(
+            min_number_of_comments, max_number_of_comments)
         for i in range(0, num_of_comments):
             comment = create_comment(friend, faker, post)
             seed_replies(comment, user)
@@ -297,7 +306,8 @@ def seed_replies(comment, user):
     max_number_of_replies = 1
     faker = Faker('en_GB')
     for friend in user.friends.all():
-        num_of_replies = random.randint(min_number_of_replies, max_number_of_replies)
+        num_of_replies = random.randint(
+            min_number_of_replies, max_number_of_replies)
         for i in range(0, num_of_replies):
             create_reply(friend, faker, comment)
         print(f'Created all replies for {friend}')
@@ -375,12 +385,25 @@ def create_post(user, faker):
     random.shuffle(friends)
     users_who_likes = friends[:num_of_likes]
 
-    post = Post.objects.create(
-        author=user,
-        title=faker.text(random.randint(10, 100)),
-        content=faker.text(random.randint(50, 500)),
-    )
-    
+    is_club_post = bool(random.getrandbits(1))
+    clubs = list(Club.objects.filter(Q(owner=user) |
+                                         Q(admins=user) | Q(members=user)).all())
+    if is_club_post and len(clubs) != 0:
+        random.shuffle(clubs)
+        club = clubs[0]
+        post = Post.objects.create(
+            author=user,
+            title=faker.text(random.randint(10, 100)),
+            content=faker.text(random.randint(50, 500)),
+            club=club
+        )
+    else:
+        post = Post.objects.create(
+            author=user,
+            title=faker.text(random.randint(10, 100)),
+            content=faker.text(random.randint(50, 500)),
+        )
+
     post.upvotes.set(users_who_likes)
     return post
 
@@ -404,6 +427,7 @@ def create_comment(user, faker, post):
     comment.upvotes.set(users_who_likes)
     return comment
 
+
 def create_reply(user, faker, comment):
     """Create a reply"""
 
@@ -419,7 +443,7 @@ def create_reply(user, faker, comment):
         content=faker.text(random.randint(50, 500)),
         comment=comment
     )
-    
+
     reply.upvotes.set(users_who_likes)
     return reply
 
@@ -463,6 +487,7 @@ def get_n_random_users(n):
     random.shuffle(users)
     return users[0: n]
 
+
 def get_n_random_non_friends(n, user):
     """Get n random non-friends of a user"""
     friends_and_user = list(user.friends.all()) + [user]
@@ -478,7 +503,8 @@ def generate_club_users(club, num_of_members, num_of_admins, num_of_applicants):
 
     """
 
-    users = get_n_random_users(num_of_members + num_of_admins + num_of_applicants)
+    users = get_n_random_users(
+        num_of_members + num_of_admins + num_of_applicants)
     # Make sure the owner doesn't have any other roles in the club
     if club.owner in users:
         users.remove(club.owner)
