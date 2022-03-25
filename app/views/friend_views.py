@@ -17,6 +17,19 @@ class FriendsView(APIView):
         return Response({'friends': friends, "non_friends": non_friends}, status=status.HTTP_200_OK)
 
 
+class OtherUserFriendsView(APIView):
+    """API View of friends of other user"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, other_user_id):
+        try:
+            user = User.objects.get(pk=other_user_id)
+            friends = user.friends.values()
+            return Response({'friends': friends}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 class FriendView(APIView):
     """API View of a friend of user"""
     permission_classes = [IsAuthenticated]
