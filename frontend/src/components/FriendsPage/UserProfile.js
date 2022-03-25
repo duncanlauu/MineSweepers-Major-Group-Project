@@ -102,12 +102,7 @@ const UserProfile = () => {
                             <DataContainerBelowTabs>
                                 <TabContent activeTab={currentActiveTab}>
                                     <TabPane tabId="1">
-                                        
-                                            <CardGroup>
-                                                <PersonalPostList/>
-                                            </CardGroup>
-                                        
-                                
+                                        <PersonalPostList/>
                                     </TabPane>
 
                                     <TabPane tabId="2">
