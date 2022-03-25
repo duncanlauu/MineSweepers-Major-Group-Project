@@ -88,7 +88,12 @@ export default function SignUpRating(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         createRatings()
-        //await axiosInstance.post("/recommender/retrain", {})
+        axiosInstance.post("/recommender/retrain", {})
+        .then((res) => {
+            console.log("Model retrained")
+        })
+        .catch((err) => {
+            console.log(err)})
         console.log(from)
         setHasRated({ hasRated: "true" })
         localStorage.setItem("hasRated", true)

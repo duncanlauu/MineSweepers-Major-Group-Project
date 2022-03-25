@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import axiosInstance from '../../axios'
 import {Row, Col} from "reactstrap"
-import { FriendLine, UserNameContainer, UserNameText} from "./UserProfileElements";
+import { FriendLine,} from "./UserProfileElements";
 import ReactStars from 'react-stars'
 import { useNavigate } from "react-router";
 
