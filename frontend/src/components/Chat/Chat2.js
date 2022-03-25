@@ -2,7 +2,8 @@ import React from 'react';
 import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
-import { EmptyChatContainer, EmptyChatText, MessageSendBox } from './ChatElements';
+import { EmptyChatContainer, EmptyChatText, MessageSendBox,
+     MessagingProfileHeading, MessageText, MessagingProfilePara} from './ChatElements';
 
 class Chat2 extends React.Component {
 
