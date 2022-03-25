@@ -61,6 +61,15 @@ class RatingsAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(book_ratings_before, book_ratings_after)
 
+    def test_create_book_rating_with_invalid_isbn(self):
+        self._log_in_helper(self.user.username, 'Password123')
+        rating_data = {'book': "1234567890", 'rating': 1}
+        book_ratings_before = BookRating.objects.count()
+        response = self.client.post(reverse('app:user_ratings'), rating_data)
+        book_ratings_after = BookRating.objects.count()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(book_ratings_before, book_ratings_after)
+
     def test_get_rating_by_id(self):
         self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:rating', kwargs={'rating_id': 1}))
