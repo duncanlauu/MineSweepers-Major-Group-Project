@@ -5,7 +5,12 @@ import {SignUpContainer, FormLayout, HeadingText, ParaText} from "./CreateClubEl
 import axiosInstance from '../../axios'
 
 export default function CreateClub() {
+
+    const [nameErr, setNameErr] = useState('')
+    const [descriptionErr, setDescriptionErr] = useState('')
+
     const navigate = useNavigate();
+
     const initialFormData = Object.freeze({
         name: '',
         description: '',
@@ -38,6 +43,10 @@ export default function CreateClub() {
                 console.log(res)
                 console.log(res.data)
             })
+            .catch((e) => {
+                setNameErr(e.response.data.name)
+                setDescriptionErr(e.response.data.description)
+            })
     }
 
     // Todo: move styles to a CSS file?
@@ -69,6 +78,7 @@ export default function CreateClub() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{nameErr}</div>
 
                                 <FormGroup>
                                     <Label for="description"> description </Label>
@@ -80,6 +90,7 @@ export default function CreateClub() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
+                                <div>{descriptionErr}</div>
 
 
                                 <FormGroup>

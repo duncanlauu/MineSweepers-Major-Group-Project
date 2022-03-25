@@ -8,7 +8,21 @@ import { useNavigate } from "react-router";
 export default function PersonalPostForm(props) {
     console.log(props)
 
-    const [formData, updateFormData] = useState()
+    const [titleErr, setTitleErr] = useState('')
+    const [contentErr, setContentErr] = useState('')
+    const [clubIDErr, setClubIDErr] = useState('')
+    const [imageLinkErr, setImageLinkErr] = useState('')
+    const [bookLinkErr, setBookLinkErr] = useState('')
+
+    const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
+        club_id : '',
+        title : '',
+        content : '', 
+        image_link : '',
+        book_link : ''
+    })
+
+    const [formData, updateFormData] = useState(initialFormData)
     const [writtenComment, updateWrittenComment] = useState()
     const navigate = useNavigate();
 
@@ -31,15 +45,23 @@ export default function PersonalPostForm(props) {
         
         axiosInstance
             .post("posts/", {
-                club_id : formData.club_id,
+                club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
                 image_link : formData.image_link,
-                book_link : formData.image_link
+                book_link : formData.book_link
             })
             .then((res) => {
-                navigate("/home/")
                 navigate("/friends_page/")
+                navigate("/home/")
+            })
+            .catch((e) => {
+                console.log(e.response.data)
+                setTitleErr(e.response.data.title)
+                setContentErr(e.response.data.content)
+                setClubIDErr(e.response.data.club_id)
+                setBookLinkErr(e.response.data.book_link)
+                setImageLinkErr(e.response.data.image_link)
             })
     }
     
@@ -63,6 +85,7 @@ export default function PersonalPostForm(props) {
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
                             />
                         </FormGroup>
+                        <div>{titleErr}</div>
 
                         <FormGroup>
                             <Label for="content"> Content </Label>
@@ -73,6 +96,8 @@ export default function PersonalPostForm(props) {
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
                             />
                         </FormGroup>
+                        <div>{contentErr}</div>
+
                         
                         <Row>
                         <Col xs="3">
@@ -85,6 +110,8 @@ export default function PersonalPostForm(props) {
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                 />
                             </FormGroup>
+                            <div>{clubIDErr}</div>
+
                         </Col>
 
                         <Col xs="9">
@@ -97,6 +124,8 @@ export default function PersonalPostForm(props) {
                                     style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                 />
                             </FormGroup>
+                            <div>{imageLinkErr}</div>
+
                         </Col>
                         </Row>
 
@@ -109,6 +138,8 @@ export default function PersonalPostForm(props) {
                                 style={{ border: "0", backgroundColor: "#F3F3F3" }}
                             />
                         </FormGroup>
+                        <div>{bookLinkErr}</div>
+
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>

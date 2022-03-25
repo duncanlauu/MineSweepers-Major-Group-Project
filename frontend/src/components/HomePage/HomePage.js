@@ -11,8 +11,16 @@ import {
 import Gravatar from 'react-gravatar'
 import Nav from '../Nav/Nav'
 import { Link } from 'react-router-dom'
+import { ParaText } from './HomePageElements'
+import { IoIosArrowForward } from 'react-icons/io'
+
+import useGetUser from "../../helpers";
+import FeedPostList from '../FriendsPage/FeedPostList'
 
 const HomePage = () => {
+    const currentUser = useGetUser();
+    console.log("Buenos Dias Home")
+    console.log("Current user logged in: " + currentUser.id)
     return (
         <Container fluid>
             <Row style={{ marginBottom: "3rem" }}>
@@ -22,11 +30,15 @@ const HomePage = () => {
                 <Col />
                 <Col xs={5}>
                     <FeedContainer>
+                        <FeedPostList/>
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
                     <HeadingText>Our Recommendations</HeadingText><br />
-                    <Heading2Text>Books</Heading2Text>
+                    <Heading2Text>Books</Heading2Text><br />
+                    <Link to="/recommendations/" style={{ color: '#653FFD', textDecoration: 'none', fontSize:"15px" }}>
+                        <ParaText><IoIosArrowForward />See all recommendations</ParaText>
+                    </Link>
                     <RecommendationContainer>
                         <Gravatar email='blah@blah.com' size={65} />
                         <RecommendationInfo />

@@ -1,3 +1,4 @@
+from django.dispatch import receiver
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +15,19 @@ class FriendsView(APIView):
         friends = request.user.friends.values()
         non_friends = User.objects.exclude(id__in = [friend["id"] for friend in friends.all()]).values()
         return Response({'friends': friends, "non_friends": non_friends}, status=status.HTTP_200_OK)
+
+
+class OtherUserFriendsView(APIView):
+    """API View of friends of other user"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, other_user_id):
+        try:
+            user = User.objects.get(pk=other_user_id)
+            friends = user.friends.values()
+            return Response({'friends': friends}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class FriendView(APIView):
@@ -39,8 +53,8 @@ class FriendRequestsView(APIView):
     def get(self, request):
         """Get list of incoming and outgoing friend requests of user"""
         user = request.user
-        outgoing = user.outgoing_friend_requests.values('receiver', 'created_at')
-        incoming = user.incoming_friend_requests.values('sender', 'created_at', "sender__username")
+        outgoing = user.outgoing_friend_requests.values('receiver', 'created_at', 'receiver__username')
+        incoming = user.incoming_friend_requests.values('sender', 'created_at', "sender__username", "sender__email")
         return Response({'incoming': incoming, 'outgoing': outgoing}, status=status.HTTP_200_OK)
 
     def post(self, request):
