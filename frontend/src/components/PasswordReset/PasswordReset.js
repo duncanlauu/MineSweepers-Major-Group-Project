@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import {Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand} from 'reactstrap'
 import {HeadingText, LoginContainer, ParaText} from './PasswordResetElements'
-import {FaExternalLinkAlt} from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
+import Nav from '../Nav/Nav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -44,38 +44,35 @@ export default function SignIn() {
     }
 
     return (
-        <div>
+        <div style={{ overflow:"hidden" }}>
             <Row>
-                <Navbar color="light" expand="md" light>
-                    <NavbarBrand href="/">
-                        <h1> bookgle </h1>
-                    </NavbarBrand>
-                </Navbar>
+                <Nav />
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>
                     <Col/>
                     <Col>
-                        <HeadingText>Password Reset</HeadingText><br/>
-                        <ParaText>Enter you email address:<FaExternalLinkAlt
-                            style={{height: "15px", color: "#0057FF"}}/> .</ParaText>
-
+                        <HeadingText>Forgot your Password?</HeadingText><br/>
+                        <ParaText>Don't worry, it happens to the best of us.</ParaText>
                         <LoginContainer>
-                            <form>
+                            <form style={{ width:"80%" }}>
                                 <FormGroup>
-                                    <Label>Email</Label>
+                                    <Label><ParaText>Email</ParaText></Label>
                                     <Input
                                         name="email"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        required
                                     />
                                 </FormGroup>
-                                <div>{emailErr}</div>
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 4}}>
-                                        <Button type="submit" onClick={handleSubmit}
-                                                style={{backgroundColor: "#653FFD", width: "7rem"}}>Send Reset
-                                            Email</Button>
+                                    <Col sm={{ size: 10, offset: 3 }}>
+                                        <Button 
+                                            type="submit" 
+                                            onClick={handleSubmit}
+                                            style={{ backgroundColor: "#653FFD"}}>
+                                            Send Reset Email
+                                        </Button>
                                     </Col>
                                 </FormGroup>
                             </form>
