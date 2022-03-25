@@ -6,13 +6,16 @@ import {
 } from "reactstrap"
 import PersonalPostEditor from "./PersonalPostEditor"
 import PostCommentList from "./PostCommentList"
-import { PostContainer } from "./UserProfileElements"
+import Gravatar from "react-gravatar"
+import { PostContainer, PostHeadingText } from "./UserProfileElements"
+import useGetUser from "../../helpers"
 
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const [isModalVisible, setModalVisibility] = useState()
+    const currentUser = useGetUser();
 
     useEffect(() => {
         setPersonalPost(props.personalPost)
@@ -62,31 +65,62 @@ export default function SinglePersonalPost(props) {
 
     return(
         <div className="personalPost" key={personalPost.id}>
-            <Card style={{ marginBottom: "1rem", marginRight: "1rem", marginTop: "1rem"}}>
-                <CardHeader style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
-                        Edit                    
-                    </Button>
-                    <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-                        X
-                    </Button>
+
+            <Card style={{ marginBottom: "1rem",
+                marginRight: "1rem",
+                marginTop: "1rem",
+                marginLeft: "1rem",
+                backgroundColor: "#fff",
+                borderRadius: "10px",
+                border: "3px solid rgba(0,0,0,.125)"}}
+            >
+                <CardHeader>
+                    <Row >
+                        <Col xs="1">
+                            <Gravatar email={currentUser.email} size={30} style={{ 
+                                        borderRadius: "50px",
+                                        marginTop: "0rem",
+                                        marginBottom: "0rem"
+                                    }} 
+                            />
+                        </Col>
+                        <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <div>
+                                <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
+                                    Edit                    
+                                </Button>
+                                <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
+                                    X
+                                </Button>
+                            </div>
+                        </Col>
+                    </Row>    
                 </CardHeader>
+
                 <CardBody>
-                    <CardTitle> <h2> {personalPost.title} </h2> </CardTitle>
-                    <CardText> <h4> {personalPost.content} </h4> </CardText>
+                    <div style={{display: 'flex', justifyContent: "center"}}>
+                        <CardTitle> 
+                            <PostHeadingText>
+                                {personalPost.title} 
+                            </PostHeadingText>
+                        </CardTitle>
+                    </div>
 
-                    <Button color="primary" id={togglerID} style={{marginBottom: "1rem"}}>
-                        Comment section
-                    </Button>
-
-                    <UncontrolledCollapse toggler={HashtagTogglerId}>
-                        <div>
-                            <PostCommentList post={personalPost}/>
-                        </div>
-                    </UncontrolledCollapse>
+                    <CardText>    
+                        <h5> {personalPost.content} </h5> 
+                    </CardText>
                 </CardBody>
+                
+                <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
+                    view all comments
+                </Button>
+
+                <UncontrolledCollapse toggler={HashtagTogglerId}>
+                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
+                        <PostCommentList post={personalPost}/>
+                    </div>
+                </UncontrolledCollapse>
             </Card>
-            
             <Modal
                 isOpen = {isModalVisible}
                 toggle = {() => changeModalVisibility()}

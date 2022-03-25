@@ -119,3 +119,10 @@ export const CommentSectionContainer = styled.div`
     border-radius: 20px;
     overflow-y: scroll;
 `
+
+export const PostHeadingText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #585858;
+`
