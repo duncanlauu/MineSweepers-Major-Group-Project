@@ -9,6 +9,7 @@ import PersonalPostList from "./PersonalPostList";
 import NonFriendList from "./NonFriendList";
 import FriendsList from "./FriendsList";
 import FriendRequestList from "./FriendRequestList";
+import SuggestedUserList from "./SuggestedUserList";
 
 const UserProfile = () => {
 
@@ -101,12 +102,7 @@ const UserProfile = () => {
                             <DataContainerBelowTabs>
                                 <TabContent activeTab={currentActiveTab}>
                                     <TabPane tabId="1">
-                                        
-                                            <CardGroup>
-                                                <PersonalPostList/>
-                                            </CardGroup>
-                                        
-                                
+                                        <PersonalPostList/>
                                     </TabPane>
 
                                     <TabPane tabId="2">
@@ -126,7 +122,8 @@ const UserProfile = () => {
                     <Col xs="3">
                         <FriendRecommenderContainer>
                             <h3> Suggested People </h3>
-                            <NonFriendList />
+                            {/* <NonFriendList /> */}
+                            <SuggestedUserList/>
                         </FriendRecommenderContainer>
                     </Col>
                 </Row>
