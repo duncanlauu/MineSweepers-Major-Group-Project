@@ -15,14 +15,18 @@ export default function SingleFeedPost(props) {
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
-        getPostCreatorName(props.feedPost.author_id)
-        getPostCreatorEmail(props.feedPost.author_id)
+        // console.log("feedPost.author_id")
+        // console.log(props.feedPost.author)
+        // console.log("club feeds:")
+        // console.log(props.feedPost)
+        getPostCreatorName(props.feedPost.author)
+        getPostCreatorEmail(props.feedPost.author)
     }, []);
 
     const getPostCreatorName = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
+            // console.log("The post creator is: " + res.data.username)
             setPosterName(res.data.username)
         })
         .catch(error => console.error(error));
@@ -31,24 +35,24 @@ export default function SingleFeedPost(props) {
     const getPostCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
+            // console.log("The post creator is: " + res.data.username)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
     }
 
     const uploadComment = (post_id, e, index) => {
-        console.log(writtenComment.myComment)
+        // console.log(writtenComment.myComment)
         axiosInstance
             .post(`posts/${post_id}/comments/`, {
                 content: writtenComment.myComment,
             })
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 const comment = { author: localStorage.username, content: writtenComment.myComment }
-                console.log(commentsRef.current[index])
+                // console.log(commentsRef.current[index])
                 commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
+                // console.log("adding post in parent: ", comment)
             })
     }
 
