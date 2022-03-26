@@ -288,8 +288,8 @@ def seed_feed():
 
 def seed_comments_and_replies(post, user):
     """Helper to seed a number of comments and replies for a post"""
-    min_number_of_comments = 1
-    max_number_of_comments = 2
+    min_number_of_comments = 0
+    max_number_of_comments = 1
     faker = Faker('en_GB')
     for friend in user.friends.all():
         num_of_comments = random.randint(
@@ -302,8 +302,8 @@ def seed_comments_and_replies(post, user):
 
 def seed_replies(comment, user):
     """Helper to seed a number of replies for a comment"""
-    min_number_of_replies = 1
-    max_number_of_replies = 2
+    min_number_of_replies = 0
+    max_number_of_replies = 1
     faker = Faker('en_GB')
     for friend in user.friends.all():
         num_of_replies = random.randint(

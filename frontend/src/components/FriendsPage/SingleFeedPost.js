@@ -13,12 +13,13 @@ export default function SingleFeedPost(props) {
     const [posterEmail, setPosterEmail] = useState("");
     const [writtenComment, updateWrittenComment] = useState("")
     const [likesCount, setLikesCount] = useState(0)
+    const [likesUsersList, setLikesUsersList] = useState([])
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
         getPostCreatorName(props.feedPost.author_id)
         getPostCreatorEmail(props.feedPost.author_id)
-        setLikesCount(size(props.feedPost.upvotes))
+        getPostUpvotes()
     }, []);
 
     const getPostCreatorName = (author_id) => {
@@ -39,6 +40,17 @@ export default function SingleFeedPost(props) {
         .catch(error => console.error(error));
     }
 
+    const getPostUpvotes = () => {
+        console.log("U are alright mate.")
+        axiosInstance.get(`posts/${feedPost.id}/`)
+        .then((res) => {
+            console.log("HELLO", res.data.upvotes.length)
+            setLikesCount(res.data.upvotes.length)
+            setLikesUsersList(res.data.upvotes)
+        })
+        .catch(error => console.error(error));
+    }
+
     const uploadComment = (post_id, e, index) => {
         console.log(writtenComment.myComment)
         axiosInstance
@@ -54,14 +66,17 @@ export default function SingleFeedPost(props) {
             })
     }
 
-    const likePost = (post_id, e, index) => {
+    const likePost = () => {
+        console.log("liking post", feedPost.id)
         axiosInstance
-            .put(`posts/${post_id}/`, {
+            .put(`posts/${feedPost.id}/`, {
                 action: "upvote",
             })
             .then((res) => {
+                console.log(res)
                 console.log("upvote successful")
             })
+            .catch(error => console.error(error));
     }
 
     const handleCommentChange = (e) => {
@@ -124,9 +139,13 @@ export default function SingleFeedPost(props) {
                     </CardText>
                 </CardBody>
                 
+                <Button style={{borderRadius: "20px", height: "5rem"}} onClick={likePost}>
+                    +
+                </Button>
                 <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
                     view all comments
                 </Button>
+                <div>{likesCount}</div>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>

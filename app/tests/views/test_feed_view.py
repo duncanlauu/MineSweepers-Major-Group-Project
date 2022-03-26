@@ -89,10 +89,7 @@ class FeedAPIViewTestCase(APITestCase):
         title = 'test full post title'
         content = 'test post content'
         club_id = 1
-        image_link = 'www.example-link.com'
-        book_link = 'www.example-book-link.com'
-        form_data = {'title': title, 'content': content, 'club': club_id,
-                     'image_link': image_link, 'book_link': book_link}
+        form_data = {'title': title, 'content': content, 'club': club_id}
         post_count_before = Post.objects.count()
         response = self.client.post(reverse('app:all_posts'), form_data)
         self.assertEqual(response.status_code, 201)
@@ -105,8 +102,6 @@ class FeedAPIViewTestCase(APITestCase):
         # Check other fields
         self.assertEqual(post.content, content)
         self.assertEqual(post.club.id, club_id)
-        self.assertEqual(post.image_link, image_link)
-        self.assertEqual(post.book_link, book_link)
 
     def test_get_post(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -121,16 +116,12 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         new_title = 'new post title'
         new_content = 'new post content'
-        new_image_link = 'www.new-image-link.com'
-        new_book_link = 'www.new-book-link.com'
-        new_post_data = {'title': new_title, 'content': new_content, 'image_link': new_image_link, 'book_link': new_book_link, 'action': 'edit'}
+        new_post_data = {'title': new_title, 'content': new_content, 'action': 'edit'}
         response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
         self.assertEqual(response.status_code, 200)
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
         self.assertEqual(edited_post.content, new_content)
-        self.assertEqual(edited_post.image_link, new_image_link)
-        self.assertEqual(edited_post.book_link, new_book_link)
 
 
     def test_partial_edit_post_by_author(self):

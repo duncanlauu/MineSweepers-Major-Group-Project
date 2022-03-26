@@ -8,9 +8,7 @@
       "title": "Test post 2!",
       "content": "This is another test post.",
       "upvotes": [],
-      "created_at": "2013-03-16T17:41:28+00:00",
-      "image_link": "",
-      "book_link": ""
+      "created_at": "2013-03-16T17:41:28+00:00"
     }
   },
   {
@@ -22,9 +20,7 @@
       "title": "Test post 3!",
       "content": "This is another test post 3.",
       "upvotes": [],
-      "created_at": "2013-03-16T17:41:28+00:00",
-      "image_link": "",
-      "book_link": ""
+      "created_at": "2013-03-16T17:41:28+00:00"
     }
   },
   {
@@ -36,9 +32,7 @@
       "title": "Test post 4!",
       "content": "This is another test post 4.",
       "upvotes": [],
-      "created_at": "2013-03-16T17:41:28+00:00",
-      "image_link": "",
-      "book_link": ""
+      "created_at": "2013-03-16T17:41:28+00:00"
     }
   },
   {
@@ -50,9 +44,7 @@
       "title": "Test post 5!",
       "content": "This is another test post 5.",
       "upvotes": [],
-      "created_at": "2013-03-16T17:41:28+00:00",
-      "image_link": "",
-      "book_link": ""
+      "created_at": "2013-03-16T17:41:28+00:00"
     }
   }
 ]
