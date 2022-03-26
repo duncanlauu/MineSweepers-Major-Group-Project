@@ -14,40 +14,31 @@ from selenium.webdriver.common.keys import Keys
 
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
-from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users
+from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users, seed_default_objects, \
+    seed_friends, seed_friend_requests, seed_meetings, seed_feed
 from surprise import SVD
 
 class FrontendFunctionalityTest(LiveServerTestCase):
 
     port = 8000
 
-    # fixtures = [
-    #     'app/tests/fixtures/default_user.json',
-    #     'app/tests/fixtures/default_chat.json',
-    #     'app/tests/fixtures/default_message.json',
-    #     'app/tests/fixtures/other_users.json',
-    #     'app/tests/fixtures/other_chats.json',
-    #     'app/tests/fixtures/other_messages.json',
-        
-    # ]
-
-    fixtures = ['app/tests/fixtures/default_user.json',
-                'app/tests/fixtures/other_users.json',
-                'app/tests/fixtures/default_message.json',
-                'app/tests/fixtures/other_messages.json',
-                'app/tests/fixtures/default_chat.json',
-                'app/tests/fixtures/other_chats.json',
-                'app/tests/fixtures/default_post.json',
-                'app/tests/fixtures/other_posts.json',
-                'app/tests/fixtures/default_club.json',
-                'app/tests/fixtures/other_clubs.json',
-                'app/tests/fixtures/default_book.json',
-                'app/tests/fixtures/other_books.json',
-                'app/tests/fixtures/default_comment.json',
-                'app/tests/fixtures/other_comments.json',
-                'app/tests/fixtures/default_reply.json',
-                'app/tests/fixtures/other_replies.json'
-                ]
+    # fixtures = ['app/tests/fixtures/default_user.json',
+    #             'app/tests/fixtures/other_users.json',
+    #             'app/tests/fixtures/default_message.json',
+    #             'app/tests/fixtures/other_messages.json',
+    #             'app/tests/fixtures/default_chat.json',
+    #             'app/tests/fixtures/other_chats.json',
+    #             'app/tests/fixtures/default_post.json',
+    #             'app/tests/fixtures/other_posts.json',
+    #             'app/tests/fixtures/default_club.json',
+    #             'app/tests/fixtures/other_clubs.json',
+    #             'app/tests/fixtures/default_book.json',
+    #             'app/tests/fixtures/other_books.json',
+    #             'app/tests/fixtures/default_comment.json',
+    #             'app/tests/fixtures/other_comments.json',
+    #             'app/tests/fixtures/default_reply.json',
+    #             'app/tests/fixtures/other_replies.json'
+    #             ]
 
     @classmethod
     def setUpClass(cls):
@@ -66,19 +57,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         )
         cls.browser.delete_all_cookies()
 
-        seed_books()
-        seed_users()
-        seed_ratings()
-        seed_clubs()
-        cls.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        cls.dump_file_path = 'app/files/dump_file'
-        cls.dataframe = get_combined_data(cls.csv_file_path)
-        cls.data = get_dataset_from_dataframe(cls.dataframe)
-        cls.trainset = get_trainset_from_dataset(cls.data)
-        cls.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(cls.algo, cls.trainset)
-        cls.pred = test_model(cls.algo, cls.trainset)
-        dump_trained_model(cls.dump_file_path, cls.algo, cls.pred)
+        
 
         
 
@@ -88,21 +67,58 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         cls.browser.quit()
 
     def setUp(self):
-        self.user = User.objects.get(username='johndoe')
+        seed_books()
+        seed_default_objects()
+        seed_users(50)
+        seed_ratings()
+        seed_clubs(10)
+        seed_friends()
+        seed_friend_requests()
+        seed_meetings()
+        seed_feed()
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+
+        self.user = User.objects.get(username='Jeb')
         self.login_data = {
             "username": self.user.username,
             "password": "Password123",
         }
 
+    def test_everything(self):
+        self._test_landing_page_contains_log_in_and_sing_up_buttons()
+        self._test_log_in_page() 
+        self._test_sign_up_page()
+        self._test_create_new_club()
+        self._test_log_out()
+        self._test_recommendations_page()
+        self._test_friends_page()
+        self._test_scheduling_page()
+        self._test_chat_page()
+        self._test_meetings_page()
+        self._test_club_profile_page()
+        self._test_search_bar()
+        self._test_404_page()
+        self._test_password_reset()
+
+    
+
     # @override_settings(DEBUG=True)  
-    def test_landing_page_contains_log_in_and_sing_up_buttons(self):
+    def _test_landing_page_contains_log_in_and_sing_up_buttons(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.browser.find_element_by_xpath("//a[@href='/log_in']")
         self.browser.find_element_by_xpath("//a[@href='/sign_up']")
 
     # @override_settings(DEBUG=True) 
-    def test_log_in(self):
+    def _test_log_in_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.wait_until_element_found("//a[@href='/log_in']")
@@ -117,9 +133,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//button[.='New Club']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
-    # add test for failed log in and test for error messages
+    # add _test for failed log in and _test for error messages
 
-    def test_sign_up_and_log_in_new_user(self):
+    def _test_sign_up_page(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
@@ -159,9 +175,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//button[.='New Club']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
     
-    # add test for failed sign up and check for error messages
+    # add _test for failed sign up and check for error messages
 
-    def test_create_new_club(self):#broken
+    def _test_create_new_club(self):#broken
         number_of_clubs_before = Club.objects.count()
         number_of_chats_before = Chat.objects.count()
         self.browser.get(f"{self.live_server_url}/")
@@ -192,7 +208,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(number_of_clubs_after, number_of_clubs_before+1)
         self.assertEqual(number_of_chats_after, number_of_chats_before+1)
 
-    def test_log_out(self):
+    def _test_log_out(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.wait_until_element_found("//a[@href='/log_in']")
@@ -213,26 +229,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
         # Check that logged out??
 
-    def test_notifications_page(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        # Navigate to Notifications page
-        self.wait_until_element_found("//a[@href='/notifications/']")
-        self.browser.find_element_by_xpath("//a[@href='/notifications/']").click()
-        self.wait_until_element_found("//text[.='Your Activity']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/notifications/")
-        # Add more test if functionality exists?
-
-    def test_recommendations_page(self):
+    def _test_recommendations_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.wait_until_element_found("//a[@href='/log_in']")
@@ -249,25 +246,25 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_xpath("//a[@href='/recommendations/']").click()
         self.wait_until_element_found("//text[.='Books For You']") 
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations/")
-        # Needs to be seeded for this to work but test for recommendations ?
-        # Maybe test for response time also?
+        # Needs to be seeded for this to work but _test for recommendations ?
+        # Maybe _test for response time also?
 
-    def test_logo_navigates_to_home(self):
-        pass
+    # def _test_logo_navigates_to_home(self):
+    #     pass
 
-    def test_logo_in_log_in_navigates_to_log_in(self):
-        pass
+    # def _test_logo_in_log_in_navigates_to_log_in(self):
+    #     pass
 
-    def test_log_in_has_link_to_sign_up(self):
-        pass
+    # def _test_log_in_has_link_to_sign_up(self):
+    #     pass
 
-    def test_sign_up_has_link_to_log_in(self):
-        pass
+    # def _test_sign_up_has_link_to_log_in(self):
+    #     pass
 
-    def test_club_list(self):
-        pass
+    # def _test_club_list(self):
+    #     pass
 
-    def test_friends_page(self):
+    def _test_friends_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.wait_until_element_found("//a[@href='/log_in']")
@@ -282,33 +279,29 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Navigate to Friends Page with buttons (NOT Implemented in frontend yet?)
         self.browser.get(f"{self.live_server_url}/friends_page")
 
-    def test_page_redicrects_to_log_in_when_not_logged_in(self):
+    # def _test_page_redicrects_to_log_in_when_not_logged_in(self):
+    #     pass
+
+    def _test_scheduling_page(self):
         pass
 
-    def test_scheduling_page(self):
-        pass
-
-    def test_chat_page(self):
+    def _test_chat_page(self):
         '''
-        Unable to test chat frontend functionality (Connecting to websocket) with selenium
+        Unable to _test chat frontend functionality (Connecting to websocket) with selenium
         due to a python multihtreading error when running ChannelsLiveServerTestCase.
         https://github.com/django/channels/issues/1485 
         '''
         # Test navigation to page, selecting chats
         pass
 
-    def test_hello(self):
-        #???
+    def _test_meetings_page(self):
         pass
 
-    def test_meetings_page(self):
-        pass
+    # def _test_recommend_clubs_page(self):
+    #     # ???
+    #     pass
 
-    def test_recommend_clubs_page(self):
-        # ???
-        pass
-
-    def test_club_profile_page(self):
+    def _test_club_profile_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
         self.wait_until_element_found("//button[.='Log In']")
@@ -341,16 +334,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
 
 
-    def test_search_bar(self):
+    def _test_search_bar(self):
         pass
 
-    def test_404(self):
+    def _test_404_page(self):
         # go to non_existent_url
         self.browser.get(f"{self.live_server_url}/non_existent_url")
         # find a link to homepage ? or home?
         pass
 
-    def test_password_reset(self):
+    def _test_password_reset(self):
         new_password = "NewPassword123"
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
@@ -392,31 +385,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//button[.='New Club']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
-
-    # def test_chat_messaging(self): needs separate test case file
-    #     # number_of_clubs_before = Club.objects.count()
-    #     # number_of_chats_before = Chat.objects.count()
-    #     self.browser.get(f"{self.live_server_url}/")
-    #     self.assertEquals(self.browser.title, "Bookgle")
-    #     self.wait_until_element_found("//a[@href='/log_in']")
-    #     self.wait_until_element_found("//a[@href='/sign_up']")
-    #     self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-    #     self.wait_until_element_found("//button[.='Log In']")
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-    #     # Log in
-    #     self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-    #     self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-    #     self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-    #     self.wait_until_element_found("//button[.='New Club']")
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-    #     # Navigate to chat with buttons (NOT Implemented in frontend yet)
-    #     self.browser.get(f"{self.live_server_url}/chat")
-    #     self.wait_until_element_found("//button[.='Newww Club']")
-
-        # self.browser.find_element_by_id("chat-message-input").send_keys("New Message Content")
-    
-
-
 # XPath is a very flexible and powerful tool. For example, you can:
 # Select elements by ID: "//input[@id='id_title']"
 # Select elements by any other attribute: "//div[@aria-label='Blank']"
@@ -426,6 +394,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     #from source: --
     def wait_until_element_found(self, xpath):
-        WebDriverWait(self.browser, timeout=10).until(
+        WebDriverWait(self.browser, timeout=15).until(
             lambda x: self.browser.find_element_by_xpath(xpath)
         )

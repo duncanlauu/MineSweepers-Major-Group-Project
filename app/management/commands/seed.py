@@ -135,7 +135,7 @@ def seed_books():
     filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = len(df)
+    total = 10000#len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]
@@ -372,8 +372,8 @@ def create_post(user, faker):
         author=user,
         title=faker.text(random.randint(10, 100)),
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5)
+        # upvotes=random.randint(0, 5),
+        # downvotes=random.randint(0, 5)
     )
 
 def create_comment(user, faker, post):
@@ -382,8 +382,8 @@ def create_comment(user, faker, post):
     return Comment.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5),
+        # upvotes=random.randint(0, 5),
+        # downvotes=random.randint(0, 5),
         post=post
     )
 
@@ -393,8 +393,8 @@ def create_reply(user, faker, comment):
     return Reply.objects.create(
         author=user,
         content=faker.text(random.randint(50, 500)),
-        upvotes=random.randint(0, 5),
-        downvotes=random.randint(0, 5),
+        # upvotes=random.randint(0, 5),
+        # downvotes=random.randint(0, 5),
         comment=comment
     )
 
