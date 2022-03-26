@@ -69,6 +69,9 @@ export const FriendRecommenderContainer = styled.div`
     background-color: #fff;
     border-radius: 10px;
     overflow-y: scroll;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 `
 
 export const UserNameContainer = styled.div`
@@ -106,6 +109,37 @@ export const ReplyLine = styled.div`
     width: 100%;
     background-color: #fff;
     border-radius: 20px;
+`
+
+export const SuggestedUserContainer = styled.div`
+    height: 100%;
+    width: 95%;
+    background-color: #fff;
+    border-radius: 10px;
+`
+
+export const SuggestedUserLine = styled.div`
+    height: 4rem;
+    width: 100%;
+    background-color: #F5F5F5;
+    border-radius: 50px;
+`
+
+export const SuggestedUserNameContainer = styled.div`
+    height: 80%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+`
+
+export const SuggestedUserText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #585858;
 `
 
 export const FeedPostContainer = styled.div`

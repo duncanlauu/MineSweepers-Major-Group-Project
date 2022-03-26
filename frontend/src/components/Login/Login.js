@@ -48,7 +48,7 @@ export default function SignIn() {
 
     const postRecommenderCalculation = (currentUser) => {
         axiosInstance
-            .post(`recommender/0/10/${currentUser.id}/top_n_users_random_books/`)
+            .post(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
             .then((res) => {
                 console.log("friend recommendation post works!")
                 // navigate("/friends_page")
