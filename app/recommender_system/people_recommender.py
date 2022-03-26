@@ -245,7 +245,7 @@ def remove_incorrect_clubs(clubs_with_diffs):
             clubs_with_diffs.remove((club, diff))
 
 
-def get_top_n_users_test(algo, trainset, genre='fiction'):
+def get_top_n_users_test(algo, trainset, uid, genre='fiction'):
     """
     A test for getting top n users for a user
 
@@ -255,7 +255,7 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
     """
 
     start = time.time()
-    top_n = get_top_n_users_by_favourite_books(uid=1276726, algo=algo, trainset=trainset)
+    top_n = get_top_n_users_by_favourite_books(uid=uid, algo=algo, trainset=trainset)
     end = time.time()
     logging.debug(f'Finished getting top n users using favourite books in {end - start} seconds')
 
@@ -278,7 +278,7 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
         logging.debug(f'{user} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_users_random(uid=276726, algo=algo, trainset=trainset)
+    top_n = get_top_n_users_random(uid=uid, algo=algo, trainset=trainset)
     end = time.time()
     logging.debug(f'Finished getting top n users using random books and users in {end - start} seconds')
 
@@ -289,7 +289,7 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
         logging.debug(f'{user} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_users_for_a_genre(uid=1276726, algo=algo, trainset=trainset, genre=genre)
+    top_n = get_top_n_users_for_a_genre(uid=uid, algo=algo, trainset=trainset, genre=genre)
     end = time.time()
     logging.debug(f'Finished getting top n users for a genre in {end - start} seconds')
 
@@ -300,7 +300,7 @@ def get_top_n_users_test(algo, trainset, genre='fiction'):
         logging.debug(f'{user} with difference {diff}')
 
 
-def get_top_n_clubs_test(algo, trainset, genre):
+def get_top_n_clubs_test(algo, trainset, genre, uid):
     """
     A test for getting top n clubs for a user
 
@@ -310,7 +310,7 @@ def get_top_n_clubs_test(algo, trainset, genre):
     """
 
     start = time.time()
-    top_n = get_top_n_clubs_using_random_items(uid=1276726, algo=algo, trainset=trainset,
+    top_n = get_top_n_clubs_using_random_items(uid=uid, algo=algo, trainset=trainset,
                                                clubs=list(Club.objects.all()))
     end = time.time()
     logging.debug(f'Finished getting top n clubs with random items in {end - start} seconds')
@@ -322,7 +322,7 @@ def get_top_n_clubs_test(algo, trainset, genre):
         logging.debug(f'{club} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_clubs_using_top_items_for_a_user(uid=1276726, algo=algo, trainset=trainset,
+    top_n = get_top_n_clubs_using_top_items_for_a_user(uid=uid, algo=algo, trainset=trainset,
                                                        clubs=list(Club.objects.all()))
     end = time.time()
     logging.debug(f'Finished getting top n clubs with top items in {end - start} seconds')
@@ -346,7 +346,7 @@ def get_top_n_clubs_test(algo, trainset, genre):
         logging.debug(f'{club} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_clubs_for_a_genre(uid=1276726, algo=algo, trainset=trainset,
+    top_n = get_top_n_clubs_for_a_genre(uid=uid, algo=algo, trainset=trainset,
                                         clubs=list(Club.objects.all()), genre=genre)
     end = time.time()
     logging.debug(f'Finished getting top n clubs with random items for a given genre in {end - start} seconds')
@@ -358,7 +358,7 @@ def get_top_n_clubs_test(algo, trainset, genre):
         logging.debug(f'{club} with difference {diff}')
 
     start = time.time()
-    top_n = get_top_n_clubs_using_clubs_books(uid=1276726, algo=algo,
+    top_n = get_top_n_clubs_using_clubs_books(uid=uid, algo=algo,
                                               clubs=list(Club.objects.all()))
     end = time.time()
     logging.debug(f'Finished getting top n clubs with club\'s items in {end - start} seconds')
