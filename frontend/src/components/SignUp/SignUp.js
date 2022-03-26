@@ -9,7 +9,6 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
 import useAuth from '../hooks/useAuth';
-import useGetUser from "../../helpers";
 import Nav from "../Nav/Nav";
 
 
@@ -25,7 +24,6 @@ export default function SignUp() {
     const [birthdayErr, setBirthdayErr] = useState("")
 
     const navigate = useNavigate();
-    const currentUser = useGetUser();
 
     const { setAuth } = useAuth();
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -52,19 +50,6 @@ export default function SignUp() {
             [e.target.name]: e.target.value.trim(), // Referring to the forms elements name attribute. Trimming whitespace
         })
     }
-
-    const postRecommenderCalculation = (currentUser) => {
-        axiosInstance
-            .post(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
-            .then((res) => {
-                console.log("friend recommendation post works!")
-                console.log(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
-                console.log(res.data)
-                // navigate("/friends_page")
-            })
-    }
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -97,9 +82,6 @@ export default function SignUp() {
                         axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                             'JWT ' + localStorage.getItem('access_token')
                         // console.log("logging in after sign up ")
-
-                        console.log(" Current sick person logged in: " , currentUser.id)
-                        postRecommenderCalculation(currentUser)
 
                         setAuth({ "user": username })
                         navigate("/sign_up/rating/")

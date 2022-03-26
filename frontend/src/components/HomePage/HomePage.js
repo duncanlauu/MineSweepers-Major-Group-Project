@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import axiosInstance from '../../axios'
 import { Container, Col, Row } from 'reactstrap'
 import {
     ClubListItem,
@@ -21,6 +22,28 @@ const HomePage = () => {
     const currentUser = useGetUser();
     console.log("Buenos Dias Home")
     console.log("Current user logged in: " + currentUser.id)
+    
+    let calculatedRecommendations = false;
+    useEffect(() => {
+        if (typeof(currentUser.id) != "undefined" && calculatedRecommendations == false) {
+            calculatedRecommendations = true;
+            console.log("Calculated Recommend")
+            console.log("Now who is logged in ", currentUser.id)
+            postRecommenderCalculation();
+        }
+    }, [currentUser])
+
+    const postRecommenderCalculation = () => {
+        axiosInstance
+            .post(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
+            .then((res) => {
+                console.log("friend recommendation in home post works!")
+                console.log(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
+                console.log(res)
+                // navigate("/friends_page")
+            })
+    }
+    
     return (
         <Container fluid>
             <Row style={{ marginBottom: "3rem" }}>
