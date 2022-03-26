@@ -10,17 +10,56 @@ import NonFriendList from "./NonFriendList";
 import FriendsList from "./FriendsList";
 import FriendRequestList from "./FriendRequestList";
 import SuggestedUserList from "./SuggestedUserList";
+import { useParams } from 'react-router';
+import axiosInstance from '../../axios';
+import { useNavigate } from "react-router";
 
 const UserProfile = () => {
 
-    const currentUser = useGetUser();
+    const [currentUser, setCurrentUser] = useState(useGetUser())
     const [currentActiveTab, setCurrentActiveTab] = useState("1");
+    const { user_id } = useParams();
+    const currentLoggedInUser = useGetUser()
+    const navigate = useNavigate()
+    const [isLoggedInUser, setIsLoggedInUser] =useState(true)
+    
+
+    useEffect(() => {
+        console.log("User is", user_id)   
+        if(user_id== currentLoggedInUser.id || user_id === undefined || user_id === ""){
+            axiosInstance.get('/get_current_user/').then(res => {
+                console.log(res);
+                setCurrentUser(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }else{
+            axiosInstance
+            .get(`user/get_update/${user_id}`)
+            .then(res => {
+                if(res.data.id == null){
+                    navigate('/error/')
+                }
+                console.log('Res data is: ',res)
+                setCurrentUser(res.data)
+                setIsLoggedInUser(false)
+            })
+            .catch(err => {
+                console.log(err);
+                navigate('/error/')
+            })
+        }
+      }, [])
 
     const toggle = (tab) => {
         if (currentActiveTab !== tab) {
           setCurrentActiveTab(tab)
         }
     }
+
+   
+
 
     return(
         <div>
