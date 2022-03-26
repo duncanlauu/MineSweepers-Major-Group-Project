@@ -6,10 +6,11 @@ import { useNavigate } from "react-router";
 
 
 export default function PersonalPostEditor(props) {
-    //console.log(props)
 
     const [formData, updateFormData] = useState(props.personalPost)
-    const [writtenComment, updateWrittenComment] = useState()
+    const [titleErr, setTitleErr] = useState('')
+    const [contentErr, setContentErr] = useState('')
+    const [clubIDErr, setClubIDErr] = useState('')
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -32,6 +33,12 @@ export default function PersonalPostEditor(props) {
             .then((res) => {
                 navigate("/home/")
                 navigate("/friends_page/")
+            })
+            .catch((e) => {
+                console.log(e.response.data)
+                setTitleErr(e.response.data.title)
+                setContentErr(e.response.data.content)
+                setClubIDErr(e.response.data.club_id)
             })
     }
     
@@ -57,6 +64,7 @@ export default function PersonalPostEditor(props) {
                             />
                             <p></p>
                         </FormGroup>
+                        <div>{titleErr}</div>
 
                         <FormGroup>
                             <Label for="content"> Content </Label>
@@ -68,6 +76,7 @@ export default function PersonalPostEditor(props) {
                                 value={formData.content}
                             />
                         </FormGroup>
+                        <div>{contentErr}</div>
                         
                         <Row>
                         <Col xs="3">
@@ -81,32 +90,9 @@ export default function PersonalPostEditor(props) {
                                     value={formData.club}
                                 />
                             </FormGroup>
-                        </Col>
-
-                        <Col xs="9">
-                            <FormGroup>
-                                <Label for="image_link"> Image link </Label>
-                                <Input
-                                    id="image_link"
-                                    name="image_link"
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                    value={formData.image_link}
-                                />
-                            </FormGroup>
+                            <div>{clubIDErr}</div>
                         </Col>
                         </Row>
-
-                        <FormGroup>
-                            <Label for="book_link"> Book link </Label>
-                            <Input
-                                id="book_link"
-                                name="book_link"
-                                onChange={handleChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                value={formData.book_link}
-                            />
-                        </FormGroup>
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>

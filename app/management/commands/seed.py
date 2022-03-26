@@ -275,8 +275,8 @@ def seed_meetings():
 def seed_feed():
     """Main seeder for seeding posts, comments, and replies"""
 
-    min_number_of_posts = 3
-    max_number_of_posts = 5
+    min_number_of_posts = 1
+    max_number_of_posts = 2
     faker = Faker('en_GB')
     for user in User.objects.all():
         num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
@@ -420,7 +420,7 @@ def create_comment(user, faker, post):
 
     comment = Comment.objects.create(
         author=user,
-        content=faker.text(random.randint(50, 500)),
+        content=faker.text(random.randint(10, 50)),
         post=post
     )
 
@@ -440,7 +440,7 @@ def create_reply(user, faker, comment):
 
     reply = Reply.objects.create(
         author=user,
-        content=faker.text(random.randint(50, 500)),
+        content=faker.text(random.randint(10, 50)),
         comment=comment
     )
 
