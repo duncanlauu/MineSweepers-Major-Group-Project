@@ -231,7 +231,9 @@ class Chat2 extends React.Component {
                                     fontSize: "15px",
                                     width: "100%",
                                     height: "3rem",
-                                    textIndent: "1rem"
+                                    textIndent: "2rem",
+                                    backgroundColor: "#E6E4E4",
+                                    border: '0',
                                 }}
                                 onChange={this.messageChangeHandler}
                                 value={this.state.message}
