@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const RecommenderContainer = styled.div`
+export const MeetingListContainer = styled.div`
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
@@ -8,7 +8,7 @@ export const RecommenderContainer = styled.div`
     justify-content: center;
 `
 
-export const BookProfile = styled.div`
+export const MeetingProfile = styled.div`
     background-color: #FFFFFF;
     height: 10rem;
     width: 90%;
@@ -18,17 +18,5 @@ export const BookProfile = styled.div`
     margin-bottom: 1rem;
     justify-content: center;
     align-items: center;
-`
-
-export const FilterButton = styled.button`
-    background-color: #653FFD;
-    border-radius: 100px;
-    font-family: 'Source Sans Pro';
-    color: #FFFFFF;
-    border: 0;
-    font-size: 15px;
-    width: fit-content;
-    padding: 5px 20px;
-    border: 2px #FFFFFF solid;
-    font-weight: 600;
+    font-size: 16px;
 `

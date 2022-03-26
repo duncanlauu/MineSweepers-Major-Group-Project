@@ -4,7 +4,7 @@ import axiosInstance from '../../axios'
 import useGetUser from '../../helpers'
 import {HeadingText} from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
-import {BookProfile, FilterButton, RecommenderContainer} from './RecommenderPageElements'
+import {BookProfile, FilterButton} from './RecommenderPageElements'
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
 

@@ -8,6 +8,8 @@ import {RecommenderContainer} from './RecommenderPageElements'
 import {Link} from "@material-ui/core";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
+import Gravatar from "react-gravatar";
+import {ClubProfile} from "./RecommenderPageElements";
 
 const ClubRecommendationPage = () => {
     const user = useGetUser();
@@ -70,17 +72,19 @@ const ClubRecommendationPage = () => {
                     <HeadingText>Clubs For You</HeadingText>
                     <LoadingIndicator/>
                     <RecommenderContainer>
-                        <ul>
-                            {clubRecommendations.map(
-                                clubRecommendation =>
-                                    <li>
+                        {clubRecommendations.map(
+                            clubRecommendation =>
+                                <ClubProfile>
+                                    <Col xs={3}>
+                                        <Gravatar email={clubRecommendation['club']['owner']['email']}/>
+                                    </Col>
+                                    <Col xs={9}>
                                         <a href={`/club_profile/${clubRecommendation['club']['id']}`}>
                                             {clubRecommendation['club']['name']}
                                         </a>
-                                        <hr/>
-                                    </li>
-                            )}
-                        </ul>
+                                    </Col>
+                                </ClubProfile>
+                        )}
                     </RecommenderContainer>
                 </Col>
                 <Col/>
