@@ -42,5 +42,5 @@ class FriendRequest(admin.ModelAdmin):
 @admin.register(Post)
 class Post(admin.ModelAdmin):
     list_display = [
-        "title", "content", "created_at", "image_link", "book_link"
+        "title", "content", "created_at"
     ]
