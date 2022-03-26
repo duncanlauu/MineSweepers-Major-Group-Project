@@ -163,7 +163,7 @@ function ClubApplicants() {
 
     return (
         <>
-            <IndividualMemberCard name={owner.username} isOwner={true} />
+            <IndividualMemberCard name={owner} isOwner={true} />
             <hr />
             <ul>
                 {admins.map(admin => 

@@ -41,7 +41,6 @@ class BookSerializer(serializers.ModelSerializer):
 
 class ClubSerializer(serializers.ModelSerializer):
     owner = UserSerializer()
-
     class Meta:
         model = Club
         fields = '__all__'
@@ -119,7 +118,6 @@ class ClubRecommendationSerializer(serializers.ModelSerializer):
 
 class GlobalBookRecommendationSerializer(serializers.ModelSerializer):
     book = BookSerializer()
-
     class Meta:
         model = GlobalBookRecommendation
         fields = '__all__'
@@ -132,8 +130,6 @@ class BookRatingSerializer(serializers.ModelSerializer):
 
 
 class MeetingSerializer(serializers.ModelSerializer):
-    book = BookSerializer(required=False)
-
     class Meta:
         model = Meeting
         fields = '__all__'

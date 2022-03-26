@@ -1,14 +1,14 @@
 import random
 import time
 from datetime import timedelta, datetime
-from django.db.models import Q
+
 from django.utils.timezone import make_aware
 from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
 from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
-    TimePeriod, Post, FriendRequest
+    TimePeriod, Post
 from app.management.commands.helpers import print_info
 
 
@@ -23,7 +23,6 @@ class Command(BaseCommand):
         time_function(seed_ratings)
         time_function(seed_clubs)
         time_function(seed_friends)
-        time_function(seed_friend_requests)
         time_function(seed_meetings)
         time_function(seed_feed)
         print_info()
@@ -239,18 +238,6 @@ def seed_friends():
         user.save()
         print(f'Created all friends for {user}')
 
-def seed_friend_requests():
-    """Seed a number of friend requests"""
-
-    min_number_of_friend_requests = 2
-    max_number_of_friend_requests = 10
-    for user in User.objects.all():
-        num_of_friend_requests = random.randint(min_number_of_friend_requests, max_number_of_friend_requests)
-        potential_non_friends = get_n_random_non_friends(num_of_friend_requests, user)
-        for non_friend in potential_non_friends:
-            user.send_friend_request(non_friend)
-        print(f'Created all friend requests for {user}')
-
 
 def seed_meetings():
     """Seed a number of meetings"""
@@ -437,13 +424,6 @@ def get_n_random_users(n):
     users = list(User.objects.all())
     random.shuffle(users)
     return users[0: n]
-
-def get_n_random_non_friends(n, user):
-    """Get n random non-friends of a user"""
-    friends_and_user = list(user.friends.all()) + [user]
-    non_friend_users = list(User.objects.exclude(Q(user__in=friends_and_user)))
-    random.shuffle(non_friend_users)
-    return non_friend_users[0: n]
 
 
 def generate_club_users(club, num_of_members, num_of_admins, num_of_applicants):

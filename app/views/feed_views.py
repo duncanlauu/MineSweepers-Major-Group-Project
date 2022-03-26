@@ -64,15 +64,20 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            if request.data['action'] == 'edit' and post.author == user:
+            if post.author == user:
+                # can edit post if user is author of post
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            if is_post_visible_to_user(user, post):
+            if is_post_visible_to_user(user, post):  
+                # anyone other than user that can view the post can upvote or downvote post
                 if request.data['action'] == 'upvote':
-                    post.upvote_post(user)
+                    post.upvote_post()
+                    return Response(status=status.HTTP_200_OK)
+                elif request.data['action'] == 'downvote':
+                    post.downvote_post()
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -147,7 +152,7 @@ class CommentView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
-            if request.data['action'] == 'edit' and comment.author == request.user:
+            if comment.author == request.user:
                 serializer = CommentSerializer(comment, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
@@ -155,7 +160,10 @@ class CommentView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post:
                 if request.data['action'] == 'upvote':
-                    comment.upvote(user)
+                    comment.upvote()
+                    return Response(status=status.HTTP_200_OK)
+                elif request.data['action'] == 'downvote':
+                    comment.downvote()
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -235,18 +243,24 @@ class ReplyView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
-            if request.data['action'] == 'edit' and reply.author == request.user:
-                reply_serializer = ReplySerializer(reply, data=request.data, partial=True)
+            # TODO: what happens when user tries to upvote their own reply, serializers.errors does not
+            #       return anything
+            if reply.author == request.user:
+                reply_serializer = ReplySerializer(Reply, data=request.data, partial=True)
                 if reply_serializer.is_valid():
+                    # TODO: Edit reply does not save here, throws 400
                     reply_serializer.save()
                     return Response(reply_serializer.data, status=status.HTTP_200_OK)
                 return Response(reply_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post and reply.comment == comment:
                 if request.data['action'] == 'upvote':
-                    reply.upvote(user)
+                    reply.upvote()
+                    return Response(status=status.HTTP_200_OK)
+                elif request.data['action'] == 'downvote':
+                    reply.downvote()
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        except Reply.DoesNotExist:
+        except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # TODO: refactor, comment id not used
@@ -259,17 +273,3 @@ class ReplyView(APIView):
             reply.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-class ClubFeedView(APIView):
-    """API View to get club feed"""
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, club_id):
-        try:
-            club = Club.objects.get(id=club_id)
-            posts = Post.objects.filter(club=club)
-            serializer = PostSerializer(posts, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-

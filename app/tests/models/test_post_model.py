@@ -21,7 +21,7 @@ class PostModelTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.user = User.objects.get(pk=1)
+        self.user = User.objects.get(username='jakedoe')
         self.post = Post.objects.get(pk=1)
 
     def test_post_title_cannot_be_blank(self):
@@ -57,17 +57,40 @@ class PostModelTestCase(TestCase):
         self._assert_post_is_valid()
 
     def test_upvote_post(self):
-        user = User.objects.get(pk=2)
-        upvote_count_before = Post.objects.get(pk=self.post.id).upvotes.count()
-        self.post.upvote_post(user)
-        upvote_count_after = Post.objects.get(pk=self.post.id).upvotes.count()
+        upvote_count_before = Post.objects.get(pk=self.post.id).upvotes
+        self.post.upvote_post()
+        upvote_count_after = Post.objects.get(pk=self.post.id).upvotes
         self.assertEqual(upvote_count_before + 1, upvote_count_after)
 
-    def test_upvote_post_when_already_upvoted(self):
-        upvote_count_before = Post.objects.get(pk=self.post.id).upvotes.count()
-        self.post.upvote_post(self.user)
-        upvote_count_after = Post.objects.get(pk=self.post.id).upvotes.count()
-        self.assertEqual(upvote_count_before - 1, upvote_count_after)
+    def test_downvote_post(self):
+        downvote_count_before = Post.objects.get(pk=self.post.id).downvotes
+        self.post.downvote_post()
+        downvote_count_after = Post.objects.get(pk=self.post.id).downvotes
+        self.assertEqual(downvote_count_before + 1, downvote_count_after)
+
+    def test_modify_image_link(self):
+        image_link = "abc"
+        self.post.modify_image_link(image_link)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.image_link, image_link)
+
+    def test_modify_book_link(self):
+        book_link = "abc"
+        self.post.modify_book_link(book_link)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.book_link, book_link)
+
+    def test_modify_title(self):
+        title = "abc"
+        self.post.modify_title(title)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.title, title)
+
+    def test_modify_content(self):
+        content = "abc"
+        self.post.modify_content(content)
+        post = Post.objects.get(pk=self.post.id)
+        self.assertEqual(post.content, content)
 
     def _assert_post_is_valid(self):
         try:

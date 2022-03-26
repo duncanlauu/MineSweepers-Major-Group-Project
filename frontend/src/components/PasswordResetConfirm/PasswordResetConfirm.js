@@ -6,7 +6,6 @@ import {FaExternalLinkAlt} from 'react-icons/fa'
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
 import {useParams} from "react-router-dom";
-import Nav from '../Nav/Nav'
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
@@ -61,43 +60,47 @@ export default function SignIn() {
     }
 
     return (
-        <div style={{ overflow:"hidden" }}>
+        <div>
             <Row>
-                <Nav />
+                <Navbar color="light" expand="md" light>
+                    <NavbarBrand href="/">
+                        <h1> bookgle </h1>
+                    </NavbarBrand>
+                </Navbar>
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>
                     <Col/>
                     <Col>
                         <HeadingText>Password Reset</HeadingText><br/>
+                        <ParaText>Enter you email address:<FaExternalLinkAlt
+                            style={{height: "15px", color: "#0057FF"}}/> .</ParaText>
+
                         <LoginContainer>
-                            <form style={{ width:"80%" }}>
+                            <form>
                                 <FormGroup>
-                                    <Label><ParaText>New Password</ParaText></Label>
+                                    <Label>New Password:</Label>
                                     <Input
                                         name="new_password"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <div>{newPasswordErr}</div>
                                 <FormGroup>
-                                    <Label><ParaText>Confirm New Password</ParaText></Label>
+                                    <Label>Confirm New Password:</Label>
                                     <Input
                                         name="re_new_password"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <div>{ReNewPasswordErr}</div>
                                 <FormGroup>
                                     <Col sm={{size: 10, offset: 4}}>
-                                        <Button 
-                                            type="submit" 
-                                            onClick={handleSubmit}
-                                            style={{backgroundColor: "#653FFD", marginTop:"1rem"}}>
-                                                Reset
-                                        </Button>
+                                        <Button type="submit" onClick={handleSubmit}
+                                                style={{backgroundColor: "#653FFD", width: "7rem"}}>Send Reset
+                                            Email</Button>
                                     </Col>
                                 </FormGroup>
                             </form>

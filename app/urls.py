@@ -1,8 +1,8 @@
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, PostView, \
+from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, CommentView, FeedView, PostView, \
     ReplyView
 from django.urls import path, include
-from app.views.friend_views import FriendRequestsView, FriendsView, FriendView, OtherUserFriendsView
-from app.views.rating_views import AllRatingsView, OtherUserRatingsView, RatingView, BookRatingsView
+from app.views.friend_views import FriendRequestsView, FriendsView, FriendView
+from app.views.rating_views import AllRatingsView, RatingView, BookRatingsView
 from .views.authentication_views import GetCurrentUserView
 from .views.genres_view import GenresView
 from .views.recommender_views import RecommenderAPI
@@ -30,7 +30,6 @@ urlpatterns = [
 
     # Friends
     path('friends/', FriendsView.as_view(), name='friends'),
-    path('friends/user/<int:other_user_id>', OtherUserFriendsView.as_view(), name='other_user_friends'),
     path('friends/<int:other_user_id>', FriendView.as_view(), name='single_friend'),
     path('friend_requests/', FriendRequestsView.as_view(), name='friend_requests'),
 
@@ -56,7 +55,6 @@ urlpatterns = [
     path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/<int:reply_id>', ReplyView.as_view(), name='reply'),
-    path('feed/clubs/<int:club_id>', ClubFeedView.as_view(), name='club_feed'),
 
     # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
@@ -73,7 +71,6 @@ urlpatterns = [
     path('ratings/', AllRatingsView.as_view(), name='user_ratings'),
     path('ratings/<int:rating_id>/', RatingView.as_view(), name='rating'),
     path('books/<str:isbn>/ratings/', BookRatingsView.as_view(), name='book_ratings'),
-    path('ratings/other_user/<int:other_user_id>', OtherUserRatingsView.as_view(), name='other_user_ratings'),
 
     # Others
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
@@ -95,8 +92,10 @@ urlpatterns = [
     path('scheduling/', SchedulingView.as_view(), name='scheduling'),
     path('scheduling/<int:id>/', SchedulingView.as_view(), name='scheduling_with_id'),
     path('scheduling/<int:id>/<str:action>/', SchedulingView.as_view(), name='scheduling_update'),
+
     path('calendar/', CalendarView.as_view(), name='calendar'),
     path('calendar/<int:id>', CalendarView.as_view(), name='calendar_with_id'),
+
     path('meetings/', MeetingsView.as_view(), name='meetings'),
     path('meetings/<int:id>', MeetingsView.as_view(), name='meetings_with_id'),
 ]

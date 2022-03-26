@@ -7,7 +7,7 @@ from icalendar import Calendar, Event, vCalAddress, vText
 
 from app.models import Meeting, VotingPeriod, TimePeriod, BookVote, TimeVote, User, \
     get_all_users_related_to_a_club, Club, Book
-from app.serializers import MeetingSerializer, BookSerializer
+from app.serializers import MeetingSerializer
 
 
 class SchedulingView(APIView):
@@ -47,6 +47,10 @@ class SchedulingView(APIView):
                 if data['organiser'] in data['attendees']:
                     data['attendees'].remove(data['organiser'])
             if 'book' in request.data:
+                try:
+                    data['book'] = Book.objects.get(title=request.data['book']).ISBN
+                except Book.DoesNotExist:
+                    data['book'] = ''
                 errors = {}
                 if request.data['start_time'] == '':
                     errors['start_time'] = 'This field must not be blank'
@@ -61,11 +65,7 @@ class SchedulingView(APIView):
                 data['link'] = request.data['link']
                 serializer = MeetingSerializer(data=data)
                 if serializer.is_valid():
-                    meeting = serializer.save()
-                    try:
-                        meeting.book_id = Book.objects.get(title=request.data['book']).ISBN
-                    except Book.DoesNotExist:
-                        meeting.book = None
+                    serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
                     return Response({**serializer.errors, **errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,6 +88,7 @@ class SchedulingView(APIView):
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
+            print("key error")
             return Response('You need to provide all necessary arguments', status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):

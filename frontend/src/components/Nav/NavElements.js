@@ -28,7 +28,6 @@ export const SearchText = styled.div`
     margin-left: 2rem;
     font-family: "Source Sans Pro", sans-serif;
     font-size: medium;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 20px;
-    color: #000;
 `

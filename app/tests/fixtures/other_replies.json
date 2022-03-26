@@ -6,7 +6,8 @@
       "author": 2,
       "comment": 1,
       "content": "This is another test reply to a comment.",
-      "upvotes": [],
+      "upvotes": 0,
+      "downvotes": 0,
       "created_at": "2013-03-16T17:41:28+00:00"
     }
   },
@@ -17,7 +18,8 @@
       "author": 1,
       "comment": 2,
       "content": "and another test reply to a comment...",
-      "upvotes": [],
+      "upvotes": 0,
+      "downvotes": 0,
       "created_at": "2013-03-16T17:41:28+00:00"
     }
   }

@@ -2,7 +2,6 @@ import React from 'react';
 import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
-import { EmptyChatContainer, EmptyChatText, MessageText, MessagingProfileHeading, MessagingProfilePara } from './ChatElements';
 
 class Chat extends React.Component {
 
@@ -114,11 +113,15 @@ class Chat extends React.Component {
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
                 <img src="http://emilcarlsson.se/assets/mikeross.png"/>
                 <p>
-                    <MessagingProfileHeading>{message.author}</MessagingProfileHeading>
+                    <small>
+                        {message.author}
+                    </small>
                     <br/>
-                    <MessageText>{message.content}</MessageText>
+                    {message.content}
                     <br/>
-                    <MessagingProfilePara>{this.renderTimestamp(message.timestamp)}</MessagingProfilePara>
+                    <small>
+                        {this.renderTimestamp(message.timestamp)}
+                    </small>
                 </p>
             </li>
         ));
@@ -157,14 +160,6 @@ class Chat extends React.Component {
         }
     }
 
-    emptyChatWindow() {
-        return(
-            <>
-
-            </>
-        );
-    }
-
     render() {
         const messages = this.state.messages;
         const invalidChatID = this.state.chatID == undefined;
@@ -177,16 +172,7 @@ class Chat extends React.Component {
                 </div>
                 <div className="messages">
                     {invalidChatID
-                        ?
-                        <>
-                            <EmptyChatContainer>
-                                <img src='../../../static/images/Outbox.svg' alt='Outbox' />
-                                <EmptyChatText>
-                                    Send messages to individual users<br />
-                                    or a club you're part of.
-                                </EmptyChatText>
-                            </EmptyChatContainer>
-                        </>
+                        ? <h3>Select a chat! or refactor this to select a chat?</h3>
                         : <div/>
                     }
                     <ul id="chat-log">

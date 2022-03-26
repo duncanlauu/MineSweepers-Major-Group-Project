@@ -2,9 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from app.models import Book, BookRating, User
+from app.models import Book, BookRating
 from app.serializers import BookRatingSerializer
-
 
 class AllRatingsView(APIView):
     """API View of all ratings of logged in user"""
@@ -22,8 +21,7 @@ class AllRatingsView(APIView):
         """Create new rating by logged in user for a particular book"""
         user = request.user
         book_id = request.data['book']
-        rating_exists = BookRating.objects.filter(
-            book_id=book_id, user_id=user.id).exists()
+        rating_exists = BookRating.objects.filter(book_id=book_id, user_id=user.id).exists()
 
         if not rating_exists:
             data = request.data.copy()
@@ -34,8 +32,7 @@ class AllRatingsView(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
+        
 class RatingView(APIView):
     """API View of any singular rating"""
 
@@ -49,13 +46,13 @@ class RatingView(APIView):
             return Response({'rating': serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
+    
     def put(self, request, rating_id):
         """Edit rating only if author of rating is logged in user"""
         try:
             user = request.user
             rating = BookRating.objects.get(id=rating_id)
-            if rating.user == user:  # can edit rating if user is author of rating
+            if rating.user == user: # can edit rating if user is author of rating
                 new_rating = request.data['rating']
                 rating.update_rating(new_rating)
                 return Response({'updated': 'true'}, status=status.HTTP_200_OK)
@@ -70,23 +67,6 @@ class RatingView(APIView):
             rating.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-class OtherUserRatingsView(APIView):
-    """API View of ratings of another user"""
-
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, other_user_id):
-        """Get ratings of another user"""
-        try:
-            other_user = User.objects.get(pk=other_user_id)
-            ratings = BookRating.objects.filter(user=other_user)
-            serializer = BookRatingSerializer(ratings, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class BookRatingsView(APIView):
     """API View of all ratings of a particular book"""

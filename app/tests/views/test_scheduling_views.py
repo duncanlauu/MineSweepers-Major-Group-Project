@@ -93,7 +93,7 @@ class SchedulingTestCase(APITestCase):
         self.assertEqual(response.data['club'], 1)
         self.assertEqual(response.data['organiser'], 1)
         self.assertEqual(response.data['attendees'], [2, 3, 4, 5])
-        self.assertEqual(response.data['book']['ISBN'], "0195153448")
+        self.assertEqual(response.data['book'], "0195153448")
         self.assertEqual(response.data['link'], 'This is the meeting link')
 
     def test_post_with_incomplete_information(self):

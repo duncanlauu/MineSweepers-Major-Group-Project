@@ -22,7 +22,7 @@ class CommentModelTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.user = User.objects.get(pk=1)
+        self.user = User.objects.get(username='jakedoe')
         self.comment = Comment.objects.get(pk=1)
 
     def test_comment_content_cannot_be_blank(self):
@@ -46,17 +46,23 @@ class CommentModelTestCase(TestCase):
         self._assert_comment_is_invalid()
 
     def test_upvote_comment(self):
-        user = User.objects.get(pk=2)
-        upvote_count_before = Comment.objects.get(pk=self.comment.id).upvotes.count()
-        self.comment.upvote(user)
-        upvote_count_after = Comment.objects.get(pk=self.comment.id).upvotes.count()
+        upvote_count_before = self.comment.upvotes
+        self.comment.upvote()
+        upvote_count_after = self.comment.upvotes
         self.assertEqual(upvote_count_before + 1, upvote_count_after)
 
-    def test_upvote_comment_when_already_upvoted(self):
-        upvote_count_before = Comment.objects.get(pk=self.comment.id).upvotes.count()
-        self.comment.upvote(self.user)
-        upvote_count_after = Comment.objects.get(pk=self.comment.id).upvotes.count()
-        self.assertEqual(upvote_count_before - 1, upvote_count_after)
+    def test_downvote_comment(self):
+        downvote_count_before = self.comment.downvotes
+        self.comment.downvote()
+        downvote_count_after = self.comment.downvotes
+        self.assertEqual(downvote_count_before + 1, downvote_count_after)
+
+    def test_add_reply(self):
+        reply = Reply.objects.get(pk=3)
+        reply_count_before = self.comment.reply_set.count()
+        self.comment.add_reply(reply)
+        reply_count_after = self.comment.reply_set.count()
+        self.assertEqual(reply_count_before + 1, reply_count_after)
 
     def _assert_comment_is_valid(self):
         try:

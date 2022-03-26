@@ -6,7 +6,8 @@
       "author": 1,
       "comment": 1,
       "content": "This is a test reply to a comment.",
-      "upvotes": [1],
+      "upvotes": 0,
+      "downvotes": 0,
       "created_at": "2013-03-16T17:41:28+00:00"
     }
   }

@@ -3,8 +3,6 @@ import axiosInstance from "../../axios";
 import {Col, Container, Row} from "reactstrap";
 import {HeadingText, ParaText} from "../CreateClub/CreateClubElements";
 import useGetUser from "../../helpers";
-import Gravatar from "react-gravatar";
-import {MeetingProfile} from "./MeetingPageElements";
 
 
 export default function Meetings() {
@@ -46,29 +44,18 @@ export default function Meetings() {
                 <Container fluid>
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
-                        <Col xs={9}>
+                        <Col>
                             <HeadingText>See your meetings</HeadingText>
                             <ParaText/>
                             <ul>
-                                {meetings.map(
-                                    meeting =>
-                                        <li>
-                                            <MeetingProfile>
-                                                <Col xs={2}>
-                                                    <a href={`/book_profile/${meeting['book']['ISBN']}`}>
-                                                        <img src={meeting['book']['image_links_small']}
-                                                             alt={"The book's cover"}/>
-                                                    </a>
-                                                </Col>
-                                                <Col xs={6}>
-                                                    {meeting['name']}
-                                                </Col>
-                                                <Col xs={4} onClick={() => downloadCalendar(meeting['id'])}>
-                                                    Click here to download the event
-                                                </Col>
-                                            </MeetingProfile>
-                                        </li>
-                                )}
+                                <h5>
+                                    {meetings.map(
+                                        (meeting) =>
+                                            <li onClick={() => downloadCalendar(meeting['id'])}>
+                                                {meeting['name']}
+                                            </li>
+                                    )}
+                                </h5>
                             </ul>
                         </Col>
                         <Col/>
