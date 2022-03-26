@@ -161,12 +161,10 @@ class CommentView(APIView):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # TODO: post id parameter not required
     def delete(self, request, post_id, comment_id):
         """Delete a comment from a post either if you are the author of the comment or the post it is in"""
         user = request.user
         comment = Comment.objects.get(id=comment_id)
-        # post = comment.post
         post = Post.objects.get(id=post_id)
         if comment.author == user or post.author == user:
             comment.delete()
@@ -249,7 +247,6 @@ class ReplyView(APIView):
         except Reply.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # TODO: refactor, comment id not used
     def delete(self, request, post_id, comment_id, reply_id):
         """Delete a reply from a comment either if you are the author of the reply or the post it is in"""
         user = request.user

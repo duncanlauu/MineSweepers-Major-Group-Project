@@ -22,11 +22,14 @@ class Nav extends React.Component {
         this.state = {
             modal: false,
             search: '',
-
         };
         this.toggle = this.toggle.bind(this);
         this.state = {
-            postModal: false
+            postModal: false,
+            searchBooks: [],
+            searchClubs: [],
+            searchUsers: [],
+            searchFriends: [],
         };
         this.changeModalVisibility = this.changeModalVisibility.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -66,6 +69,11 @@ class Nav extends React.Component {
             .then((res) => {
                 console.log(res)
                 console.log(res.data)
+                this.setState({
+                    searchBooks: JSON.parse(res.data)['books'],
+                    searchClubs: JSON.parse(res.data)['clubs'],
+                    searchUsers: JSON.parse(res.data)['users'],
+                });
             })
     }
 
@@ -100,40 +108,23 @@ class Nav extends React.Component {
                                     alignItems: "center",
                                     justifyContent: "flex-end"
                                 }}>
+                                    {this.state.search === '' 
+                                    ? <SearchText> </SearchText> 
+                                    : <SearchText>{this.state.search}</SearchText>}
                                     <IconButton type='submit'>
-                                        {this.state.search === '' ? <SearchText> </SearchText> :
-                                            <SearchText>{this.state.search}</SearchText>}
                                         <BiSearch/>
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <Button style={{marginRight: "1rem"}} onClick={this.changeModalVisibility}>
-                                    New Post
-                                </Button>
+                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
+                                </div>
                                 <Link to="/create_club/" style={{color: "#000"}}>
-                                    <Button
-                                        type='button'
-                                        style={{
-                                            backgroundColor: "#653FFD",
-                                            fontFamily: "Source Sans Pro",
-                                            fontWeight: "500",
-                                            alignItems: "center",
-                                            justifyContent: "space-around",
-                                            marginRight: "2rem",
-                                        }}
-                                    ><AiOutlinePlus
-                                        style={{
-                                            backgroundColor: "#4F30CC",
-                                            borderRadius: "2px",
-                                            height: "2rem",
-                                            width: "2rem",
-                                            marginRight: "1rem"
-                                        }}/>New Club</Button>
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
                                 </Link>
-                                <ChatBubbleOutline fontSize='large'/>
-                                <Link to="/notifications/" style={{color: "#000"}}>
-                                    <NotificationsNoneIcon fontSize='large'/>
+                                <Link to="/chat2/" style={{color: "#000"}}>
+                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats' style={{ marginLeft:"1rem" }} />
                                 </Link>
                                 <Link to="/friends_page/" style={{color: "#000"}}>
                                     <AccountCircleIcon fontSize='large'/>
@@ -154,9 +145,9 @@ class Nav extends React.Component {
                 >
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
-                            <BiSearch style={{height: "2rem", width: "2rem"}} onClick={this.handleSubmit}/>
-
-
+                            <Button onClick={this.handleSubmit}>
+                                <BiSearch style={{height: "2rem", width: "2rem"}} />
+                            </Button>
                             <Input
                                 type='text'
                                 placeholder='Search...'
@@ -185,13 +176,18 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Users</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 Pamela M. Beesly<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>pambeesly@dundermifflin.org</span>
                             </SearchText>
-                        </SearchResult>
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchUsers.map(obj =>
+                                <li>{obj.username}</li>
+                            )}
+                        </ul>
                         {/* Club Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <GrGroup/>
@@ -201,14 +197,19 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Clubs</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 SlytherintoLibraries<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>21 Members</span>
                             </SearchText>
-                        </SearchResult>
-                        {/* Club Search Results */}
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchClubs.map(obj =>
+                                <li>{obj.name}</li>
+                            )}
+                        </ul>
+                        {/* Book Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <AiOutlineBook/>
                             <span style={{
@@ -217,13 +218,18 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Books</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 Bob the Builder<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
                             </SearchText>
-                        </SearchResult>
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchBooks.map(obj =>
+                                <li>{obj.title}</li>
+                            )}
+                        </ul>
                     </ModalBody>
                 </Modal>
 

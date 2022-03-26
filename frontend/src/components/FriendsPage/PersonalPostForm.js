@@ -11,8 +11,6 @@ export default function PersonalPostForm(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
-    const [imageLinkErr, setImageLinkErr] = useState('')
-    const [bookLinkErr, setBookLinkErr] = useState('')
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
         club_id : '',
@@ -23,7 +21,6 @@ export default function PersonalPostForm(props) {
     })
 
     const [formData, updateFormData] = useState(initialFormData)
-    const [writtenComment, updateWrittenComment] = useState()
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -33,13 +30,6 @@ export default function PersonalPostForm(props) {
         })
       }
 
-    //   const handleCommentChange = (e) => {
-    //     updateWrittenComment({
-    //       ...writtenComment, 
-    //       [e.target.name]: e.target.value.trim(), 
-    //     })
-    //   }
-
     const handlePostFriendRequest = (e) => {
         e.preventDefault()
         
@@ -48,8 +38,6 @@ export default function PersonalPostForm(props) {
                 club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
-                image_link : formData.image_link,
-                book_link : formData.book_link
             })
             .then((res) => {
                 navigate("/friends_page/")
@@ -60,8 +48,6 @@ export default function PersonalPostForm(props) {
                 setTitleErr(e.response.data.title)
                 setContentErr(e.response.data.content)
                 setClubIDErr(e.response.data.club_id)
-                setBookLinkErr(e.response.data.book_link)
-                setImageLinkErr(e.response.data.image_link)
             })
     }
     
@@ -113,33 +99,7 @@ export default function PersonalPostForm(props) {
                             <div>{clubIDErr}</div>
 
                         </Col>
-
-                        <Col xs="9">
-                            <FormGroup>
-                                <Label for="image_link"> Image link </Label>
-                                <Input
-                                    id="image_link"
-                                    name="image_link"
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                />
-                            </FormGroup>
-                            <div>{imageLinkErr}</div>
-
-                        </Col>
                         </Row>
-
-                        <FormGroup>
-                            <Label for="book_link"> Book link </Label>
-                            <Input
-                                id="book_link"
-                                name="book_link"
-                                onChange={handleChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            />
-                        </FormGroup>
-                        <div>{bookLinkErr}</div>
-
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>
