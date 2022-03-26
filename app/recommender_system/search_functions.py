@@ -10,7 +10,7 @@ from app.recommender_system.people_recommender import get_actual_users, \
 def get_top_between_m_and_n_users_for_search(search_user, search_books, trainset, algo, m=0, n=10):
     """Get the top n users using the search books"""
 
-    users = get_actual_users(trainset)
+    users = get_actual_users(trainset, search_user.id)
     books = list(search_books)
     books.extend(search_user.liked_books.all())
     items = list((book.ISBN for book in books))

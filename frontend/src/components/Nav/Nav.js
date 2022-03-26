@@ -22,11 +22,14 @@ class Nav extends React.Component {
         this.state = {
             modal: false,
             search: '',
-
         };
         this.toggle = this.toggle.bind(this);
         this.state = {
-            postModal: false
+            postModal: false,
+            searchBooks: [],
+            searchClubs: [],
+            searchUsers: [],
+            searchFriends: [],
         };
         this.changeModalVisibility = this.changeModalVisibility.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -54,17 +57,6 @@ class Nav extends React.Component {
         })
     }
 
-    getSearchResults() {
-        axiosInstance
-            .get(`search/`)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
     handleSubmit = (e) => {
         e.preventDefault()
         console.log("submitting")
@@ -77,6 +69,11 @@ class Nav extends React.Component {
             .then((res) => {
                 console.log(res)
                 console.log(res.data)
+                this.setState({
+                    searchBooks: JSON.parse(res.data)['books'],
+                    searchClubs: JSON.parse(res.data)['clubs'],
+                    searchUsers: JSON.parse(res.data)['users'],
+                });
             })
     }
 
@@ -148,7 +145,9 @@ class Nav extends React.Component {
                 >
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
-                            <BiSearch style={{height: "2rem", width: "2rem"}} onClick={this.handleSubmit}/>
+                            <Button onClick={this.handleSubmit}>
+                                <BiSearch style={{height: "2rem", width: "2rem"}} />
+                            </Button>
                             <Input
                                 type='text'
                                 placeholder='Search...'
@@ -177,13 +176,18 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Users</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 Pamela M. Beesly<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>pambeesly@dundermifflin.org</span>
                             </SearchText>
-                        </SearchResult>
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchUsers.map(obj =>
+                                <li>{obj.username}</li>
+                            )}
+                        </ul>
                         {/* Club Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <GrGroup/>
@@ -193,14 +197,19 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Clubs</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 SlytherintoLibraries<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>21 Members</span>
                             </SearchText>
-                        </SearchResult>
-                        {/* Club Search Results */}
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchClubs.map(obj =>
+                                <li>{obj.name}</li>
+                            )}
+                        </ul>
+                        {/* Book Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <AiOutlineBook/>
                             <span style={{
@@ -209,13 +218,18 @@ class Nav extends React.Component {
                                 marginLeft: "3px"
                             }}>Books</span>
                         </Box>
-                        <SearchResult>
+                        {/* <SearchResult>
                             <Gravatar email='blah@blah.com'/>
                             <SearchText>
                                 Bob the Builder<br/>
                                 <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
                             </SearchText>
-                        </SearchResult>
+                        </SearchResult> */}
+                        <ul>
+                            {this.state.searchBooks.map(obj =>
+                                <li>{obj.title}</li>
+                            )}
+                        </ul>
                     </ModalBody>
                 </Modal>
 
