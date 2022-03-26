@@ -11,12 +11,17 @@ export default function SingleFeedPost(props) {
     const [feedPost, setFeedPosts] = useState("")
     const [posterName, setPosterName] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("dummy")
+    const [writtenComment, updateWrittenComment] = useState("")
+    const [likesCount, setLikesCount] = useState(0)
+    const [likesUsersList, setLikesUsersList] = useState([])
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
         getPostCreatorName(props.feedPost.author_id)
         getPostCreatorEmail(props.feedPost.author_id)
+        setLikesCount(size(props.feedPost.upvotes))
+        fill
+        setLikesUsersList(props.feedPost.upvotes.map(({username}) => username))
     }, []);
 
     const getPostCreatorName = (author_id) => {
@@ -49,6 +54,16 @@ export default function SingleFeedPost(props) {
                 console.log(commentsRef.current[index])
                 commentsRef.current[index].addComment(comment)
                 console.log("adding post in parent: ", comment)
+            })
+    }
+
+    const likePost = (post_id, e, index) => {
+        axiosInstance
+            .put(`posts/${post_id}/`, {
+                action: "upvote",
+            })
+            .then((res) => {
+                console.log("upvote successful")
             })
     }
 

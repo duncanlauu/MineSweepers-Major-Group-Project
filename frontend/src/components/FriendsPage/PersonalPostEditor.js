@@ -24,11 +24,10 @@ export default function PersonalPostEditor(props) {
 
         axiosInstance
             .put(`posts/${props.personalPost.id}`, {
+                action: "edit",
                 club : formData.club_id,
                 title : formData.title,
                 content : formData.content, 
-                image_link : formData.image_link,
-                book_link : formData.image_link
             })
             .then((res) => {
                 navigate("/home/")
