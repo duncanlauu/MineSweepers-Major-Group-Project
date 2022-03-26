@@ -66,6 +66,7 @@ class SchedulingView(APIView):
                         meeting.book_id = Book.objects.get(title=request.data['book']).ISBN
                     except Book.DoesNotExist:
                         meeting.book = None
+                    meeting.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
                     return Response({**serializer.errors, **errors}, status=status.HTTP_400_BAD_REQUEST)

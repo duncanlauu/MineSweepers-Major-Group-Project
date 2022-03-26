@@ -1,25 +1,19 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, Container, Row, Col} from 'reactstrap'
 import axiosInstance from '../../axios'
 import useGetUser from '../../helpers'
 import {HeadingText} from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import {RecommenderContainer} from './RecommenderPageElements'
-import {Link} from "@material-ui/core";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
-import Gravatar from "react-gravatar";
-import {ClubProfile} from "./RecommenderPageElements";
+import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
     const user = useGetUser();
-    if (user) {
-        console.log("User ID: " + user.id);
-    }
-
     const [clubRecommendations, setClubRecommendations] = useState([])
 
-    function returnTop10Recommendations() {
+    function getTopClubs() {
         trackPromise(axiosInstance
             .post(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`, {})
             .then(res => {
@@ -27,12 +21,15 @@ const ClubRecommendationPage = () => {
                     .get(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`)
                     .then(res => {
                         console.log(res);
-                        setClubRecommendations(res.data)
+                        let recommendations = []
+                        for (let i = 0; i < res.data.length; i++) {
+                            recommendations.push(res.data[i].club);
+                        }
+                        setClubRecommendations(recommendations);
                     })
                     .catch(error => {
-                            console.log(error);
-                        }
-                    )
+                        console.log(error);
+                    })
             })
             .catch(error => {
                 console.log(error);
@@ -60,37 +57,52 @@ const ClubRecommendationPage = () => {
         )
     }
 
-    return (
-        <Container fluid>
-            <Row style={{marginBottom: "3rem"}}>
-                <Nav/>
-            </Row>
-            <Row>
-                <Col/>
-                <Col xs={8}>
-                    <Button onClick={returnTop10Recommendations}>Display my Recommendations</Button><br/>
-                    <HeadingText>Clubs For You</HeadingText>
-                    <LoadingIndicator/>
-                    <RecommenderContainer>
-                        {clubRecommendations.map(
-                            clubRecommendation =>
-                                <ClubProfile>
-                                    <Col xs={3}>
-                                        <Gravatar email={clubRecommendation['club']['owner']['email']}/>
-                                    </Col>
-                                    <Col xs={9}>
-                                        <a href={`/club_profile/${clubRecommendation['club']['id']}`}>
-                                            {clubRecommendation['club']['name']}
-                                        </a>
-                                    </Col>
-                                </ClubProfile>
-                        )}
-                    </RecommenderContainer>
-                </Col>
-                <Col/>
-            </Row>
-        </Container>
-    )
+    if (clubRecommendations.length > 0) {
+        return (
+            <Container fluid>
+                <Row style={{marginBottom: "3rem"}}>
+                    <Nav/>
+                </Row>
+                <Row>
+                    <Col/>
+                    <Col xs={8}>
+                        <HeadingText>Clubs For You</HeadingText>
+                        <LoadingIndicator/>
+                        <RecommenderContainer>
+                            {clubRecommendations.map(
+                                clubRecommendation => {
+                                    console.log(clubRecommendation)
+                                    return (
+                                        <SingleClubRecommendation club={clubRecommendation}/>
+                                    )
+                                }
+                            )}
+                        </RecommenderContainer>
+                    </Col>
+                    <Col/>
+                </Row>
+            </Container>
+        )
+    } else {
+        if (user !== "") {
+            getTopClubs()
+        }
+        return (
+            <Container fluid>
+                <Row style={{marginBottom: "3rem"}}>
+                    <Nav/>
+                </Row>
+                <Row>
+                    <Col/>
+                    <Col xs={8}>
+                        <HeadingText>Clubs For You</HeadingText>
+                        <LoadingIndicator/>
+                    </Col>
+                    <Col/>
+                </Row>
+            </Container>
+        )
+    }
 }
 
 export default ClubRecommendationPage
