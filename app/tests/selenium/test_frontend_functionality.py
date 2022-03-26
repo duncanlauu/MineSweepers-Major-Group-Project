@@ -12,6 +12,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
+from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
+    get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
+from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users
+from surprise import SVD
+
 class FrontendFunctionalityTest(LiveServerTestCase):
 
     port = 8000
@@ -60,6 +65,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             executable_path="app/tests/selenium/chromedriver", options=chrome_options
         )
         cls.browser.delete_all_cookies()
+
+        seed_books()
+        seed_users()
+        seed_ratings()
+        seed_clubs()
+        cls.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        cls.dump_file_path = 'app/files/dump_file'
+        cls.dataframe = get_combined_data(cls.csv_file_path)
+        cls.data = get_dataset_from_dataframe(cls.dataframe)
+        cls.trainset = get_trainset_from_dataset(cls.data)
+        cls.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(cls.algo, cls.trainset)
+        cls.pred = test_model(cls.algo, cls.trainset)
+        dump_trained_model(cls.dump_file_path, cls.algo, cls.pred)
+
+        
 
     @classmethod
     def tearDownClass(cls):
