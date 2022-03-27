@@ -13,10 +13,9 @@ export default function FeedPostList(props){
         axiosInstance
             .get("feed/")
             .then((res) => {
-                console.log("feed:")
-                console.log(res.data)
                 const allFeedPosts = res.data.posts;
                 setFeedPosts(allFeedPosts)
+                console.log("feed postssss", allFeedPosts)
             })
             .catch(error => console.error(error));
     }

@@ -21,8 +21,6 @@ export default function CommentReplyList(props){
         axiosInstance
             .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
-                console.log("Sick replies:::")
-                console.log(res.data.replies)
                 const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
             })
@@ -37,15 +35,15 @@ export default function CommentReplyList(props){
     }
 
     const uploadReply = (e, index) => {
-        console.log(writtenReply.myReply)
-        console.log(currentPost.id)
-        console.log(currentComment.id)
+        // console.log(writtenReply.myReply)
+        // console.log(currentPost.id)
+        // console.log(currentComment.id)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 getRepliesUnderComments()
             })
     }
@@ -56,7 +54,7 @@ export default function CommentReplyList(props){
 
     const displayCommentsUnderPost = (e) => {
         if (repliesUnderComment.length > 0) {
-            console.log(repliesUnderComment);
+            // console.log(repliesUnderComment);
             return (
                 <div>
 
@@ -83,7 +81,7 @@ export default function CommentReplyList(props){
 
 
                     {repliesUnderComment.map((reply, index) => {
-                        console.log(reply);
+                        // console.log(reply);
                         return (
                             <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
                                 <ReplyLine>
@@ -114,7 +112,7 @@ export default function CommentReplyList(props){
                                 <Button onClick={(e) => uploadReply(e, 0)} 
                                     style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
                                 >
-                                    <p> Senddd </p>
+                                    <p> Send </p>
                                 </Button> 
                             </Col>
                         </Row>

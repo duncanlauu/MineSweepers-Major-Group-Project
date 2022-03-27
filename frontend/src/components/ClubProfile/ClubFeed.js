@@ -17,7 +17,8 @@ const ClubFeed = () => {
         axiosInstance
             .get(`feed/clubs/${club_id}`)
             .then((res) => {
-                const allClubPosts = res.data;
+                const allClubPosts = res.data.posts;
+                console.log('club feed', allClubPosts)
                 setClubFeedPosts(allClubPosts)
             })
             .catch(error => console.error(error));
