@@ -4,7 +4,7 @@
     "pk": 2,
     "fields": {
       "author": 2,
-      "club": 1,
+      "club": null,
       "title": "Test post 2!",
       "content": "This is another test post.",
       "upvotes": [],
