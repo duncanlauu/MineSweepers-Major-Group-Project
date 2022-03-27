@@ -79,8 +79,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
-        for conn in connections.all():
-            conn.close()
         cls.browser.quit()
 
     def setUp(self):
@@ -96,16 +94,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_feed()
         print_info()
 
-        # # Train the recommender system model
-        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        # self.dump_file_path = 'app/files/dump_file'
-        # self.dataframe = get_combined_data(self.csv_file_path)
-        # self.data = get_dataset_from_dataframe(self.dataframe)
-        # self.trainset = get_trainset_from_dataset(self.data)
-        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        # train_model(self.algo, self.trainset)
-        # self.pred = test_model(self.algo, self.trainset)
-        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # Train the recommender system model
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -137,46 +135,53 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEquals(self.browser.title, "Bookgle")
 
         # Landing Page
-        # self._test_landing_page_log_in_and_sing_up_buttons()
+        self._test_landing_page_log_in_and_sing_up_buttons()
 
         # Log in
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        # self._text_sign_up_here_button_goes_to_sign_up()
-        # self._test_unsuccessful_log_in() 
-        # self._test_successful_log_in()
+        self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
+        self._text_sign_up_here_button_goes_to_sign_up()
+        self._test_unsuccessful_log_in() 
+        self._test_successful_log_in()
 
         self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
         # Sign up
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        # self._test_log_in_here_button_goes_to_log_in()
-        # self._test_unsuccessful_sign_up() 
+        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        self._test_log_in_here_button_goes_to_log_in()
+        self._test_unsuccessful_sign_up() 
 
         # Sign up and New User Book Rating Page
-        close_old_connections()
+        # close_old_connections()
         # for conn in connections.all():
         #     conn.close()
-        # self._test_successful_sign_up_and_book_rating()
+        self._test_successful_sign_up_and_book_rating()
 
-        # self.browser.get(f"{self.live_server_url}/log_out")
+        self.browser.get(f"{self.live_server_url}/log_out")
 
         # Home Page
         self._log_in()
         self._test_logo_button_goes_to_home_when_logged_in("home")
         # self._test_page_has_navbar("home") #not implemented yer
-        
-        
-
-
-
 
         # Navbar
         # test search bar
         self._test_navbar_new_post("home")
         self._test_navbar_create_club("home")
-        # Maybe test for also post with club id
+        # # Maybe test for also post with club id
         self._test_navbar_open_chat("home")
         self._test_navbar_friends_page("home")
+
+
+
+        # Password Reset
+        # for conn in connections.all():
+        #     conn.close()
+        self.browser.get(f"{self.live_server_url}/log_out")
+        self._test_password_reset()
+        # for conn in connections.all():
+        #     conn.close()
+
+
 
 
 
@@ -394,36 +399,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     #     # self.browser.find_element_by_xpath("//a[@data-index='/sign_up']").click()
     #     sleep(100)
 
-    def _test_create_new_club(self):#broken
-        number_of_clubs_before = Club.objects.count()
-        number_of_chats_before = Chat.objects.count()
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        self.wait_until_element_found("//button[.='New Club']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-        # Create New Club
-        new_club_data = {
-            "name": "New Club Name",
-            "description": "New description"
-        }
-        self.browser.find_element_by_xpath("//button[.='New Club']").click()
-        self.browser.find_element_by_name("name").send_keys(new_club_data['name'])
-        self.browser.find_element_by_id("description").send_keys(new_club_data['description']) #ID / NAME inconsistent
-        self.browser.find_element_by_xpath("//button[.='Create']").click()
-        self.wait_until_element_found("//button[.='New Club']")
-        number_of_clubs_after = Club.objects.count()
-        number_of_chats_after = Chat.objects.count()
-        self.assertEqual(number_of_clubs_after, number_of_clubs_before+1)
-        self.assertEqual(number_of_chats_after, number_of_chats_before+1)
 
     def _test_log_out(self):
         self.browser.get(f"{self.live_server_url}/")
@@ -590,7 +565,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Test for putting in different passwords
         self.browser.find_element_by_name("new_password").send_keys(new_password)
         self.browser.find_element_by_name("re_new_password").send_keys(new_password)
-        self.browser.find_element_by_xpath('//button[.="Send Reset Email"]').click() # Needs to be renamed!
+        self.browser.find_element_by_xpath('//button[.="Reset"]').click() # Needs to be renamed!
         
         # Redirects to login?
         sleep(1)
@@ -599,7 +574,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
         self.browser.find_element_by_name("password").send_keys(new_password)
         self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        self.wait_until_element_found("//button[.='New Club']")
+        sleep(1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
     # Helpers

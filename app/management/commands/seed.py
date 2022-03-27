@@ -76,51 +76,51 @@ def seed_default_objects():
         password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
     )
 
-    # books = list(Book.objects.all())
-    # add_read_and_liked_books(books, jeb)
-    # add_read_and_liked_books(books, billie)
-    # add_read_and_liked_books(books, bob)
-    # add_read_and_liked_books(books, val)
-    # val.add_friend(jeb)
-    # val.add_friend(bob)
-    # val.add_friend(billie)
-    # jeb.add_friend(val)
-    # jeb.add_friend(bob)
-    # jeb.add_friend(billie)
-    # bob.add_friend(jeb)
-    # bob.add_friend(val)
-    # bob.add_friend(billie)
-    # billie.add_friend(jeb)
-    # billie.add_friend(bob)
-    # billie.add_friend(val)
+    books = list(Book.objects.all())
+    add_read_and_liked_books(books, jeb)
+    add_read_and_liked_books(books, billie)
+    add_read_and_liked_books(books, bob)
+    add_read_and_liked_books(books, val)
+    val.add_friend(jeb)
+    val.add_friend(bob)
+    val.add_friend(billie)
+    jeb.add_friend(val)
+    jeb.add_friend(bob)
+    jeb.add_friend(billie)
+    bob.add_friend(jeb)
+    bob.add_friend(val)
+    bob.add_friend(billie)
+    billie.add_friend(jeb)
+    billie.add_friend(bob)
+    billie.add_friend(val)
 
-    # kerbal = Club.objects.create(
-    #     name="Kerbal book club",
-    #     description="After our success with space programmes, we decided to start a book club",
-    #     owner=jeb
-    # )
-    # kerbal.admins.set([bob])
-    # kerbal.members.set([val, billie])
-    # kerbal.books.set(get_n_random_books_from(10, books))
-    # kerbal.save()
+    kerbal = Club.objects.create(
+        name="Kerbal book club",
+        description="After our success with space programmes, we decided to start a book club",
+        owner=jeb
+    )
+    kerbal.admins.set([bob])
+    kerbal.members.set([val, billie])
+    kerbal.books.set(get_n_random_books_from(10, books))
+    kerbal.save()
 
-    # time_period = TimePeriod.objects.create(
-    #     start_time="2013-05-16T17:00:00+00:00",
-    #     end_time="2013-05-16T18:00:00+00:00"
-    # )
+    time_period = TimePeriod.objects.create(
+        start_time="2013-05-16T17:00:00+00:00",
+        end_time="2013-05-16T18:00:00+00:00"
+    )
 
-    # meeting = Meeting.objects.create(
-    #     name="Kerbal book meeting number 1",
-    #     description="Reading books but also space, what else could you possibly need?",
-    #     club=kerbal,
-    #     book=get_n_random_books_from(1, books)[0],
-    #     time=time_period,
-    #     organiser=jeb,
-    #     link=generate_link()
-    # )
+    meeting = Meeting.objects.create(
+        name="Kerbal book meeting number 1",
+        description="Reading books but also space, what else could you possibly need?",
+        club=kerbal,
+        book=get_n_random_books_from(1, books)[0],
+        time=time_period,
+        organiser=jeb,
+        link=generate_link()
+    )
 
-    # meeting.attendees.set([val, billie, bob])
-    # meeting.save()
+    meeting.attendees.set([val, billie, bob])
+    meeting.save()
 
 
 def seed_books():
@@ -134,7 +134,7 @@ def seed_books():
     filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = 3000#len(df)
+    total = len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]
