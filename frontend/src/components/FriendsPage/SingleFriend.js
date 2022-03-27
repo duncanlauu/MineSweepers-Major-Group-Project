@@ -3,6 +3,7 @@ import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
 import { FriendLine, UserNameContainer, UserNameText} from "./UserProfileElements";
+import { useNavigate } from "react-router";
 
 export default function SingleFriend(props) {
 
@@ -12,6 +13,7 @@ export default function SingleFriend(props) {
         setCurrentFriend(props.friend)
     }, []);
 
+    const navigate = useNavigate()
 
     const deleteFriend = (id, e) => {
         axiosInstance
@@ -40,19 +42,24 @@ export default function SingleFriend(props) {
             })
     }
 
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${currentFriend.id}/`)
+        window.location.reload()
+    }
+
     return (
         <div className="friend" key={currentFriend.id} style={{marginBottom: "1rem", marginTop: "1rem"}}>
             <FriendLine>
                 <Row style={{height: "5rem"}}>
                     <Col xs="2">
-                        <Gravatar email={currentFriend.email} size={50} style={{ 
+                        <Gravatar email={currentFriend.email} size={50} onClick={navigateToProfile} style={{ 
                                 borderRadius: "50px",
                                 marginBottom: "1rem"
                             }} 
                         />
                     </Col>
                     <Col xs="6" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                        <UserNameContainer>
+                        <UserNameContainer onClick={navigateToProfile}>
                             <UserNameText>
                                 {currentFriend.username}
                             </UserNameText>

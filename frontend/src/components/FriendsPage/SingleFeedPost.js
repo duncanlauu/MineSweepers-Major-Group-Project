@@ -5,6 +5,7 @@ import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
 import { FeedPostContainer, PostHeadingText } from "./UserProfileElements"
 import { border } from "@mui/system"
+import { useNavigate } from "react-router";
 
 export default function SingleFeedPost(props) {
 
@@ -12,6 +13,8 @@ export default function SingleFeedPost(props) {
     const [posterName, setPosterName] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
     const [writtenComment, updateWrittenComment] = useState("dummy")
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
@@ -58,6 +61,11 @@ export default function SingleFeedPost(props) {
         })
     }
 
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${feedPost.author_id}/`)
+        window.location.reload()
+    }
+
     const commentsRef = useRef([]);
     // used to have unique togglers
     const togglerID = "toggler" + feedPost.id
@@ -77,7 +85,7 @@ export default function SingleFeedPost(props) {
                 <CardHeader> 
                     <Row >
                         <Col xs="1">
-                            <Gravatar email={posterEmail} size={30} style={{ 
+                            <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{ 
                                     borderRadius: "50px",
                                     marginTop: "0rem",
                                     marginBottom: "0rem"

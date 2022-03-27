@@ -57,7 +57,6 @@ export default function SingleSuggestedUser(props) {
     }
 
     const navigateToProfile = () => {
-        console.log("Navigating to profile", currentSuggestedUser.id)
         navigate(`/friends_page/${currentSuggestedUser.id}/`)
         window.location.reload()
     }
