@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane, CardGroup} from 'reactstrap'
+import { Container, Row, Col, Button, Nav, NavItem, NavLink, TabContent, TabPane, CardGroup} from 'reactstrap'
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
 import useGetUser from "../../helpers";
@@ -63,8 +63,22 @@ const UserProfile = () => {
         }
     }
 
-   
+    const postFriendRequest = (receiver, e) => {
+        axiosInstance
+            .post("friend_requests/", {
+                other_user_id: receiver
+            })
+    }
 
+    const cancelFriendRequest = (receiver, e) => {
+        axiosInstance
+            .delete("friend_requests/", {
+                data: {
+                    other_user_id: receiver,
+                    action: "cancel"
+                }
+            })
+    }
 
     return(
         <div>
@@ -79,7 +93,7 @@ const UserProfile = () => {
                             <ProfileInfoCard>
                                 <Row style={{justifyContent: "center"}}>
                                     <Col xs="8">
-                                        <Gravatar email='user@example.com' size={150} style={{ 
+                                        <Gravatar email={currentUser.email} size={150} style={{ 
                                                 borderRadius: "50px",
                                                 marginTop: "1rem",
                                                 marginBottom: "1rem"
@@ -87,6 +101,7 @@ const UserProfile = () => {
                                         />
                                     </Col>
                                 </Row>
+
                                 <Row style={{justifyContent: "center", marginTop: "1rem"}}>
                                     <ProfileInfoDetails>
                                         <Row style={{justifyContent: "center", marginTop: "1rem"}}>
@@ -95,6 +110,22 @@ const UserProfile = () => {
                                                 <h4> <b> <i> @{currentUser.username} </i></b></h4>  
                                             </div>
                                         </Row>
+
+                                        { user_id !== undefined &&
+                                            <Row style={{display: "flex", justifyContent: "center", marginBottom: "1rem"}}>
+                                                <Button color="primary" onClick={(e) => postFriendRequest(currentUser.id)}
+                                                    style={{height: "4rem", width: "8rem"}}
+                                                >
+                                                    <p> Follow </p>
+                                                </Button>
+                                                <Button onClick={(e) => cancelFriendRequest(currentUser.id)}
+                                                    style={{height: "4rem", width: "4rem"}} 
+                                                >
+                                                    <p> X </p>
+                                                </Button>                                    
+                                            </Row>
+                                        }
+
                                         <Row>
                                             <div style={{textAlign : "center"}}>
                                                 {currentUser.location != "" && 
@@ -166,17 +197,16 @@ const UserProfile = () => {
                         </DataContainer>
                     </Col>
 
-                    {user_id == undefined &&
-                        <Col xs="3">
-                            <FriendRecommenderContainer>
-                                
-                                {/* <NonFriendList /> */}
-                                <SuggestedUserContainer>
-                                    <SuggestedUserList/>
-                                </SuggestedUserContainer>
-                            </FriendRecommenderContainer>
-                        </Col>
-                    }
+                    
+                    <Col xs="3">
+                        <FriendRecommenderContainer>
+                            
+                            {/* <NonFriendList /> */}
+                            <SuggestedUserContainer>
+                                <SuggestedUserList/>
+                            </SuggestedUserContainer>
+                        </FriendRecommenderContainer>
+                    </Col>
                 </Row>
              </Container>
         </div>
