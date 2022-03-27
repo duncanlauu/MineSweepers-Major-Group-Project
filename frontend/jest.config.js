@@ -1,3 +1,3 @@
-module.exports = {
-    setupFilesAfterEnv: ["@testing-library/react/cleanup-after-each"]
-  };
+// module.exports = {
+//     setupFilesAfterEnv: ["@testing-library/react/cleanup-after-each"]
+//   };
