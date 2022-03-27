@@ -99,6 +99,9 @@ class SingleClub(APIView):
             return Response(data='Invalid parameters', status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        club = Club.objects.get(pk=kwargs['id'])
-        club.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            club = Club.objects.get(pk=kwargs['id'])
+            club.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Club.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
