@@ -1,4 +1,5 @@
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, PostView, \
+from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, \
+    PostView, \
     ReplyView
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView, OtherUserFriendsView
@@ -26,7 +27,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
 
     # Books
-    path('books/<str:ISBN>',Books.as_view(), name="retrieve_book"),
+    path('books/<str:ISBN>', Books.as_view(), name="retrieve_book"),
 
     # Friends
     path('friends/', FriendsView.as_view(), name='friends'),
