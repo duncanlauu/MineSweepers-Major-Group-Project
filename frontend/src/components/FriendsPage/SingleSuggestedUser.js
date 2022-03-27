@@ -21,7 +21,6 @@ export default function SingleSuggestedUser(props) {
     const getSuggestedUserName = (suggestedUser_id) => {
         axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
             setSuggestedUserName(res.data.username)
         })
         .catch(error => console.error(error));
@@ -30,7 +29,6 @@ export default function SingleSuggestedUser(props) {
     const getSuggestedUserEmail = (suggestedUser_id) => {
         axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.email)
             setSuggestedUserEmail(res.data.email)
         })
         .catch(error => console.error(error));

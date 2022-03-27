@@ -23,11 +23,14 @@ const UserProfile = () => {
     const navigate = useNavigate()
     const [isLoggedInUser, setIsLoggedInUser] =useState(true)
     
-
     useEffect(() => {
-        console.log("User is", user_id)   
+        console.log("User is", user_id) 
+        console.log("Print current logged user: " , currentLoggedInUser)  
         if(user_id== currentLoggedInUser.id || user_id === undefined || user_id === ""){
-            axiosInstance.get('/get_current_user/').then(res => {
+
+            console.log("So user_id is " + user_id + " and currentLoggedInUser.id is " + currentLoggedInUser.id)
+            axiosInstance.get('/get_current_user/')
+            .then(res => {
                 console.log(res);
                 setCurrentUser(res.data)
             })
@@ -35,6 +38,7 @@ const UserProfile = () => {
                 console.log(err);
             })
         }else{
+            console.log("So user_id is " + user_id + " and currentLoggedInUser.id is " + currentLoggedInUser.id)
             axiosInstance
             .get(`user/get_update/${user_id}`)
             .then(res => {
@@ -50,6 +54,7 @@ const UserProfile = () => {
                 navigate('/error/')
             })
         }
+        
       }, [])
 
     const toggle = (tab) => {
@@ -145,10 +150,13 @@ const UserProfile = () => {
                                     </TabPane>
 
                                     <TabPane tabId="2">
-                                        <FriendRequestList/>
+                                        {user_id == undefined &&
+                                            <FriendRequestList/>
+                                        }
                                         
                                         <FriendListContainer>
-                                            <FriendsList />
+                                            {console.log("So what user_id are we passing???: " + user_id)}
+                                            <FriendsList requestedUser_id={user_id}/>
                                         </FriendListContainer>
                                     </TabPane>
 
@@ -158,16 +166,17 @@ const UserProfile = () => {
                         </DataContainer>
                     </Col>
 
-                    <Col xs="3">
-                        <FriendRecommenderContainer>
-                            
-                            {/* <NonFriendList /> */}
-                            <SuggestedUserContainer>
-                                {console.log("So what are we passing?: " + currentUser.id)}
-                                <SuggestedUserList currentUser={currentUser}/>
-                            </SuggestedUserContainer>
-                        </FriendRecommenderContainer>
-                    </Col>
+                    {user_id == undefined &&
+                        <Col xs="3">
+                            <FriendRecommenderContainer>
+                                
+                                {/* <NonFriendList /> */}
+                                <SuggestedUserContainer>
+                                    <SuggestedUserList/>
+                                </SuggestedUserContainer>
+                            </FriendRecommenderContainer>
+                        </Col>
+                    }
                 </Row>
              </Container>
         </div>

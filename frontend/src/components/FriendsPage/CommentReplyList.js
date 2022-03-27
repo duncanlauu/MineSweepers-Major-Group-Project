@@ -21,8 +21,6 @@ export default function CommentReplyList(props){
         axiosInstance
             .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
-                console.log("Sick replies:::")
-                console.log(res.data.replies)
                 const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
             })

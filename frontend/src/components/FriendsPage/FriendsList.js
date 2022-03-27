@@ -8,10 +8,16 @@ export default function FriendsList(props){
     const [myFriends, setFriends] = useState("")
 
     useEffect(() => {
-        getAllFriends()
+        if(props.requestedUser_id == undefined){
+            getAllFriends()
+        }else{
+            getAllFriendsOfOtherUser()
+        }
+        
     }, []);
 
     const getAllFriends = () => {
+        console.log("Show me props.currentUser: " , props.requestedUser_id)
         axiosInstance
             .get(`friends/`)
             .then((res) => {
@@ -20,6 +26,17 @@ export default function FriendsList(props){
             })
             .catch(error => console.error(error));
     }
+
+    const getAllFriendsOfOtherUser = () => {
+        axiosInstance
+            .get(`friends/user/${props.requestedUser_id}`)
+            .then((res) => {
+                const allFriends = res.data.friends;
+                setFriends(allFriends)
+            })
+            .catch(error => console.error(error));
+    }
+
 
     function updatePageAfterDeletion() {
         getAllFriends()
@@ -34,7 +51,7 @@ export default function FriendsList(props){
                         <div className="friend" key={friend.id}>
 
                             <div key={friend.id}>
-                                <SingleFriend friend={friend} updatePageAfterDeletion={updatePageAfterDeletion}/>
+                                <SingleFriend friend={friend} updatePageAfterDeletion={updatePageAfterDeletion} requestedUser_id={props.requestedUser_id}/>
                             </div>
 
                         </div>

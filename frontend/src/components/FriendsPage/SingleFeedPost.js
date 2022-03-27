@@ -22,7 +22,7 @@ export default function SingleFeedPost(props) {
     const getPostCreatorName = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
+            // console.log("The post creator is: " + res.data.username)
             setPosterName(res.data.username)
         })
         .catch(error => console.error(error));
@@ -31,7 +31,7 @@ export default function SingleFeedPost(props) {
     const getPostCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
+            // console.log("The post creator is: " + res.data.username)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
@@ -48,7 +48,6 @@ export default function SingleFeedPost(props) {
                 const comment = { author: localStorage.username, content: writtenComment.myComment }
                 console.log(commentsRef.current[index])
                 commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
             })
     }
 
