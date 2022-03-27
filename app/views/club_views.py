@@ -36,7 +36,7 @@ class SingleClub(APIView):
             serializer = ClubSerializer(club)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Club.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, club):
         serializer = ClubSerializer(club, data=request.data, partial=True)
@@ -47,50 +47,53 @@ class SingleClub(APIView):
 
     def put(self, request, *args, **kwargs):
         if 'action' not in kwargs:
-            return Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
+            return Response(data='You need to provide an action', status=status.HTTP_400_BAD_REQUEST)
         action = kwargs['action']
-        club = Club.objects.get(pk=kwargs['id'])
+        try:
+            club = Club.objects.get(pk=kwargs['id'])
 
-        user = User.objects.get(pk=kwargs['user_id'])
-
-        if user:
-            club.remove_user_from_club(user)
-            if action == 'accept':
-                club.members.add(user)
+            if action == 'update':
                 return self.update(request, club)
 
-            elif action == 'remove':
-                club.remove_member(user)
-                return self.update(request, club)
+            user = User.objects.get(pk=kwargs['user_id'])
 
-            elif action == 'reject':
-                club.remove_applicant(user)
-                return self.update(request, club)
+            if user:
+                club.remove_user_from_club(user)
+                if action == 'accept':
+                    club.members.add(user)
+                    return self.update(request, club)
 
-            elif action == 'ban':
-                club.add_banned_user(user)
-                return self.update(request, club)
+                elif action == 'remove':
+                    club.remove_member(user)
+                    return self.update(request, club)
 
-            elif action == 'unban':
-                club.remove_banned_user(user)
-                return self.update(request, club)
+                elif action == 'reject':
+                    club.remove_applicant(user)
+                    return self.update(request, club)
 
-            elif action == 'apply':
-                club.add_applicant(user)
-                return self.update(request, club)
+                elif action == 'ban':
+                    club.add_banned_user(user)
+                    return self.update(request, club)
 
-            elif action == 'transfer':
-                club.transfer_ownership(user)
-                return self.update(request, club)
+                elif action == 'unban':
+                    club.remove_banned_user(user)
+                    return self.update(request, club)
+
+                elif action == 'apply':
+                    club.add_applicant(user)
+                    return self.update(request, club)
+
+                elif action == 'transfer':
+                    club.transfer_ownership(user)
+                    return self.update(request, club)
+
+                else:
+                    return Response(data='Invalid action', status=status.HTTP_400_BAD_REQUEST)
 
             else:
-                return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
-
-        elif action == 'update':
-            return self.update(request, club)
-
-        else:
-            return Response(data='Invalid action', status=status.HTTP_404_NOT_FOUND)
+                return Response(data='Invalid action', status=status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            return Response(data='Invalid parameters', status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
         club = Club.objects.get(pk=kwargs['id'])
