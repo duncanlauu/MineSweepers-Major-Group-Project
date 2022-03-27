@@ -107,6 +107,17 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             "password": "Password123",
         }
 
+        self.new_user_data = {
+            "first_name": "firstName",
+            "last_name": "lastName",
+            "username": "newUsername",
+            "email": "newemail@example.com",
+            "password": "Password123",
+            "bio": "New bio",
+            "location": "London, UK",
+            "birthday": "10102000"
+        }
+
     def test_everything(self):
         
         # Website title
@@ -114,17 +125,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEquals(self.browser.title, "Bookgle")
 
         # Landing Page
-        self._test_landing_page_log_in_and_sing_up_buttons()
+        # self._test_landing_page_log_in_and_sing_up_buttons()
 
         # Log in
-        self._test_logo_button_goes_to_log_in_when_not_logged_in()
-        self._text_sign_up_here_button_goes_to_sign_up()
-        self._test_unsuccessful_log_in() 
-        # self._test_log_in_new_user() ??
-        self._test_successful_log_in() #Check with seeded
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
+        # self._text_sign_up_here_button_goes_to_sign_up()
+        # self._test_unsuccessful_log_in() 
+        # self._test_successful_log_in()
 
-        # # Sign up
-        # self.browser.get(f"{self.live_server_url}/")
+        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+
+        # Sign up
+        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        self._test_log_in_here_button_goes_to_log_in()
+        self._test_unsuccessful_sign_up() 
+        self._test_successful_sign_up()
+
 
 
 
@@ -159,10 +175,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
         self.browser.execute_script("window.history.go(-1)")
 
-    def _test_logo_button_goes_to_log_in_when_not_logged_in(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-        self.wait_until_element_found("//button[.='Log In']")
+    def _test_logo_button_goes_to_log_in_when_not_logged_in(self, url):
+        # self.browser.get(f"{self.live_server_url}/")
+        # self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        # self.wait_until_element_found("//button[.='Log In']")
+        self.browser.get(f"{self.live_server_url}/{url}")
         logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
         logo_button.click()
         sleep(1)
@@ -190,7 +207,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1) # make method to wait a little
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue("Invalid username/password" in body_text)
 
     def _test_successful_log_in(self):
@@ -206,47 +222,54 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1) # make method to wait a little
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
-    def _test_sign_up_page(self):
+
+    def _test_log_in_here_button_goes_to_log_in(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.wait_until_element_found("//button[.='Sign Up']")
+        logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
+        logo_button.click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+
+    def _test_unsuccessful_sign_up(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
+        number_of_users_after = User.objects.count()
+        self.assertEqual(number_of_users_after, number_of_users_before)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        number_of_empty_field_error_messages = body_text.count("This field may not be blank.")
+        self.assertEqual(number_of_empty_field_error_messages, 5)
+        self.assertTrue("Date has wrong format. Use one of these formats instead: YYYY-MM-DD." in  body_text)
+        # Add more tests for different Sign Up error messages 
+
+    def _test_successful_sign_up(self):
+        number_of_users_before = User.objects.count()
+        self.browser.get(f"{self.live_server_url}/")
         self.wait_until_element_found("//a[@href='/sign_up']")
         self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
         self.wait_until_element_found("//button[.='Sign Up']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
         # Sign up
-        new_user_data = {
-            "first_name": "firstName",
-            "last_name": "lastName",
-            "username": "newUsername",
-            "email": "newemail@example.com",
-            "password": "Password123",
-            "bio": "New bio",
-            "location": "London, UK",
-            "birthday": "10102000"
-        }
-        self.browser.find_element_by_name("first_name").send_keys(new_user_data['first_name'])
-        self.browser.find_element_by_name("last_name").send_keys(new_user_data['last_name'])
-        self.browser.find_element_by_name("username").send_keys(new_user_data['username'])
-        self.browser.find_element_by_name("email").send_keys(new_user_data['email'])
-        self.browser.find_element_by_name("password").send_keys(new_user_data['password'])
-        self.browser.find_element_by_name("bio").send_keys(new_user_data['bio'])
-        self.browser.find_element_by_name("location").send_keys(new_user_data['location'])
-        self.browser.find_element_by_name("birthday").send_keys(new_user_data['birthday'])
+        self.browser.find_element_by_name("first_name").send_keys(self.new_user_data['first_name'])
+        self.browser.find_element_by_name("last_name").send_keys(self.new_user_data['last_name'])
+        self.browser.find_element_by_name("username").send_keys(self.new_user_data['username'])
+        self.browser.find_element_by_name("email").send_keys(self.new_user_data['email'])
+        self.browser.find_element_by_name("password").send_keys(self.new_user_data['password'])
+        self.browser.find_element_by_name("bio").send_keys(self.new_user_data['bio'])
+        self.browser.find_element_by_name("location").send_keys(self.new_user_data['location'])
+        self.browser.find_element_by_name("birthday").send_keys(self.new_user_data['birthday'])
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
-        self.wait_until_element_found("//button[.='Log In']")
+        sleep(1)
         number_of_users_after = User.objects.count()
         self.assertEqual(number_of_users_after, number_of_users_before+1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(new_user_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        self.wait_until_element_found("//button[.='New Club']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating/")
     
-    # add _test for failed sign up and check for error messages
 
     def _test_create_new_club(self):#broken
         number_of_clubs_before = Club.objects.count()
