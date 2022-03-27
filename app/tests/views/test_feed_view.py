@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
 from app.models import Club, Post, User, Comment, Reply
@@ -80,6 +81,15 @@ class FeedAPIViewTestCase(APITestCase):
         # Check author is user
         post = Post.objects.get(title=title)
         self.assertEqual(post.author, self.user)
+
+    def test_create_post_invalid(self):
+        self._log_in_helper(self.user.username, "Password123")
+        form_data = {'title': "", 'content': 'test post content'}
+        post_count_before = Post.objects.count()
+        response = self.client.post(reverse('app:all_posts'), form_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        post_count_after = Post.objects.count()
+        self.assertEqual(post_count_before, post_count_after)
 
     def test_create_post(self):
         self._log_in_helper(self.user.username, "Password123")
