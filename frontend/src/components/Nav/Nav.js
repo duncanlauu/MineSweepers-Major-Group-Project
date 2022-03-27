@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
+import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input, Col} from 'reactstrap'
 import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
 import {BiUserCircle} from "@react-icons/all-files/bi/BiUserCircle"
 import {AiOutlinePlus} from "@react-icons/all-files/ai/AiOutlinePlus";
@@ -10,11 +10,14 @@ import {IconButton} from '@mui/material';
 import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
+import {HeadingText, NavMenu, ParaText, SearchBarHeading, SearchContainer, SearchResult, SearchText, SubHeadingText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
 import PersonalPostForm from '../FriendsPage/PersonalPostForm';
 import axiosInstance from '../../axios';
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import {Oval} from 'react-loader-spinner';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -59,8 +62,9 @@ class Nav extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting")
+        console.log("submitting");
 
+        trackPromise(
         axiosInstance
             .get(`search/`, {
                 params: {search_query: this.state.search}
@@ -75,6 +79,7 @@ class Nav extends React.Component {
                     searchUsers: JSON.parse(res.data)['users'],
                 });
             })
+        );
     }
 
     render() {
@@ -139,13 +144,12 @@ class Nav extends React.Component {
                     toggle={this.toggle}
                     className={this.props.className}
                     style={{
-                        left: 0,
-                        top: 100
-                    }}
-                >
-                    <ModalHeader toggle={this.toggle}>
+                        top: '20%',
+                        left: '0'
+                    }}>
+                    <ModalHeader toggle={this.toggle} >
                         <SearchContainer>
-                            <Button onClick={this.handleSubmit}>
+                            <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
                                 <BiSearch style={{height: "2rem", width: "2rem"}} />
                             </Button>
                             <Input
@@ -164,70 +168,48 @@ class Nav extends React.Component {
                                 onChange={this.handleChange}
                                 value={this.state.search}
                             />
+                            <LoadingIndicator/>
                         </SearchContainer>
                     </ModalHeader>
-                    <ModalBody style={{overflowY: "scroll"}}>
+                    <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
                         {/* User Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <BiUserCircle/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Users</span>
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
-                        {/* <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                Pamela M. Beesly<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>pambeesly@dundermifflin.org</span>
-                            </SearchText>
-                        </SearchResult> */}
                         <ul>
-                            {this.state.searchUsers.map(obj =>
-                                <li>{obj.username}</li>
+                            {this.state.searchUsers.map((user, index) =>
+                                <li key={index}>
+                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
+                                </li>
                             )}
                         </ul>
                         {/* Club Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <GrGroup/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Clubs</span>
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
-                        {/* <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                SlytherintoLibraries<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>21 Members</span>
-                            </SearchText>
-                        </SearchResult> */}
                         <ul>
-                            {this.state.searchClubs.map(obj =>
-                                <li>{obj.name}</li>
+                            {this.state.searchClubs.map((club, index) =>
+                                <li key={index}>
+                                    <Link to={`/club_profile/${club.id}`}>
+                                        <SearchUserCard username={club.name} email={club.owner.email} bio={club.description} />
+                                    </Link>
+                                </li>
                             )}
                         </ul>
                         {/* Book Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <AiOutlineBook/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Books</span>
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
-                        {/* <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                Bob the Builder<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
-                            </SearchText>
-                        </SearchResult> */}
                         <ul>
-                            {this.state.searchBooks.map(obj =>
-                                <li>{obj.title}</li>
+                            {this.state.searchBooks.map((book, index) =>
+                                <li key={index}>
+                                    <Link to={`/book_profile/${book.ISBN}`}>
+                                        <SearchBookCard name={book.title} author={book.author} image={book.image_links_small} />
+                                    </Link>
+                                </li>
                             )}
                         </ul>
                     </ModalBody>
@@ -256,4 +238,69 @@ export default Nav
 
 Nav.defaultProps = {
     isAuthenticated: true
+}
+
+const SearchButtonStyle = {
+    backgroundColor: '#653FFD',
+    color: '#fff',
+    borderRadius: '5px',
+}
+
+const SearchUserCard = (props) => {
+    const username = props.username;
+    const email = props.email;
+    const bio = props.bio.slice(0, 35) + '...';
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <Gravatar email={email} style={{ borderRadius:'100px' }} />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{username}</HeadingText><br />
+                <SubHeadingText>{email}</SubHeadingText><br />
+                <ParaText>
+                    {bio}
+                </ParaText>
+            </Col>
+        </Container>
+    );
+}
+
+const SearchBookCard = (props) => {
+    const name = props.name;
+    const author = props.author;
+    const imageURL = props.image;
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <img src={imageURL} alt="Book Cover" />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{name}</HeadingText><br />
+                <SubHeadingText>{author}</SubHeadingText><br />
+            </Col>
+        </Container>
+    );
+}
+
+const LoadingIndicator = (props) => {
+    const { promiseInProgress } = usePromiseTracker();
+
+    return (
+        promiseInProgress && 
+        <Container>
+            <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: '10'
+                }}>
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25"/>
+            </div>
+        </Container>
+    );
 }
