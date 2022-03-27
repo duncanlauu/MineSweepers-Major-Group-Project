@@ -1,6 +1,5 @@
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, \
-    PostView, \
-    ReplyView
+from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, PostView, \
+    ReplyView, OtherUserPostsView
 from django.urls import path, include
 from app.views.friend_views import FriendRequestsView, FriendsView, FriendView, OtherUserFriendsView
 from app.views.rating_views import AllRatingsView, OtherUserRatingsView, RatingView, BookRatingsView
@@ -87,6 +86,7 @@ urlpatterns = [
     path('feed/', FeedView.as_view(), name='feed'),
     path('posts/', AllPostsView.as_view(), name='all_posts'),
     path('posts/<int:post_id>', PostView.as_view(), name='post'),
+    path('posts/user/<int:other_user_id>', OtherUserPostsView.as_view(), name='other_user_posts'),
     path('posts/<int:post_id>/comments/', AllCommentsView.as_view(), name='all_comments'),
     path('posts/<int:post_id>/comments/<int:comment_id>', CommentView.as_view(), name='comment'),
     path('posts/<int:post_id>/comments/<int:comment_id>/replies/', AllRepliesView.as_view(), name='all_replies'),
