@@ -54,7 +54,7 @@ export default class App extends Component {
                                     {/* protected routes */}
                                     <Route element={<RequireAuth/>}>
                                         <Route path='sign_up/rating' element={<SignUpRating/>}/>
-                                        <Route element={<RequireRatings/>}>
+                                        {/* <Route element={<RequireRatings/>}> */}
                                             <Route path='log_out' element={<Logout/>}/>
                                             <Route path='home' element={<HomePage/>}/>
                                             <Route path='club_profile/:club_id' element={<ClubProfile/>}/>
@@ -72,7 +72,7 @@ export default class App extends Component {
                                             <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
                                             <Route path='book_profile/:book_id' element={<BookProfilePage/>}/>
                                             <Route path="/all_clubs/" element={<ListOfClubs/>}/>
-                                        </Route>
+                                        {/* </Route> */}
                                     </Route>
 
                                     {/* error, catch all */}

@@ -18,6 +18,11 @@ from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, s
     seed_friends, seed_friend_requests, seed_meetings, seed_feed, print_info
 from surprise import SVD
 
+from django.db import connections
+from django.db import close_old_connections
+
+
+
 class FrontendFunctionalityTest(LiveServerTestCase):
 
     port = 8000
@@ -74,20 +79,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
+        for conn in connections.all():
+            conn.close()
         cls.browser.quit()
 
     def setUp(self):
         # Seed the database
-        # seed_books()
+        seed_books()
         seed_default_objects()
-        # seed_users(50)
-        # seed_ratings()
-        # seed_clubs(10)
-        # seed_friends()
-        # seed_friend_requests()
-        # seed_meetings()
-        # seed_feed()
-        # print_info()
+        seed_users(50)
+        seed_ratings()
+        seed_clubs(10)
+        seed_friends()
+        seed_friend_requests()
+        seed_meetings()
+        seed_feed()
+        print_info()
 
         # # Train the recommender system model
         # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
@@ -118,6 +125,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             "birthday": "10102000"
         }
 
+        self.new_club_data = {
+            "name": "New Club Name",
+            "description": "New description"
+        }
+
     def test_everything(self):
         
         # Website title
@@ -136,11 +148,35 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
         # Sign up
-        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        self._test_log_in_here_button_goes_to_log_in()
-        self._test_unsuccessful_sign_up() 
-        self._test_successful_sign_up()
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        # self._test_log_in_here_button_goes_to_log_in()
+        # self._test_unsuccessful_sign_up() 
 
+        # Sign up and New User Book Rating Page
+        close_old_connections()
+        # for conn in connections.all():
+        #     conn.close()
+        # self._test_successful_sign_up_and_book_rating()
+
+        # self.browser.get(f"{self.live_server_url}/log_out")
+
+        # Home Page
+        self._log_in()
+        self._test_logo_button_goes_to_home_when_logged_in("home")
+        # self._test_page_has_navbar("home") #not implemented yer
+        
+        
+
+
+
+
+        # Navbar
+        # test search bar
+        self._test_navbar_new_post("home")
+        self._test_navbar_create_club("home")
+        # Maybe test for also post with club id
+        self._test_navbar_open_chat("home")
+        self._test_navbar_friends_page("home")
 
 
 
@@ -162,7 +198,60 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
                 # 
 
+    def _test_navbar_new_post(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
+        self.browser.find_element_by_name("title").send_keys("New Post Title")
+        self.browser.find_element_by_name("content").send_keys("New Post Content")
+        # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
+        self.browser.find_element_by_xpath("//button[.='Post!']").click()
+        sleep(2)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+        # check database that number of posts went up
+        # check on home page that it contains info about this post
 
+    def _test_navbar_create_club(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
+        number_of_clubs_before = Club.objects.count()
+        number_of_chats_before = Chat.objects.count()
+        self.browser.find_element_by_name("name").send_keys(self.new_club_data['name']) #ID / NAME inconsistent
+        self.browser.find_element_by_id("description").send_keys(self.new_club_data['description']) #ID / NAME inconsistent
+        sleep(2)
+        self.browser.find_element_by_xpath("//button[.='Create']").click()
+        sleep(1)
+        number_of_clubs_after = Club.objects.count()
+        number_of_chats_after = Chat.objects.count()
+        self.assertEqual(number_of_clubs_after, number_of_clubs_before+1)
+        self.assertEqual(number_of_chats_after, number_of_chats_before+1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+
+    def _test_navbar_open_chat(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
+
+    def _test_navbar_friends_page(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//a[@href='/friends_page/']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
+        sleep(1)
+
+    def _test_page_has_navbar(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        pass
+        # sleep(1)
+        # body_text = self.browser.find_element_by_tag_name("body").text
+        # print(body_text)
+        # self.assertTrue("Invalid username/password" in body_text)
+
+    def _test_page_does_not_have_navbar(self, url):
+        pass
  
     def _test_landing_page_log_in_and_sing_up_buttons(self):
         self.browser.get(f"{self.live_server_url}/")
@@ -184,6 +273,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         logo_button.click()
         sleep(1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_logo_button_goes_to_home_when_logged_in(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
+        logo_button.click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _text_sign_up_here_button_goes_to_sign_up(self):
         self.browser.get(f"{self.live_server_url}/")
@@ -248,7 +344,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue("Date has wrong format. Use one of these formats instead: YYYY-MM-DD." in  body_text)
         # Add more tests for different Sign Up error messages 
 
-    def _test_successful_sign_up(self):
+    def _test_successful_sign_up_and_book_rating(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/")
         self.wait_until_element_found("//a[@href='/sign_up']")
@@ -269,7 +365,34 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         number_of_users_after = User.objects.count()
         self.assertEqual(number_of_users_after, number_of_users_before+1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating/")
-    
+        sleep(10)
+        self.wait_until_element_found("//span[@data-index='3']", 20)
+        self.browser.find_element_by_xpath("//span[@data-index='3']").click()
+        # Do something with Clear button
+        sleep(1)
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Finish"]')
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Finish"]').click()
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+
+    # def _test_new_user_log_in_book_rating(self):
+    #     self.browser.get(f"{self.live_server_url}/")
+    #     self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+    #     log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
+    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    #     username_input = self.browser.find_element_by_name("username")
+    #     password_input = self.browser.find_element_by_name("password")
+    #     username_input.send_keys(self.new_user_data['username'])
+    #     password_input.send_keys(self.new_user_data['password'])
+    #     log_in_button.click()
+    #     sleep(1) # make method to wait a little
+    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+    #     sleep(10)
+    #     self.browser.get(f"{self.live_server_url}/sign_up/rating")
+    #     # self.browser.find_element_by_xpath("//a[@data-index='/sign_up']").click()
+    #     sleep(100)
 
     def _test_create_new_club(self):#broken
         number_of_clubs_before = Club.objects.count()
@@ -479,6 +602,19 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//button[.='New Club']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
+    # Helpers
+
+    def _log_in(self):
+        self.browser.get(f"{self.live_server_url}/log_in")
+        log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
+        username_input = self.browser.find_element_by_name("username")
+        password_input = self.browser.find_element_by_name("password")
+        username_input.send_keys(self.login_data['username'])
+        password_input.send_keys(self.login_data['password'])
+        log_in_button.click()
+        sleep(1) # make method to wait a little
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+
 # XPath is a very flexible and powerful tool. For example, you can:
 # Select elements by ID: "//input[@id='id_title']"
 # Select elements by any other attribute: "//div[@aria-label='Blank']"
@@ -487,7 +623,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 # Select the first element by innerText: "(//button[.='yes'])[1]"
 
     #from source: --
-    def wait_until_element_found(self, xpath):
+    def wait_until_element_found(self, xpath, time=15):
         WebDriverWait(self.browser, timeout=15).until(
             lambda x: self.browser.find_element_by_xpath(xpath)
         )
