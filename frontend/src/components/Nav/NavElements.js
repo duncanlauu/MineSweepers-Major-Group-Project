@@ -28,6 +28,38 @@ export const SearchText = styled.div`
     margin-left: 2rem;
     font-family: "Source Sans Pro", sans-serif;
     font-size: medium;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 20px;
+    color: #000;
+`
+
+export const SearchBarHeading = styled.text`
+    font-family: 'Source Sans Pro';
+    font-weight: 600;
+    font-size: 18px;
+    margin-left: 1rem;
+    color: #000;
+`
+
+export const HeadingText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    line-height: 20px;
+`
+
+export const SubHeadingText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #653FFD;
+    line-height: 13px;
+`
+
+export const ParaText = styled.text`
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #071C4E;
 `

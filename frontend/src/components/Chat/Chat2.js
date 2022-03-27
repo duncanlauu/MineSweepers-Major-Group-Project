@@ -2,9 +2,10 @@ import React from 'react';
 import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
-import { EmptyChatContainer, EmptyChatText, MessageText, MessagingProfileHeading, MessagingProfilePara } from './ChatElements';
+import { EmptyChatContainer, EmptyChatText, MessageSendBox,
+     MessagingProfileHeading, MessageText, MessagingProfilePara} from './ChatElements';
 
-class Chat extends React.Component {
+class Chat2 extends React.Component {
 
     state = {
         message: '',
@@ -91,7 +92,7 @@ class Chat extends React.Component {
         let prefix = '';
         const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
         if (timeDiff < 1) { // less than one minute ago
-            prefix = 'just now...';
+            prefix = 'Just now';
         } else if (timeDiff < 60 && timeDiff > 1) { // less than sixty minutes ago
             prefix = `${timeDiff} minutes ago`;
         } else if (timeDiff < 24 * 60 && timeDiff > 60) { // less than 24 hours ago
@@ -171,8 +172,20 @@ class Chat extends React.Component {
         return (
             <Hoc>
                 <div>
-                    <button onClick={this.leaveChatHandler} id="chat-message-submit" className="submit">
-                        Leave
+                    <button 
+                        onClick={this.leaveChatHandler} 
+                        id="chat-message-submit" 
+                        className="submit"
+                        style={{
+                            backgroundColor:"#E6E4E4",
+                            color: '#653FFD',
+                            fontSize: '12px',
+                            border: '0',
+                            borderRadius: '100px',
+                            fontWeight: '600'
+                        }}>
+                        <span style={{ paddingLeft: '5px',
+                            paddingRight: '5px' }}>Leave Conversation</span>
                     </button>
                 </div>
                 <div className="messages">
@@ -201,20 +214,37 @@ class Chat extends React.Component {
                         </div>
                     </ul>
                 </div>
-                <div className="message-input">
+                <div
+                    className="message-input"
+                    style={{
+                        width: "100%",
+                        alignItems:  "center",
+                        justifyContent: "center"
+                    }}>
                     <form onSubmit={this.sendMessageHandler}>
                         <div className="wrap">
+                            <MessageSendBox>
                             <input
+                                style={{
+                                    borderRadius:"100px",
+                                    fontFamily:"Source Sans Pro",
+                                    fontSize: "15px",
+                                    width: "100%",
+                                    height: "3rem",
+                                    textIndent: "2rem",
+                                    backgroundColor: "#E6E4E4",
+                                    border: '0',
+                                }}
                                 onChange={this.messageChangeHandler}
                                 value={this.state.message}
                                 required
                                 id="chat-message-input"
                                 type="text"
-                                placeholder="Write your message..."/>
-                            <i className="fa fa-paperclip attachment" aria-hidden="true"></i>
-                            <button id="chat-message-submit" className="submit">
-                                <i className="fa fa-paper-plane" aria-hidden="true"></i>
+                                placeholder="Start typing..."/>
+                            <button className="submit" style={{ backgroundColor:"#fff", borderRadius:"100px", border: "0px" }}>
+                                <img src='../../../static/images/SendMessage.svg' alt='Send Icon' />
                             </button>
+                            </MessageSendBox>
                         </div>
                     </form>
                 </div>
@@ -223,4 +253,4 @@ class Chat extends React.Component {
     };
 }
 
-export default Chat
+export default Chat2

@@ -138,8 +138,6 @@ class Post(models.Model):
     content = models.CharField(max_length=500, blank=False)
     upvotes = models.ManyToManyField(User, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image_link = models.CharField(max_length=500, blank=True)
-    book_link = models.CharField(max_length=500, blank=True)
 
     class Meta:
         ordering = ['-created_at']
