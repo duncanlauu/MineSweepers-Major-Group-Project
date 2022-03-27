@@ -1,23 +1,9 @@
 import {render, screen,} from "@testing-library/react";
-import React, {useEffect} from "react";
+import React from "react";
 import '@testing-library/jest-dom';
 import {useParams} from "../__mocks__/react-router-dom";
 import {MemoryRouter} from "react-router";
-import useAuth from "../components/hooks/useAuth";
-
-
-const AuthenticatePlease = (user) => {
-    const {setAuth} = useAuth();
-    setAuth({"username": user})
-
-    useEffect(() => {
-        console.log(user)
-    })
-
-    return (
-        <></>
-    )
-}
+import BookProfilePage from "../components/BookProfilePage/BookProfilePage";
 
 
 describe("<BookProfilePage />", () => {
@@ -29,7 +15,7 @@ describe("<BookProfilePage />", () => {
 
     it("renders", async () => {
         useParams.mockReturnValue({book_id: "0195153448"});
-        render(AuthenticatePlease("Jeb"));
+        render(<BookProfilePage/>);
 
         await screen.findByTestId("submitRatingButton")
 
