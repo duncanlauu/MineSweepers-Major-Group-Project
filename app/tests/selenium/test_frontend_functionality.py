@@ -15,7 +15,7 @@ from selenium.webdriver.common.keys import Keys
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
 from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users, seed_default_objects, \
-    seed_friends, seed_friend_requests, seed_meetings, seed_feed
+    seed_friends, seed_friend_requests, seed_meetings, seed_feed, print_info
 from surprise import SVD
 
 class FrontendFunctionalityTest(LiveServerTestCase):
@@ -58,6 +58,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         cls.browser.delete_all_cookies()
 
         
+    # jeb = User.objects.create(
+    #     username="Jeb",
+    #     first_name="Jebediah",
+    #     last_name="Kerman",
+    #     email="jeb@example.org",
+    #     bio="I love chess! I mean books, I love books.",
+    #     location="Somewhere in space I guess",
+    #     birthday=datetime(year=2011, month=6, day=24),
+    #     password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
+    # )
 
         
 
@@ -67,25 +77,30 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         cls.browser.quit()
 
     def setUp(self):
-        seed_books()
+        # Seed the database
+        # seed_books()
         seed_default_objects()
-        seed_users(50)
-        seed_ratings()
-        seed_clubs(10)
-        seed_friends()
-        seed_friend_requests()
-        seed_meetings()
-        seed_feed()
-        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        self.dump_file_path = 'app/files/dump_file'
-        self.dataframe = get_combined_data(self.csv_file_path)
-        self.data = get_dataset_from_dataframe(self.dataframe)
-        self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(self.algo, self.trainset)
-        self.pred = test_model(self.algo, self.trainset)
-        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # seed_users(50)
+        # seed_ratings()
+        # seed_clubs(10)
+        # seed_friends()
+        # seed_friend_requests()
+        # seed_meetings()
+        # seed_feed()
+        # print_info()
 
+        # # Train the recommender system model
+        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        # self.dump_file_path = 'app/files/dump_file'
+        # self.dataframe = get_combined_data(self.csv_file_path)
+        # self.data = get_dataset_from_dataframe(self.dataframe)
+        # self.trainset = get_trainset_from_dataset(self.data)
+        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        # train_model(self.algo, self.trainset)
+        # self.pred = test_model(self.algo, self.trainset)
+        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+
+        # # The user used for testing
         self.user = User.objects.get(username='Jeb')
         self.login_data = {
             "username": self.user.username,
@@ -93,47 +108,103 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         }
 
     def test_everything(self):
-        self._test_landing_page_contains_log_in_and_sing_up_buttons()
-        self._test_log_in_page() 
-        self._test_sign_up_page()
-        self._test_create_new_club()
-        self._test_log_out()
-        self._test_recommendations_page()
-        self._test_friends_page()
-        self._test_scheduling_page()
-        self._test_chat_page()
-        self._test_meetings_page()
-        self._test_club_profile_page()
-        self._test_search_bar()
-        self._test_404_page()
-        self._test_password_reset()
-
-    
-
-    # @override_settings(DEBUG=True)  
-    def _test_landing_page_contains_log_in_and_sing_up_buttons(self):
+        
+        # Website title
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up']")
 
-    # @override_settings(DEBUG=True) 
-    def _test_log_in_page(self):
+        # Landing Page
+        self._test_landing_page_log_in_and_sing_up_buttons()
+
+        # Log in
+        self._test_logo_button_goes_to_log_in_when_not_logged_in()
+        self._text_sign_up_here_button_goes_to_sign_up()
+        self._test_unsuccessful_log_in() 
+        # self._test_log_in_new_user() ??
+        self._test_successful_log_in() #Check with seeded
+
+        # # Sign up
+        # self.browser.get(f"{self.live_server_url}/")
+
+
+
+        # self
+
+        # self._test_log_in_page() 
+        # self._test_sign_up_page()
+        # self._test_create_new_club()
+        # self._test_log_out()
+        # self._test_recommendations_page()
+        # self._test_friends_page()
+        # self._test_scheduling_page()
+        # self._test_chat_page()
+        # self._test_meetings_page()
+        # self._test_club_profile_page()
+        # self._test_search_bar()
+        # self._test_404_page()
+        # self._test_password_reset()
+
+                # 
+
+
+ 
+    def _test_landing_page_log_in_and_sing_up_buttons(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
         self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
         self.wait_until_element_found("//button[.='Log In']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        self.wait_until_element_found("//button[.='New Club']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+        self.browser.execute_script("window.history.go(-1)")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.wait_until_element_found("//button[.='Sign Up']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
+        self.browser.execute_script("window.history.go(-1)")
 
-    # add _test for failed log in and _test for error messages
+    def _test_logo_button_goes_to_log_in_when_not_logged_in(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//button[.='Log In']")
+        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
+        logo_button.click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _text_sign_up_here_button_goes_to_sign_up(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//button[.='Log In']")
+        logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
+        logo_button.click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
+
+    def _test_unsuccessful_log_in(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        username_input = self.browser.find_element_by_name("username")
+        password_input = self.browser.find_element_by_name("password")
+        username_input.send_keys(self.login_data['username'])
+        password_input.send_keys("WrongPassword123")
+        log_in_button.click()
+        sleep(1) # make method to wait a little
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue("Invalid username/password" in body_text)
+
+    def _test_successful_log_in(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        username_input = self.browser.find_element_by_name("username")
+        password_input = self.browser.find_element_by_name("password")
+        username_input.send_keys(self.login_data['username'])
+        password_input.send_keys(self.login_data['password'])
+        log_in_button.click()
+        sleep(1) # make method to wait a little
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
     def _test_sign_up_page(self):
         number_of_users_before = User.objects.count()
