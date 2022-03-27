@@ -15,27 +15,27 @@ export default function SingleFeedPost(props) {
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
-        getPostCreatorName(props.feedPost.author_id)
-        getPostCreatorEmail(props.feedPost.author_id)
+        setPosterName(props.feedPost.author__username)
+        setPosterEmail(props.feedPost.author__email)
     }, []);
 
-    const getPostCreatorName = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            console.log("The post creator is: " + res.data.username)
-            setPosterName(res.data.username)
-        })
-        .catch(error => console.error(error));
-    }
-
-    const getPostCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            console.log("The post creator is: " + res.data.username)
-            setPosterEmail(res.data.email)
-        })
-        .catch(error => console.error(error));
-    }
+    // const getPostCreatorName = (author_id) => {
+    //     axiosInstance.get(`user/get_update/${author_id}/`)
+    //     .then((res) => {
+    //         console.log("The post creator is: " + res.data.username)
+    //         setPosterName(res.data.username)
+    //     })
+    //     .catch(error => console.error(error));
+    // }
+    //
+    // const getPostCreatorEmail = (author_id) => {
+    //     axiosInstance.get(`user/get_update/${author_id}/`)
+    //     .then((res) => {
+    //         console.log("The post creator is: " + res.data.username)
+    //         setPosterEmail(res.data.email)
+    //     })
+    //     .catch(error => console.error(error));
+    // }
 
     const uploadComment = (post_id, e, index) => {
         console.log(writtenComment.myComment)
@@ -89,8 +89,8 @@ export default function SingleFeedPost(props) {
                             <h5><b> @{posterName} </b></h5>
                         </Col>
                         <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
-                            {feedPost.club_id != null &&
-                                <h5> <b> Club: {feedPost.club_id} </b></h5>
+                            {feedPost.club != null &&
+                                <h5> <b> Club: {feedPost.club} </b></h5>
                             }
                         </Col>
                     </Row>

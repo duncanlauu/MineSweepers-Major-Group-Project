@@ -56,6 +56,22 @@ class FeedAPIViewTestCase(APITestCase):
         # Check posts by non friends who are in a club user is not a member of is not visible to user
         self.assertNotIn(4, post_ids)
 
+    def test_get_other_user_feed_as_friend(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 2}))
+        self.assertEqual(response.status_code, 200)
+        posts = response.data['posts']
+        for post in posts:
+            self.assertIsNone(post['club'])
+            self.assertIn('author__username', post)
+            self.assertIn('author__email', post)
+
+    def test_get_other_user_feed_as_non_friend(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 5}))
+        self.assertEqual(response.status_code, 400)
+        self.assertIsNone(response.data)
+
     # ---------- POST ---------- #
     def test_get_all_posts_of_user(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -433,6 +449,6 @@ class FeedAPIViewTestCase(APITestCase):
         club = Club.objects.get(id=1)
         posts = Post.objects.filter(club=club)
         actual_post_ids = [post.id for post in posts]
-        post_ids = [post['id'] for post in response.data]
+        post_ids = [post['id'] for post in response.data['posts']]
         self.assertEqual(len(actual_post_ids), len(post_ids))
         self.assertSetEqual(set(actual_post_ids), set(post_ids))

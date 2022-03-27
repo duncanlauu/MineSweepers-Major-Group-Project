@@ -3,7 +3,7 @@ import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane, CardGr
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
 import useGetUser from "../../helpers";
-import { DataContainer, DataContainerCard, DataContainerBelowTabs, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails, FriendListContainer, TabsText } from "./UserProfileElements";
+import { DataContainer, DataContainerCard, DataContainerBelowTabs, FriendRecommenderContainer, ProfileInfoCard, ProfileInfoContainer, ProfileInfoDetails, FriendListContainer, TabsText, SuggestedUserContainer } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPostList";
 import NonFriendList from "./NonFriendList";
@@ -121,9 +121,12 @@ const UserProfile = () => {
 
                     <Col xs="3">
                         <FriendRecommenderContainer>
-                            <h3> Suggested People </h3>
+                            
                             {/* <NonFriendList /> */}
-                            <SuggestedUserList/>
+                            <SuggestedUserContainer>
+                                {console.log("So what are we passing?: " + currentUser.id)}
+                                <SuggestedUserList currentUser={currentUser}/>
+                            </SuggestedUserContainer>
                         </FriendRecommenderContainer>
                     </Col>
                 </Row>
