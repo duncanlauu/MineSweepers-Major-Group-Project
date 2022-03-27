@@ -305,7 +305,6 @@ class Club(models.Model):
         self.banned_users.add(user)
 
     def remove_banned_user(self, user):
-        user.add_club(self)
         self.banned_users.remove(user)
 
     def banned_user_count(self):

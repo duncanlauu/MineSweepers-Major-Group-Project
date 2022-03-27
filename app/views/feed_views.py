@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from app.models import Club, Post, Comment, Reply
+from app.models import Club, Post, Comment, Reply, User
 from django.db.models import Q
 from app.serializers import PostSerializer, CommentSerializer, ReplySerializer
 from app.helpers import is_post_visible_to_user
@@ -17,7 +17,15 @@ class FeedView(APIView):
         user = request.user
         users = list(user.friends.all()) + [user]
         clubs = list(Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).all())
-        posts = Post.objects.filter(Q(club__in=clubs) | Q(author__in=users)).values()
+        posts = Post.objects.filter(Q(club__in=clubs) | Q(author__in=users))\
+            .values('id',
+                    'author',
+                    'author__username',
+                    'author__email',
+                    'club',
+                    'title',
+                    'content',
+                    'created_at')
         return Response({'posts': posts}, status=status.HTTP_200_OK)
 
 class AllPostsView(APIView):
@@ -84,6 +92,31 @@ class PostView(APIView):
             post.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class OtherUserPostsView(APIView):
+    """API View of all posts from another user"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, other_user_id):
+        try:
+            user = request.user
+            other_user = User.objects.get(pk=other_user_id)
+            is_friends = other_user.friends.filter(username=user.username).exists()
+            if is_friends:
+                posts = Post.objects.filter(author=other_user, club__isnull=True) \
+                    .values('id',
+                            'author',
+                            'author__username',
+                            'author__email',
+                            'club',
+                            'title',
+                            'content',
+                            'created_at')
+                return Response({'posts': posts}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class AllCommentsView(APIView):
@@ -264,9 +297,16 @@ class ClubFeedView(APIView):
     def get(self, request, club_id):
         try:
             club = Club.objects.get(id=club_id)
-            posts = Post.objects.filter(club=club)
-            serializer = PostSerializer(posts, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            posts = Post.objects.filter(club=club)\
+                .values('id',
+                    'author',
+                    'author__username',
+                    'author__email',
+                    'club',
+                    'title',
+                    'content',
+                    'created_at')
+            return Response({'posts': posts}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

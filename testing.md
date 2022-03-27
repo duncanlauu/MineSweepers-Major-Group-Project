@@ -44,7 +44,7 @@ For example, the test_recommender_system_view only has 1 test, but it calls 44 f
 This approach was discussed during one of our advisory meetings and was deemed acceptable.
 
 
-At the time of writing, there are 313 tests (all passing) after running the 
+At the time of writing, there are 335 tests (all passing) after running the 
 ```
 $ python3 manage.py test
 ```
