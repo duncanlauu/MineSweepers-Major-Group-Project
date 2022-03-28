@@ -192,8 +192,8 @@ class Nav extends React.Component {
                         <ul>
                             {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
-                                    <Link to={`/club_profile/${club.id}`}>
-                                        <SearchUserCard username={club.name} email={club.owner.email} bio={club.description} />
+                                    <Link to={`/club_profile/${club.id}/`}>
+                                        <SearchClubCard name={club.name} ownerEmail={club.owner.email} description={club.description} />
                                     </Link>
                                 </li>
                             )}
@@ -261,6 +261,27 @@ const SearchUserCard = (props) => {
                 <SubHeadingText>{email}</SubHeadingText><br />
                 <ParaText>
                     {bio}
+                </ParaText>
+            </Col>
+        </Container>
+    );
+}
+
+const SearchClubCard = (props) => {
+    const name = props.name;
+    const ownerEmail = props.ownerEmail;
+    const description = props.description.slice(0, 35) + '...';
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <Gravatar email={ownerEmail} style={{ borderRadius:'100px' }} />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{name}</HeadingText><br />
+                <SubHeadingText>{ownerEmail}</SubHeadingText><br />
+                <ParaText>
+                    {description}
                 </ParaText>
             </Col>
         </Container>
