@@ -173,3 +173,9 @@ export const PostHeadingText = styled.text`
     font-size: 18px;
     color: #585858;
 `
+export const BookLine = styled.div`
+    height: 5rem;
+    width: 100%;
+    background-color: #F5F5F5;
+    border-radius: 0px 10px 10px 0px;
+`

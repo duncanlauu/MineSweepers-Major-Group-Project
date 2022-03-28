@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axiosInstance from '../../axios'
 import {Row, Col} from "reactstrap"
-import { FriendLine,} from "./UserProfileElements";
+import { BookLine,} from "./UserProfileElements";
 import ReactStars from 'react-stars'
 import { useNavigate } from "react-router";
 
@@ -34,7 +34,7 @@ export default function SingleBookRating(props) {
 
     return (
         <div>
-            <FriendLine>
+            <BookLine>
                 <Row style={{height: "5rem"}} onClick={navigateToBook} >
 
                     <Col xs="2">
@@ -53,7 +53,7 @@ export default function SingleBookRating(props) {
                             color2={'#ffd700'} />
                     </Col>
                 </Row>
-            </FriendLine>
+            </BookLine>
 
         </div>
     )
