@@ -17,6 +17,8 @@ export default function SinglePersonalPost(props) {
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = useGetUser();
 
+
+
     useEffect(() => {
         setPersonalPost(props.personalPost)
     }, []);
@@ -77,23 +79,25 @@ export default function SinglePersonalPost(props) {
                 <CardHeader>
                     <Row >
                         <Col xs="1">
-                            <Gravatar email={currentUser.email} size={30} style={{ 
+                            {/* <Gravatar email={currentUser.email} size={30} style={{ 
                                         borderRadius: "50px",
                                         marginTop: "0rem",
                                         marginBottom: "0rem"
                                     }} 
-                            />
+                            /> */}
                         </Col>
-                        <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div>
-                                <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
-                                    Edit                    
-                                </Button>
-                                <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-                                    X
-                                </Button>
-                            </div>
-                        </Col>
+                        { props.requestedUser_id == undefined && 
+                            <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <div>
+                                    <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
+                                        Edit                    
+                                    </Button>
+                                    <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
+                                        X
+                                    </Button>
+                                </div>
+                            </Col>
+                        }
                     </Row>    
                 </CardHeader>
 

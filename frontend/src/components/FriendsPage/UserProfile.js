@@ -176,7 +176,7 @@ const UserProfile = () => {
                             <DataContainerBelowTabs>
                                 <TabContent activeTab={currentActiveTab}>
                                     <TabPane tabId="1">
-                                        <PersonalPostList/>
+                                        <PersonalPostList requestedUser_id={user_id}/>
                                     </TabPane>
 
                                     <TabPane tabId="2">

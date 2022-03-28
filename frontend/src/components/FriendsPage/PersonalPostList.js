@@ -8,7 +8,11 @@ export default function PersonalPostList(props){
     const [myPersonalPosts, setPersonalPosts] = useState("");
     
     useEffect(() => {
-        getPersonalPosts()
+        if(props.requestedUser_id == undefined){
+            getPersonalPosts()
+        }else{
+            getPersonalPostsOfOtherUser()
+        }
     }, []);
 
     const getPersonalPosts = () => {
@@ -16,6 +20,18 @@ export default function PersonalPostList(props){
             .get("posts/")
             .then((res) => {
                 console.log("my posts:")
+                console.log(res.data)
+                const allPersonalPosts = res.data.posts;
+                setPersonalPosts(allPersonalPosts)
+            })
+            .catch(error => console.error(error));
+    }
+
+    const getPersonalPostsOfOtherUser = () => {
+        axiosInstance
+            .get(`posts/user/${props.requestedUser_id}`)
+            .then((res) => {
+                console.log("EYOO other user's posts!!:")
                 console.log(res.data)
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts)
@@ -34,7 +50,7 @@ export default function PersonalPostList(props){
                 myPersonalPosts.map((personalPost, index) => {
                     return (
                         <div key={personalPost.id}>
-                            <SinglePersonalPost personalPost={personalPost} updatePageAfterDeletion={updatePageAfterDeletion}/>
+                            <SinglePersonalPost personalPost={personalPost} updatePageAfterDeletion={updatePageAfterDeletion} requestedUser_id={props.requestedUser_id}/>
                         </div>
                     )
                 })

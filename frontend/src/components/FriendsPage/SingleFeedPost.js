@@ -20,6 +20,8 @@ export default function SingleFeedPost(props) {
         setFeedPosts(props.feedPost)
         setPosterName(props.feedPost.author__username)
         setPosterEmail(props.feedPost.author__email)
+        // getPostCreatorName(props.feedPost.author_id)
+        // getPostCreatorEmail(props.feedPost.author_id)
     }, []);
 
     // const getPostCreatorName = (author_id) => {
@@ -30,11 +32,11 @@ export default function SingleFeedPost(props) {
     //     })
     //     .catch(error => console.error(error));
     // }
-    //
+    
     // const getPostCreatorEmail = (author_id) => {
     //     axiosInstance.get(`user/get_update/${author_id}/`)
     //     .then((res) => {
-    //         console.log("The post creator is: " + res.data.username)
+    //         console.log("The post creator is!: " + res.data.email)
     //         setPosterEmail(res.data.email)
     //     })
     //     .catch(error => console.error(error));
@@ -62,7 +64,7 @@ export default function SingleFeedPost(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${feedPost.author_id}/`)
+        navigate(`/friends_page/${props.feedPost.author}/`)
         window.location.reload()
     }
 
