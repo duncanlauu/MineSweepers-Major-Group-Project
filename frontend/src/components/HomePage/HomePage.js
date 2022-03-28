@@ -20,8 +20,6 @@ import FeedPostList from '../FriendsPage/FeedPostList'
 
 const HomePage = () => {
     const currentUser = useGetUser();
-    console.log("Buenos Dias Home")
-    console.log("Current user logged in: " + currentUser.id)
 
     let calculatedRecommendations = false;
     useEffect(() => {

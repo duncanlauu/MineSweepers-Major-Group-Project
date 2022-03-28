@@ -3,10 +3,13 @@ import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
 import { UserNameContainer, UserNameText } from "./UserProfileElements";
+import { useNavigate } from "react-router";
 
 export default function SingleFriendRequest(props) {
 
     const [friendRequest, setSingleFriendRequest] = useState("");
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         setSingleFriendRequest(props.friendRequest)
@@ -38,18 +41,23 @@ export default function SingleFriendRequest(props) {
             })
     }
 
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${friendRequest.sender}/`)
+        window.location.reload()
+    }
+
     return (
         <div className="friendRequest" key={friendRequest.sender}>
             <Row style={{height: "5rem"}}>
                 <Col xs="2">
-                    <Gravatar email={friendRequest.sender__email} size={50} style={{ 
+                    <Gravatar email={friendRequest.sender__email} size={50} onClick={navigateToProfile} style={{ 
                             borderRadius: "50px",
                             marginBottom: "1rem"
                         }} 
                     />
                 </Col>
                 <Col xs="5" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <UserNameContainer>
+                    <UserNameContainer onClick={navigateToProfile}>
                         <UserNameText>
                             {friendRequest.sender__username} 
                         </UserNameText>
