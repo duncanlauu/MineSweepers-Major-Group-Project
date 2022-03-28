@@ -35,27 +35,27 @@ describe("Components exist", () => {
         })
     })
 
-    // test("contains filter button for genre recommendations", async () => {
-    //     act(() => {
-    //         render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
-    //     })
+    test("contains filter button for genre recommendations", async () => {
+        act(() => {
+            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+        })
 
-    //     await waitFor(() => {
-    //         const filterButton = screen.getByTestId("myTop10Recommendations")
-    //         expect(filterButton).toBeInTheDocument()
-    //     })
-    // })
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("myTop10Recommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
 
-    // test("contains filter button for global top 10", async () => {
-    //     act(() => {
-    //         render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
-    //     })
+    test("contains filter button for global top 10", async () => {
+        act(() => {
+            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+        })
 
-    //     await waitFor(() => {
-    //         const filterButton = screen.getByTestId("globalTop10Recommendations")
-    //         expect(filterButton).toBeInTheDocument()
-    //     })
-    // })
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("globalTop10Recommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
 })
 
 

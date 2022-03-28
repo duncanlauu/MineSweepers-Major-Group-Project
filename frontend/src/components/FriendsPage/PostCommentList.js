@@ -9,19 +9,17 @@ export default function PostCommentList(props){
     const [currentPost, setCurrentPost] = useState([]);
     const [commentsUnderPost, setCommentsUnderPost] = useState([]);
     const [writtenComment, updateWrittenComment] = useState("dummy")
-    
-    
+
+
     useEffect(() => {
         setCurrentPost(props.post)
         getCommentsUnderPost()
     }, []);
 
     const getCommentsUnderPost = () => {
-        console.log(props.post.id)
         axiosInstance
             .get(`posts/${props.post.id}/comments/`)
             .then((res) => {
-                console.log(res.data.comments)
                 const allCommentsUnderPost = res.data.comments;
                 setCommentsUnderPost(allCommentsUnderPost);
             })
@@ -35,13 +33,13 @@ export default function PostCommentList(props){
     }
 
     const uploadComment = (e, index) => {
-        console.log(writtenComment.myComment)
+        // console.log(writtenComment.myComment)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/`, {
                 content: writtenComment.myComment,
             })
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 getCommentsUnderPost()
 
             })
@@ -53,13 +51,13 @@ export default function PostCommentList(props){
 
     const displayCommentsUnderPost = (e) => {
         if (commentsUnderPost.length > 0) {
-            console.log(commentsUnderPost);
+            // console.log(commentsUnderPost);
             return (
                 <div>
                     <div style={{display: "flex", justifyContent: "center"}}>
                         <CommentSectionContainer>
                             {commentsUnderPost.map((comment, index) => {
-                                console.log(comment);
+                                // console.log(comment);
                                 return (
                                     <div key={comment.id} style={{marginBottom: "1rem"}}>
                                         <CommentLine>
