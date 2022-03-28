@@ -180,7 +180,9 @@ class Nav extends React.Component {
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
+                                    <Link to={`/friends_page/${user.id}`} >
                                     <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
+                                    </Link>
                                 </li>
                             )}
                         </ul>
