@@ -52,7 +52,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            const filterButton = screen.getByTestId("global10Recommendations")
+            const filterButton = screen.getByTestId("globalTop10Recommendations")
             expect(filterButton).toBeInTheDocument()
         })
     })
