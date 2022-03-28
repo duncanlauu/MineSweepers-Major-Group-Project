@@ -14,14 +14,23 @@ export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
     const [writtenComment, updateWrittenComment] = useState("dummy")
+    const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = useGetUser();
 
-
-
     useEffect(() => {
         setPersonalPost(props.personalPost)
+        getPostCreatorEmail(props.personalPost.author)
     }, []);
+
+    const getPostCreatorEmail = (author_id) => {
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            console.log("The post creator is!: " + res.data.email)
+            setPosterEmail(res.data.email)
+        })
+        .catch(error => console.error(error));
+    }
 
     const deletePost = (post_id, e) => {
         axiosInstance
@@ -32,28 +41,6 @@ export default function SinglePersonalPost(props) {
             })
             .catch(error => console.error(error));
     }
-
-    const uploadComment = (post_id, e, index) => {
-        console.log(writtenComment.myComment)
-        axiosInstance
-            .post(`posts/${post_id}/comments/`, {
-                content: writtenComment.myComment,
-            })
-            .then((res) => {
-                console.log(res.data)
-                const comment = { author: localStorage.username, content: writtenComment.myComment }
-                console.log(commentsRef.current[index])
-                commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
-            })
-    }
-
-    // const handleCommentChange = (e) => {
-    //     updateWrittenComment({
-    //         writtenComment,
-    //         [e.target.name]: e.target.value,
-    //     })
-    // }
 
     const changeModalVisibility = () => {
         setModalVisibility(!isModalVisible);
@@ -79,12 +66,14 @@ export default function SinglePersonalPost(props) {
                 <CardHeader>
                     <Row >
                         <Col xs="1">
-                            {/* <Gravatar email={currentUser.email} size={30} style={{ 
-                                        borderRadius: "50px",
-                                        marginTop: "0rem",
-                                        marginBottom: "0rem"
-                                    }} 
-                            /> */}
+                            { props.requestedUser_id !== undefined && 
+                                <Gravatar email={posterEmail} size={30} style={{ 
+                                            borderRadius: "50px",
+                                            marginTop: "0rem",
+                                            marginBottom: "0rem"
+                                        }} 
+                                />
+                            }
                         </Col>
                         { props.requestedUser_id == undefined && 
                             <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>

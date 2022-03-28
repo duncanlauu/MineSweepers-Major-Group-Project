@@ -32,7 +32,8 @@ export default function PersonalPostList(props){
             .get(`posts/user/${props.requestedUser_id}`)
             .then((res) => {
                 console.log("EYOO other user's posts!!:")
-                console.log(res.data)
+                console.log("by " , props.requestedUser_id)
+                console.log(res)
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts)
             })
