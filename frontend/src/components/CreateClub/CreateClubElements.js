@@ -9,6 +9,21 @@ export const FormContainer = styled.div`
     justify-content: center;
 `
 
+export const RadioHeading = styled.text`
+    font-family: 'Source Sans Pro';
+    color: #000;
+    font-weight: 600;
+    font-size: 15px;
+`
+
+export const RadioPara = styled.text`
+    font-family: 'Source Sans Pro';
+    color: #000;
+    opacity: 75%;
+    font-weight: 500;
+    font-size: 12px;
+`
+
 export const HeadingText = styled.text`
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 30px;
