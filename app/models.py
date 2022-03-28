@@ -136,54 +136,40 @@ class Post(models.Model):
         "Club", on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=100, blank=False)
     content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(User, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image_link = models.CharField(max_length=500, blank=True)
-    book_link = models.CharField(max_length=500, blank=True)
 
     class Meta:
         ordering = ['-created_at']
 
-    def upvote_post(self):
-        self.upvotes += 1
+    def upvote_post(self, user):
+        upvote_exist = self.upvotes.filter(username=user.username).exists()
+        if upvote_exist:
+            self.upvotes.remove(user)
+        else:
+            self.upvotes.add(user)
         self.save()
 
-    def downvote_post(self):
-        self.downvotes += 1
-        self.save()
-
-    def modify_image_link(self, link):
-        self.image_link = link
-        self.save()
-
-    def modify_book_link(self, link):
-        self.book_link = link
-        self.save()
-
-    def modify_content(self, new_content):
-        self.content = new_content
-        self.save()
-
-    def modify_title(self, new_title):
-        self.title = new_title
-        self.save()
+    def get_upvotes(self):
+        return self.upvotes.count()
 
 
 class Response(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(User, related_name='%(class)s_upvotes', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def upvote(self):
-        self.upvotes += 1
+    def upvote(self, user):
+        upvote_exist = self.upvotes.filter(username=user.username).exists()
+        if upvote_exist:
+            self.upvotes.remove(user)
+        else:
+            self.upvotes.add(user)
         self.save()
 
-    def downvote(self):
-        self.downvotes += 1
-        self.save()
+    def get_upvotes(self):
+        return self.upvotes.count()
 
     class Meta:
         abstract = True
@@ -191,9 +177,6 @@ class Response(models.Model):
 
 class Comment(Response):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
-    def add_reply(self, reply):
-        self.reply_set.add(reply)
 
 
 class Reply(Response):
@@ -322,7 +305,6 @@ class Club(models.Model):
         self.banned_users.add(user)
 
     def remove_banned_user(self, user):
-        user.add_club(self)
         self.banned_users.remove(user)
 
     def banned_user_count(self):

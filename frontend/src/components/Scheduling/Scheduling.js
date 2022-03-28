@@ -42,6 +42,7 @@ export default function Scheduling() {
                                         book_list.push({id: res.data[i]['book']['ISBN'], name: res.data[i]['book']['title']})
                                     }
                                     setBooks(book_list)
+                                    console.log(book_list)
                                 }
                             )
                     }
@@ -98,7 +99,7 @@ export default function Scheduling() {
                 description: formData.description,
                 club: club_id,
                 organiser: user.id,
-                book: bookData,
+                book: findBookISBN(bookData),
                 start_time: formData.start_time,
                 end_time: formData.end_time,
                 link: formData.link
@@ -115,16 +116,15 @@ export default function Scheduling() {
                 setEndTimeErr(e.response.data.end_time)
                 setLinkErr(e.response.data.link)
             })
+    }
 
-
-        // axiosInstance
-        //     .get('singleclub/3', {})
-        //     .then((res) => {
-        //         club = res.data
-        //         console.log(res)
-        //     })
-
-
+    const findBookISBN = () => {
+        for (let i = 0; i < books.length; ++i) {
+            if (books[i]['name'] === bookData) {
+                return books[i]['id'];
+            }
+        }
+        return "hello";
     }
 
     if (books.length > 0) {

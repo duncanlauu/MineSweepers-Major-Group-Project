@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from app.models import Club, Post, Comment, Reply
+from app.models import Club, Post, Comment, Reply, User
 from django.db.models import Q
 from app.serializers import PostSerializer, CommentSerializer, ReplySerializer
 from app.helpers import is_post_visible_to_user
@@ -17,7 +17,15 @@ class FeedView(APIView):
         user = request.user
         users = list(user.friends.all()) + [user]
         clubs = list(Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).all())
-        posts = Post.objects.filter(Q(club__in=clubs) | Q(author__in=users)).values()
+        posts = Post.objects.filter(Q(club__in=clubs) | Q(author__in=users))\
+            .values('id',
+                    'author',
+                    'author__username',
+                    'author__email',
+                    'club',
+                    'title',
+                    'content',
+                    'created_at')
         return Response({'posts': posts}, status=status.HTTP_200_OK)
 
 class AllPostsView(APIView):
@@ -64,20 +72,15 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            if post.author == user:
-                # can edit post if user is author of post
+            if request.data['action'] == 'edit' and post.author == user:
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            if is_post_visible_to_user(user, post):  
-                # anyone other than user that can view the post can upvote or downvote post
+            if is_post_visible_to_user(user, post):
                 if request.data['action'] == 'upvote':
-                    post.upvote_post()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    post.downvote_post()
+                    post.upvote_post(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
@@ -89,6 +92,31 @@ class PostView(APIView):
             post.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class OtherUserPostsView(APIView):
+    """API View of all posts from another user"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, other_user_id):
+        try:
+            user = request.user
+            other_user = User.objects.get(pk=other_user_id)
+            is_friends = other_user.friends.filter(username=user.username).exists()
+            if is_friends:
+                posts = Post.objects.filter(author=other_user, club__isnull=True) \
+                    .values('id',
+                            'author',
+                            'author__username',
+                            'author__email',
+                            'club',
+                            'title',
+                            'content',
+                            'created_at')
+                return Response({'posts': posts}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class AllCommentsView(APIView):
@@ -152,7 +180,7 @@ class CommentView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
-            if comment.author == request.user:
+            if request.data['action'] == 'edit' and comment.author == request.user:
                 serializer = CommentSerializer(comment, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
@@ -160,21 +188,16 @@ class CommentView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post:
                 if request.data['action'] == 'upvote':
-                    comment.upvote()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    comment.downvote()
+                    comment.upvote(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # TODO: post id parameter not required
     def delete(self, request, post_id, comment_id):
         """Delete a comment from a post either if you are the author of the comment or the post it is in"""
         user = request.user
         comment = Comment.objects.get(id=comment_id)
-        # post = comment.post
         post = Post.objects.get(id=post_id)
         if comment.author == user or post.author == user:
             comment.delete()
@@ -243,27 +266,20 @@ class ReplyView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
-            # TODO: what happens when user tries to upvote their own reply, serializers.errors does not
-            #       return anything
-            if reply.author == request.user:
-                reply_serializer = ReplySerializer(Reply, data=request.data, partial=True)
+            if request.data['action'] == 'edit' and reply.author == request.user:
+                reply_serializer = ReplySerializer(reply, data=request.data, partial=True)
                 if reply_serializer.is_valid():
-                    # TODO: Edit reply does not save here, throws 400
                     reply_serializer.save()
                     return Response(reply_serializer.data, status=status.HTTP_200_OK)
                 return Response(reply_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             if is_post_visible_to_user(user, post) and comment.post == post and reply.comment == comment:
                 if request.data['action'] == 'upvote':
-                    reply.upvote()
-                    return Response(status=status.HTTP_200_OK)
-                elif request.data['action'] == 'downvote':
-                    reply.downvote()
+                    reply.upvote(user)
                     return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except Reply.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # TODO: refactor, comment id not used
     def delete(self, request, post_id, comment_id, reply_id):
         """Delete a reply from a comment either if you are the author of the reply or the post it is in"""
         user = request.user
@@ -273,3 +289,24 @@ class ReplyView(APIView):
             reply.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class ClubFeedView(APIView):
+    """API View to get club feed"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, club_id):
+        try:
+            club = Club.objects.get(id=club_id)
+            posts = Post.objects.filter(club=club)\
+                .values('id',
+                    'author',
+                    'author__username',
+                    'author__email',
+                    'club',
+                    'title',
+                    'content',
+                    'created_at')
+            return Response({'posts': posts}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+

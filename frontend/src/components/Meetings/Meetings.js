@@ -3,7 +3,6 @@ import axiosInstance from "../../axios";
 import {Col, Container, Row} from "reactstrap";
 import {HeadingText, ParaText} from "../CreateClub/CreateClubElements";
 import useGetUser from "../../helpers";
-import Gravatar from "react-gravatar";
 import {MeetingProfile} from "./MeetingPageElements";
 
 
@@ -61,7 +60,9 @@ export default function Meetings() {
                                                     </a>
                                                 </Col>
                                                 <Col xs={6}>
-                                                    {meeting['name']}
+                                                    <a href={`/club_profile/${meeting['club']}`}>
+                                                        {meeting['name']}
+                                                    </a>
                                                 </Col>
                                                 <Col xs={4} onClick={() => downloadCalendar(meeting['id'])}>
                                                     Click here to download the event

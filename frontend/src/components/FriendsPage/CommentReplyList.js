@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SingleCommentReply from "./SingleCommentReply";
+import { ReplyLine } from "./UserProfileElements";
 
 export default function CommentReplyList(props){
 
@@ -20,8 +21,6 @@ export default function CommentReplyList(props){
         axiosInstance
             .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
-                console.log("Sick replies:::")
-                console.log(res.data.replies)
                 const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
             })
@@ -36,15 +35,15 @@ export default function CommentReplyList(props){
     }
 
     const uploadReply = (e, index) => {
-        console.log(writtenReply.myReply)
-        console.log(currentPost.id)
-        console.log(currentComment.id)
+        // console.log(writtenReply.myReply)
+        // console.log(currentPost.id)
+        // console.log(currentComment.id)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 getRepliesUnderComments()
             })
     }
@@ -55,32 +54,41 @@ export default function CommentReplyList(props){
 
     const displayCommentsUnderPost = (e) => {
         if (repliesUnderComment.length > 0) {
-            console.log(repliesUnderComment);
+            // console.log(repliesUnderComment);
             return (
                 <div>
-                    <Row>
-                        <Col xs="8">
-                            <Input type="textarea" rows="1"
-                                id="myReply"
-                                name="myReply"
-                                onChange={handleReplyChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            /> 
-                        </Col>
-                        <Col xs="4">
-                            <Button onClick={(e) => uploadReply(e, 0)}>
-                                <p> Send </p>
-                            </Button> 
-                        </Col>
-                    </Row>
+
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <Row style={{marginBottom: "1rem"}}>
+                            <Col xs="9">
+                                <Input type="textarea" rows="1"
+                                    id="myReply"
+                                    name="myReply"
+                                    placeholder="Leave a reply here..."
+                                    onChange={handleReplyChange}
+                                    style={{ border: "0", backgroundColor: "#fff", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem"}}
+                                /> 
+                            </Col>
+                            <Col xs="3">
+                                <Button onClick={(e) => uploadReply(e, 0)} 
+                                    style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
+                                >
+                                    <p> Send </p>
+                                </Button> 
+                            </Col>
+                        </Row>
+                    </div>
+
 
                     {repliesUnderComment.map((reply, index) => {
-                        console.log(reply);
+                        // console.log(reply);
                         return (
-                            <div key={reply.id}> 
-                                <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
-                                    reply={reply} updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
-                                />
+                            <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
+                                <ReplyLine>
+                                    <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
+                                        reply={reply} updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
+                                    />
+                                </ReplyLine>
                             </div>
                         )
                     })}
@@ -89,22 +97,26 @@ export default function CommentReplyList(props){
         } else {
             return(
                 <div>
-                    <Row>
-                        <Col xs="8">
-                            <Input type="textarea" rows="1"
-                                id="myReply"
-                                name="myReply"
-                                onChange={handleReplyChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                            /> 
-                        </Col>
-                        <Col xs="4">
-                            <Button onClick={(e) => uploadReply(e, 0)}>
-                                <p> Send </p>
-                            </Button> 
-                        </Col>
-                    </Row>
-                    <h5> You don't have any replies yet. </h5>
+                   <div style={{display: "flex", justifyContent: "center"}}>
+                        <Row style={{marginBottom: "1rem"}}>
+                            <Col xs="9">
+                                <Input type="textarea" rows="1"
+                                    id="myReply"
+                                    name="myReply"
+                                    placeholder="Leave a reply here..."
+                                    onChange={handleReplyChange}
+                                    style={{ border: "0", backgroundColor: "#fff", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem"}}
+                                /> 
+                            </Col>
+                            <Col xs="3">
+                                <Button onClick={(e) => uploadReply(e, 0)} 
+                                    style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
+                                >
+                                    <p> Send </p>
+                                </Button> 
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
             )
             
