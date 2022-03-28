@@ -113,7 +113,7 @@ class Chat2 extends React.Component {
                 key={message.id}
                 style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png"/>
+                <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
                 <p>
                     <MessagingProfileHeading>{message.author}</MessagingProfileHeading>
                     <br/>
@@ -156,14 +156,6 @@ class Chat2 extends React.Component {
         } else {
             return null
         }
-    }
-
-    emptyChatWindow() {
-        return(
-            <>
-
-            </>
-        );
     }
 
     render() {
