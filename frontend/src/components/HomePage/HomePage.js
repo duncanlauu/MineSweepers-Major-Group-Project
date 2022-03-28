@@ -48,7 +48,6 @@ const HomePage = () => {
                 .catch(error => {
                     console.log(error);
                 })
-            postRecommenderCalculation();
         }
     }, [currentUser])
 
@@ -71,17 +70,6 @@ const HomePage = () => {
             })
             .catch(error => {
                 console.log(error);
-            })
-    }
-
-    const postRecommenderCalculation = () => {
-        axiosInstance
-            .post(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
-            .then((res) => {
-                console.log("friend recommendation in home post works!")
-                console.log(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
-                console.log(res)
-                // navigate("/friends_page")
             })
     }
 
