@@ -82,9 +82,11 @@ class RecommenderAPITestCase(APITestCase):
         self._post_top_n_clubs_random_books_test()
         self._post_top_n_clubs_genre_books_test()
         self._post_top_n_clubs_top_club_books_test()
+        self._post_precompute_all()
         self._post_with_no_action_test()
         self._post_retrain_test()
         self._post_with_wrong_action_test()
+        self._post_with_wrong_parameters_test()
         self._get_top_n_test()
         self._get_top_n_for_genre_test()
         self._get_top_n_for_club_test()
@@ -99,6 +101,7 @@ class RecommenderAPITestCase(APITestCase):
         self._get_top_n_clubs_genre_books_test()
         self._get_top_n_clubs_top_club_books_test()
         self._get_with_no_action_test()
+        self._get_with_wrong_parameters_test()
         self._get_with_wrong_action_test()
         self._get_top_between_m_and_n_test()
         self._get_top_between_m_and_n_for_genre_test()
@@ -256,6 +259,28 @@ class RecommenderAPITestCase(APITestCase):
         self._assert_correct(response, top_n)
         self.assertEqual(num_of_recommendations_after - num_of_recommendations_before,
                          min(self.n, Club.objects.count()))
+
+    def _post_precompute_all(self):
+        args = {'m': self.m, 'n': self.n, 'id': self.uid, 'action': 'precompute_all'}
+        url = reverse('app:recommender_top_n', kwargs=args)
+        num_of_recommendations_before_books = BookRecommendation.objects.count()
+        num_of_recommendations_before_users = UserRecommendation.objects.count()
+        num_of_recommendations_before_clubs = ClubRecommendation.objects.count()
+        response = self.client.post(url)
+        top_n_1 = get_top_n(self.uid, self.trainset, self.algo, self.n)
+        num_of_recommendations_after_books = BookRecommendation.objects.count()
+        top_n_2 = get_top_n_users_random(self.uid, self.trainset, self.algo, self.n)
+        num_of_recommendations_after_users = UserRecommendation.objects.count()
+        clubs = list(Club.objects.all())
+        top_n_3 = get_top_n_clubs_using_clubs_books(self.uid, self.algo, clubs, self.n)
+        num_of_recommendations_after_clubs = ClubRecommendation.objects.count()
+        top_n = top_n_1
+        top_n.extend(top_n_2)
+        top_n.extend(top_n_3)
+        self._assert_correct(response, top_n)
+        self.assertEqual(num_of_recommendations_after_books, num_of_recommendations_before_books)
+        self.assertEqual(num_of_recommendations_after_users, num_of_recommendations_before_users)
+        self.assertEqual(num_of_recommendations_after_clubs, num_of_recommendations_before_clubs)
 
     def _post_with_no_action_test(self):
         url = reverse('app:recommender', kwargs={})

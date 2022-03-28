@@ -154,3 +154,17 @@ class SingleClubAPITestCase(TestCase):
         response = self.client.put(
             reverse('app:manage_club', kwargs={'id': 1, 'action': 'invalid', 'user_id': 4}))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_valid_delete(self):
+        club_count_before = Club.objects.count()
+        response = self.client.delete(reverse('app:retrieve_single_club', kwargs={'id': 1}))
+        club_count_after = Club.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(club_count_before, club_count_after + 1)
+
+    def test_invalid_delete(self):
+        club_count_before = Club.objects.count()
+        response = self.client.delete(reverse('app:retrieve_single_club', kwargs={'id': 10}))
+        club_count_after = Club.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(club_count_before, club_count_after)

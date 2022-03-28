@@ -50,6 +50,18 @@ class SingleUserTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_put_invalid_single_user(self):
+        response = self.client.put(
+            reverse('app:get_update', kwargs={'id': 1}),
+            data=json.dumps(self.invalid_data),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_post_invalid_single_user(self):
+        response = self.client.post(reverse('app:create_user'), self.invalid_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_get_valid_single_user(self):
         response = self.client.get(
             reverse('app:get_update', kwargs={'id': 1}))

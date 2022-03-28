@@ -112,7 +112,6 @@ class FriendsAPITestCase(APITestCase):
         self.assertEqual(friend_count_before, friend_count_after)
         self.assertEqual(friend_request_count_before, friend_request_count_after)
 
-
     def test_accept_incoming_friend_request_with_non_existing_request(self):
         user = User.objects.get(pk=8)
         friend_request_count_before = FriendRequest.objects.count()
