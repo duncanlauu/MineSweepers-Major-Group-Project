@@ -26,7 +26,6 @@ export default function SinglePersonalPost(props) {
     const getPostCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is!: " + res.data.email)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));

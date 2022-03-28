@@ -24,8 +24,6 @@ const UserProfile = () => {
     const [isLoggedInUser, setIsLoggedInUser] =useState(true)
     
     useEffect(() => {
-        console.log("User is", user_id) 
-        console.log("Print current logged user: " , currentLoggedInUser)  
         if(user_id== currentLoggedInUser.id || user_id === undefined || user_id === ""){
             console.log("So user_id is " + user_id + " and currentLoggedInUser.id is " + currentLoggedInUser.id)
             axiosInstance.get('/get_current_user/')
@@ -44,7 +42,6 @@ const UserProfile = () => {
                 if(res.data.id == null){
                     navigate('/error/')
                 }
-                console.log('Res data is: ',res)
                 setCurrentUser(res.data)
                 setIsLoggedInUser(false)
             })
@@ -185,7 +182,6 @@ const UserProfile = () => {
                                         }
                                         
                                         <FriendListContainer>
-                                            {console.log("So what user_id are we passing???: " + user_id)}
                                             <FriendsList requestedUser_id={user_id}/>
                                         </FriendListContainer>
                                     </TabPane>

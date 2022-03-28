@@ -20,15 +20,11 @@ import FeedPostList from '../FriendsPage/FeedPostList'
 
 const HomePage = () => {
     const currentUser = useGetUser();
-    console.log("Buenos Dias Home")
-    console.log("Current user logged in: " + currentUser.id)
     
     let calculatedRecommendations = false;
     useEffect(() => {
         if (typeof(currentUser.id) != "undefined" && calculatedRecommendations == false) {
             calculatedRecommendations = true;
-            console.log("Calculated Recommend")
-            console.log("Now who is logged in ", currentUser.id)
             postRecommenderCalculation();
         }
     }, [currentUser])
