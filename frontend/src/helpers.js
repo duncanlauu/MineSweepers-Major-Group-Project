@@ -1,5 +1,6 @@
 import axiosInstance from './axios';
 import React, {useState, useEffect} from "react";
+import {BrowserRouter} from "react-router-dom";
 
 // custom hook for getting the logged in user
 export default function useGetUser() {
@@ -22,4 +23,8 @@ export default function useGetUser() {
     }, []); // get the user when the page loads
 
     return user;
+}
+
+function wrapComponent(component) {
+    return <BrowserRouter>{component}</BrowserRouter>
 }
