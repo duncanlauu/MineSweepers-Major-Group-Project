@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from app.models import Meeting, User, VotingPeriod, BookVote, TimeVote, Book
+from app.models import Meeting, User, VotingPeriod, BookVote, TimeVote
 from app.serializers import MeetingSerializer
 
 
@@ -80,7 +80,7 @@ class SchedulingTestCase(APITestCase):
             'club': 1,
             'organiser': 1,
             'attendees': [2, 3, 4, 5],
-            'book': Book.objects.get(pk="0195153448").title,
+            'book': "0195153448",
             'start_time': '2022-03-12T18:00:00+00:00',
             'end_time': '2022-03-12T19:00:00+00:00',
             'link': 'This is the meeting link'

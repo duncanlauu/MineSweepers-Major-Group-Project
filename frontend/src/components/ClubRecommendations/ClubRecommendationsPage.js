@@ -14,26 +14,20 @@ const ClubRecommendationPage = () => {
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function getTopClubs() {
-        trackPromise(axiosInstance
-            .post(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`, {})
-            .then(res => {
-                axiosInstance
-                    .get(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`)
-                    .then(res => {
-                        console.log(res);
-                        let recommendations = []
-                        for (let i = 0; i < res.data.length; i++) {
-                            recommendations.push(res.data[i].club);
-                        }
-                        setClubRecommendations(recommendations);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        trackPromise(
+            axiosInstance
+                .get(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`)
+                .then(res => {
+                    console.log(res);
+                    let recommendations = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        recommendations.push(res.data[i].club);
+                    }
+                    setClubRecommendations(recommendations);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         )
     }
 
