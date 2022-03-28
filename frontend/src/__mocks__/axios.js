@@ -46,6 +46,14 @@ export default {
                                 "genre": "Social Science"
                             }
                         });
+                    case "recommender/0/10/1/top_n_clubs_top_club_books":
+                        return Promise.resolve({
+                            data: {
+                                "owner": {"email": "jebediah.kerman@example.com"},
+                                "name": "Kerbal space club",
+                                "id": 1
+                            }
+                        });
                     default:
                         throw new Error(`UNMATCHED URL: ${url}`);
                 }
