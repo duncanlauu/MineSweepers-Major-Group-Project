@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/react'
 import {BrowserRouter} from "react-router-dom";
 import '@testing-library/jest-dom';
 import React from "react";
-import BookRatingCard from "../components/GeneralComponents/BookRatingCard";
+import BookRatingCard from "../components/SignUpRating/BookRatingCard";
 
 
 test("renders with clearable", async () => {
