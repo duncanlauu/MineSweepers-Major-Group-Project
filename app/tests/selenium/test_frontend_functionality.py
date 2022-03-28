@@ -21,6 +21,8 @@ from surprise import SVD
 from django.db import connections
 from django.db import close_old_connections
 
+from selenium.webdriver.common.action_chains import ActionChains
+
 
 
 class FrontendFunctionalityTest(LiveServerTestCase):
@@ -94,16 +96,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_feed()
         print_info()
 
-        # Train the recommender system model
-        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        self.dump_file_path = 'app/files/dump_file'
-        self.dataframe = get_combined_data(self.csv_file_path)
-        self.data = get_dataset_from_dataframe(self.dataframe)
-        self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(self.algo, self.trainset)
-        self.pred = test_model(self.algo, self.trainset)
-        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # # Train the recommender system model
+        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        # self.dump_file_path = 'app/files/dump_file'
+        # self.dataframe = get_combined_data(self.csv_file_path)
+        # self.data = get_dataset_from_dataframe(self.dataframe)
+        # self.trainset = get_trainset_from_dataset(self.data)
+        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        # train_model(self.algo, self.trainset)
+        # self.pred = test_model(self.algo, self.trainset)
+        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -131,55 +133,63 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_everything(self):
         
         # Website title
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
+        # self.browser.get(f"{self.live_server_url}/")
+        # self.assertEquals(self.browser.title, "Bookgle")
 
-        # Landing Page
-        self._test_landing_page_log_in_and_sing_up_buttons()
+        # # Landing Page
+        # self._test_landing_page_log_in_and_sing_up_buttons()
 
-        # Log in
-        self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        self._text_sign_up_here_button_goes_to_sign_up()
-        self._test_unsuccessful_log_in() 
-        self._test_successful_log_in()
+        # # Log in
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
+        # self._text_sign_up_here_button_goes_to_sign_up()
+        # self._test_unsuccessful_log_in() 
+        # self._test_successful_log_in()
 
-        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+        # self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
-        # Sign up
-        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        self._test_log_in_here_button_goes_to_log_in()
-        self._test_unsuccessful_sign_up() 
+        # # Sign up
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        # self._test_log_in_here_button_goes_to_log_in()
+        # self._test_unsuccessful_sign_up() 
 
-        # Sign up and New User Book Rating Page
-        # close_old_connections()
-        # for conn in connections.all():
-        #     conn.close()
-        self._test_successful_sign_up_and_book_rating()
+        # # Sign up and New User Book Rating Page
+        # # close_old_connections()
+        # # for conn in connections.all():
+        # #     conn.close()
+        # self._test_successful_sign_up_and_book_rating()
 
-        self.browser.get(f"{self.live_server_url}/log_out")
+        # self.browser.get(f"{self.live_server_url}/log_out")
 
-        # Home Page
+        # # Home Page
         self._log_in()
-        self._test_logo_button_goes_to_home_when_logged_in("home")
-        # self._test_page_has_navbar("home") #not implemented yer
+        # self._test_logo_button_goes_to_home_when_logged_in("home")
+        # # self._test_page_has_navbar("home") #not implemented yer
+        # self._test_reply_to_comment_on_post()
+        # self._test_comment_on_post()
+        # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
-        # Navbar
-        # test search bar
-        self._test_navbar_new_post("home")
-        self._test_navbar_create_club("home")
+        # # Navbar
+        # # test search bar
+        # self._test_navbar_new_post("home")
+        # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
-        self._test_navbar_open_chat("home")
-        self._test_navbar_friends_page("home")
+        # self._test_navbar_open_chat("home")
+        # self._test_navbar_friends_page("home")
 
+        # Friends Page
+        self._test_logo_button_goes_to_home_when_logged_in("friends_page")
+        # contains navbar test
+        # maybe check if info on profile panel is correct
+        # self._test_edit_post()
+        # self._test_delete_post()
+        self._test_accept_friend_request()
+        self._test_reject_friend_request()
 
 
         # Password Reset
-        # for conn in connections.all():
-        #     conn.close()
-        self.browser.get(f"{self.live_server_url}/log_out")
-        self._test_password_reset()
-        # for conn in connections.all():
-        #     conn.close()
+        # self.browser.get(f"{self.live_server_url}/log_out")
+        # self._test_password_reset()
+
 
 
 
@@ -202,6 +212,63 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_password_reset()
 
                 # 
+
+    def _test_accept_friend_request(self):
+        pass
+
+    def _test_reject_friend_request(self):
+        pass
+
+    def _test_edit_post(self):
+        self.browser.get(f"{self.live_server_url}/friends_page")
+        self.browser.find_element_by_xpath("//text[.='Posts']").click()
+        self.browser.find_element_by_xpath("//button[.='Edit']").click()
+        self.browser.find_element_by_name("title").send_keys(" Edited.")
+        self.browser.find_element_by_name("content").send_keys(" Edited.")
+        self.browser.find_element_by_xpath("//button[.='Save']").click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
+        # check db that it edited post
+
+    def _test_delete_post(self):
+        self.browser.get(f"{self.live_server_url}/friends_page")
+        self.browser.find_element_by_xpath("//text[.='Posts']").click()
+        self.browser.find_element_by_xpath("//button[.='X']").click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
+        # check db that it deleted post
+
+
+    #kinda works but maybe replying to comments itself is broken???
+    def _test_reply_to_comment_on_post(self): #broken if there are no comments on first post
+        self.browser.get(f"{self.live_server_url}/home")
+        sleep(1) # wait for element?
+        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
+        sleep(1)
+        self.browser.find_element_by_xpath("//button[.='Reply']").click()
+        sleep(1)
+        self.browser.find_element_by_name("myReply").send_keys("New Reply To Comment")
+        sleep(1)
+        self.browser.find_element_by_xpath("//p[.=' Send ']").click()
+        sleep(5)
+        # Check in db if reply to comment added ??
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+    def _test_comment_on_post(self): # Broken (hypothesis, send buttons for replies collapsed and hidden being targeted)
+        self.browser.get(f"{self.live_server_url}/home")
+        sleep(1) # wait for element?
+        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
+        sleep(1)
+        self.browser.find_element_by_name("myComment").send_keys("New Comment")
+        sleep(1)
+        # sleep(500)
+        send_button = self.browser.find_element_by_xpath("//p[.=' Send ']")
+        self.browser.implicitly_wait(10)
+        ActionChains(self.browser).move_to_element(send_button).click(send_button).perform()
+        # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
+        
+        # Check in db if comment added ??
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _test_navbar_new_post(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
