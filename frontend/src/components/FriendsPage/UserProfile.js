@@ -158,7 +158,7 @@ const UserProfile = () => {
                                     borderRadius: "100px"
                                 }}
                                 >
-                                    <NavItem style={{width: "50%"}}>
+                                    <NavItem style={{width: "33%"}}>
                                         <NavLink className={classnames({active: currentActiveTab === "1"})}
                                                  onClick={() => {
                                                      toggle("1");
@@ -172,7 +172,7 @@ const UserProfile = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                    <NavItem style={{width: "50%"}}>
+                                    <NavItem style={{width: "33%"}}>
                                         <NavLink className={classnames({active: currentActiveTab === "2"})}
                                                  onClick={() => {
                                                      toggle("2");
@@ -180,6 +180,19 @@ const UserProfile = () => {
                                             <div style={{textAlign: "center"}}>
                                                 <TabsText>
                                                     Friends
+                                                </TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
+
+                                    <NavItem style={{width: "33%"}}>
+                                        <NavLink className={classnames({active: currentActiveTab === "3"})}
+                                                 onClick={() => {
+                                                     toggle("3");
+                                                 }}>
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>
+                                                    Book ratings
                                                 </TabsText>
                                             </div>
                                         </NavLink>
