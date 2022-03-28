@@ -173,12 +173,12 @@ const RecommenderPage = () => {
                         onChange={(e) => setValue(e.target.value)}>
                         <option/>
                         {genres.map(genre =>
-                            <option value={genre}>{genre}</option>
+                            <option key={genre} value={genre}>{genre}</option>
                         )}
                     </select><br/>
-                    <FilterButton onClick={returnFictionRecommendations}>My {value} Recommendations</FilterButton><br/>
-                    <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br/>
-                    <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br/>
+                    <FilterButton onClick={returnFictionRecommendations} data-test>My {value} Recommendations</FilterButton><br/>
+                    <FilterButton data-testId="myTop10Recommendations" onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br/>
+                    <FilterButton data-testId="globalTop10Recommendations" onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br/>
                     <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global {value} Top 10</FilterButton><br/>
                     <LoadingIndicator/>
                     <ul>

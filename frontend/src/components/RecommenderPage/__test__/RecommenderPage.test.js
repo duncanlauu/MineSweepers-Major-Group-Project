@@ -35,11 +35,27 @@ describe("Components exist", () => {
         })
     })
 
-    // test("contains filter button for my genre recommendations", async () => {
-    //     render(<RecommenderPage />)
-    //     // need to mock axios request to get genres.
-    //     const filter_button = 
-    // })
+    test("contains filter button for genre recommendations", async () => {
+        act(() => {
+            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+        })
+
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("myTop10Recommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
+
+    test("contains filter button for global top 10", async () => {
+        act(() => {
+            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+        })
+
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("global10Recommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
 })
 
 
