@@ -19,8 +19,7 @@ export default function PersonalPostList(props){
         axiosInstance
             .get("posts/")
             .then((res) => {
-                console.log("my posts:")
-                console.log(res.data)
+                console.log("my posts: " + res.data.posts)
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts)
             })
@@ -31,8 +30,7 @@ export default function PersonalPostList(props){
         axiosInstance
             .get(`posts/user/${props.requestedUser_id}`)
             .then((res) => {
-                console.log("EYOO other user's posts!!:")
-                console.log(res.data)
+                console.log("other user's posts: " + res.data.posts)
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts)
             })
@@ -57,8 +55,7 @@ export default function PersonalPostList(props){
             )
         }
         else {
-            return (<h5> You don't have any posts yet. </h5>)
-
+            return (<h5> No posts available. </h5>)
         }
     }
 

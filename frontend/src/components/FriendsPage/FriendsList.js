@@ -17,7 +17,6 @@ export default function FriendsList(props){
     }, []);
 
     const getAllFriends = () => {
-        console.log("Show me props.currentUser: " , props.requestedUser_id)
         axiosInstance
             .get(`friends/`)
             .then((res) => {
