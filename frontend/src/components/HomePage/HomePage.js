@@ -39,38 +39,36 @@ const HomePage = () => {
                 .catch(error => {
                     console.log(error);
                 })
+            axiosInstance
+                .get(`recommender/0/10/top_n_global/`)
+                .then(res => {
+                    if (res.data.length === 0) {
+                        console.log("Calculated Recommend Global")
+                        precomputeGlobalTop();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         }
     }, [currentUser])
 
     const precomputeRecommenderResults = () => {
         axiosInstance
-            .post(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
-            .then((res) => {
-                console.log("friend recommendation in home post works!")
-                console.log(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
+            .post(`recommender/0/20/${currentUser.id}/precompute_all/`, {})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const precomputeGlobalTop = () => {
+        axiosInstance
+            .post(`recommender/0/10/top_n_global/`)
+            .then(res => {
                 console.log(res)
-                // navigate("/friends_page")
-            })
-        axiosInstance
-            .post(`recommender/0/10/${currentUser.id}/top_n/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        axiosInstance
-            .post(`recommender/0/10/top_n_global/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        axiosInstance
-            .post(`recommender/0/10/${currentUser.id}/top_n_clubs_top_club_books/`, {})
-            .then(res => {
-                console.log(res);
             })
             .catch(error => {
                 console.log(error);

@@ -250,6 +250,23 @@ class RecommenderAPI(APIView):
                 clear_previous_club_recommendations(uid, 'top_club_books')
                 top_n = get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n)
                 save_club_recommendations(top_n, uid, method='top_club_books')
+            elif action == 'precompute_all':
+                m = kwargs['m']
+                uid = kwargs['id']
+                n = kwargs['n']
+                clear_previous_book_recommendations(uid)
+                top_n_1 = get_top_between_m_and_n(uid, trainset, algo, m, n)
+                save_book_recommendations(top_n_1, uid)
+                clear_previous_user_recommendations(uid, 'random_books')
+                top_n_2 = get_top_between_m_and_n_users_random(uid, trainset, algo, m, n)
+                save_user_recommendations(top_n_2, uid, method='random_books')
+                clubs = list(Club.objects.all())
+                clear_previous_club_recommendations(uid, 'top_club_books')
+                top_n_3 = get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n)
+                save_club_recommendations(top_n_3, uid, method='top_club_books')
+                top_n = top_n_1
+                top_n.extend(top_n_2)
+                top_n.extend(top_n_3)
             else:
                 return Response(data='You need to provide a correct action', status=status.HTTP_404_NOT_FOUND)
             return Response(data=top_n, status=status.HTTP_200_OK)
