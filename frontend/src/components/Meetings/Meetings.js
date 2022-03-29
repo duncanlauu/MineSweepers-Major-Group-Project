@@ -56,7 +56,7 @@ export default function Meetings() {
                                                 <Col xs={2}>
                                                     <a href={`/book_profile/${meeting['book']['ISBN']}`}>
                                                         <img src={meeting['book']['image_links_small']}
-                                                             alt={"The book's cover"}/>
+                                                             alt={"The book's cover"} data-testid="image"/>
                                                     </a>
                                                 </Col>
                                                 <Col xs={6}>

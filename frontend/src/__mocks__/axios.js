@@ -108,6 +108,51 @@ const generateResponse = (url) => {
                     "friends": []
                 }
             };
+        case "meetings/1":
+            return {
+                data: [
+                    {
+                        "id": 1,
+                        "name": "Meeting 1",
+                        "book": {
+                            "ISBN": "ISBN 1",
+                            "image_links_small": "Link 1"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "name": "Meeting 2",
+                        "book": {
+                            "ISBN": "ISBN 2",
+                            "image_links_small": "Link 2"
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "name": "Meeting 3",
+                        "book": {
+                            "ISBN": "ISBN 3",
+                            "image_links_small": "Link 3"
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "name": "Meeting 4",
+                        "book": {
+                            "ISBN": "ISBN 4",
+                            "image_links_small": "Link 4"
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "name": "Meeting 5",
+                        "book": {
+                            "ISBN": "ISBN 5",
+                            "image_links_small": "Link 5"
+                        }
+                    }
+                ]
+            };
         default:
             console.log("no matching mock for this url " + url)
             return {data: {}};
