@@ -7,26 +7,13 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { act } from 'react-dom/test-utils';
 import RecommenderPage from '../RecommenderPage';
-import { BrowserRouter } from 'react-router-dom'
 import routerWrapper from '../../../test_helpers'
-
-let container
-
-beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-});
 
 describe("Components exist", () => {
 
     test("contains heading", async () => {
         act(() => {
-            render(routerWrapper(<RecommenderPage />), container)
+            render(routerWrapper(<RecommenderPage />))
         })
 
         await waitFor(() => {
@@ -37,7 +24,7 @@ describe("Components exist", () => {
 
     test("contains filter button for genre recommendations", async () => {
         act(() => {
-            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+            render(routerWrapper(<RecommenderPage />))
         })
 
         await waitFor(() => {
@@ -48,7 +35,7 @@ describe("Components exist", () => {
 
     test("contains filter button for global top 10", async () => {
         act(() => {
-            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+            render(routerWrapper(<RecommenderPage />))
         })
 
         await waitFor(() => {
