@@ -12,17 +12,46 @@ import routerWrapper from "../../../test-helpers";
 
 describe("Components exist", () => {
 
-    test("contains all elements", async () => {
+    test("contains header", async () => {
         act(() => {
             render(routerWrapper(<SignUpRating/>))
         })
 
         await waitFor(() => {
             expect(screen.getByText(/bookgle/i)).toBeInTheDocument()
+        })
+    })
+
+    test("contains authors", async () => {
+        act(() => {
+            render(routerWrapper(<SignUpRating/>))
+        })
+
+        await waitFor(() => {
             for (let i = 1; i <= 12; i++) {
                 expect(screen.getByText(`Author ${i}`)).toBeInTheDocument()
+            }
+        })
+    })
+
+    test("contains titles", async () => {
+        act(() => {
+            render(routerWrapper(<SignUpRating/>))
+        })
+
+        await waitFor(() => {
+            for (let i = 1; i <= 12; i++) {
                 expect(screen.getByText(`Title ${i}`)).toBeInTheDocument()
             }
+        })
+    })
+
+    test("contains finish button", async () => {
+        act(() => {
+            render(routerWrapper(<SignUpRating/>))
+        })
+
+        await waitFor(() => {
             expect(screen.getByText("Finish")).toBeInTheDocument()
         })
     })

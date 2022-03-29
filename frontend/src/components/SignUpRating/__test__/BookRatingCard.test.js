@@ -12,15 +12,42 @@ import routerWrapper from "../../../test-helpers";
 
 describe("Components exist", () => {
 
-    test("contains all elements", async () => {
+    test("contains title", async () => {
         act(() => {
             render(routerWrapper(<BookRatingCard title="Title 1" author="Author 1" image="Image 1" id="1"/>))
         })
 
         await waitFor(() => {
             expect(screen.getByText(/Title 1/i)).toBeInTheDocument()
+        })
+    })
+
+    test("contains author", async () => {
+        act(() => {
+            render(routerWrapper(<BookRatingCard title="Title 1" author="Author 1" image="Image 1" id="1"/>))
+        })
+
+        await waitFor(() => {
             expect(screen.getByText(/Author 1/i)).toBeInTheDocument()
+        })
+    })
+
+    test("contains stars", async () => {
+        act(() => {
+            render(routerWrapper(<BookRatingCard title="Title 1" author="Author 1" image="Image 1" id="1"/>))
+        })
+
+        await waitFor(() => {
             expect(screen.getByTestId("stars")).toBeInTheDocument()
+        })
+    })
+
+    test("contains button", async () => {
+        act(() => {
+            render(routerWrapper(<BookRatingCard title="Title 1" author="Author 1" image="Image 1" id="1"/>))
+        })
+
+        await waitFor(() => {
             expect(screen.getByText(/Clear/i)).toBeInTheDocument()
         })
     })

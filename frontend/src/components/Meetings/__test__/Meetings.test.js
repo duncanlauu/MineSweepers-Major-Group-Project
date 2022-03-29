@@ -29,16 +29,32 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/Meeting 1/i)).toBeInTheDocument()
-            expect(screen.getByText(/Meeting 2/i)).toBeInTheDocument()
-            expect(screen.getByText(/Meeting 3/i)).toBeInTheDocument()
-            expect(screen.getByText(/Meeting 4/i)).toBeInTheDocument()
-            expect(screen.getByText(/Meeting 5/i)).toBeInTheDocument()
+            for (let i = 1; i <= 5; ++i) {
+                expect(screen.getByText(`Meeting ${i}`)).toBeInTheDocument()
+            }
+        })
+    })
+
+    test("contains all images", async () => {
+        act(() => {
+            render(routerWrapper(<Meetings/>))
+        })
+
+        await waitFor(() => {
             let allCovers = screen.getAllByAltText(/The book's cover/i)
             expect(allCovers.length).toEqual(5)
             for (let i = 0; i < allCovers.length; ++i) {
                 expect(allCovers[i]).toBeInTheDocument()
             }
+        })
+    })
+
+    test("contains all events", async () => {
+        act(() => {
+            render(routerWrapper(<Meetings/>))
+        })
+
+        await waitFor(() => {
             let allDownloads = screen.getAllByText(/Click here to download the event/i)
             expect(allDownloads.length).toEqual(5)
             for (let i = 0; i < allDownloads.length; ++i) {

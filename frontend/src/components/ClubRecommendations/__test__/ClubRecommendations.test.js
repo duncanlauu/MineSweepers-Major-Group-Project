@@ -39,11 +39,9 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/Club 1/i)).toBeInTheDocument()
-            expect(screen.getByText(/Club 2/i)).toBeInTheDocument()
-            expect(screen.getByText(/Club 3/i)).toBeInTheDocument()
-            expect(screen.getByText(/Club 4/i)).toBeInTheDocument()
-            expect(screen.getByText(/Club 5/i)).toBeInTheDocument()
+            for (let i = 1; i <= 5; ++i) {
+                expect(screen.getByText(`Club ${i}`)).toBeInTheDocument()
+            }
         })
     })
 })
