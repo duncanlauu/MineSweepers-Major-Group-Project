@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const ProfileInfoContainer = styled.div`
-    height: 50rem;
+    min-height: 50rem;
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
@@ -103,12 +103,25 @@ export const CommentLine = styled.div`
     background-color: #F5F5F5;
     border-radius: 20px;
 `
+export const CommentLineBox = styled.div`
+    height: 100%;
+    width: 100%;
+    background-color: #F5F5F5;
+    overflow-y: scroll;
+`
 
 export const ReplyLine = styled.div`
     height: 100%;
     width: 100%;
     background-color: #fff;
     border-radius: 20px;
+`
+
+export const ReplyLineBox = styled.div`
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    overflow-y: scroll;
 `
 
 export const SuggestedUserContainer = styled.div`

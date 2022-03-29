@@ -11,7 +11,6 @@ export default function SuggestedUserList(props) {
     const currentUser = useGetUser();
 
     useEffect(() => {
-        console.log("Current user passed as Hook: " + currentUser.id)
        getAllSuggestedUsers();
     }, [currentUser]);
 
@@ -19,8 +18,7 @@ export default function SuggestedUserList(props) {
         axiosInstance
             .get(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
             .then((res) => {
-                console.log("suggestions, Get request worked!")
-                console.log(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
+                console.log("get-request for suggested users worked!")
                 console.log(res.data)
                 const allSuggestedUsers = res.data;
                 setSuggestedUsers(allSuggestedUsers)
@@ -51,9 +49,6 @@ export default function SuggestedUserList(props) {
             return (
                 <h3> 
                     <h3> No friends suggestions yet. Please re-login to see more. </h3>
-                    {/* <Button onClick={getAllSuggestedUsers}>
-                        hmm
-                    </Button> */}
                  </h3>
             )
 
