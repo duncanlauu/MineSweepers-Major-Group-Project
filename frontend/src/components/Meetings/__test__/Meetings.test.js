@@ -7,27 +7,14 @@ import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
 import Meetings from "../Meetings";
-import {BrowserRouter} from "react-router-dom";
-
-
-let container
-
-beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-});
+import routerWrapper from "../../../test-helpers";
 
 
 describe("Components exist", () => {
 
     test("contains header", async () => {
         act(() => {
-            render(<BrowserRouter><Meetings/></BrowserRouter>, container)
+            render(routerWrapper(<Meetings/>))
         })
 
         await waitFor(() => {
@@ -38,7 +25,7 @@ describe("Components exist", () => {
 
     test("contains all meetings", async () => {
         act(() => {
-            render(<BrowserRouter><Meetings/></BrowserRouter>, container)
+            render(routerWrapper(<Meetings/>))
         })
 
         await waitFor(() => {

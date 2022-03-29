@@ -8,20 +8,7 @@ import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
 import Scheduling from "../Scheduling";
 import {useParams} from "../../../__mocks__/react-router-dom";
-import {BrowserRouter} from "react-router-dom";
-
-
-let container
-
-beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-});
+import routerWrapper from "../../../test-helpers";
 
 
 describe("Components exist", () => {
@@ -29,7 +16,7 @@ describe("Components exist", () => {
     test("contains header", async () => {
         act(() => {
             useParams.mockReturnValue(1)
-            render(<BrowserRouter><Scheduling/></BrowserRouter>, container)
+            render(routerWrapper(<Scheduling/>))
         })
 
         await waitFor(() => {

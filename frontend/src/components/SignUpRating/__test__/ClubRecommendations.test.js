@@ -7,14 +7,28 @@ import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
 import ClubRecommendationPage from "../ClubRecommendationsPage";
-import routerWrapper from "../../../test-helpers";
+import wrapComponent from "../../../helpers"
+import {BrowserRouter} from "react-router-dom";
+
+
+let container
+
+beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+});
+
+afterEach(() => {
+    document.body.removeChild(container);
+    container = null;
+});
 
 
 describe("Components exist", () => {
 
     test("contains header", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(<BrowserRouter><ClubRecommendationPage/></BrowserRouter>, container)
         })
 
         await waitFor(() => {
@@ -25,7 +39,7 @@ describe("Components exist", () => {
 
     test("contains recommender container", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(<BrowserRouter><ClubRecommendationPage/></BrowserRouter>, container)
         })
 
         await waitFor(() => {
@@ -35,7 +49,7 @@ describe("Components exist", () => {
 
     test("contains all clubs", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(<BrowserRouter><ClubRecommendationPage/></BrowserRouter>, container)
         })
 
         await waitFor(() => {
