@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const ProfileInfoContainer = styled.div`
-    min-height: 50rem;
+    min-height: 55rem;
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
