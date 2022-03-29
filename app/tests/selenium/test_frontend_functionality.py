@@ -97,15 +97,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         print_info()
 
         # # Train the recommender system model
-        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        # self.dump_file_path = 'app/files/dump_file'
-        # self.dataframe = get_combined_data(self.csv_file_path)
-        # self.data = get_dataset_from_dataframe(self.dataframe)
-        # self.trainset = get_trainset_from_dataset(self.data)
-        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        # train_model(self.algo, self.trainset)
-        # self.pred = test_model(self.algo, self.trainset)
-        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -138,32 +138,32 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_everything(self):
         
         # Website title
-        # self.browser.get(f"{self.live_server_url}/")
-        # self.assertEquals(self.browser.title, "Bookgle")
+        self.browser.get(f"{self.live_server_url}/")
+        self.assertEquals(self.browser.title, "Bookgle")
 
         # # Landing Page
-        # self._test_landing_page_log_in_and_sing_up_buttons()
+        self._test_landing_page_log_in_and_sing_up_buttons()
 
         # # Log in
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        # self._text_sign_up_here_button_goes_to_sign_up()
-        # self._test_unsuccessful_log_in() 
-        # self._test_successful_log_in()
+        self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
+        self._text_sign_up_here_button_goes_to_sign_up()
+        self._test_unsuccessful_log_in() 
+        self._test_successful_log_in()
 
-        # self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
         # # Sign up
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        # self._test_log_in_here_button_goes_to_log_in()
-        # self._test_unsuccessful_sign_up() 
+        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        self._test_log_in_here_button_goes_to_log_in()
+        self._test_unsuccessful_sign_up() 
 
         # # Sign up and New User Book Rating Page
         # # close_old_connections()
         # # for conn in connections.all():
         # #     conn.close()
-        # self._test_successful_sign_up_and_book_rating()
+        # self._test_successful_sign_up_and_book_rating() # broken wtf
 
-        # self.browser.get(f"{self.live_server_url}/log_out")
+        self.browser.get(f"{self.live_server_url}/log_out")
 
         # # Home Page
         self._log_in()
@@ -174,10 +174,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # Navbar
-        # self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
+        self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
         # self._test_search_bar_find_user # not implemented
-        # self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
-        # self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
+        self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
+        self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -185,31 +185,31 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_navbar_friends_page("home")
 
         # Friends Page
-        # self._test_logo_button_goes_to_home_when_logged_in("friends_page")
+        self._test_logo_button_goes_to_home_when_logged_in("friends_page")
         # contains navbar test
         # maybe check if info on profile panel is correct
-        # self._test_friends_page_user_profile_cotains_correct_information()
-        # self._test_friends_page_posts_tab_contains_correct_information()
-        # self._test_edit_post()
-        # self._test_delete_post()
-        # self._test_accept_friend_request()
-        # self._test_reject_friend_request()
-        # self._test_delete_friend()
+        self._test_friends_page_user_profile_cotains_correct_information()
+        self._test_friends_page_posts_tab_contains_correct_information()
+        self._test_edit_post()
+        self._test_delete_post()
+        self._test_accept_friend_request()
+        self._test_reject_friend_request()
+        self._test_delete_friend()
         # test for suggested friends
 
         # Club Profile Page
-        # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
-        # self._test_club_profile_contains_correct_information()
-        # self._test_club_feed_tab_contains_correct_information()
-        # self._test_apply_to_club() # apply to club where not member
-        # self._test_members_tab_contains_correct_information()
+        self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
+        self._test_club_profile_contains_correct_information()
+        self._test_club_feed_tab_contains_correct_information()
+        self._test_apply_to_club() # apply to club where not member
+        self._test_members_tab_contains_correct_information()
         # Accept applicant
         # Reject applicant
         # Remove member
         # Ban member
         # Make owener out of officer
         # Ban officer
-        # self._test_feed_tab_contains_correct_information()
+        self._test_feed_tab_contains_correct_information()
         # self._test_meetings_tab() # Meeting history not implemented yet
         # self._test_schedule_a_meeting() #needs recommender system trained
 
@@ -217,13 +217,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # All Clubs Page
         self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
-        self._test_all_clubs_page_contains_all_clubs() #if pagination is implemented this wont work
+        # self._test_all_clubs_page_contains_all_clubs() #if pagination is implemented this wont work
         # self._test_all_clubs_page_visit_club_profile()
         # contains navbar
 
         # Password Reset
-        # self.browser.get(f"{self.live_server_url}/log_out")
-        # self._test_password_reset()
+        self.browser.get(f"{self.live_server_url}/log_out")
+        self._test_password_reset()
 
 
 
