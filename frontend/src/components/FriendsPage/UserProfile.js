@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {Container, Row, Col, Button, Nav, NavItem, NavLink, TabContent, TabPane, CardGroup} from 'reactstrap'
+import React, { Component, useState, useEffect, useRef } from "react";
+import { Container, Row, Col, Button, Nav, NavItem, NavLink, TabContent, TabPane, CardGroup, Modal, ModalBody} from 'reactstrap'
 import classnames from 'classnames';
 import Gravatar from 'react-gravatar';
 import useGetUser from "../../helpers";
@@ -22,8 +22,11 @@ import FriendRequestList from "./FriendRequestList";
 import SuggestedUserList from "./SuggestedUserList";
 import {useParams} from 'react-router';
 import axiosInstance from '../../axios';
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
+import UserProfileEditor from "./UserProfileEditor";
+import PersonalPostForm from "./PersonalPostForm";
 import BookRatingList from "./BookRatingList";
+
 
 const UserProfile = () => {
 
@@ -32,8 +35,9 @@ const UserProfile = () => {
     const {user_id} = useParams();
     const currentLoggedInUser = useGetUser()
     const navigate = useNavigate()
-    const [setIsLoggedInUser] = useState(true)
-
+    const [isLoggedInUser, setIsLoggedInUser] =useState(true)
+    const [isModalVisible, setModalVisibility] = useState()
+    
     useEffect(() => {
         if (user_id === currentLoggedInUser.id || user_id === undefined || user_id === "") {
             console.log("So user_id is " + user_id + " and currentLoggedInUser.id is " + currentLoggedInUser.id)
@@ -67,6 +71,10 @@ const UserProfile = () => {
         if (currentActiveTab !== tab) {
             setCurrentActiveTab(tab)
         }
+    }
+
+    const changeModalVisibility = () => {
+        setModalVisibility(!isModalVisible);
     }
 
     const postFriendRequest = (receiver, e) => {
@@ -132,6 +140,16 @@ const UserProfile = () => {
                                         </Row>
                                         }
 
+                                        { user_id === undefined &&
+                                            <div style={{display: "flex", justifyContent: "center"}}>
+                                                <Button color="primary" onClick={() => changeModalVisibility()}
+                                                    style={{ borderRadius: "100px", height: "4rem"}} 
+                                                >
+                                                    Edit Profile                    
+                                                </Button>
+                                            </div>
+                                        }
+
                                         <Row>
                                             <div style={{textAlign: "center"}}>
                                                 {currentUser.location != "" &&
@@ -146,6 +164,19 @@ const UserProfile = () => {
                                 </Row>
                             </ProfileInfoCard>
                         </ProfileInfoContainer>
+                        <Modal
+                            isOpen = {isModalVisible}
+                            toggle = {() => changeModalVisibility()}
+                            style={{
+                                left: 0,
+                                top: 100
+                            }}
+                        >
+                            <ModalBody style={{overflowY: "scroll"}}>
+                                {/* <PersonalPostForm/> */}
+                                <UserProfileEditor currentUser={currentLoggedInUser}/>
+                            </ModalBody>
+                        </Modal>
                     </Col>
 
                     <Col xs="6">

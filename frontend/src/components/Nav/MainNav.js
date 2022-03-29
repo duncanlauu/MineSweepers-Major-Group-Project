@@ -14,6 +14,7 @@ import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements'
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
 import PersonalPostForm from '../FriendsPage/PersonalPostForm';
+import useGetUser from '../../helpers';
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -197,7 +198,7 @@ class MainNav extends React.Component {
                 >
 
                 <ModalBody style={{overflowY: "scroll"}}>
-                    <PersonalPostForm/>
+                    <PersonalPostForm />
                     </ModalBody>
                 </Modal>
             </div>

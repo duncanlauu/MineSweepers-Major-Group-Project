@@ -51,3 +51,21 @@ class ClubsTestCase(APITestCase):
         club_count_after = Club.objects.count()
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(club_count_after, club_count_before)
+
+    def test_get_clubs_of_valid_user(self):
+        response = self.client.get(reverse('app:user_clubs', kwargs={'user_id': 1}))
+        self.assertEqual(response.status_code, 200)
+        club_ids = [club['id'] for club in response.data['clubs']]
+        self.assertIn(1, club_ids)
+        self.assertIn(2, club_ids)
+        self.assertNotIn(3, club_ids)
+
+    def test_get_clubs_on_user_that_is_not_in_any_clubs(self):
+        response = self.client.get(reverse('app:user_clubs', kwargs={'user_id': 8}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['clubs']), 0)
+
+    def test_get_clubs_of_invalid_user(self):
+        response = self.client.get(reverse('app:user_clubs', kwargs={'user_id': 500}))
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data, 'User is invalid')
