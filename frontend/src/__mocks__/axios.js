@@ -1,17 +1,27 @@
-import get_current_user from '../mocksData/get_current_user.json'
-import myTop10Recommendations from '../mocksData/myTop10Recommendations.json'
-import tenGenres from '../mocksData/tenGenres.json'
+import currentUser from '../mocksData/getCurrentUser.json'
+import myTop10Recommendations from '../mocksData/getMyTop10Recommendations.json'
+import tenGenres from '../mocksData/getTenGenres.json'
+import top10GlobalRecommendations from '../mocksData/getTop10GlobalRecommendations.json'
+import top10GlobalHistoryRecommendations from '../mocksData/getTop10GlobalHistoryRecommendations.json'
+import myTop10HistoryRecommendations from '../mocksData/getMyTop10HistoryRecommendations.json'
+
 
 const generateGetResponse = (url) => {
     switch (url) {
         case "genres?n=10":
             return { data: tenGenres };
         case "get_current_user":
-            return { data: get_current_user };
+            return { data: currentUser };
         case "recommender/0/10/1/top_n/":
             return { data: myTop10Recommendations }
+        case "recommender/0/10/top_n_global/":
+            return { data: top10GlobalRecommendations }
+        case "recommender/0/10/top_n_global_for_genre/history/":
+            return { data: top10GlobalHistoryRecommendations }
+        case "recommender/0/10/1/top_n_for_genre/history/":
+            return { data: myTop10HistoryRecommendations }
         default:
-            console.log("no matching mock for this url")
+            console.log("no matching mock for url ", url)
             return { data: {} };
     }
 }

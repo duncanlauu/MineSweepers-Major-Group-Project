@@ -150,7 +150,7 @@ const RecommenderPage = () => {
                         onChange={(e) => setValue(e.target.value)}>
                         <option />
                         {genres.map(genre =>
-                            <option key={genre} value={genre}>{genre}</option>
+                            <option data-testId="genre-selection" key={genre} value={genre}>{genre}</option>
                         )}
                     </select><br />
                     <FilterButton onClick={returnTop10Recommendations} data-testId="myTop10Recommendations">My Recommendations</FilterButton><br />
@@ -160,8 +160,8 @@ const RecommenderPage = () => {
                     <LoadingIndicator />
                     <ul>
                         {bookRecommendations.map(
-                            bookRecommendation =>
-                                <li>
+                            (bookRecommendation, index) =>
+                                <li data-testId="book-recommendation" key={index}>
                                     <BookProfile>
                                         <Col xs={3}>
                                             <img src={bookRecommendation['book']['image_links_small']}
