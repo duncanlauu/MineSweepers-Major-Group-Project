@@ -139,7 +139,15 @@ class AllCommentsView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             if is_post_visible_to_user(user, post):
-                comments = post.comment_set.values()
+                # comments = post.comment_set.values()
+                comments = post.comment_set\
+                    .values('id',
+                            'author',
+                            'author__username',
+                            'author__email',
+                            'post',
+                            'content',
+                            'created_at')
                 return Response({'comments': comments}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -226,7 +234,14 @@ class AllRepliesView(APIView):
             post = Post.objects.get(id=post_id)
             if is_post_visible_to_user(user, post):
                 comment = Comment.objects.get(id=comment_id)
-                replies = comment.reply_set.values()
+                replies = comment.reply_set\
+                    .values('id',
+                            'author',
+                            'author__username',
+                            'author__email',
+                            'comment',
+                            'content',
+                            'created_at')
             return Response({'replies': replies}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

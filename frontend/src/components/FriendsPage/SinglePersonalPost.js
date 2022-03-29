@@ -18,12 +18,14 @@ export default function SinglePersonalPost(props) {
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = useGetUser();
 
+    // TODO: use author__email in props.personalPost, instead of get_update
     useEffect(() => {
         setPersonalPost(props.personalPost)
-        getPostCreatorEmail(props.personalPost.author)
+        setPosterEmail(props.personalPost.author__email)
+        // getPostCreatorEmail(props.personalPost.author)
     }, []);
 
-    // TODO: use author__email in props.personalPost
+    // TODO: don't need this method
     const getPostCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
