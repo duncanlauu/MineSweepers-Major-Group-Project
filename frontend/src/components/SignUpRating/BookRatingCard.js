@@ -23,7 +23,6 @@ export default function BookRatingCard(props) {
 
   const [rate, setRating] = useState(0);
 
-
   const ratingChanged = (newRating) => {
     console.log("Initial rating: " + props.initialRating);
     console.log("Rating changed: " + newRating + " previous rating: " + rate);
@@ -70,16 +69,16 @@ export default function BookRatingCard(props) {
                 color2={"#ffd700"}
               />
             </Col>
-              <Col xs="4">
-                <Button
-                  type="submit"
-                  className="submit"
-                  onClick={clearRating}
-                  style={{ backgroundColor: "#653FFD", width: "7rem" }}
-                >
-                  Clear
-                </Button>
-              </Col>
+            <Col xs="4">
+              <Button
+                type="submit"
+                className="submit"
+                onClick={clearRating}
+                style={{ backgroundColor: "#653FFD", width: "7rem" }}
+              >
+                Clear
+              </Button>
+            </Col>
           </Row>
         </CardBody>
       </Card>
