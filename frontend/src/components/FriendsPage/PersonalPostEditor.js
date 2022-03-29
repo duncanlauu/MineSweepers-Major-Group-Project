@@ -44,6 +44,8 @@ export default function PersonalPostEditor(props) {
             .then((res) => {
                 navigate("/home/")
                 navigate("/friends_page/")
+                console.log("We just posted: ")
+                console.log(res)
             })
             .catch((e) => {
                 console.log(e.response.data)

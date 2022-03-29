@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
 import useGetUser from "../../helpers";
+import axiosInstance from '../../axios'
+
+import { useNavigate } from "react-router";
 
 
 export default function UserProfileEditor(props) {
@@ -13,6 +16,41 @@ export default function UserProfileEditor(props) {
           [e.target.name]: e.target.value, 
         })
       }
+
+      const getPostCreatorEmail = (author_id) => {
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            setPosterEmail(res.data.email)
+        })
+        .catch(error => console.error(error));
+    }
+
+    const navigate = useNavigate();
+
+    const handleEditRequest = (e) => {
+        e.preventDefault()
+
+        axiosInstance
+            .put(`user/get_update/${props.currentUser.id}/`, {
+                action: "edit",
+                password: props.currentUser.password,
+                username: props.currentUser.username,
+                email: props.currentUser.email,
+                first_name: props.currentUser.first_name,
+                last_name: props.currentUser.last_name,
+                location : formData.location,
+                bio : formData.bio,
+            })
+            .then((res) => {
+                navigate("/home/")
+                navigate("/friends_page/")
+                console.log("New profile content: ")
+                console.log(res)
+            })
+            .catch((e) => {
+                console.log(e.response.data)
+            })
+    }
 
     const displayPersonalPostForm = (e) => {
         return(
@@ -57,7 +95,7 @@ export default function UserProfileEditor(props) {
                                 <Button
                                     type="submit"
                                     className="submit"
-                                    // onClick={handleEditRequest}
+                                    onClick={handleEditRequest}
                                     style={{ borderRadius: "50px" }}
                                     >
                                     Save changes

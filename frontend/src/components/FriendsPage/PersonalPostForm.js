@@ -51,8 +51,10 @@ export default function PersonalPostForm(props) {
                 content : formData.content, 
             })
             .then((res) => {
-                navigate("/friends_page/")
-                navigate("/home/")
+                // navigate("/friends_page/")
+                // navigate("/home/")
+                console.log("We just posted: ")
+                console.log(res.data)
             })
             .catch((e) => {
                 console.log(e.response.data)
@@ -116,12 +118,11 @@ export default function PersonalPostForm(props) {
                                 <FormGroup>
                                     <Label for="club_id"> Club ID </Label>
                                     <br/>
-                                    <select
-                                        
+                                    <select        
                                         value={clubData}
-                                            onChange={(e) => setClubData(e.target.value)}
-                                            style={{border: "0", backgroundColor: "#F3F3F3"}}
-                                        >
+                                        onChange={(e) => setClubData(e.target.value)}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                    >
                                         <option/>
 
                                         {availableClubs.map(club =>
