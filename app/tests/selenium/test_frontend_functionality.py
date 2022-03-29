@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
@@ -96,16 +97,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_feed()
         print_info()
 
-        # # Train the recommender system model
-        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        self.dump_file_path = 'app/files/dump_file'
-        self.dataframe = get_combined_data(self.csv_file_path)
-        self.data = get_dataset_from_dataframe(self.dataframe)
-        self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(self.algo, self.trainset)
-        self.pred = test_model(self.algo, self.trainset)
-        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # # # Train the recommender system model
+        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        # self.dump_file_path = 'app/files/dump_file'
+        # self.dataframe = get_combined_data(self.csv_file_path)
+        # self.data = get_dataset_from_dataframe(self.dataframe)
+        # self.trainset = get_trainset_from_dataset(self.data)
+        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        # train_model(self.algo, self.trainset)
+        # self.pred = test_model(self.algo, self.trainset)
+        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -138,24 +139,24 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_everything(self):
         
         # Website title
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
+        # self.browser.get(f"{self.live_server_url}/")
+        # self.assertEquals(self.browser.title, "Bookgle")
 
         # # Landing Page
-        self._test_landing_page_log_in_and_sing_up_buttons()
+        # self._test_landing_page_log_in_and_sing_up_buttons()
 
         # # Log in
-        self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        self._text_sign_up_here_button_goes_to_sign_up()
-        self._test_unsuccessful_log_in() 
-        self._test_successful_log_in()
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
+        # self._text_sign_up_here_button_goes_to_sign_up()
+        # self._test_unsuccessful_log_in() 
+        # self._test_successful_log_in()
 
-        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+        # self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
         # # Sign up
-        self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        self._test_log_in_here_button_goes_to_log_in()
-        self._test_unsuccessful_sign_up() 
+        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
+        # self._test_log_in_here_button_goes_to_log_in()
+        # self._test_unsuccessful_sign_up() 
 
         # # Sign up and New User Book Rating Page
         # # close_old_connections()
@@ -174,10 +175,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # Navbar
-        self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
         # self._test_search_bar_find_user # not implemented
-        self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
-        self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -185,45 +186,45 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_navbar_friends_page("home")
 
         # Friends Page
-        self._test_logo_button_goes_to_home_when_logged_in("friends_page")
+        # self._test_logo_button_goes_to_home_when_logged_in("friends_page")
         # contains navbar test
         # maybe check if info on profile panel is correct
-        self._test_friends_page_user_profile_cotains_correct_information()
-        self._test_friends_page_posts_tab_contains_correct_information()
-        self._test_edit_post()
-        self._test_delete_post()
-        self._test_accept_friend_request()
-        self._test_reject_friend_request()
-        self._test_delete_friend()
+        # self._test_friends_page_user_profile_cotains_correct_information()
+        # self._test_friends_page_posts_tab_contains_correct_information()
+        # self._test_edit_post()
+        # self._test_delete_post()
+        # self._test_accept_friend_request()
+        # self._test_reject_friend_request()
+        # self._test_delete_friend()
         # test for suggested friends
 
         # Club Profile Page
-        self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
-        self._test_club_profile_contains_correct_information()
-        self._test_club_feed_tab_contains_correct_information()
-        self._test_apply_to_club() # apply to club where not member
-        self._test_members_tab_contains_correct_information()
+        # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
+        # self._test_club_profile_contains_correct_information()
+        # self._test_club_feed_tab_contains_correct_information()
+        # self._test_apply_to_club() # apply to club where not member
+        # self._test_members_tab_contains_correct_information()
         # Accept applicant
         # Reject applicant
         # Remove member
         # Ban member
         # Make owener out of officer
         # Ban officer
-        self._test_feed_tab_contains_correct_information()
+        # self._test_feed_tab_contains_correct_information()
         # self._test_meetings_tab() # Meeting history not implemented yet
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # add one for can't apply to club where member
 
         # All Clubs Page
-        self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
-        # self._test_all_clubs_page_contains_all_clubs() #if pagination is implemented this wont work
-        # self._test_all_clubs_page_visit_club_profile()
+        # self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
+        self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
+        self._test_all_clubs_page_visit_club_profile()
         # contains navbar
 
         # Password Reset
-        self.browser.get(f"{self.live_server_url}/log_out")
-        self._test_password_reset()
+        # self.browser.get(f"{self.live_server_url}/log_out")
+        # self._test_password_reset()
 
 
 
@@ -246,12 +247,48 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
-    def _test_all_clubs_page_contains_all_clubs(self):
+    def _test_all_clubs_page_visit_club_profile(self):
         self.browser.get(f"{self.live_server_url}/all_clubs")
-        body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
-        sleep(30)
-        pass
+        self.wait_until_element_found("//button[.='Visit Profile']")
+
+        # sleep(7)
+        club_card = self.browser.find_elements_by_class_name("card-body")[0]
+        club_card_a_element = club_card.find_element(by=By.XPATH, value=".//a[contains(@href, '/club_profile/')]")
+        club_card_href = club_card_a_element.get_attribute('href')
+        club_card_id = club_card_href.split('/')[-1]
+
+        club_card_visit_profile_button = club_card.find_element(by=By.XPATH, value=".//button[.='Visit Profile']")
+        club_card_visit_profile_button.click()
+
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/club_profile/{club_card_id}")
+
+
+    def _test_all_clubs_page_contains_all_visible_clubs(self):
+        self.browser.get(f"{self.live_server_url}/all_clubs")
+        self.wait_until_element_found("//button[.='Visit Profile']")
+
+        # sleep(7) #find better way to wait until loading is done
+        id_to_club_object = {}
+        all_visible_clubs = list(Club.objects.filter(visibility=True).values())
+        for club in all_visible_clubs:
+            id_to_club_object[club['id']] = club
+
+        club_cards = self.browser.find_elements_by_class_name("card-body")
+        self.assertEqual(len(club_cards), len(all_visible_clubs))
+        for club_card in club_cards:
+            club_card_club_name = club_card.find_element(by=By.CLASS_NAME, value="card-title").text
+            club_card_number_of_members_string = club_card.find_element(by=By.CLASS_NAME, value="card-subtitle").text
+            club_card_number_of_members = club_card_number_of_members_string.split(' ')[0]
+            club_card_a_element = club_card.find_element(by=By.XPATH, value=".//a[contains(@href, '/club_profile/')]")
+            club_card_href = club_card_a_element.get_attribute('href')
+            club_card_id = club_card_href.split('/')[-1]
+
+            club_object = id_to_club_object.pop(int(club_card_id))
+            self.assertEqual(club_card_club_name, club_object['name'])
+            # same number of members
+            
+        self.assertFalse(id_to_club_object)
 
     def _test_club_feed_tab_contains_correct_information(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}")
