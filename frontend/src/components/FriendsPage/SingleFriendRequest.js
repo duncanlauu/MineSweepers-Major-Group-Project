@@ -47,7 +47,7 @@ export default function SingleFriendRequest(props) {
     }
 
     return (
-        <div className="friendRequest" key={friendRequest.sender}>
+        <div className="friendRequest" key={friendRequest.sender} style={{marginBottom: "1rem", marginTop: "1rem"}}>
             <Row style={{height: "5rem"}}>
                 <Col xs="2">
                     <Gravatar email={friendRequest.sender__email} size={50} onClick={navigateToProfile} style={{ 
@@ -67,12 +67,12 @@ export default function SingleFriendRequest(props) {
                     <Row>
                         <Col>
                             <Button onClick={(e) => acceptFriendRequest(friendRequest.sender)}
-                                style={{borderRadius: "20px", height: "5rem", marginRight: "1rem", backgroundColor: "green"}} 
+                                style={{borderRadius: "20px", height: "3rem", marginRight: "1rem", backgroundColor: "green", marginTop: "1rem"}} 
                             >
                                 <p> Accept </p>
                             </Button>
                             <Button onClick={(e) => rejectFriendRequest(friendRequest.sender)}
-                                style={{borderRadius: "20px", height: "5rem", backgroundColor: "red"}} 
+                                style={{borderRadius: "20px", height: "3rem", backgroundColor: "red", marginTop: "1rem"}} 
                             >
                                 <p> Reject </p>
                             </Button>
