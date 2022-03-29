@@ -11,6 +11,7 @@ import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
     const user = useGetUser();
+    console.log(user)
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function getTopClubs() {
@@ -23,6 +24,7 @@ const ClubRecommendationPage = () => {
                     for (let i = 0; i < res.data.length; i++) {
                         recommendations.push(res.data[i].club);
                     }
+                    console.log(recommendations)
                     setClubRecommendations(recommendations);
                 })
                 .catch(error => {

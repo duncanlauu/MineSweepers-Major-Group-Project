@@ -24,7 +24,3 @@ export default function useGetUser() {
 
     return user;
 }
-
-function wrapComponent(component) {
-    return <BrowserRouter>{component}</BrowserRouter>
-}

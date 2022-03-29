@@ -2,7 +2,7 @@ const generateResponse = (url) => {
     switch (url) {
         case "genres?n=10":
             return {data: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]};
-        case "get_current_user":
+        case "/get_current_user/":
             return {
                 data: {
                     "id": 1,
@@ -42,38 +42,74 @@ const generateResponse = (url) => {
                     "genre": "Social Science"
                 }
             }
-        case "recommender/0/10/1/top_n_clubs_top_club_books":
+        case "recommender/0/10/1/top_n_clubs_top_club_books/":
             return {
                 data: [
                     {
-                        "owner": {"email": "user1@example.org"},
-                        "name": "Club 1",
-                        "id": 1
+                        "club": {
+                            "id": 1,
+                            "name": "Club 1",
+                            "owner": {"email": "user1@example.org"}
+                        }
                     },
                     {
-                        "owner": {"email": "user2@example.org"},
-                        "name": "Club 2",
-                        "id": 2
+                        "club": {
+                            "id": 2,
+                            "name": "Club 2",
+                            "owner": {"email": "user2@example.org"}
+                        }
                     },
                     {
-                        "owner": {"email": "user3@example.org"},
-                        "name": "Club 3",
-                        "id": 3
+                        "club": {
+                            "id": 3,
+                            "name": "Club 3",
+                            "owner": {"email": "user3@example.org"}
+                        }
                     },
                     {
-                        "owner": {"email": "user4@example.org"},
-                        "name": "Club 4",
-                        "id": 4
+                        "club": {
+                            "id": 4,
+                            "name": "Club 4",
+                            "owner": {"email": "user4@example.org"}
+                        }
                     },
                     {
-                        "owner": {"email": "user5@example.org"},
-                        "name": "Club 5",
-                        "id": 5
-                    },
+                        "club": {
+                            "id": 5,
+                            "name": "Club 5",
+                            "owner": {"email": "user5@example.org"}
+                        }
+                    }
                 ]
             }
+        case "/user/get_update/1/":
+            return {
+                data: {
+                    "id": 1,
+                    "password": "pbkdf2_sha256$260000$nghK9JWg2c7lKU5YE8ggTX$YTSrsurQe57gmH6582vjRdgHlHYLd2iUKBqnbedXPbw=",
+                    "last_login": null,
+                    "is_superuser": false,
+                    "is_staff": false,
+                    "is_active": true,
+                    "date_joined": "2022-03-24T13:36:10.145043Z",
+                    "username": "test",
+                    "email": "test@test.org",
+                    "first_name": "asdf",
+                    "last_name": "asdf",
+                    "bio": "asdf",
+                    "location": "asdf",
+                    "birthday": "2022-03-02",
+                    "created_at": "2022-03-24T13:36:10.250617Z",
+                    "groups": [],
+                    "user_permissions": [],
+                    "liked_books": [],
+                    "read_books": [],
+                    "clubs": [],
+                    "friends": []
+                }
+            };
         default:
-            console.log("no matching mock for this url")
+            console.log("no matching mock for this url " + url)
             return {data: {}};
     }
 }
