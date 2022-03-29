@@ -260,9 +260,7 @@ export default function Scheduling() {
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                            <HeadingText
-                                data-testid="waiting_message"
-                            >Please wait for the book recommendations</HeadingText>
+                            <HeadingText>Please wait for the book recommendations</HeadingText>
                             <LoadingIndicator/>
                         </Col>
                         <Col/>
