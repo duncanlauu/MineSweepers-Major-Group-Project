@@ -20,6 +20,8 @@ export default function SingleFeedPost(props) {
         setFeedPosts(props.feedPost)
         setPosterName(props.feedPost.author__username)
         setPosterEmail(props.feedPost.author__email)
+        console.log("Feed name: ")
+        console.log(props.feedPost.club)
     }, []);
 
     const navigateToProfile = () => {
@@ -31,6 +33,7 @@ export default function SingleFeedPost(props) {
     // used to have unique togglers
     const togglerID = "toggler" + feedPost.id
     const HashtagTogglerId = "#toggler" + feedPost.id
+
 
     return(
         <div className="feedPost" key={feedPost.id}>

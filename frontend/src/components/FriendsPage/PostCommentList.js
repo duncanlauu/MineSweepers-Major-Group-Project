@@ -30,6 +30,7 @@ export default function PostCommentList(props){
             writtenComment,
             [e.target.name]: e.target.value,
         })
+        console.log(writtenComment)
     }
 
     const uploadComment = (e, index) => {
@@ -47,6 +48,12 @@ export default function PostCommentList(props){
 
     const updatePageAfterCommentDeletion = (e) => {
         getCommentsUnderPost()
+    }
+
+    const inputAreaID = "myComment" + currentPost.id;
+
+    const clearInputField = () => {
+        document.getElementById(inputAreaID).value = ''
     }
 
     const displayCommentsUnderPost = (e) => {
@@ -75,7 +82,7 @@ export default function PostCommentList(props){
                         <Row style={{marginTop: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id="myComment"
+                                    id={inputAreaID}
                                     name="myComment"
                                     placeholder="Leave a comment here..."
                                     onChange={handleCommentChange}
@@ -83,7 +90,7 @@ export default function PostCommentList(props){
                                 />     
                             </Col>
                             <Col xs="3">
-                                <Button  onClick={(e) => uploadComment(e, 0)}
+                                <Button onClick={(e) => { uploadComment(e, 0) ; clearInputField() }}
                                     style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
                                 >
                                     <p> Send </p>
@@ -104,6 +111,7 @@ export default function PostCommentList(props){
                                     name="myComment"
                                     placeholder="Leave a comment here..."
                                     onChange={handleCommentChange}
+                                    // value={""}
                                     style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
                                 />     
                             </Col>

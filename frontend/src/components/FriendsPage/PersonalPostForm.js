@@ -3,6 +3,7 @@ import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reac
 import axiosInstance from '../../axios'
 
 import { useNavigate } from "react-router";
+import useGetUser from "../../helpers";
 
 
 export default function PersonalPostForm(props) {
@@ -11,6 +12,9 @@ export default function PersonalPostForm(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
+    const [clubData, setClubData] = useState("")
+    const currentUser = useGetUser();
+    const [availableClubs, setAvailableClubs] = useState("") 
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
         club_id : '',
@@ -23,25 +27,34 @@ export default function PersonalPostForm(props) {
     const [formData, updateFormData] = useState(initialFormData)
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (typeof (currentUser.id) != "undefined") {
+            getAvailableClubs();
+            console.log("current user!: " + currentUser.id)
+        }
+    }, [currentUser]);
+
     const handleChange = (e) => {
         updateFormData({
           ...formData, 
           [e.target.name]: e.target.value.trim(), 
         })
       }
-
+    
     const handlePostFriendRequest = (e) => {
         e.preventDefault()
         
         axiosInstance
             .post("posts/", {
-                club : formData.club_id,
+                club : getClubId(clubData),
                 title : formData.title,
                 content : formData.content, 
             })
             .then((res) => {
                 navigate("/friends_page/")
                 navigate("/home/")
+                console.log("We just posted: ")
+                console.log(res.data)
             })
             .catch((e) => {
                 console.log(e.response.data)
@@ -50,8 +63,33 @@ export default function PersonalPostForm(props) {
                 setClubIDErr(e.response.data.club_id)
             })
     }
+
+    const getAvailableClubs = () => {
+        axiosInstance
+            .get(`clubs/user/${currentUser.id}`)
+            .then((res) => {
+                console.log(res.data.clubs)
+                const allAvailableClubs = res.data.clubs;
+                setAvailableClubs(allAvailableClubs)
+                console.log("the current user is: " + currentUser.id)
+                console.log(availableClubs + "=" + res.data.clubs)
+            })
+            .catch(error => console.error(error));
+    }
+
+    const getClubId = (club) => {
+        console.log(clubData)
+        for (let i = 0; i < availableClubs.length; ++i) {
+            console.log(availableClubs[i])
+            if (availableClubs[i]['name'] === clubData) {
+                return availableClubs[i].id;
+            }
+        }
+        return -1;
+    }
     
     const displayPersonalPostForm = (e) => {
+        
         return(
             <Container fluid>
             <Row>
@@ -85,21 +123,33 @@ export default function PersonalPostForm(props) {
                         <div>{contentErr}</div>
 
                         
-                        <Row>
-                        <Col xs="3">
-                            <FormGroup>
-                                <Label for="club_id"> Club ID </Label>
-                                <Input
-                                    id="club_id"
-                                    name="club_id" 
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                />
-                            </FormGroup>
-                            <div>{clubIDErr}</div>
+                        { availableClubs.length > 0  && 
+                            <Row>
+                            <Col xs="3">
+                                <FormGroup>
+                                    <Label for="club_id"> Club ID </Label>
+                                    <br/>
+                                    <select        
+                                        value={clubData}
+                                        onChange={(e) => setClubData(e.target.value)}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                    >
+                                        <option/>
 
-                        </Col>
-                        </Row>
+                                        {availableClubs.map(club =>
+                                            <option> {club.name} </option>
+                                        )}
+                                            
+                                    </select>
+                                    {/* <Button onClick={getAvailableClubs}>
+                                        hi
+                                    </Button> */}
+                                </FormGroup>
+                                <div>{clubIDErr}</div>
+                            
+                            </Col>
+                            </Row>
+                        }
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>
@@ -121,7 +171,7 @@ export default function PersonalPostForm(props) {
             </Row>
         </Container>
         )
-    }
+}
     return (
         <>
             {displayPersonalPostForm(props)}
