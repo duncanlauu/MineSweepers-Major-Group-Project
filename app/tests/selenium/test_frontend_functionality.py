@@ -172,7 +172,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # Navbar
-        # # test search bar
+        self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -183,6 +183,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_logo_button_goes_to_home_when_logged_in("friends_page")
         # contains navbar test
         # maybe check if info on profile panel is correct
+        # self._test_friends_page_user_profile_cotains_correct_information()
+        # self._test_friends_page_posts_tab_contains_correct_information()
         # self._test_edit_post()
         # self._test_delete_post()
         # self._test_accept_friend_request()
@@ -191,9 +193,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # test for suggested friends
 
         # Club Profile Page
-        self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
-        self._test_club_profile_contains_correct_information()
-        self._test_apply_to_club() # apply to club where not member
+        # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
+        # self._test_club_profile_contains_correct_information()
+        # self._test_apply_to_club() # apply to club where not member
         # self._test_members_tab_contains_correct_information()
         # Accept applicant
         # Reject applicant
@@ -201,9 +203,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Ban member
         # Make owener out of officer
         # Ban officer
-        self._test_feed_tab_contains_correct_information()
+        # self._test_feed_tab_contains_correct_information()
         # self._test_meetings_tab() # Meeting history not implemented yet
-        # self._test_schedule_a_meeting()
+        # self._test_schedule_a_meeting() #needs recommender system trained
 
         # add one for can't apply to club where member
 
@@ -233,6 +235,51 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
+    def _test_search_bar_open_close(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        sleep(5)
+        self.browser.find_element_by_name("search-bar").click()
+        self.browser.find_element_by_name("search-bar-input").send_keys("J")
+        
+        self.browser.find_element_by_name("search-bar-button").click()
+        sleep(8)
+
+        self.browser.find_element_by_xpath("//button[@aria-label='Close']").click()
+        sleep(1)
+
+    def _test_search_bar_find_user(self):
+        pass
+
+    def _test_search_bar_find_club(self):
+        pass
+
+    def _test_search_bar_find_book(self):
+        pass
+
+    def _test_friends_page_posts_tab_contains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/friends_page")
+        self.browser.find_element_by_xpath("//text[.='Posts']").click()
+        self.wait_until_element_found("//i[normalize-space()='@%s']" % self.user.username)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        user_posts = self.user.posts.values()
+        for post in user_posts:
+            self.assertTrue(post['title'] in body_text)
+            post_content = post['content'].replace('\n', ' ')
+            self.assertTrue(post_content in body_text)
+
+    def _test_friends_page_user_profile_cotains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/friends_page")
+        self.wait_until_element_found("//i[normalize-space()='@%s']" % self.user.username)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        # Check for user picture
+        self.assertTrue(self.user.first_name in body_text)
+        self.assertTrue(self.user.last_name in body_text)
+        self.assertTrue(self.user.username in body_text)
+        self.assertTrue(self.user.location in body_text)
+        self.assertTrue(self.user.bio in body_text)
+
+        
+        # pass
 
     def _test_feed_tab_contains_correct_information(self):
         pass
@@ -250,7 +297,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         body_text = self.browser.find_element_by_tag_name("body").text
         print(body_text)
         self.assertTrue(self.club.name in body_text)
-        #self.assertTrue(self.club.description in body_text) #broken idk why
+        #self.assertTrue(self.club.description in body_text) #broken on frontend
         # Test for correct club picture??
         # Test for reading History once implemented?
         # sleep(1)

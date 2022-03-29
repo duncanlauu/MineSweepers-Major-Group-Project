@@ -98,6 +98,7 @@ class Nav extends React.Component {
                         <>
                             <Button
                                 type='button'
+                                name="search-bar"
                                 style={{
                                     backgroundColor: "#FFF",
                                     border: "0px",
@@ -149,11 +150,12 @@ class Nav extends React.Component {
                     }}>
                     <ModalHeader toggle={this.toggle} >
                         <SearchContainer>
-                            <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
+                            <Button name="search-bar-button" onClick={this.handleSubmit} style={SearchButtonStyle}>
                                 <BiSearch style={{height: "2rem", width: "2rem"}} />
                             </Button>
                             <Input
                                 type='text'
+                                name="search-bar-input"
                                 placeholder='Search...'
                                 style={{
                                     height: "5rem",
