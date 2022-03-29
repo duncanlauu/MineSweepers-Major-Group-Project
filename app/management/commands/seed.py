@@ -239,6 +239,7 @@ def seed_friends():
             potential_friends.remove(user)
         for friend in potential_friends:
             user.add_friend(friend)
+            friend.add_friend(user)
         user.save()
         print(f'Created all friends for {user}')
 
