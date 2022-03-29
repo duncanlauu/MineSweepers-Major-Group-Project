@@ -10,11 +10,3 @@ const routerWrapper = (ChildComponent) => {
 }
 
 export default routerWrapper
-
-// export default function routerWrapper(ChildComponent) {
-//     return (
-//         <BrowserRouter>
-//             <ChildComponent />
-//         </BrowserRouter>
-//     )
-// }
