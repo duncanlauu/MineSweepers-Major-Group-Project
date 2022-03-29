@@ -1,4 +1,4 @@
-const generateResponse = (url) => {
+const generateGetResponse = (url) => {
     switch (url) {
         case "genres?n=10":
             return { data: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"] };
@@ -29,7 +29,7 @@ const generateResponse = (url) => {
                 }
             };
         default:
-            console.log("no matchting mock for this url")
+            console.log("no matching mock for this url")
             return { data: {} };
     }
 }
@@ -65,7 +65,7 @@ export default {
                     }
                 }
             },
-            get: jest.fn((url) => Promise.resolve(generateResponse(url))),
+            get: jest.fn((url) => Promise.resolve(generateGetResponse(url))),
             post: jest.fn(() => Promise.resolve({ data: {} })),
             put: jest.fn(() => Promise.resolve({ data: {} })),
             delete: jest.fn(() => Promise.resolve({ data: {} })),

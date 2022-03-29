@@ -8,7 +8,7 @@ import '@testing-library/jest-dom'
 import { act } from 'react-dom/test-utils';
 import RecommenderPage from '../RecommenderPage';
 import { BrowserRouter } from 'react-router-dom'
-
+import routerWrapper from '../../../test_helpers'
 
 let container
 
@@ -26,7 +26,7 @@ describe("Components exist", () => {
 
     test("contains heading", async () => {
         act(() => {
-            render(<BrowserRouter><RecommenderPage /></BrowserRouter>, container)
+            render(routerWrapper(<RecommenderPage />), container)
         })
 
         await waitFor(() => {
