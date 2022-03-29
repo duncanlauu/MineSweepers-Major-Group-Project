@@ -3,7 +3,7 @@ from django.test import LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 from django.test import override_settings
-from app.models import User, Club, Chat
+from app.models import User, Club, Chat, Book, Post
 from django.core.management import call_command
 from django.core import mail
 
@@ -115,6 +115,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         }
         self.club = Club.objects.get(name="Kerbal book club")
 
+        self.book = Book.objects.all()[0]
+
         self.new_user_data = {
             "first_name": "firstName",
             "last_name": "lastName",
@@ -172,7 +174,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # Navbar
-        self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_open_close(f"club_profile/{self.club.pk}") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_user # not implemented
+        # self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -195,6 +200,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Club Profile Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}")
         # self._test_club_profile_contains_correct_information()
+        # self._test_club_feed_tab_contains_correct_information()
         # self._test_apply_to_club() # apply to club where not member
         # self._test_members_tab_contains_correct_information()
         # Accept applicant
@@ -209,6 +215,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # add one for can't apply to club where member
 
+        # All Clubs Page
+        self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
+        self._test_all_clubs_page_contains_all_clubs() #if pagination is implemented this wont work
+        # self._test_all_clubs_page_visit_club_profile()
+        # contains navbar
 
         # Password Reset
         # self.browser.get(f"{self.live_server_url}/log_out")
@@ -235,9 +246,30 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
+    def _test_all_clubs_page_contains_all_clubs(self):
+        self.browser.get(f"{self.live_server_url}/all_clubs")
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        sleep(30)
+        pass
+
+    def _test_club_feed_tab_contains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}")
+        self.wait_until_element_found('//a[.="bookgle"]') # added later
+        self.browser.find_element_by_xpath('//button[.="Feed"]').click()
+        body_text = self.browser.find_element_by_tag_name("body").text
+        club_posts = Post.objects.filter(club=self.club.pk).values()
+        for post in club_posts:
+            author_username = User.objects.get(pk=post['author_id']).username
+            post_content = post['content'].replace('\n', ' ')
+            self.assertTrue(author_username in body_text) 
+            self.assertTrue(post['title'] in body_text)
+            self.assertTrue(post_content in body_text)
+
     def _test_search_bar_open_close(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
-        sleep(5)
+        sleep(5) # wait to find
+        # self.wait_until_element_found()
         self.browser.find_element_by_name("search-bar").click()
         self.browser.find_element_by_name("search-bar-input").send_keys("J")
         
@@ -248,13 +280,38 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
 
     def _test_search_bar_find_user(self):
+        # not implemented in frontend
         pass
 
-    def _test_search_bar_find_club(self):
-        pass
+    def _test_search_bar_find_club(self, url):
+        club_name = self.club.name
+        half_of_club_name = club_name[:len(club_name)//2]
+        self.browser.get(f"{self.live_server_url}/{url}")
+        sleep(2) # wait to find
+        # self.wait_until_element_found()
+        self.browser.find_element_by_name("search-bar").click()
+        self.browser.find_element_by_name("search-bar-input").send_keys(half_of_club_name)
+        self.browser.find_element_by_name("search-bar-button").click()
+        sleep(4) # wait to find
+        self.browser.find_element_by_xpath("//text[.='%s']" % club_name).click()
+        sleep(2) # wait to find
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/club_profile/{self.club.pk}")
 
-    def _test_search_bar_find_book(self):
-        pass
+    def _test_search_bar_find_book(self, url):
+        book_name = self.book.title
+        print(self.book)
+        half_of_book_name = book_name[:len(book_name)//2]
+        self.browser.get(f"{self.live_server_url}/{url}")
+        sleep(2) # wait to find
+        # # self.wait_until_element_found()
+        self.browser.find_element_by_name("search-bar").click()
+        self.browser.find_element_by_name("search-bar-input").send_keys(half_of_book_name)
+        self.browser.find_element_by_name("search-bar-button").click()
+        sleep(4) # wait to find
+        self.browser.find_element_by_xpath("//text[.='%s']" % book_name).click()
+        sleep(2)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}")
+
 
     def _test_friends_page_posts_tab_contains_correct_information(self):
         self.browser.get(f"{self.live_server_url}/friends_page")
