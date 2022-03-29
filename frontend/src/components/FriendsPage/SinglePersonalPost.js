@@ -23,6 +23,7 @@ export default function SinglePersonalPost(props) {
         getPostCreatorEmail(props.personalPost.author)
     }, []);
 
+    // TODO: use author__email in props.personalPost
     const getPostCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
