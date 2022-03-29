@@ -37,7 +37,7 @@ class UserClubView(APIView):
     def get(self, request, user_id):
         try:
             user = User.objects.get(pk=user_id)
-            clubs = Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).values()
+            clubs = Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).distinct().values()
             return Response({'clubs': clubs}, status=status.HTTP_200_OK)
         except:
             return Response(data='User is invalid', status=status.HTTP_400_BAD_REQUEST)
