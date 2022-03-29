@@ -46,13 +46,13 @@ export default function PersonalPostForm(props) {
         
         axiosInstance
             .post("posts/", {
-                club : formData.club_id,
+                club : getClubId(clubData),
                 title : formData.title,
                 content : formData.content, 
             })
             .then((res) => {
-                // navigate("/friends_page/")
-                // navigate("/home/")
+                navigate("/friends_page/")
+                navigate("/home/")
                 console.log("We just posted: ")
                 console.log(res.data)
             })
@@ -75,6 +75,17 @@ export default function PersonalPostForm(props) {
                 console.log(availableClubs + "=" + res.data.clubs)
             })
             .catch(error => console.error(error));
+    }
+
+    const getClubId = (club) => {
+        console.log(clubData)
+        for (let i = 0; i < availableClubs.length; ++i) {
+            console.log(availableClubs[i])
+            if (availableClubs[i]['name'] === clubData) {
+                return availableClubs[i].id;
+            }
+        }
+        return -1;
     }
     
     const displayPersonalPostForm = (e) => {
