@@ -1,33 +1,15 @@
+import get_current_user from '../mocksData/get_current_user.json'
+import myTop10Recommendations from '../mocksData/myTop10Recommendations.json'
+import tenGenres from '../mocksData/tenGenres.json'
+
 const generateGetResponse = (url) => {
     switch (url) {
         case "genres?n=10":
-            return { data: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"] };
+            return { data: tenGenres };
         case "get_current_user":
-            return {
-                data: {
-                    "id": 1,
-                    "password": "pbkdf2_sha256$260000$nghK9JWg2c7lKU5YE8ggTX$YTSrsurQe57gmH6582vjRdgHlHYLd2iUKBqnbedXPbw=",
-                    "last_login": null,
-                    "is_superuser": false,
-                    "is_staff": false,
-                    "is_active": true,
-                    "date_joined": "2022-03-24T13:36:10.145043Z",
-                    "username": "test",
-                    "email": "test@test.org",
-                    "first_name": "asdf",
-                    "last_name": "asdf",
-                    "bio": "asdf",
-                    "location": "asdf",
-                    "birthday": "2022-03-02",
-                    "created_at": "2022-03-24T13:36:10.250617Z",
-                    "groups": [],
-                    "user_permissions": [],
-                    "liked_books": [],
-                    "read_books": [],
-                    "clubs": [],
-                    "friends": []
-                }
-            };
+            return { data: get_current_user };
+        case "recommender/0/10/1/top_n/":
+            return { data: myTop10Recommendations }
         default:
             console.log("no matching mock for this url")
             return { data: {} };

@@ -75,8 +75,8 @@ describe('Genre-related components', () => {
 
         await waitFor(() => {
             const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'one' } })
-            const genreButton = screen.getByRole('button', { name: /my one recommendations/i })
+            fireEvent.change(comboBox, { target: { value: 'history' } })
+            const genreButton = screen.getByRole('button', { name: /my history recommendations/i })
             expect(genreButton).toBeInTheDocument()
         })
     })
@@ -88,8 +88,8 @@ describe('Genre-related components', () => {
 
         await waitFor(() => {
             const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'one' } })
-            const genreButton = screen.getByRole('button', { name: /global one top 10/i })
+            fireEvent.change(comboBox, { target: { value: 'history' } })
+            const genreButton = screen.getByRole('button', { name: /global history top 10/i })
             expect(genreButton).toBeInTheDocument()
         })
     })
@@ -101,7 +101,7 @@ describe('Genre-related components', () => {
 
         await waitFor(() => {
             const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'one' } })
+            fireEvent.change(comboBox, { target: { value: 'history' } })
             fireEvent.change(comboBox, { target: { value: '' } })
             const genreButton = screen.queryAllByTestId('genreRecommendation')
             expect(genreButton.length).toBe(0)
@@ -110,7 +110,19 @@ describe('Genre-related components', () => {
 })
 
 describe('Correct recommendations are displayed when buttons are clicked', () => {
+    test('displays top 10 ', async () => {
+        act(() => {
+            render(routerWrapper(<RecommenderPage />))
+        })
 
+        await waitFor(() => {
+            const comboBox = screen.getByRole('combobox')
+            fireEvent.change(comboBox, { target: { value: 'history' } })
+            fireEvent.change(comboBox, { target: { value: '' } })
+            const genreButton = screen.queryAllByTestId('genreRecommendation')
+            expect(genreButton.length).toBe(0)
+        })
+    })
 });
 
 
