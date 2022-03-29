@@ -17,17 +17,8 @@ const RecommenderPage = () => {
 
     const [value, setValue] = useState('');
 
-    const handleChange = (e) => {
-        setValue(e.target.value);
-    }
-
     const [bookRecommendations, setBookRecommendations] = useState([]);
     const [genres, setGenres] = useState([]);
-    const [dropdownVisible, setDropDownVisible] = useState(false);
-
-    function toggleDropdown() {
-        setDropDownVisible(!dropdownVisible);
-    }
 
     function getGenres() {
         axiosInstance
@@ -158,10 +149,10 @@ const RecommenderPage = () => {
                             <option key={genre} value={genre}>{genre}</option>
                         )}
                     </select><br />
-                    <FilterButton onClick={returnTop10GenreRecommendations}>My {value} Recommendations</FilterButton><br />
+                    {value && <><FilterButton onClick={returnTop10GenreRecommendations} data-testId="myTop10GenreRecommendations">My {value} Recommendations</FilterButton><br /></>}
                     <FilterButton onClick={returnTop10Recommendations} data-testId="myTop10Recommendations">My Recommendations</FilterButton><br />
                     <FilterButton onClick={returnGlobalTop10Recommendations} data-testId="globalTop10Recommendations">Global Top 10</FilterButton><br />
-                    <FilterButton onClick={returnGlobalTop10GenreRecommendations}>Global {value} Top 10</FilterButton><br />
+                    {value && <><FilterButton onClick={returnGlobalTop10GenreRecommendations} data-testId="globalTop10GenreRecommendations">Global {value} Top 10</FilterButton><br /></>}
                     <LoadingIndicator />
                     <ul>
                         {bookRecommendations.map(

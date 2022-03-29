@@ -22,6 +22,17 @@ describe("Components exist", () => {
         })
     })
 
+    test("contains combobox", async () => {
+        act(() => {
+            render(routerWrapper(<RecommenderPage />))
+        })
+
+        await waitFor(() => {
+            const comboBox = screen.getByRole('combobox')
+            expect(comboBox).toBeInTheDocument()
+        })
+    })
+
     test("contains filter button for genre recommendations", async () => {
         act(() => {
             render(routerWrapper(<RecommenderPage />))
@@ -43,10 +54,30 @@ describe("Components exist", () => {
             expect(filterButton).toBeInTheDocument()
         })
     })
+
+    test("contains filter button for my top 10 genre recommendations", async () => {
+        act(() => {
+            render(routerWrapper(<RecommenderPage />))
+        })
+
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("myTop10GenreRecommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
+
+    test("contains filter button for global top 10 genre recommendations", async () => {
+        act(() => {
+            render(routerWrapper(<RecommenderPage />))
+        })
+
+        await waitFor(() => {
+            const filterButton = screen.getByTestId("globalTop10GenreRecommendations")
+            expect(filterButton).toBeInTheDocument()
+        })
+    })
 })
 
+describe("Components interact correctly", () => {
 
-// <FilterButton onClick={returnFictionRecommendations}>My {value} Recommendations</FilterButton><br/>
-// <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br/>
-// <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br/>
-// <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global {value} Top 10</FilterButton><br/>
+})
