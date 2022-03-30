@@ -3,7 +3,7 @@ from django.test import LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 from django.test import override_settings
-from app.models import User, Club, Chat, Book, Post
+from app.models import User, Club, Chat, Book, Post, BookRating
 from django.core.management import call_command
 from django.core import mail
 
@@ -218,9 +218,23 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # All Clubs Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
-        self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
-        self._test_all_clubs_page_visit_club_profile()
         # contains navbar
+        # self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
+        # self._test_all_clubs_page_visit_club_profile()
+        
+        # Book Profile Page
+        # self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
+        self._test_book_profile_page_contains_correct_information()
+        self._test_book_profile_rate_book() 
+        self._test_book_profile_update_book_rating()
+        self._test_book_profile_see_your_recommendations_button()
+
+        #update book rating #maybe use clear here once working??
+        #recommendations button ??
+
+        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}")
+
+
 
         # Password Reset
         # self.browser.get(f"{self.live_server_url}/log_out")
@@ -247,11 +261,117 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
+    def _test_book_profile_see_your_recommendations_button(self):
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
+        sleep(2)
+        self.browser.find_element(by=By.XPATH, value='//button[.="See your recommendations"]').click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations")
+
+
+
+    def _test_book_profile_update_book_rating(self):
+        book_object_rating_exists = BookRating.objects.filter(
+            book_id=self.book.pk , user_id=self.user.pk).exists()
+        if(not book_object_rating_exists):
+            BookRating.objects.create(
+                user=self.user,
+                book=self.book,
+                rating=5,
+                )
+            book_object_rating_exists = BookRating.objects.filter(
+                book_id=self.book.pk , user_id=self.user.pk).exists()
+        self.assertTrue(book_object_rating_exists)
+        new_book_rating = 9
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
+        sleep(3) #replace with better
+        old_book_rating = self._get_book_rating_from_current_book_profile()
+        
+        self.browser.find_element(by=By.XPATH, value='//span[@data-index="4"]').click()
+        self.browser.find_element(by=By.XPATH, value='//button[.="Update rating"]').click()
+        sleep(2)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}/")
+        book_rating = self._get_book_rating_from_current_book_profile()
+        book_object_rating = BookRating.objects.get(
+            book_id=self.book.pk , user_id=self.user.pk).rating
+        self.assertNotEqual(book_rating, old_book_rating)
+        self.assertEqual(book_rating, new_book_rating)
+        self.assertEqual(book_rating, book_object_rating)
+
+    def _test_book_profile_rate_book(self):
+        book_object_rating_exists = BookRating.objects.filter(
+            book_id=self.book.pk , user_id=self.user.pk).exists()
+        if(book_object_rating_exists):
+            BookRating.objects.get(
+                book_id=self.book.pk , user_id=self.user.pk).delete()
+            book_object_rating_exists = BookRating.objects.filter(
+                book_id=self.book.pk , user_id=self.user.pk).exists()
+        self.assertFalse(book_object_rating_exists)
+        new_book_rating = 7
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
+        sleep(3) #replace with better
+        # self.browser.find_element(by=By.XPATH, value='//span[@data-index="1"]').click() #click Clear button
+        # click Clear button
+        self.browser.find_element(by=By.XPATH, value='//span[@data-index="3"]').click()
+        self.browser.find_element(by=By.XPATH, value='//button[.="Submit rating"]').click()
+        sleep(2)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}/")
+        book_object_rating_exists = BookRating.objects.filter(
+            book_id=self.book.pk , user_id=self.user.pk).exists()
+        self.assertTrue(book_object_rating_exists)
+        book_rating = self._get_book_rating_from_current_book_profile()
+        book_object_rating = BookRating.objects.get(
+            book_id=self.book.pk , user_id=self.user.pk).rating
+        self.assertEqual(book_rating, new_book_rating)
+        self.assertEqual(book_rating, book_object_rating)
+
+    def _test_book_profile_page_contains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
+        sleep(3) #replace with better
+        book_image_url = self.browser.find_element(by=By.CLASS_NAME, value="card-img-top").get_attribute('src')
+        book_title = self.browser.find_element(by=By.CLASS_NAME, value="card-title").text
+        page_subtitle_elements = self.browser.find_elements(by=By.CLASS_NAME, value="card-subtitle")
+        book_author = (page_subtitle_elements[0].text).split(" ", 1)[1]
+        book_date = (page_subtitle_elements[1].text).split(" ", 1)[1]
+        book_genre = (page_subtitle_elements[2].text).split(" ", 1)[1]
+        book_publisher = (page_subtitle_elements[3].text).split(" ", 1)[1]
+
+        self.assertEqual(book_image_url, self.book.image_links_large)
+        self.assertEqual(book_title, self.book.title)
+        self.assertEqual(book_author, self.book.author)
+        self.assertEqual(book_date, str(self.book.publication_date))
+        self.assertEqual(book_genre, self.book.genre)
+        self.assertEqual(book_publisher, self.book.publisher)
+
+        book_rating = self._get_book_rating_from_current_book_profile()
+        book_object_rating_exists = BookRating.objects.filter(
+            book_id=self.book.pk , user_id=self.user.pk).exists()
+        if(book_object_rating_exists):
+            book_object_rating = BookRating.objects.get(
+                book_id=self.book.pk , user_id=self.user.pk).rating
+            self.assertEqual(book_rating, book_object_rating)
+        else:
+            self.assertEqual(book_rating, 0)
+
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}/")
+
+    def _get_book_rating_from_current_book_profile(self):
+        # Assumes you are already in the book profile page
+        total_stars = 0
+        stars = self.browser.find_elements(by=By.XPATH, value='//span[.="★"]')
+        for star in stars:
+            if("react-stars-" in star.get_attribute('class')):
+                total_stars += 1
+            elif("gray" not in star.get_attribute('style')):
+                total_stars += 2
+        return total_stars
+        
+        
+
     def _test_all_clubs_page_visit_club_profile(self):
         self.browser.get(f"{self.live_server_url}/all_clubs")
         self.wait_until_element_found("//button[.='Visit Profile']")
 
-        # sleep(7)
         club_card = self.browser.find_elements_by_class_name("card-body")[0]
         club_card_a_element = club_card.find_element(by=By.XPATH, value=".//a[contains(@href, '/club_profile/')]")
         club_card_href = club_card_a_element.get_attribute('href')
@@ -259,20 +379,17 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         club_card_visit_profile_button = club_card.find_element(by=By.XPATH, value=".//button[.='Visit Profile']")
         club_card_visit_profile_button.click()
-
-        sleep(1)
+        sleep(1) # maybe something better here
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/club_profile/{club_card_id}")
 
 
     def _test_all_clubs_page_contains_all_visible_clubs(self):
         self.browser.get(f"{self.live_server_url}/all_clubs")
         self.wait_until_element_found("//button[.='Visit Profile']")
-
-        # sleep(7) #find better way to wait until loading is done
         id_to_club_object = {}
-        all_visible_clubs = list(Club.objects.filter(visibility=True).values())
+        all_visible_clubs = list(Club.objects.filter(visibility=True))
         for club in all_visible_clubs:
-            id_to_club_object[club['id']] = club
+            id_to_club_object[club.id] = club
 
         club_cards = self.browser.find_elements_by_class_name("card-body")
         self.assertEqual(len(club_cards), len(all_visible_clubs))
@@ -283,10 +400,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             club_card_a_element = club_card.find_element(by=By.XPATH, value=".//a[contains(@href, '/club_profile/')]")
             club_card_href = club_card_a_element.get_attribute('href')
             club_card_id = club_card_href.split('/')[-1]
-
             club_object = id_to_club_object.pop(int(club_card_id))
-            self.assertEqual(club_card_club_name, club_object['name'])
-            # same number of members
+            self.assertEqual(club_card_club_name, club_object.name)
+            self.assertEqual(club_card_number_of_members, club_object.members.count())
             
         self.assertFalse(id_to_club_object)
 
