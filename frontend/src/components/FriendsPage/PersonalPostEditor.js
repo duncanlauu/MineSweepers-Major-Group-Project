@@ -12,7 +12,7 @@ export default function PersonalPostEditor(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
-    const [clubData, setClubData] = useState("")
+    const [clubData, setClubData] = useState(null)
     const currentUser = useGetUser();
     const [availableClubs, setAvailableClubs] = useState("") 
     const navigate = useNavigate();
@@ -20,7 +20,6 @@ export default function PersonalPostEditor(props) {
     useEffect(() => {
         if (typeof (currentUser.id) != "undefined") {
             getAvailableClubs();
-            console.log("current user!: " + currentUser.id)
         }
     }, [currentUser]);
 
@@ -37,7 +36,7 @@ export default function PersonalPostEditor(props) {
         axiosInstance
             .put(`posts/${props.personalPost.id}`, {
                 action: "edit",
-                club : formData.club_id,
+                club : getClubId(clubData),
                 title : formData.title,
                 content : formData.content,
             })
@@ -66,6 +65,17 @@ export default function PersonalPostEditor(props) {
                 console.log(availableClubs + "=" + res.data.clubs)
             })
             .catch(error => console.error(error));
+    }
+
+    const getClubId = (club) => {
+        console.log(clubData)
+        for (let i = 0; i < availableClubs.length; ++i) {
+            console.log(availableClubs[i])
+            if (availableClubs[i]['name'] === clubData) {
+                return availableClubs[i].id;
+            }
+        }
+        return null;
     }
 
     const displayPersonalPostForm = (e) => {

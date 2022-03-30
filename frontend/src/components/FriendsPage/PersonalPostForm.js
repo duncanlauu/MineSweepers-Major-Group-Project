@@ -7,7 +7,6 @@ import useGetUser from "../../helpers";
 
 
 export default function PersonalPostForm(props) {
-    console.log(props)
 
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
@@ -30,7 +29,6 @@ export default function PersonalPostForm(props) {
     useEffect(() => {
         if (typeof (currentUser.id) != "undefined") {
             getAvailableClubs();
-            console.log("current user!: " + currentUser.id)
         }
     }, [currentUser]);
 
