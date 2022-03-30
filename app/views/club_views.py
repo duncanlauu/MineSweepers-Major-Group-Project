@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from app.serializers import ClubSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.db.models import Q
 
 
 class Clubs(APIView):
@@ -29,6 +30,17 @@ class Clubs(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserClubView(APIView):
+    """API view of all clubs a user is in"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(pk=user_id)
+            clubs = Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).distinct().values()
+            return Response({'clubs': clubs}, status=status.HTTP_200_OK)
+        except:
+            return Response(data='User is invalid', status=status.HTTP_400_BAD_REQUEST)
 
 class SingleClub(APIView):
     permission_classes = [AllowAny]
