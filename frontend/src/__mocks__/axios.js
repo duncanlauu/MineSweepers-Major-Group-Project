@@ -8,6 +8,7 @@ import bookDetails from '../mocksData/getBookDetails.json'
 import topClubs from '../mocksData/getTopClubs.json'
 import myMeetings from '../mocksData/getMyMeetings.json'
 import top12Global from '../mocksData/getTop12Global.json'
+import clubs from '../mocksData/clubs.json'
 
 
 const generateGetResponse = (url) => {
@@ -33,7 +34,9 @@ const generateGetResponse = (url) => {
         case "meetings/1":
             return {data: myMeetings};
         case `/recommender/0/12/top_n_global/`:
-            return {data: top12Global}
+            return {data: top12Global};
+        case `clubs/`:
+            return {data: clubs};
         default:
             console.log("no matching mock for url ", url)
             return {data: {}};

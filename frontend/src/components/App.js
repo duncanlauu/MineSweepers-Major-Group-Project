@@ -10,7 +10,6 @@ import ClubProfile from "./ClubProfile/ClubProfile";
 import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
-import Hello from "./Hello/Hello"
 import ChatWrapper from "./Chat/ChatWrapper.js"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
@@ -66,7 +65,6 @@ export default class App extends Component {
                                             <Route path="/chat/" element={<ChatWrapper/>}/>
                                             <Route path="/chat2/" element={<ChatUI/>}/>
                                             <Route path="/chat2/:chatID" element={<ChatUI/>}/>
-                                            <Route path='hello' element={<Hello/>}/>
                                             <Route path="/scheduling/:club_id" element={<Scheduling/>}/>
                                             <Route path="/meetings/" element={<Meetings/>}/>
                                             <Route path="/recommendations/" element={<RecommenderPage/>}/>
