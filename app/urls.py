@@ -60,7 +60,6 @@ urlpatterns = [
 
     # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
-    path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('clubs/', Clubs.as_view(), name='clubs'),
     path('clubs/user/<int:user_id>', UserClubView.as_view(), name='user_clubs'),
     path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),

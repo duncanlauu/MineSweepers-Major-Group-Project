@@ -1,0 +1,182 @@
+[
+    {
+        "id": 51,
+        "book": {
+            "ISBN": "0439425220",
+            "title": "Harry Potter and the Chamber of Secrets Postcard Book",
+            "author": "J. K. Rowling",
+            "publication_date": 2002,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439425220.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439425220.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439425220.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Fiction"
+        },
+        "rating": 9.289830840477556,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.537749Z",
+        "user": 160
+    },
+    {
+        "id": 52,
+        "book": {
+            "ISBN": "0743454529",
+            "title": "My Sister's Keeper : A Novel (Picoult, Jodi)",
+            "author": "Jodi Picoult",
+            "publication_date": 2004,
+            "publisher": "Atria",
+            "image_links_large": "http://images.amazon.com/images/P/0743454529.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0743454529.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0743454529.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "rating": 9.232044563480628,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.548085Z",
+        "user": 160
+    },
+    {
+        "id": 53,
+        "book": {
+            "ISBN": "0836213319",
+            "title": "Dilbert: A Book of Postcards",
+            "author": "Scott Adams",
+            "publication_date": 1996,
+            "publisher": "Andrews McMeel Pub",
+            "image_links_large": "http://images.amazon.com/images/P/0836213319.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0836213319.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0836213319.01.THUMBZZZ.jpg",
+            "genre": "Business & Economics"
+        },
+        "rating": 9.146562175146286,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.557333Z",
+        "user": 160
+    },
+    {
+        "id": 54,
+        "book": {
+            "ISBN": "0140143505",
+            "title": "84 Charing Cross Road",
+            "author": "Helene Hanff",
+            "publication_date": 1990,
+            "publisher": "Penguin Books",
+            "image_links_large": "http://images.amazon.com/images/P/0140143505.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0140143505.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0140143505.01.THUMBZZZ.jpg",
+            "genre": "Literary Collections"
+        },
+        "rating": 9.135550197399212,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.566080Z",
+        "user": 160
+    },
+    {
+        "id": 55,
+        "book": {
+            "ISBN": "0618002235",
+            "title": "The Two Towers (The Lord of the Rings, Part 2)",
+            "author": "J. R. R. Tolkien",
+            "publication_date": 1999,
+            "publisher": "Houghton Mifflin Company",
+            "image_links_large": "http://images.amazon.com/images/P/0618002235.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0618002235.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0618002235.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "rating": 9.09961916298009,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.574538Z",
+        "user": 160
+    },
+    {
+        "id": 56,
+        "book": {
+            "ISBN": "067168390X",
+            "title": "Lonesome Dove",
+            "author": "Larry McMurtry",
+            "publication_date": 1988,
+            "publisher": "Pocket",
+            "image_links_large": "http://images.amazon.com/images/P/067168390X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/067168390X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/067168390X.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "rating": 9.096857102934965,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.582624Z",
+        "user": 160
+    },
+    {
+        "id": 57,
+        "book": {
+            "ISBN": "0836220889",
+            "title": "Calvin and Hobbes",
+            "author": "Bill Watterson",
+            "publication_date": 1987,
+            "publisher": "Andrews McMeel Publishing",
+            "image_links_large": "http://images.amazon.com/images/P/0836220889.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0836220889.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0836220889.01.THUMBZZZ.jpg",
+            "genre": "Humor"
+        },
+        "rating": 9.008731999181254,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.590562Z",
+        "user": 160
+    },
+    {
+        "id": 58,
+        "book": {
+            "ISBN": "0345339738",
+            "title": "The Return of the King (The Lord of the Rings, Part 3)",
+            "author": "J.R.R. TOLKIEN",
+            "publication_date": 1986,
+            "publisher": "Del Rey",
+            "image_links_large": "http://images.amazon.com/images/P/0345339738.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0345339738.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0345339738.01.THUMBZZZ.jpg",
+            "genre": "Fantasy"
+        },
+        "rating": 8.967441919405616,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.600697Z",
+        "user": 160
+    },
+    {
+        "id": 59,
+        "book": {
+            "ISBN": "0811824829",
+            "title": "52 Deck Series: 52 Ways to Celebrate Friendship",
+            "author": "Lynn Gordon",
+            "publication_date": 2000,
+            "publisher": "Chronicle Books",
+            "image_links_large": "http://images.amazon.com/images/P/0811824829.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0811824829.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0811824829.01.THUMBZZZ.jpg",
+            "genre": "Social Science"
+        },
+        "rating": 8.951273664273367,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.613277Z",
+        "user": 160
+    },
+    {
+        "id": 60,
+        "book": {
+            "ISBN": "3499224615",
+            "title": "Maus 1. Mein Vater kotzt Geschichte aus. Die Geschichte eines Ã?Â?berlebenden.",
+            "author": "Art Spiegelman",
+            "publication_date": 1999,
+            "publisher": "Rowohlt Tb.",
+            "image_links_large": "http://images.amazon.com/images/P/3499224615.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/3499224615.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/3499224615.01.THUMBZZZ.jpg",
+            "genre": "Children of Holocaust survivors"
+        },
+        "rating": 8.943971928998227,
+        "genre": "Unspecified",
+        "created_at": "2022-03-29T10:56:37.623790Z",
+        "user": 160
+    }
+]
