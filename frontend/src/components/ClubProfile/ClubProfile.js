@@ -39,6 +39,7 @@ const ClubProfile = () => {
         } else {
           setMemberStatus("notApplied");
         }
+        console.log("Member status of this user: ", memberStatus);
       })
       .catch((err) => {
         console.log(err);

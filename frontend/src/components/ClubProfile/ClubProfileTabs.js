@@ -57,13 +57,13 @@ function ClubProfileTabs(props) {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
           <Tab label="Profile" {...a11yProps(0)} />
-          {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
             <Tab label="Members" {...a11yProps(1)} />
           )}
-          {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
             <Tab label="Feed" {...a11yProps(2)} />
           )}
-          {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
             <Tab label="Meetings" {...a11yProps(3)} />
           )}
         </Tabs>
@@ -72,19 +72,19 @@ function ClubProfileTabs(props) {
         <LandingProfile />
       </TabPanel>
 
-      {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
         <TabPanel value={value} index={1}>
           <ClubApplicants />
         </TabPanel>
       )}
 
-      {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
         <TabPanel value={value} index={2}>
           <ClubFeed />
         </TabPanel>
       )}
 
-      {(memberStatus !== "notApplied" || memberStatus === "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
         <TabPanel value={value} index={3}>
           <ClubScheduling />
         </TabPanel>
