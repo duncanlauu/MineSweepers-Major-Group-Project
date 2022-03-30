@@ -1,0 +1,182 @@
+[
+    {
+        "id": 271,
+        "book": {
+            "ISBN": "0609608444",
+            "title": "The Devil in the White City : Murder, Magic, and Madness at the Fair That Changed America (Illinois)",
+            "author": "ERIK LARSON",
+            "publication_date": 2003,
+            "publisher": "Crown",
+            "image_links_large": "http://images.amazon.com/images/P/0609608444.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0609608444.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0609608444.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.560392337218829,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.674158Z",
+        "user": 160
+    },
+    {
+        "id": 272,
+        "book": {
+            "ISBN": "0553272535",
+            "title": "Night",
+            "author": "Elie Wiesel",
+            "publication_date": 1982,
+            "publisher": "Bantam Books",
+            "image_links_large": "http://images.amazon.com/images/P/0553272535.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0553272535.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0553272535.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.498996165852908,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.683366Z",
+        "user": 160
+    },
+    {
+        "id": 273,
+        "book": {
+            "ISBN": "0743410068",
+            "title": "War Letters : Extraordinary Correspondence from American Wars",
+            "author": "Andrew Carroll",
+            "publication_date": 2002,
+            "publisher": "Washington Square Press",
+            "image_links_large": "http://images.amazon.com/images/P/0743410068.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0743410068.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0743410068.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.462605301696778,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.692361Z",
+        "user": 160
+    },
+    {
+        "id": 274,
+        "book": {
+            "ISBN": "0679721037",
+            "title": "Hiroshima",
+            "author": "John Hersey",
+            "publication_date": 1989,
+            "publisher": "Vintage Books USA",
+            "image_links_large": "http://images.amazon.com/images/P/0679721037.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0679721037.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0679721037.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.452125159920051,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.702223Z",
+        "user": 160
+    },
+    {
+        "id": 275,
+        "book": {
+            "ISBN": "014011369X",
+            "title": "And the Band Played on: Politics, People, and the AIDS Epidemic",
+            "author": "Randy Shilts",
+            "publication_date": 1995,
+            "publisher": "Penguin Books",
+            "image_links_large": "http://images.amazon.com/images/P/014011369X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/014011369X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/014011369X.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.447668081850221,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.714589Z",
+        "user": 160
+    },
+    {
+        "id": 276,
+        "book": {
+            "ISBN": "0553577123",
+            "title": "The Diary of a Young Girl: The Definitive Edition",
+            "author": "Anne Frank",
+            "publication_date": 1997,
+            "publisher": "Bantam Books",
+            "image_links_large": "http://images.amazon.com/images/P/0553577123.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0553577123.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0553577123.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.371642268107616,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.725595Z",
+        "user": 160
+    },
+    {
+        "id": 277,
+        "book": {
+            "ISBN": "0393317552",
+            "title": "Guns, Germs, and Steel: The Fates of Human Societies",
+            "author": "Jared Diamond",
+            "publication_date": 1999,
+            "publisher": "W. W. Norton & Company",
+            "image_links_large": "http://images.amazon.com/images/P/0393317552.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0393317552.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0393317552.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.361906756173104,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.734602Z",
+        "user": 160
+    },
+    {
+        "id": 278,
+        "book": {
+            "ISBN": "0060937319",
+            "title": "A People's History of the United States: 1492 to Present",
+            "author": "Howard Zinn",
+            "publication_date": 2001,
+            "publisher": "Perennial",
+            "image_links_large": "http://images.amazon.com/images/P/0060937319.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0060937319.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0060937319.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.320071643153886,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.743911Z",
+        "user": 160
+    },
+    {
+        "id": 279,
+        "book": {
+            "ISBN": "074322454X",
+            "title": "Band of Brothers : E Company, 506th Regiment, 101st Airborne from Normandy to Hitler's Eagle's Nest",
+            "author": "Stephen E. Ambrose",
+            "publication_date": 2001,
+            "publisher": "Simon & Schuster",
+            "image_links_large": "http://images.amazon.com/images/P/074322454X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/074322454X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/074322454X.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.313107026137452,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.752958Z",
+        "user": 160
+    },
+    {
+        "id": 280,
+        "book": {
+            "ISBN": "0345465083",
+            "title": "Seabiscuit",
+            "author": "LAURA HILLENBRAND",
+            "publication_date": 2003,
+            "publisher": "Ballantine Books",
+            "image_links_large": "http://images.amazon.com/images/P/0345465083.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0345465083.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0345465083.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "rating": 8.231487424581152,
+        "genre": "history",
+        "created_at": "2022-03-29T18:50:31.762930Z",
+        "user": 160
+    }
+]

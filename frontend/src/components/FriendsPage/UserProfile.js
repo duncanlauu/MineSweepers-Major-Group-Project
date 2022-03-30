@@ -30,6 +30,7 @@ import {
 } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPostList";
+import NonFriendList from "./NonFriendList";
 import FriendsList from "./FriendsList";
 import FriendRequestList from "./FriendRequestList";
 import SuggestedUserList from "./SuggestedUserList";

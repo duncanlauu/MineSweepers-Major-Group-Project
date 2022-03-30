@@ -1,0 +1,192 @@
+[
+    {
+        "id": 2117,
+        "book": {
+            "ISBN": "0553272535",
+            "title": "Night",
+            "author": "Elie Wiesel",
+            "publication_date": 1982,
+            "publisher": "Bantam Books",
+            "image_links_large": "http://images.amazon.com/images/P/0553272535.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0553272535.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0553272535.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 8.055869251979125,
+        "number_of_ratings": 92,
+        "flat_rating": 8.532608695652174,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.671635Z"
+    },
+    {
+        "id": 2118,
+        "book": {
+            "ISBN": "0609608444",
+            "title": "The Devil in the White City : Murder, Magic, and Madness at the Fair That Changed America (Illinois)",
+            "author": "ERIK LARSON",
+            "publication_date": 2003,
+            "publisher": "Crown",
+            "image_links_large": "http://images.amazon.com/images/P/0609608444.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0609608444.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0609608444.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.869143154393878,
+        "number_of_ratings": 32,
+        "flat_rating": 8.65625,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.680429Z"
+    },
+    {
+        "id": 2119,
+        "book": {
+            "ISBN": "0345465083",
+            "title": "Seabiscuit",
+            "author": "LAURA HILLENBRAND",
+            "publication_date": 2003,
+            "publisher": "Ballantine Books",
+            "image_links_large": "http://images.amazon.com/images/P/0345465083.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0345465083.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0345465083.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.85633886654316,
+        "number_of_ratings": 62,
+        "flat_rating": 8.241935483870968,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.687825Z"
+    },
+    {
+        "id": 2120,
+        "book": {
+            "ISBN": "0679721037",
+            "title": "Hiroshima",
+            "author": "John Hersey",
+            "publication_date": 1989,
+            "publisher": "Vintage Books USA",
+            "image_links_large": "http://images.amazon.com/images/P/0679721037.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0679721037.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0679721037.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.839102352222158,
+        "number_of_ratings": 26,
+        "flat_rating": 8.692307692307692,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.696295Z"
+    },
+    {
+        "id": 2121,
+        "book": {
+            "ISBN": "0393317552",
+            "title": "Guns, Germs, and Steel: The Fates of Human Societies",
+            "author": "Jared Diamond",
+            "publication_date": 1999,
+            "publisher": "W. W. Norton & Company",
+            "image_links_large": "http://images.amazon.com/images/P/0393317552.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0393317552.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0393317552.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.828874238088176,
+        "number_of_ratings": 36,
+        "flat_rating": 8.416666666666666,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.704250Z"
+    },
+    {
+        "id": 2122,
+        "book": {
+            "ISBN": "0679731148",
+            "title": "A Year in Provence",
+            "author": "Peter Mayle",
+            "publication_date": 1991,
+            "publisher": "Vintage Books USA",
+            "image_links_large": "http://images.amazon.com/images/P/0679731148.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0679731148.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0679731148.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.770819738802347,
+        "number_of_ratings": 67,
+        "flat_rating": 8.0,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.712346Z"
+    },
+    {
+        "id": 2123,
+        "book": {
+            "ISBN": "0553577123",
+            "title": "The Diary of a Young Girl: The Definitive Edition",
+            "author": "Anne Frank",
+            "publication_date": 1997,
+            "publisher": "Bantam Books",
+            "image_links_large": "http://images.amazon.com/images/P/0553577123.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0553577123.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0553577123.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.756266348103379,
+        "number_of_ratings": 16,
+        "flat_rating": 8.625,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.719549Z"
+    },
+    {
+        "id": 2124,
+        "book": {
+            "ISBN": "1550548913",
+            "title": "How to Be a Canadian: Even If You Already are One",
+            "author": "Will Ferguson",
+            "publication_date": 2003,
+            "publisher": "Douglas & McIntyre",
+            "image_links_large": "http://images.amazon.com/images/P/1550548913.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/1550548913.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/1550548913.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.745747125040585,
+        "number_of_ratings": 23,
+        "flat_rating": 8.304347826086957,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.729480Z"
+    },
+    {
+        "id": 2125,
+        "book": {
+            "ISBN": "0684818868",
+            "title": "Lies My Teacher Told Me : Everything Your American History Textbook Got Wrong",
+            "author": "James W. Loewen",
+            "publication_date": 1996,
+            "publisher": "Touchstone",
+            "image_links_large": "http://images.amazon.com/images/P/0684818868.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0684818868.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0684818868.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.745604171260437,
+        "number_of_ratings": 19,
+        "flat_rating": 8.421052631578947,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.740827Z"
+    },
+    {
+        "id": 2126,
+        "book": {
+            "ISBN": "067973743X",
+            "title": "Bury Me Standing: The Gypsies and Their Journey (Vintage Departures)",
+            "author": "Isabel Fonseca",
+            "publication_date": 1996,
+            "publisher": "Vintage Books USA",
+            "image_links_large": "http://images.amazon.com/images/P/067973743X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/067973743X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/067973743X.01.THUMBZZZ.jpg",
+            "genre": "History"
+        },
+        "weighted_rating": 7.745287354774701,
+        "number_of_ratings": 11,
+        "flat_rating": 8.909090909090908,
+        "genre": "history",
+        "created_at": "2022-03-29T18:42:06.749998Z"
+    }
+]

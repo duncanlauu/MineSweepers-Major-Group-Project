@@ -142,7 +142,6 @@ const LandingProfile = () => {
                     </BookProfile>
                 </Row>
             )} */}
-            {readingHistory.length}
         </Container>
     );
 }
