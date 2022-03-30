@@ -51,8 +51,6 @@ export default function SignUp() {
         })
     }
 
-
-
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("submitting", formData)
@@ -84,6 +82,7 @@ export default function SignUp() {
                         axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                             'JWT ' + localStorage.getItem('access_token')
                         // console.log("logging in after sign up ")
+
                         setAuth({ "user": username })
                         navigate("/sign_up/rating/")
                     })

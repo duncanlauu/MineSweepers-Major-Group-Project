@@ -3,7 +3,7 @@ import Rater from 'react-rater'
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axiosInstance from '../../axios';
-import BookRatingCard from '../GeneralComponents/BookRatingCard';
+import BookRatingCard from './BookRatingCard';
 import { Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand } from 'reactstrap'
 import useGetUser from "../../helpers";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
@@ -170,18 +170,18 @@ export default function SignUpRating(props) {
                 </Row>
                 <Container fluid>
                     {createRows()}
-                    <Row>
-                        <Col sm={{ size: 10, offset: 5 }}>
+                    <Row style={{display:"flex", justifyContent:"center", marginTop:"3rem", marginBottom:"2rem"}}>
+                        {/* <Col sm={{ size: 10, offset: 5 }} style={{, alignSelf:"center"}}> */}
                             <Button
                                 type="submit"
                                 className="submit"
                                 disabled={toggle}
                                 onClick={handleSubmit}
-                                style={{ backgroundColor: "#653FFD", width: "7rem" }}
+                                style={{ backgroundColor: "#653FFD", width: "20rem", height:"5rem", borderRadius:"100px"  }}
                             >
                                 Finish
                             </Button>
-                        </Col>
+                        {/* </Col> */}
                     </Row>
 
                 </Container>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
+import { SuggestedUserLine, SuggestedUserText, SuggestedUserNameContainer } from "./UserProfileElements";
 
 export default function SingleSuggestedUser(props) {
 
@@ -54,27 +55,38 @@ export default function SingleSuggestedUser(props) {
     }
 
     return (
-        <div className="friend" key={currentSuggestedUser.id}>
-            <Row>
-                <Col xs="2">
-                    <Gravatar email={suggestedUserEmail} size={20} style={{ 
-                        borderRadius: "50px",
-                        marginTop: "1rem",
-                        marginBottom: "1rem"}} 
-                    />
-                 </Col>
-                <Col xs="6">
-                    <h5 className="friend_username"> {suggestedUserName} </h5>
-                </Col>
-                <Col xs="4">
-                    <Button style={{width: "3rem"}} onClick={(e) => postFriendRequest(currentSuggestedUser.id)}>
-                        <p> ::</p>
-                    </Button>
-                    <Button style={{width: "2rem"}} onClick={(e) => cancelFriendRequest(currentSuggestedUser.id)}>
-                        <p> X </p>
-                    </Button>
-                </Col>
-            </Row>
+        <div className="friend" key={currentSuggestedUser.id} style={{marginBottom: "1rem", marginTop: "1rem"}}>
+            <SuggestedUserLine>
+                <Row style={{height: "4rem"}}>
+                    <Col xs="2">
+                        <Gravatar email={suggestedUserEmail} size={40} style={{ 
+                            borderRadius: "50px",
+                            marginBottom: "1rem"}} 
+                        />
+                    </Col>
+                    <Col xs="6" style={{height: "4rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <SuggestedUserNameContainer>
+                            <SuggestedUserText>
+                                {suggestedUserName} 
+                            </SuggestedUserText>
+                        </SuggestedUserNameContainer>
+                        
+                        {/* <h5 className="friend_username"> {suggestedUserName} </h5> */}
+                    </Col>
+                    <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
+                        <Button color="primary" onClick={(e) => postFriendRequest(currentSuggestedUser.id)}
+                            style={{height: "4rem", width: "6rem"}}
+                        >
+                            <p> Follow </p>
+                        </Button>
+                        <Button onClick={(e) => cancelFriendRequest(currentSuggestedUser.id)}
+                            style={{height: "4rem", width: "1rem", borderTopRightRadius: "20px", borderBottomRightRadius: "20px"}} 
+                        >
+                            <p> X </p>
+                        </Button>
+                    </Col>
+                </Row>
+            </SuggestedUserLine>
         </div>
     )
 }

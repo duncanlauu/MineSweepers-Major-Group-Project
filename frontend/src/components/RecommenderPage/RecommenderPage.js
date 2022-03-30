@@ -67,15 +67,6 @@ const RecommenderPage = () => {
     }
 
     function returnTop10Recommendations() {
-        axiosInstance
-            .post(`recommender/0/10/${user.id}/top_n/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
         trackPromise(
             axiosInstance
                 .get(`recommender/0/10/${user.id}/top_n/`)
@@ -90,15 +81,6 @@ const RecommenderPage = () => {
     }
 
     function returnGlobalTop10Recommendations() {
-        axiosInstance
-            .post(`recommender/0/10/top_n_global/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
         trackPromise(
             axiosInstance
                 .get(`recommender/0/10/top_n_global/`)
@@ -111,7 +93,7 @@ const RecommenderPage = () => {
                 }));
     }
 
-    function returnGlobalTop10FictionRecommendations() {
+    function returnGlobalTop10GenreRecommendations() {
         const genre = value;
         axiosInstance
             .post(`recommender/0/10/top_n_global_for_genre/${genre}/`, {})
@@ -135,7 +117,7 @@ const RecommenderPage = () => {
                 }));
     }
 
-    function returnFictionRecommendations() {
+    function returnTop10GenreRecommendations() {
         const genre = value;
         axiosInstance
             .post(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`, {})
@@ -176,10 +158,10 @@ const RecommenderPage = () => {
                             <option value={genre}>{genre}</option>
                         )}
                     </select><br/>
-                    <FilterButton onClick={returnFictionRecommendations}>My {value} Recommendations</FilterButton><br/>
+                    <FilterButton onClick={returnTop10GenreRecommendations}>My {value} Recommendations</FilterButton><br/>
                     <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br/>
                     <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br/>
-                    <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global {value} Top 10</FilterButton><br/>
+                    <FilterButton onClick={returnGlobalTop10GenreRecommendations}>Global {value} Top 10</FilterButton><br/>
                     <LoadingIndicator/>
                     <ul>
                         {bookRecommendations.map(
