@@ -159,10 +159,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_unsuccessful_sign_up() 
 
         # # Sign up and New User Book Rating Page
-        # # close_old_connections()
-        # # for conn in connections.all():
-        # #     conn.close()
-        self._test_successful_sign_up_and_book_rating() # broken wtf
+        # self._test_successful_sign_up_and_book_rating() 
 
         self.browser.get(f"{self.live_server_url}/log_out")
 
@@ -216,36 +213,24 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # add one for can't apply to club where member
 
-        # All Clubs Page
+        # # All Clubs Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
         # contains navbar
         # self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
         # self._test_all_clubs_page_visit_club_profile()
         
-        # Book Profile Page
+        # # Book Profile Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
         # self._test_book_profile_page_contains_correct_information()
         # self._test_book_profile_rate_book() 
         # self._test_book_profile_update_book_rating()
         # self._test_book_profile_see_your_recommendations_button()
 
-        #update book rating #maybe use clear here once working??
-        #recommendations button ??
-
-        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}")
-
-
-
-        # Password Reset
+        # # Password Reset
         # self.browser.get(f"{self.live_server_url}/log_out")
         # self._test_password_reset()
 
 
-
-
-
-
-        # self
 
         # self._test_log_in_page() 
         # self._test_sign_up_page()
@@ -267,7 +252,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element(by=By.XPATH, value='//button[.="See your recommendations"]').click()
         sleep(1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations")
-
 
 
     def _test_book_profile_update_book_rating(self):
@@ -311,7 +295,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
         sleep(3) #replace with better
         # self.browser.find_element(by=By.XPATH, value='//span[@data-index="1"]').click() #click Clear button
-        # click Clear button
+        # self.browser.find_element(By.XPATH, value='//button[.="Clear"]').click()
         self.browser.find_element(by=By.XPATH, value='//span[@data-index="3"]').click()
         self.browser.find_element(by=By.XPATH, value='//button[.="Submit rating"]').click()
         sleep(2)
@@ -488,11 +472,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue(self.user.location in body_text)
         self.assertTrue(self.user.bio in body_text)
 
-        
-        # pass
-
-    def _test_feed_tab_contains_correct_information(self):
-        pass
 
     def _test_members_tab_contains_correct_information(self):
         pass
@@ -787,23 +766,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
         self.browser.find_element_by_xpath('//button[.="Finish"]').click()
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-
-    # def _test_new_user_log_in_book_rating(self):
-    #     self.browser.get(f"{self.live_server_url}/")
-    #     self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
-    #     log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-    #     username_input = self.browser.find_element_by_name("username")
-    #     password_input = self.browser.find_element_by_name("password")
-    #     username_input.send_keys(self.new_user_data['username'])
-    #     password_input.send_keys(self.new_user_data['password'])
-    #     log_in_button.click()
-    #     sleep(1) # make method to wait a little
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-    #     sleep(10)
-    #     self.browser.get(f"{self.live_server_url}/sign_up/rating")
-    #     # self.browser.find_element_by_xpath("//a[@data-index='/sign_up']").click()
-    #     sleep(100)
 
 
     def _test_log_out(self):
