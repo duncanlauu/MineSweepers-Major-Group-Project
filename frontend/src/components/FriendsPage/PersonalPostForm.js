@@ -12,7 +12,7 @@ export default function PersonalPostForm(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
-    const [clubData, setClubData] = useState("")
+    const [clubData, setClubData] = useState(null)
     const currentUser = useGetUser();
     const [availableClubs, setAvailableClubs] = useState("") 
 
@@ -85,7 +85,7 @@ export default function PersonalPostForm(props) {
                 return availableClubs[i].id;
             }
         }
-        return -1;
+        return null;
     }
     
     const displayPersonalPostForm = (e) => {
