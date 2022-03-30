@@ -98,15 +98,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         print_info()
 
         # # Train the recommender system model
-        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        self.dump_file_path = 'app/files/dump_file'
-        self.dataframe = get_combined_data(self.csv_file_path)
-        self.data = get_dataset_from_dataframe(self.dataframe)
-        self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(self.algo, self.trainset)
-        self.pred = test_model(self.algo, self.trainset)
-        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        # self.dump_file_path = 'app/files/dump_file'
+        # self.dataframe = get_combined_data(self.csv_file_path)
+        # self.data = get_dataset_from_dataframe(self.dataframe)
+        # self.trainset = get_trainset_from_dataset(self.data)
+        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        # train_model(self.algo, self.trainset)
+        # self.pred = test_model(self.algo, self.trainset)
+        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -220,11 +220,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_all_clubs_page_visit_club_profile()
         
         # # Book Profile Page
-        # self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
-        # self._test_book_profile_page_contains_correct_information()
-        # self._test_book_profile_rate_book() 
-        # self._test_book_profile_update_book_rating()
-        # self._test_book_profile_see_your_recommendations_button()
+        self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
+        self._test_book_profile_page_contains_correct_information()
+        self._test_book_profile_rate_book() 
+        self._test_book_profile_update_book_rating()
+        self._test_book_profile_see_your_recommendations_button()
 
         # # Password Reset
         # self.browser.get(f"{self.live_server_url}/log_out")
@@ -294,8 +294,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         new_book_rating = 7
         self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
         sleep(3) #replace with better
-        # self.browser.find_element(by=By.XPATH, value='//span[@data-index="1"]').click() #click Clear button
-        # self.browser.find_element(By.XPATH, value='//button[.="Clear"]').click()
+        self.browser.find_element(by=By.XPATH, value='//span[@data-index="1"]').click() #click Clear button
+        # self.browser.find_element(by=By.XPATH, value='//button[.="Clear"]').click() #only clickable when windows size is big enough
         self.browser.find_element(by=By.XPATH, value='//span[@data-index="3"]').click()
         self.browser.find_element(by=By.XPATH, value='//button[.="Submit rating"]').click()
         sleep(2)
@@ -477,6 +477,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         pass
 
     def _test_schedule_a_meeting(self):
+
         pass
 
     def _test_club_profile_contains_correct_information(self):
@@ -756,7 +757,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//span[@data-index='3']", 20)
         self.browser.find_element_by_xpath("//span[@data-index='3']").click()
         sleep(1)
-        self.browser.find_element(By.XPATH, value='//button[.="Clear"]').click()
+        self.browser.find_element(by=By.XPATH, value='//button[.="Clear"]').click()
         sleep(1)
         self.browser.find_element_by_xpath("//span[@data-index='4']").click()
         sleep(1)
