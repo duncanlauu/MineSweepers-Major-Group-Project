@@ -14,7 +14,7 @@ import { useParams } from 'react-router';
 import axiosInstance from '../../axios';
 import { useNavigate } from "react-router";
 import PersonalPostForm from "./PersonalPostForm";
-import UserProfileEditor from "./UserProfileEditor";
+// import UserProfileEditor from "./UserProfileEditor";
 
 const UserProfile = () => {
 
@@ -28,7 +28,7 @@ const UserProfile = () => {
     
     useEffect(() => {
         if(user_id== currentLoggedInUser.id || user_id === undefined || user_id === ""){
-            console.log("So user_id is " + user_id + " and currentLoggedInUser.id is " + currentLoggedInUser.id)
+            console.log("So user_id is " + user_id + " and current LoggedInUser.id is " + currentLoggedInUser)
             axiosInstance.get('/get_current_user/')
             .then(res => {
                 console.log(res);
@@ -163,7 +163,7 @@ const UserProfile = () => {
                         >
                             <ModalBody style={{overflowY: "scroll"}}>
                                 {/* <PersonalPostForm/> */}
-                                <UserProfileEditor currentUser={currentLoggedInUser}/>
+                                {/* <UserProfileEditor currentUser={currentLoggedInUser}/> */}
                             </ModalBody>
                         </Modal>
                     </Col>
