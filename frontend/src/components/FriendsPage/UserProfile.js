@@ -39,6 +39,7 @@ import { useNavigate } from "react-router";
 import UserProfileEditor from "./UserProfileEditor";
 import PersonalPostForm from "./PersonalPostForm";
 import BookRatingList from "./BookRatingList";
+import ClubList from "./ClubList";
 
 const UserProfile = () => {
   const [currentUser, setCurrentUser] = useState(useGetUser());
@@ -247,7 +248,7 @@ const UserProfile = () => {
                     borderRadius: "100px",
                   }}
                 >
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "20%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "1",
@@ -262,7 +263,7 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "20%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "2",
@@ -277,7 +278,7 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "40%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "3",
@@ -288,6 +289,21 @@ const UserProfile = () => {
                     >
                       <div style={{ textAlign: "center" }}>
                         <TabsText>Book ratings</TabsText>
+                      </div>
+                    </NavLink>
+                  </NavItem>
+
+                  <NavItem style={{ width: "20%" }}>
+                    <NavLink
+                      className={classnames({
+                        active: currentActiveTab === "4",
+                      })}
+                      onClick={() => {
+                        toggle("4");
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        <TabsText>Clubs</TabsText>
                       </div>
                     </NavLink>
                   </NavItem>
@@ -312,6 +328,14 @@ const UserProfile = () => {
                         <BookRatingList />
                       ) : (
                         <BookRatingList requestedUser_id={user_id} />
+                      )}
+                    </TabPane>
+
+                    <TabPane tabId="4">
+                      {user_id == undefined ? (
+                        <ClubList requestedUser_id={currentLoggedInUser.id}/>
+                      ) : (
+                        <ClubList requestedUser_id={user_id} />
                       )}
                     </TabPane>
                   </TabContent>
