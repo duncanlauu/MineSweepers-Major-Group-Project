@@ -16,11 +16,14 @@ export default function SingleCommentReply(props) {
 
     const navigate = useNavigate()
 
+    // TODO: use props.reply.author__email
     useEffect(() => {
         setCurrentPost(props.currentPost)
         setSingleComment(props.currentComment)
         setSingleReply(props.reply)
-        getReplyCreatorEmail(props.reply.author_id)
+        setPosterEmail(props.reply.author__email)
+        console.log('replier email', props.reply.author__email)
+        // getReplyCreatorEmail(props.reply.author_id)
     }, []);
 
     const deleteComment = (comment_id, e) => {

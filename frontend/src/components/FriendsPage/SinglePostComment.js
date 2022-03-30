@@ -16,10 +16,12 @@ export default function SinglePostComment(props) {
 
     const navigate = useNavigate()
 
+    // TODO: delete get_update, use props.comment.author__email
     useEffect(() => {
         setCurrentPost(props.currentPost)
         setSingleComment(props.comment)
-        getCommentCreatorEmail(props.comment.author_id)
+        setPosterEmail(props.comment.author__email)
+        // getCommentCreatorEmail(props.comment.author_id)
     }, []);
 
     const getCommentCreatorEmail = (author_id) => {
