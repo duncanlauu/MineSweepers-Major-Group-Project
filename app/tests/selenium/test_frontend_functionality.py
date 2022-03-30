@@ -97,16 +97,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_feed()
         print_info()
 
-        # # # Train the recommender system model
-        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        # self.dump_file_path = 'app/files/dump_file'
-        # self.dataframe = get_combined_data(self.csv_file_path)
-        # self.data = get_dataset_from_dataframe(self.dataframe)
-        # self.trainset = get_trainset_from_dataset(self.data)
-        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        # train_model(self.algo, self.trainset)
-        # self.pred = test_model(self.algo, self.trainset)
-        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # # Train the recommender system model
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -162,7 +162,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # # close_old_connections()
         # # for conn in connections.all():
         # #     conn.close()
-        # self._test_successful_sign_up_and_book_rating() # broken wtf
+        self._test_successful_sign_up_and_book_rating() # broken wtf
 
         self.browser.get(f"{self.live_server_url}/log_out")
 
@@ -224,10 +224,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         
         # Book Profile Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
-        self._test_book_profile_page_contains_correct_information()
-        self._test_book_profile_rate_book() 
-        self._test_book_profile_update_book_rating()
-        self._test_book_profile_see_your_recommendations_button()
+        # self._test_book_profile_page_contains_correct_information()
+        # self._test_book_profile_rate_book() 
+        # self._test_book_profile_update_book_rating()
+        # self._test_book_profile_see_your_recommendations_button()
 
         #update book rating #maybe use clear here once working??
         #recommendations button ??
@@ -776,7 +776,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(10)
         self.wait_until_element_found("//span[@data-index='3']", 20)
         self.browser.find_element_by_xpath("//span[@data-index='3']").click()
-        # Do something with Clear button
+        sleep(1)
+        self.browser.find_element(By.XPATH, value='//button[.="Clear"]').click()
+        sleep(1)
+        self.browser.find_element_by_xpath("//span[@data-index='4']").click()
         sleep(1)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         sleep(1)
