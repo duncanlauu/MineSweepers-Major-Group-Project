@@ -5,6 +5,7 @@ import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
 import { FeedPostContainer, PostHeadingText } from "./UserProfileElements"
 import { border } from "@mui/system"
+import { useNavigate } from "react-router";
 
 export default function SingleFeedPost(props) {
 
@@ -13,50 +14,17 @@ export default function SingleFeedPost(props) {
     const [posterEmail, setPosterEmail] = useState("");
     const [writtenComment, updateWrittenComment] = useState("dummy")
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         setFeedPosts(props.feedPost)
         setPosterName(props.feedPost.author__username)
         setPosterEmail(props.feedPost.author__email)
     }, []);
 
-    // const getPostCreatorName = (author_id) => {
-    //     axiosInstance.get(`user/get_update/${author_id}/`)
-    //     .then((res) => {
-    //         console.log("The post creator is: " + res.data.username)
-    //         setPosterName(res.data.username)
-    //     })
-    //     .catch(error => console.error(error));
-    // }
-    //
-    // const getPostCreatorEmail = (author_id) => {
-    //     axiosInstance.get(`user/get_update/${author_id}/`)
-    //     .then((res) => {
-    //         console.log("The post creator is: " + res.data.username)
-    //         setPosterEmail(res.data.email)
-    //     })
-    //     .catch(error => console.error(error));
-    // }
-
-    const uploadComment = (post_id, e, index) => {
-        console.log(writtenComment.myComment)
-        axiosInstance
-            .post(`posts/${post_id}/comments/`, {
-                content: writtenComment.myComment,
-            })
-            .then((res) => {
-                console.log(res.data)
-                const comment = { author: localStorage.username, content: writtenComment.myComment }
-                console.log(commentsRef.current[index])
-                commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
-            })
-    }
-
-    const handleCommentChange = (e) => {
-        updateWrittenComment({
-            writtenComment,
-            [e.target.name]: e.target.value,
-        })
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${props.feedPost.author}/`)
+        window.location.reload()
     }
 
     const commentsRef = useRef([]);
@@ -78,7 +46,7 @@ export default function SingleFeedPost(props) {
                 <CardHeader> 
                     <Row >
                         <Col xs="1">
-                            <Gravatar email={posterEmail} size={30} style={{ 
+                            <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{
                                     borderRadius: "50px",
                                     marginTop: "0rem",
                                     marginBottom: "0rem"
