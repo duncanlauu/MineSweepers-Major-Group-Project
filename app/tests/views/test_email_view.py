@@ -44,3 +44,40 @@ class PasswordResetTest(APITestCase):
         response = self.client.post(self.send_reset_password_email_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(mail.outbox), 0)
+
+    def test_reset_password_without_email(self):
+        response = self.client.post(self.send_reset_password_email_url, {}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reset_password_with_wrong_token(self):
+        data = {"email": self.user.email}
+        response = self.client.post(self.send_reset_password_email_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        email_lines = mail.outbox[0].body.splitlines()
+        reset_link = [l for l in email_lines if "/password_reset_confirm/" in l][0]
+        uid, token = reset_link.split("/")[-2:]
+        data = {"uid": uid, "token": "wrong_token", "new_password": "new_verysecret", "re_new_password": "new_verysecret"}
+        response = self.client.post(self.confirm_reset_password_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reset_password_with_wrong_uid(self):
+        data = {"email": self.user.email}
+        response = self.client.post(self.send_reset_password_email_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        email_lines = mail.outbox[0].body.splitlines()
+        reset_link = [l for l in email_lines if "/password_reset_confirm/" in l][0]
+        uid, token = reset_link.split("/")[-2:]
+        data = {"uid": "wrong_uid", "token": token, "new_password": "new_verysecret", "re_new_password": "new_verysecret"}
+        response = self.client.post(self.confirm_reset_password_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reset_password_with_wrong_re_new_password(self):
+        data = {"email": self.user.email}
+        response = self.client.post(self.send_reset_password_email_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        email_lines = mail.outbox[0].body.splitlines()
+        reset_link = [l for l in email_lines if "/password_reset_confirm/" in l][0]
+        uid, token = reset_link.split("/")[-2:]
+        data = {"uid": uid, "token": token, "new_password": "new_verysecret", "re_new_password": "wrong_new_verysecret"}
+        response = self.client.post(self.confirm_reset_password_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
