@@ -1,3 +1,5 @@
+"""Tests of the Reset Email"""
+"""Test case based on: https://saasitive.com/tutorial/django-rest-framework-reset-password/"""
 from django.core import mail
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -5,6 +7,7 @@ from app.models import User
 
 
 class PasswordResetTest(APITestCase):
+    """Tests of the Reset Email"""
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json']
 
@@ -19,7 +22,6 @@ class PasswordResetTest(APITestCase):
             "password": self.user.password,
         }
 
-    # Test case based on: https://saasitive.com/tutorial/django-rest-framework-reset-password/
     def test_reset_password(self):
         data = {"email": self.user.email}
         response = self.client.post(self.send_reset_password_email_url, data, format="json")
@@ -37,7 +39,6 @@ class PasswordResetTest(APITestCase):
         response = self.client.post(self.login_url, login_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # Test case based on: https://saasitive.com/tutorial/django-rest-framework-reset-password/
     def test_reset_password_wrong_email(self):
         data = {"email": "wrong@email.com"}
         response = self.client.post(self.send_reset_password_email_url, data, format="json")
