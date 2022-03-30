@@ -26,7 +26,7 @@ export default function SingleFeedPost(props) {
 
     const navigateToProfile = () => {
         navigate(`/friends_page/${props.feedPost.author}/`)
-        window.location.reload()
+       // window.location.reload()
     }
 
     const commentsRef = useRef([]);

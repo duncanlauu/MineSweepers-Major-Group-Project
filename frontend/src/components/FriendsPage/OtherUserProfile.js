@@ -40,15 +40,27 @@ import {useNavigate} from "react-router";
 import PersonalPostForm from "./PersonalPostForm";
 import UserProfileEditor from "./UserProfileEditor";
 
-const UserProfile = () => {
+const OtherUserProfile = () => {
+
+    const [currentUser, setCurrentUser] = useState('');
+    const {user_id} = useParams()
 
     const [currentActiveTab, setCurrentActiveTab] = useState("1");
-    const currentUser = useGetUser()
     const navigate = useNavigate()
-    const [isModalVisible, setModalVisibility] = useState()
 
     useEffect(() => {
-
+        axiosInstance
+            .get(`user/get_update/${user_id}`)
+            .then(res => {
+                if (res.data.id == null) {
+                    navigate('/error/')
+                }
+                setCurrentUser(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+                navigate('/error/')
+            })
     }, [])
 
     const toggle = (tab) => {
@@ -57,8 +69,21 @@ const UserProfile = () => {
         }
     }
 
-    const changeModalVisibility = () => {
-        setModalVisibility(!isModalVisible);
+    const postFriendRequest = (receiver, e) => {
+        axiosInstance
+            .post("friend_requests/", {
+                other_user_id: receiver
+            })
+    }
+
+    const cancelFriendRequest = (receiver, e) => {
+        axiosInstance
+            .delete("friend_requests/", {
+                data: {
+                    other_user_id: receiver,
+                    action: "cancel"
+                }
+            })
     }
 
     return (
@@ -93,13 +118,18 @@ const UserProfile = () => {
                                         </Row>
 
 
-                                        <div style={{display: "flex", justifyContent: "center"}}>
-                                            <Button color="primary" onClick={() => changeModalVisibility()}
-                                                    style={{borderRadius: "100px", height: "4rem"}}
+                                        <Row style={{display: "flex", justifyContent: "center", marginBottom: "1rem"}}>
+                                            <Button color="primary" onClick={(e) => postFriendRequest(currentUser.id)}
+                                                    style={{height: "4rem", width: "8rem"}}
                                             >
-                                                Edit Profile
+                                                <p> Follow </p>
                                             </Button>
-                                        </div>
+                                            <Button onClick={(e) => cancelFriendRequest(currentUser.id)}
+                                                    style={{height: "4rem", width: "4rem"}}
+                                            >
+                                                <p> X </p>
+                                            </Button>
+                                        </Row>
 
 
                                         <Row>
@@ -116,19 +146,6 @@ const UserProfile = () => {
                                 </Row>
                             </ProfileInfoCard>
                         </ProfileInfoContainer>
-                        <Modal
-                            isOpen={isModalVisible}
-                            toggle={() => changeModalVisibility()}
-                            style={{
-                                left: 0,
-                                top: 100
-                            }}
-                        >
-                            <ModalBody style={{overflowY: "scroll"}}>
-                                {/* <PersonalPostForm/> */}
-                                <UserProfileEditor currentUser={currentUser}/>
-                            </ModalBody>
-                        </Modal>
                     </Col>
 
                     <Col xs="6">
@@ -172,16 +189,12 @@ const UserProfile = () => {
                                 <DataContainerBelowTabs>
                                     <TabContent activeTab={currentActiveTab}>
                                         <TabPane tabId="1">
-                                            <PersonalPostList/>
+                                            <PersonalPostList requestedUser_id={user_id}/>
                                         </TabPane>
 
                                         <TabPane tabId="2">
-
-                                            <FriendRequestList/>
-
-
                                             <FriendListContainer>
-                                                <FriendsList/>
+                                                <FriendsList requestedUser_id={user_id}/>
                                             </FriendListContainer>
                                         </TabPane>
 
@@ -190,7 +203,6 @@ const UserProfile = () => {
                             </DataContainerCard>
                         </DataContainer>
                     </Col>
-
 
                     <Col xs="3">
                         <FriendRecommenderContainer>
@@ -207,4 +219,4 @@ const UserProfile = () => {
     )
 }
 
-export default UserProfile
+export default OtherUserProfile

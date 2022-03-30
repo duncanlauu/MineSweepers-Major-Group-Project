@@ -25,6 +25,7 @@ import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
 import ClubRecommendationPage from "./ClubRecommendations/ClubRecommendationsPage";
 import UserProfile from "./FriendsPage/UserProfile";
+import OtherUserProfile from "./FriendsPage/OtherUserProfile";
 import RecommenderPage from "./RecommenderPage/RecommenderPage";
 import ListOfClubs from "./ListOfClubs/ListOfClubs";
 import ChatUI from "./Chat/ChatUI";
@@ -61,7 +62,7 @@ export default class App extends Component {
                                             <Route path='create_club' element={<CreateClub/>}/>
                                             <Route path='notifications' element={<Notifications/>}/>
                                             <Route path='friends_page/' element={<UserProfile/>}/>
-                                            <Route path='friends_page/:user_id' element={<UserProfile/>}/>
+                                            <Route path='friends_page/:user_id' element={<OtherUserProfile />}/>
                                             <Route path="chat/:chatID" element={<ChatWrapper/>}/>
                                             <Route path="/chat/" element={<ChatWrapper/>}/>
                                             <Route path="/chat2/" element={<ChatUI/>}/>

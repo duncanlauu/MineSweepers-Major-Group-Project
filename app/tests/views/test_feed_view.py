@@ -107,7 +107,7 @@ class FeedAPIViewTestCase(APITestCase):
         post_count_after = Post.objects.count()
         self.assertEqual(post_count_before, post_count_after)
 
-    def test_create_post(self):
+    def test_create_club_post(self):
         self._log_in_helper(self.user.username, "Password123")
         title = 'test full post title'
         content = 'test post content'
@@ -125,6 +125,23 @@ class FeedAPIViewTestCase(APITestCase):
         # Check other fields
         self.assertEqual(post.content, content)
         self.assertEqual(post.club.id, club_id)
+
+    def test_create_personal_post_with_empty_club_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        title = 'test full post title'
+        content = 'test post content'
+        form_data = {'title': title, 'content': content, 'club_id': ''}
+        post_count_before = Post.objects.count()
+        response = self.client.post(reverse('app:all_posts'), form_data)
+        self.assertEqual(response.status_code, 201)
+        post_count_after = Post.objects.count()
+        # Check post created
+        self.assertEqual(post_count_before + 1, post_count_after)
+        # Check author is user
+        post = Post.objects.get(title=title)
+        self.assertEqual(post.author, self.user)
+        # Check other fields
+        self.assertEqual(post.content, content)
 
     def test_get_post(self):
         self._log_in_helper(self.user.username, "Password123")
