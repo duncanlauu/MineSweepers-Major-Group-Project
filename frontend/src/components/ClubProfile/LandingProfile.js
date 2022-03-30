@@ -12,6 +12,8 @@ const LandingProfile = () => {
     console.log("Club ID: " + club_id);
     const [club, setClub] = useState(null);
     const [readingHistory, setReadingHistory] = useState([]);
+    const [ownerDetails, setOwnerDetails] = useState(null);
+    let history = [];
 
     const currentUser = useGetUser();
     const user_id = currentUser.id
@@ -19,18 +21,6 @@ const LandingProfile = () => {
 
     const [applied, setApplied] = useState();
     const [modalVisible, setModalVisible] = useState(false);
-
-    function ReadingHistory(props) {
-        axiosInstance
-            .get(`books/${props.isbn}`)
-            .then(res => {
-                console.log("Reading History: "+res);
-                setReadingHistory(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
 
     function IndividualBookCard(props) {
         return(
@@ -53,7 +43,25 @@ const LandingProfile = () => {
             .then(res => {
                 console.log(res);
                 setClub(res.data);
-                console.log("Club Data: " + res.data);
+                console.log("Club Data: " + JSON.stringify(res.data));
+                res.data.books.forEach(book_id =>
+                    readingHistory.push(
+                        axiosInstance
+                            .get(`books/${book_id}`)
+                            .then(bookRes => {
+                                console.log("Book Response: " + JSON.stringify(bookRes.data))
+                            })
+                    )
+                )
+                console.log("Reading History: " + JSON.stringify(readingHistory))
+                // res.data.books.map(book_id => {
+                //     axiosInstance
+                //         .get(`/books/${book_id}`)
+                //         .then(bookRes => {
+                //             console.log("Book Res: " + JSON.stringify(bookRes.data))
+                            
+                //         })
+                // })
             })
             .catch(err => {
                 console.log(err);
@@ -96,6 +104,8 @@ const LandingProfile = () => {
             })
     }
 
+    
+
     return (
         <Container fluid>
             <Row style={{display: "flex"}}>
@@ -118,7 +128,9 @@ const LandingProfile = () => {
             <Row>
                 <h3 style={{fontFamily: "Source Sans Pro", marginTop: "2rem", fontWeight: "600"}}>Reading History</h3>
             </Row>
-            {club.books.map(book =>
+            
+            {/* Something wrong with the history array
+             {history.map(book =>
                 <Row>
                     <BookProfile>
                         <Col xs={4}>
@@ -129,7 +141,8 @@ const LandingProfile = () => {
                         </Col>
                     </BookProfile>
                 </Row>
-            )}
+            )} */}
+            {readingHistory.length}
         </Container>
     );
 }

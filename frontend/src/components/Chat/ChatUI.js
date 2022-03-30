@@ -11,35 +11,6 @@ function ChatUI() {
     let params = useParams();
 
   return (
-    // <Container fluid>
-    //     <Row style={{ marginBottom: "3rem" }}>
-    //         <Nav />
-    //     </Row>
-    //     <Row>
-    //         <Col xs={1} />
-    //         <Col xs={3} style={{ padding: "0px" }}>
-    //             <SidePanelContainer>
-    //                 <TitleBar>
-    //                     <span>Conversations</span>
-    //                 </TitleBar>
-    //                 <Sidepanel2 />
-    //             </SidePanelContainer>
-    //         </Col>
-    //         <Col xs={7}>
-    //             <ChatContainer>
-    //                 {/* <EmptyChatContainer>
-    //                     <img src='../../../static/images/Outbox.svg' alt='Outbox' />
-    //                     <EmptyChatText>
-    //                         Send messages to individual users<br />
-    //                         or a club you're part of.
-    //                     </EmptyChatText>
-    //                 </EmptyChatContainer> */}
-    //                 <Chat2 chatID={params.chatID} />
-    //             </ChatContainer>
-    //         </Col>
-    //         <Col xs={1} />
-    //     </Row>
-    // </Container>
     <html style={{ height: '100%' }}>
     <Container fluid style={{ height:"46vw" }}>
         <Row style={{ marginBottom: "3rem" }}>
