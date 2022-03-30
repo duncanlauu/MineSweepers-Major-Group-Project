@@ -91,9 +91,14 @@ class Nav extends React.Component {
                     alignItems: "center",
                     justifyContent: "space-between"
                 }}>
-                    <Link to="/home/" style={{color: "#000"}}>
+                    {this.isAuthenticated
+                        ? <Link to="/home/" style={{color: "#000"}}>
+                            <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                            </Link>
+                        : <Link to="/" style={{color: "#000"}}>
                         <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
-                    </Link>
+                        </Link>
+                    }
                     {this.isAuthenticated ?
                         <>
                             <Button

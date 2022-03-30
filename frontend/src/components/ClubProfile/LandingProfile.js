@@ -11,6 +11,7 @@ const LandingProfile = () => {
     const { club_id } = useParams();
     console.log("Club ID: " + club_id);
     const [club, setClub] = useState(null);
+    const [readingHistory, setReadingHistory] = useState([]);
 
     const currentUser = useGetUser();
     const user_id = currentUser.id
@@ -18,6 +19,33 @@ const LandingProfile = () => {
 
     const [applied, setApplied] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+
+    function ReadingHistory(props) {
+        axiosInstance
+            .get(`books/${props.isbn}`)
+            .then(res => {
+                console.log("Reading History: "+res);
+                setReadingHistory(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    function IndividualBookCard(props) {
+        return(
+            <Row>
+                <BookProfile>
+                    <Col xs={4}>
+                        <Gravatar email='blah@blah.com' size={70}></Gravatar>
+                    </Col>
+                    <Col xs={8}>
+                        {book}
+                    </Col>
+                </BookProfile>
+            </Row>
+        );
+    }
 
     useEffect(() => {
         axiosInstance
