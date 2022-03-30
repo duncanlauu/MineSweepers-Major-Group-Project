@@ -11,7 +11,7 @@ from .views.static_views import HelloWorldView
 from .views.account_views import CreateUser
 from .views.authentication_views import BlacklistTokenView
 from .views.chat_views import ChatListView, ChatLeaveView
-from .views.club_views import Clubs, SingleClub
+from .views.club_views import Clubs, SingleClub, UserClubView
 from .views.search_view import SearchView
 from .views.book_views import Books
 
@@ -60,8 +60,8 @@ urlpatterns = [
 
     # Club API
     path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
-    path('user/log_out/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('clubs/', Clubs.as_view(), name='clubs'),
+    path('clubs/user/<int:user_id>', UserClubView.as_view(), name='user_clubs'),
     path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),
     path('singleclub/<int:id>/<str:action>/<int:user_id>', SingleClub.as_view(), name='manage_club'),
     path('singleclub/<int:id>/<str:action>/', SingleClub.as_view(), name='update_club'),

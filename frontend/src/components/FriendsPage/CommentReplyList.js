@@ -52,6 +52,13 @@ export default function CommentReplyList(props){
         getRepliesUnderComments()
     }
 
+
+    const inputAreaID = "myReply" + currentComment.id 
+
+    const clearInputField = () => {
+        document.getElementById(inputAreaID).value = ''
+    }
+
     const displayCommentsUnderPost = (e) => {
         if (repliesUnderComment.length > 0) {
             // console.log(repliesUnderComment);
@@ -62,7 +69,7 @@ export default function CommentReplyList(props){
                         <Row style={{marginBottom: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id="myReply"
+                                    id={inputAreaID}
                                     name="myReply"
                                     placeholder="Leave a reply here..."
                                     onChange={handleReplyChange}
@@ -70,7 +77,7 @@ export default function CommentReplyList(props){
                                 /> 
                             </Col>
                             <Col xs="3">
-                                <Button onClick={(e) => uploadReply(e, 0)} 
+                                <Button onClick={(e) => { uploadReply(e, 0) ; clearInputField() }} 
                                     style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
                                 >
                                     <p> Send </p>
@@ -101,7 +108,7 @@ export default function CommentReplyList(props){
                         <Row style={{marginBottom: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id="myReply"
+                                    id={inputAreaID}
                                     name="myReply"
                                     placeholder="Leave a reply here..."
                                     onChange={handleReplyChange}
@@ -109,7 +116,7 @@ export default function CommentReplyList(props){
                                 /> 
                             </Col>
                             <Col xs="3">
-                                <Button onClick={(e) => uploadReply(e, 0)} 
+                                <Button onClick={(e) => { uploadReply(e, 0) ; clearInputField() }} 
                                     style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
                                 >
                                     <p> Send </p>

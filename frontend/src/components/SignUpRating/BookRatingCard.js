@@ -11,7 +11,6 @@ export default function BookRatingCard(props) {
 
     const [rate, setRating] = useState(0);
 
-
     const ratingChanged = (newRating) => {
         console.log("Initial rating: " + props.initialRating);
         console.log("Rating changed: " + newRating + " previous rating: " + rate);
