@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from app.models import Book, Comment, Reply, User, BookRating, TimePeriod, Meeting, Post, Club
+from app.models import Book, Comment, Reply, User, BookRating, TimePeriod, Meeting, Post, Club, Chat
 from app.management.commands.helpers import print_info
 
 
@@ -12,5 +12,6 @@ class Command(BaseCommand):
         print("----- UNSEEDING... -----")
         User.objects.filter(is_superuser=False, is_staff=False).delete()
         Book.objects.all().delete()
+        Chat.objects.all().delete()
         TimePeriod.objects.all().delete()
         print_info()

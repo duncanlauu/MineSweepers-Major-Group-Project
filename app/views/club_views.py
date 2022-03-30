@@ -75,7 +75,7 @@ class SingleClub(APIView):
             if user:
                 club.remove_user_from_club(user)
                 if action == 'accept':
-                    club.members.add(user)
+                    club.add_member(user) #.members.add(user) 
                     return self.update(request, club)
 
                 elif action == 'remove':
