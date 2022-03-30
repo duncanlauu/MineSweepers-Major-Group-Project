@@ -309,6 +309,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(book_rating, new_book_rating)
         self.assertEqual(book_rating, book_object_rating)
 
+        
+
     def _test_book_profile_page_contains_correct_information(self):
         self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
         sleep(3) #replace with better
