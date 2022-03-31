@@ -8,15 +8,29 @@ export default function PersonalPostList(props){
     const [myPersonalPosts, setPersonalPosts] = useState("");
     
     useEffect(() => {
-        getPersonalPosts()
+        if(props.requestedUser_id == undefined){
+            getPersonalPosts()
+        }else{
+            getPersonalPostsOfOtherUser()
+        }
     }, []);
 
     const getPersonalPosts = () => {
         axiosInstance
             .get("posts/")
             .then((res) => {
-                console.log("my posts:")
-                console.log(res.data)
+                console.log("my posts: " + res.data.posts)
+                const allPersonalPosts = res.data.posts;
+                setPersonalPosts(allPersonalPosts)
+            })
+            .catch(error => console.error(error));
+    }
+
+    const getPersonalPostsOfOtherUser = () => {
+        axiosInstance
+            .get(`posts/user/${props.requestedUser_id}`)
+            .then((res) => {
+                console.log("other user's posts: " + res.data.posts)
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts)
             })
@@ -34,15 +48,14 @@ export default function PersonalPostList(props){
                 myPersonalPosts.map((personalPost, index) => {
                     return (
                         <div key={personalPost.id}>
-                            <SinglePersonalPost personalPost={personalPost} updatePageAfterDeletion={updatePageAfterDeletion}/>
+                            <SinglePersonalPost personalPost={personalPost} updatePageAfterDeletion={updatePageAfterDeletion} requestedUser_id={props.requestedUser_id}/>
                         </div>
                     )
                 })
             )
         }
         else {
-            return (<h5> You don't have any posts yet. </h5>)
-
+            return (<h5> No posts available. </h5>)
         }
     }
 

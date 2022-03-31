@@ -3,6 +3,7 @@ import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reac
 import axiosInstance from '../../axios'
 
 import { useNavigate } from "react-router";
+import useGetUser from "../../helpers";
 
 
 export default function PersonalPostEditor(props) {
@@ -11,7 +12,17 @@ export default function PersonalPostEditor(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
+    const [clubData, setClubData] = useState("")
+    const currentUser = useGetUser();
+    const [availableClubs, setAvailableClubs] = useState("") 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (typeof (currentUser.id) != "undefined") {
+            getAvailableClubs();
+            console.log("current user!: " + currentUser.id)
+        }
+    }, [currentUser]);
 
     const handleChange = (e) => {
         updateFormData({
@@ -42,6 +53,19 @@ export default function PersonalPostEditor(props) {
             })
     }
     
+    const getAvailableClubs = () => {
+        axiosInstance
+            .get(`clubs/user/${currentUser.id}`)
+            .then((res) => {
+                console.log(res.data.clubs)
+                const allAvailableClubs = res.data.clubs;
+                setAvailableClubs(allAvailableClubs)
+                console.log("the current user is: " + currentUser.id)
+                console.log(availableClubs + "=" + res.data.clubs)
+            })
+            .catch(error => console.error(error));
+    }
+
     const displayPersonalPostForm = (e) => {
         return(
             <Container fluid>
@@ -78,21 +102,31 @@ export default function PersonalPostEditor(props) {
                         </FormGroup>
                         <div>{contentErr}</div>
                         
-                        <Row>
-                        <Col xs="3">
-                            <FormGroup>
-                                <Label for="club_id"> Club ID </Label>
-                                <Input
-                                    id="club_id"
-                                    name="club_id" 
-                                    onChange={handleChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3" }}
-                                    value={formData.club}
-                                />
-                            </FormGroup>
-                            <div>{clubIDErr}</div>
-                        </Col>
-                        </Row>
+                        { availableClubs.length > 0  && 
+                            <Row>
+                            <Col xs="3">
+                                <FormGroup>
+                                    <Label for="club_id"> Club ID </Label>
+                                    <br/>
+                                    <select
+                                        
+                                        value={clubData}
+                                            onChange={(e) => setClubData(e.target.value)}
+                                            style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        >
+                                        <option/>
+
+                                        {availableClubs.map(club =>
+                                            <option> {club.name} </option>
+                                        )}
+                                            
+                                    </select>
+
+                                </FormGroup>
+                                <div>{clubIDErr}</div>
+                            </Col>
+                            </Row>
+                        }
 
                         <FormGroup>
                             <Col sm={{ size: 10, offset: 5 }}>

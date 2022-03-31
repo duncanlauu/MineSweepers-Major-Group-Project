@@ -60,7 +60,8 @@ export default class App extends Component {
                                             <Route path='club_profile/:club_id' element={<ClubProfile/>}/>
                                             <Route path='create_club' element={<CreateClub/>}/>
                                             <Route path='notifications' element={<Notifications/>}/>
-                                            <Route path='friends_page' element={<UserProfile/>}/>
+                                            <Route path='friends_page/' element={<UserProfile/>}/>
+                                            <Route path='friends_page/:user_id' element={<UserProfile/>}/>
                                             <Route path="chat/:chatID" element={<ChatWrapper/>}/>
                                             <Route path="/chat/" element={<ChatWrapper/>}/>
                                             <Route path="/chat2/" element={<ChatUI/>}/>

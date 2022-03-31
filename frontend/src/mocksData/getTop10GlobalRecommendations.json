@@ -1,0 +1,192 @@
+[
+    {
+        "id": 2037,
+        "book": {
+            "ISBN": "059035342X",
+            "title": "Harry Potter and the Sorcerer's Stone (Harry Potter (Paperback))",
+            "author": "J. K. Rowling",
+            "publication_date": 1999,
+            "publisher": "Arthur A. Levine Books",
+            "image_links_large": "http://images.amazon.com/images/P/059035342X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/059035342X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/059035342X.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Fiction"
+        },
+        "weighted_rating": 8.61919345370458,
+        "number_of_ratings": 313,
+        "flat_rating": 8.939297124600639,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.040918Z"
+    },
+    {
+        "id": 2038,
+        "book": {
+            "ISBN": "043935806X",
+            "title": "Harry Potter and the Order of the Phoenix (Book 5)",
+            "author": "J. K. Rowling",
+            "publication_date": 2003,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/043935806X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/043935806X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/043935806X.01.THUMBZZZ.jpg",
+            "genre": "Bildungsromans"
+        },
+        "weighted_rating": 8.530781317658203,
+        "number_of_ratings": 216,
+        "flat_rating": 8.953703703703704,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.049508Z"
+    },
+    {
+        "id": 2039,
+        "book": {
+            "ISBN": "0439139597",
+            "title": "Harry Potter and the Goblet of Fire (Book 4)",
+            "author": "J. K. Rowling",
+            "publication_date": 2000,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439139597.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439139597.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439139597.01.THUMBZZZ.jpg",
+            "genre": "Bildungsromans"
+        },
+        "weighted_rating": 8.519532629669389,
+        "number_of_ratings": 142,
+        "flat_rating": 9.154929577464788,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.058017Z"
+    },
+    {
+        "id": 2040,
+        "book": {
+            "ISBN": "0446310786",
+            "title": "To Kill a Mockingbird",
+            "author": "Harper Lee",
+            "publication_date": 1988,
+            "publisher": "Little Brown & Company",
+            "image_links_large": "http://images.amazon.com/images/P/0446310786.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0446310786.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0446310786.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "weighted_rating": 8.50387033558357,
+        "number_of_ratings": 217,
+        "flat_rating": 8.912442396313365,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.066093Z"
+    },
+    {
+        "id": 2041,
+        "book": {
+            "ISBN": "0439136369",
+            "title": "Harry Potter and the Prisoner of Azkaban (Book 3)",
+            "author": "J. K. Rowling",
+            "publication_date": 2001,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439136369.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439136369.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439136369.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Fiction"
+        },
+        "weighted_rating": 8.45376350377679,
+        "number_of_ratings": 133,
+        "flat_rating": 9.082706766917294,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.074421Z"
+    },
+    {
+        "id": 2042,
+        "book": {
+            "ISBN": "0439136350",
+            "title": "Harry Potter and the Prisoner of Azkaban (Book 3)",
+            "author": "J. K. Rowling",
+            "publication_date": 1999,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439136350.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439136350.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439136350.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Fiction"
+        },
+        "weighted_rating": 8.435090108559638,
+        "number_of_ratings": 143,
+        "flat_rating": 9.006993006993007,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.082134Z"
+    },
+    {
+        "id": 2043,
+        "book": {
+            "ISBN": "0439064872",
+            "title": "Harry Potter and the Chamber of Secrets (Book 2)",
+            "author": "J. K. Rowling",
+            "publication_date": 2000,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439064872.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439064872.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439064872.01.THUMBZZZ.jpg",
+            "genre": "N/A"
+        },
+        "weighted_rating": 8.3796778421453,
+        "number_of_ratings": 189,
+        "flat_rating": 8.783068783068783,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.090079Z"
+    },
+    {
+        "id": 2044,
+        "book": {
+            "ISBN": "0345339738",
+            "title": "The Return of the King (The Lord of the Rings, Part 3)",
+            "author": "J.R.R. TOLKIEN",
+            "publication_date": 1986,
+            "publisher": "Del Rey",
+            "image_links_large": "http://images.amazon.com/images/P/0345339738.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0345339738.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0345339738.01.THUMBZZZ.jpg",
+            "genre": "Fantasy"
+        },
+        "weighted_rating": 8.378362549608894,
+        "number_of_ratings": 79,
+        "flat_rating": 9.341772151898734,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.098310Z"
+    },
+    {
+        "id": 2045,
+        "book": {
+            "ISBN": "0590353403",
+            "title": "Harry Potter and the Sorcerer's Stone (Book 1)",
+            "author": "J. K. Rowling",
+            "publication_date": 1998,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0590353403.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0590353403.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0590353403.01.THUMBZZZ.jpg",
+            "genre": "Children's stories"
+        },
+        "weighted_rating": 8.359483545114118,
+        "number_of_ratings": 119,
+        "flat_rating": 8.983193277310924,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.106563Z"
+    },
+    {
+        "id": 2046,
+        "book": {
+            "ISBN": "0439064864",
+            "title": "Harry Potter and the Chamber of Secrets (Book 2)",
+            "author": "J. K. Rowling",
+            "publication_date": 1999,
+            "publisher": "Scholastic",
+            "image_links_large": "http://images.amazon.com/images/P/0439064864.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0439064864.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0439064864.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Fiction"
+        },
+        "weighted_rating": 8.343924320265451,
+        "number_of_ratings": 126,
+        "flat_rating": 8.920634920634921,
+        "genre": "Unspecified",
+        "created_at": "2022-03-25T17:30:15.115891Z"
+    }
+]

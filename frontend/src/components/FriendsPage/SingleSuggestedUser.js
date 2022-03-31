@@ -2,12 +2,17 @@ import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
+import {Link} from 'react-router-dom'
+import { SuggestedUserLine, SuggestedUserText, SuggestedUserNameContainer } from "./UserProfileElements";
+import { useNavigate } from "react-router";
 
 export default function SingleSuggestedUser(props) {
 
     const [currentSuggestedUser, setCurrentSuggestedUser] = useState("")
     const [suggestedUserName, setSuggestedUserName] = useState("");
     const [suggestedUserEmail, setSuggestedUserEmail] = useState("");
+
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -20,7 +25,6 @@ export default function SingleSuggestedUser(props) {
     const getSuggestedUserName = (suggestedUser_id) => {
         axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
             setSuggestedUserName(res.data.username)
         })
         .catch(error => console.error(error));
@@ -29,7 +33,6 @@ export default function SingleSuggestedUser(props) {
     const getSuggestedUserEmail = (suggestedUser_id) => {
         axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.email)
             setSuggestedUserEmail(res.data.email)
         })
         .catch(error => console.error(error));
@@ -53,28 +56,45 @@ export default function SingleSuggestedUser(props) {
             })
     }
 
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${currentSuggestedUser.id}/`)
+        window.location.reload()
+    }
+
     return (
-        <div className="friend" key={currentSuggestedUser.id}>
-            <Row>
-                <Col xs="2">
-                    <Gravatar email={suggestedUserEmail} size={20} style={{ 
-                        borderRadius: "50px",
-                        marginTop: "1rem",
-                        marginBottom: "1rem"}} 
-                    />
-                 </Col>
-                <Col xs="6">
-                    <h5 className="friend_username"> {suggestedUserName} </h5>
-                </Col>
-                <Col xs="4">
-                    <Button style={{width: "3rem"}} onClick={(e) => postFriendRequest(currentSuggestedUser.id)}>
-                        <p> ::</p>
-                    </Button>
-                    <Button style={{width: "2rem"}} onClick={(e) => cancelFriendRequest(currentSuggestedUser.id)}>
-                        <p> X </p>
-                    </Button>
-                </Col>
-            </Row>
+        <div className="friend" key={currentSuggestedUser.id} style={{marginBottom: "1rem", marginTop: "1rem"}}>
+            {/* <h1> {currentSuggestedUser.id} </h1> */}
+                <SuggestedUserLine>
+                    <Row style={{height: "4rem"}}>
+                        <Col xs="2">
+                            <Gravatar email={suggestedUserEmail} size={40} onClick={navigateToProfile} style={{ 
+                                borderRadius: "50px",
+                                marginBottom: "1rem"}} 
+                            />
+                        </Col>
+                        <Col xs="6" style={{height: "4rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <SuggestedUserNameContainer onClick={navigateToProfile}>
+                                <SuggestedUserText>
+                                    {suggestedUserName} 
+                                </SuggestedUserText>
+                            </SuggestedUserNameContainer>
+                            
+                            {/* <h5 className="friend_username"> {suggestedUserName} </h5> */}
+                        </Col>
+                        <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
+                            <Button color="primary" onClick={(e) => postFriendRequest(currentSuggestedUser.id)}
+                                style={{height: "4rem", width: "6rem"}}
+                            >
+                                <p> Follow </p>
+                            </Button>
+                            <Button onClick={(e) => cancelFriendRequest(currentSuggestedUser.id)}
+                                style={{height: "4rem", width: "1rem", borderTopRightRadius: "20px", borderBottomRightRadius: "20px"}} 
+                            >
+                                <p> X </p>
+                            </Button>
+                        </Col>
+                    </Row>
+                </SuggestedUserLine>
         </div>
     )
 }

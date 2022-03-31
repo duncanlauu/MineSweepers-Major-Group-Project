@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
 from app.models import Club, Post, User, Comment, Reply
@@ -39,9 +40,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.non_friend_user = User.objects.get(pk=6)
         self.post = Post.objects.get(pk=1)
 
-
-    ## ---------- FEED ---------- ##
-
+    # ---------- FEED ---------- #
     def test_get_feed(self):
         """Test user can see posts by themselves, friends, and clubs they are in"""
         self._log_in_helper(self.user.username, "Password123")
@@ -58,8 +57,23 @@ class FeedAPIViewTestCase(APITestCase):
         # Check posts by non friends who are in a club user is not a member of is not visible to user
         self.assertNotIn(4, post_ids)
 
-    ## ---------- POST ---------- ##
+    def test_get_other_user_feed_as_friend(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 2}))
+        self.assertEqual(response.status_code, 200)
+        posts = response.data['posts']
+        for post in posts:
+            self.assertIsNone(post['club'])
+            self.assertIn('author__username', post)
+            self.assertIn('author__email', post)
 
+    def test_get_other_user_feed_as_non_friend(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 5}))
+        self.assertEqual(response.status_code, 400)
+        self.assertIsNone(response.data)
+
+    # ---------- POST ---------- #
     def test_get_all_posts_of_user(self):
         self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:all_posts'))
@@ -83,6 +97,15 @@ class FeedAPIViewTestCase(APITestCase):
         # Check author is user
         post = Post.objects.get(title=title)
         self.assertEqual(post.author, self.user)
+
+    def test_create_post_invalid(self):
+        self._log_in_helper(self.user.username, "Password123")
+        form_data = {'title': "", 'content': 'test post content'}
+        post_count_before = Post.objects.count()
+        response = self.client.post(reverse('app:all_posts'), form_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        post_count_after = Post.objects.count()
+        self.assertEqual(post_count_before, post_count_after)
 
     def test_create_post(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -109,7 +132,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         post = Post.objects.get(id=1)
         post_values = model_to_dict(post, fields=([field.name for field in post._meta.fields]))
-        for k,v in post_values.items():
+        for k, v in post_values.items():
             self.assertEqual(response.data['post'][k], v)
 
     def test_full_edit_post_by_author(self):
@@ -122,7 +145,10 @@ class FeedAPIViewTestCase(APITestCase):
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
         self.assertEqual(edited_post.content, new_content)
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
 
     def test_partial_edit_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -176,7 +202,7 @@ class FeedAPIViewTestCase(APITestCase):
     def test_upvote_post_by_unauthorized_user(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
         upvote_before = Post.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action":"upvote"})
+        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
         self.assertEqual(response.status_code, 400)
         upvote_after = Post.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before, upvote_after)
@@ -196,9 +222,7 @@ class FeedAPIViewTestCase(APITestCase):
         post = Post.objects.get(pk=1)
         self.assertEqual(original_post, post)
 
-
-    ## ---------- COMMENT ---------- ##
-
+    # ---------- COMMENT ---------- #
     def test_get_all_comment_from_visible_post(self):
         self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1}))
@@ -317,8 +341,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertTrue(Comment.objects.filter(pk=2).exists())
 
-    ## ---------- REPLY ---------- ##
-
+    # ---------- REPLY ---------- #
     def test_get_all_replies_from_comment(self):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
@@ -440,7 +463,6 @@ class FeedAPIViewTestCase(APITestCase):
         club = Club.objects.get(id=1)
         posts = Post.objects.filter(club=club)
         actual_post_ids = [post.id for post in posts]
-        post_ids = [post['id'] for post in response.data]
+        post_ids = [post['id'] for post in response.data['posts']]
         self.assertEqual(len(actual_post_ids), len(post_ids))
         self.assertSetEqual(set(actual_post_ids), set(post_ids))
-

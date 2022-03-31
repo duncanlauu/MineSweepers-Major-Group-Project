@@ -13,17 +13,15 @@ export default function FeedPostList(props){
         axiosInstance
             .get("feed/")
             .then((res) => {
-                console.log("feed:")
-                console.log(res.data)
                 const allFeedPosts = res.data.posts;
                 setFeedPosts(allFeedPosts)
+                console.log("Feed posts: ", allFeedPosts)
             })
             .catch(error => console.error(error));
     }
 
     const displayFeedPosts = (e) => {
         if (myFeedPosts.length > 0) {
-            console.log('feed: ' + myFeedPosts);
             return (
                 myFeedPosts.map((feedPost, index) => {
                     return(
@@ -34,7 +32,7 @@ export default function FeedPostList(props){
                 })
             )
         } else {
-            return (<h5> You don't have any posts yet. </h5>)
+            return (<h5> No posts available. </h5>)
         }
     }
 

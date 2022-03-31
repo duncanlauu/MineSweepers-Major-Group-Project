@@ -5,6 +5,7 @@ import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
 import { FeedPostContainer, PostHeadingText } from "./UserProfileElements"
 import { border } from "@mui/system"
+import { useNavigate } from "react-router";
 
 export default function SingleFeedPost(props) {
 
@@ -15,8 +16,11 @@ export default function SingleFeedPost(props) {
     const [likesCount, setLikesCount] = useState(0)
     const [likesUsersList, setLikesUsersList] = useState([])
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         setFeedPosts(props.feedPost)
+<<<<<<< HEAD
         getPostUpvotes(props.feedPost.id)
         getPostCreatorName(props.feedPost.author_id)
         getPostCreatorEmail(props.feedPost.author_id)
@@ -82,6 +86,15 @@ export default function SingleFeedPost(props) {
             writtenComment,
             [e.target.name]: e.target.value,
         })
+=======
+        setPosterName(props.feedPost.author__username)
+        setPosterEmail(props.feedPost.author__email)
+    }, []);
+
+    const navigateToProfile = () => {
+        navigate(`/friends_page/${props.feedPost.author}/`)
+        window.location.reload()
+>>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     }
 
     const commentsRef = useRef([]);
@@ -103,7 +116,7 @@ export default function SingleFeedPost(props) {
                 <CardHeader> 
                     <Row >
                         <Col xs="1">
-                            <Gravatar email={posterEmail} size={30} style={{ 
+                            <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{
                                     borderRadius: "50px",
                                     marginTop: "0rem",
                                     marginBottom: "0rem"
@@ -114,8 +127,8 @@ export default function SingleFeedPost(props) {
                             <h5><b> @{posterName} </b></h5>
                         </Col>
                         <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
-                            {feedPost.club_id != null &&
-                                <h5> <b> Club: {feedPost.club_id} </b></h5>
+                            {feedPost.club != null &&
+                                <h5> <b> Club: {feedPost.club} </b></h5>
                             }
                         </Col>
                     </Row>

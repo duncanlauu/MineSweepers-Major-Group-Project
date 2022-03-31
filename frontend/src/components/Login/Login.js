@@ -10,8 +10,6 @@ import axiosInstance from '../../axios'
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from '../Nav/Nav'
 
-import useGetUser from '../../helpers'
-
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
@@ -23,8 +21,6 @@ export default function SignIn() {
 
     const usernameRef = useRef();
     const errRef = useRef();
-
-    const currentUser = useGetUser();
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -42,16 +38,6 @@ export default function SignIn() {
     useEffect(() => {
         setErrMsg('')
     }, [user, password])
-
-
-    const postRecommenderCalculation = (currentUser) => {
-        axiosInstance
-            .post(`recommender/0/10/${currentUser.id}/top_n_users_random_books/`)
-            .then((res) => {
-                console.log("friend recommendation post works!")
-                // navigate("/friends_page")
-            })
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -74,8 +60,6 @@ export default function SignIn() {
                 setAuth({ user })
                 setUser('')
                 setPassword('')
-
-                postRecommenderCalculation(currentUser)
 
                 axiosInstance
                     .get(`ratings/`)

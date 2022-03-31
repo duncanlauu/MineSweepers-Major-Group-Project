@@ -9,19 +9,17 @@ export default function PostCommentList(props){
     const [currentPost, setCurrentPost] = useState([]);
     const [commentsUnderPost, setCommentsUnderPost] = useState([]);
     const [writtenComment, updateWrittenComment] = useState("dummy")
-    
-    
+
+
     useEffect(() => {
         setCurrentPost(props.post)
         getCommentsUnderPost()
     }, []);
 
     const getCommentsUnderPost = () => {
-        console.log(props.post.id)
         axiosInstance
             .get(`posts/${props.post.id}/comments/`)
             .then((res) => {
-                console.log(res.data.comments)
                 const allCommentsUnderPost = res.data.comments;
                 setCommentsUnderPost(allCommentsUnderPost);
             })
@@ -32,16 +30,17 @@ export default function PostCommentList(props){
             writtenComment,
             [e.target.name]: e.target.value,
         })
+        console.log(writtenComment)
     }
 
     const uploadComment = (e, index) => {
-        console.log(writtenComment.myComment)
+        // console.log(writtenComment.myComment)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/`, {
                 content: writtenComment.myComment,
             })
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 getCommentsUnderPost()
 
             })
@@ -51,15 +50,21 @@ export default function PostCommentList(props){
         getCommentsUnderPost()
     }
 
+    const inputAreaID = "myComment" + currentPost.id;
+
+    const clearInputField = () => {
+        document.getElementById(inputAreaID).value = ''
+    }
+
     const displayCommentsUnderPost = (e) => {
         if (commentsUnderPost.length > 0) {
-            console.log(commentsUnderPost);
+            // console.log(commentsUnderPost);
             return (
                 <div>
                     <div style={{display: "flex", justifyContent: "center"}}>
                         <CommentSectionContainer>
                             {commentsUnderPost.map((comment, index) => {
-                                console.log(comment);
+                                // console.log(comment);
                                 return (
                                     <div key={comment.id} style={{marginBottom: "1rem"}}>
                                         <CommentLine>
@@ -77,7 +82,7 @@ export default function PostCommentList(props){
                         <Row style={{marginTop: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id="myComment"
+                                    id={inputAreaID}
                                     name="myComment"
                                     placeholder="Leave a comment here..."
                                     onChange={handleCommentChange}
@@ -85,7 +90,7 @@ export default function PostCommentList(props){
                                 />     
                             </Col>
                             <Col xs="3">
-                                <Button  onClick={(e) => uploadComment(e, 0)}
+                                <Button onClick={(e) => { uploadComment(e, 0) ; clearInputField() }}
                                     style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
                                 >
                                     <p> Send </p>
@@ -106,6 +111,7 @@ export default function PostCommentList(props){
                                     name="myComment"
                                     placeholder="Leave a comment here..."
                                     onChange={handleCommentChange}
+                                    // value={""}
                                     style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
                                 />     
                             </Col>

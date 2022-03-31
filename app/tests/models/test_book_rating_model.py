@@ -17,6 +17,9 @@ class BookRatingModelTest(TestCase):
     def setUp(self):
         self.book_rating = BookRating.objects.get(pk=1)
 
+    def test_valid_book_rating(self):
+        self._assert_book_rating_is_valid()
+
     def test_user_cannot_be_null(self):
         self.book_rating.user = None
         self._assert_book_rating_is_invalid()

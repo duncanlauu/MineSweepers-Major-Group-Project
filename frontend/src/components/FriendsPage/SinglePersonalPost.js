@@ -13,13 +13,30 @@ import useGetUser from "../../helpers"
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
+<<<<<<< HEAD
+=======
+    const [writtenComment, updateWrittenComment] = useState("dummy")
+    const [posterEmail, setPosterEmail] = useState("");
+>>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = useGetUser()
 
     useEffect(() => {
         setPersonalPost(props.personalPost)
+<<<<<<< HEAD
         console.log("HELLO", JSON.parse(localStorage.user).email)
+=======
+        getPostCreatorEmail(props.personalPost.author)
+>>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     }, []);
+
+    const getPostCreatorEmail = (author_id) => {
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            setPosterEmail(res.data.email)
+        })
+        .catch(error => console.error(error));
+    }
 
     const deletePost = (post_id, e) => {
         axiosInstance
@@ -30,6 +47,7 @@ export default function SinglePersonalPost(props) {
             .catch(error => console.error(error));
     }
 
+<<<<<<< HEAD
     // const uploadComment = (post_id, e, index) => {
     //     console.log(writtenComment.myComment)
     //     axiosInstance
@@ -52,6 +70,8 @@ export default function SinglePersonalPost(props) {
     //     })
     // }
 
+=======
+>>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     const changeModalVisibility = () => {
         setModalVisibility(!isModalVisible);
     }
@@ -76,23 +96,27 @@ export default function SinglePersonalPost(props) {
                 <CardHeader>
                     <Row >
                         <Col xs="1">
-                            <Gravatar email={currentUser.email} size={30} style={{ 
-                                        borderRadius: "50px",
-                                        marginTop: "0rem",
-                                        marginBottom: "0rem"
-                                    }} 
-                            />
+                            { props.requestedUser_id !== undefined && 
+                                <Gravatar email={posterEmail} size={30} style={{ 
+                                            borderRadius: "50px",
+                                            marginTop: "0rem",
+                                            marginBottom: "0rem"
+                                        }} 
+                                />
+                            }
                         </Col>
-                        <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div>
-                                <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
-                                    Edit                    
-                                </Button>
-                                <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
-                                    X
-                                </Button>
-                            </div>
-                        </Col>
+                        { props.requestedUser_id == undefined && 
+                            <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <div>
+                                    <Button style={{marginRight: "1rem"}} onClick={() => changeModalVisibility()}>
+                                        Edit                    
+                                    </Button>
+                                    <Button name={personalPost.id} onClick={(e) => deletePost(personalPost.id, e)}>
+                                        X
+                                    </Button>
+                                </div>
+                            </Col>
+                        }
                     </Row>    
                 </CardHeader>
 
