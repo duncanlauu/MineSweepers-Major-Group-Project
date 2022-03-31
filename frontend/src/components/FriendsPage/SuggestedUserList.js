@@ -2,13 +2,12 @@ import React, {useEffect, useState} from "react"
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
 import { Button } from "reactstrap";
-import useGetUser from "../../helpers";
 import SingleSuggestedUser from "./SingleSuggestedUser";
 
 export default function SuggestedUserList(props) {
 
     const [mySuggestedUsers, setSuggestedUsers] = useState("")
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
 
     useEffect(() => {
        getAllSuggestedUsers();

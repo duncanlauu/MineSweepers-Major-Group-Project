@@ -11,3 +11,5 @@ def print_info():
     print(f'Number of replies: {Reply.objects.count()}')
     print(f'Number of meetings: {Meeting.objects.count()}')
     print(f'Number of time periods: {TimePeriod.objects.count()}')
+    print(f'Number of chats: {Chat.objects.count()}')
+    print(f'Number of messages: {Message.objects.count()}')

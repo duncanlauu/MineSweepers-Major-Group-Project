@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
-import useGetUser from "../../helpers";
 
 
 export default function UserProfileEditor(props) {

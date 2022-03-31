@@ -14,6 +14,7 @@ import Nav from "../Nav/Nav";
 
 export default function SignUp() {
     
+
     const [firstNameErr, setFirstNameErr] = useState("")
     const [lastNameErr, setLastNameErr] = useState("")
     const [usernameErr, setUsernameErr] = useState("")
@@ -78,12 +79,19 @@ export default function SignUp() {
                         const username = formData.username
                         localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                         localStorage.setItem('refresh_token', refresh_token)
-                        localStorage.setItem('username', username) // might not be necessary
                         axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                             'JWT ' + localStorage.getItem('access_token')
-                        // console.log("logging in after sign up ")
 
-                        setAuth({ "user": username })
+                        axiosInstance.get('/get_current_user/')
+                        .then(response => { // use .then to make react wait for response
+                            const user = response.data;
+                            localStorage.setItem('user', JSON.stringify(user));
+                            setAuth({ user })
+                        }).catch(error => {
+                            console.log("Error: ", JSON.stringify(error, null, 4));
+                            throw error;
+                        })
+
                         navigate("/sign_up/rating/")
                     })
             })

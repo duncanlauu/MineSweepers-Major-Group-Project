@@ -1,7 +1,7 @@
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
 
-from app.models import User, FriendRequest
+from app.models import User, FriendRequest, Chat
 
 
 class FriendsAPITestCase(APITestCase):
@@ -32,9 +32,12 @@ class FriendsAPITestCase(APITestCase):
         self.assertIn(3, friend_ids)
 
     def test_delete_friend(self):
+        chat_count_before = Chat.objects.count()
         response = self.client.delete(reverse('app:single_friend',
                            kwargs={'other_user_id': 2}))
         deleted_friend = User.objects.get(pk=2)
+        chat_count_after = Chat.objects.count()
+        self.assertEqual(chat_count_before, chat_count_after)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(deleted_friend not in self.user.friends.all())
         self.assertEqual(self.user.friends.count(), 1)
@@ -90,13 +93,16 @@ class FriendsAPITestCase(APITestCase):
 
     def test_accept_incoming_friend_request(self):
         friend_count_before = self.user.friends.count()
+        chat_count_before = Chat.objects.count()
         response = self.client.delete(reverse('app:friend_requests'), data={'other_user_id': 5, 'action': 'accept'})
         friend_count_after = self.user.friends.count()
+        chat_count_after = Chat.objects.count()
         friend = User.objects.get(pk=5)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(friend in self.user.friends.all())
         self.assertTrue(self.user in friend.friends.all())
         self.assertEqual(friend_count_before + 1, friend_count_after)
+        self.assertEqual(chat_count_before + 1, chat_count_after)
         self.assertFalse(FriendRequest.objects.filter(sender=friend, receiver=self.user).exists())
 
     def test_accept_incoming_friend_request_when_already_friends(self):
@@ -125,12 +131,15 @@ class FriendsAPITestCase(APITestCase):
 
     def test_reject_incoming_friend_request(self):
         friend_count_before = self.user.friends.count()
+        chat_count_before = Chat.objects.count()
         friend_request_count_before = FriendRequest.objects.count()
         response = self.client.delete(reverse('app:friend_requests'), data={'other_user_id': 5, 'action': 'reject'})
         friend_count_after = self.user.friends.count()
+        chat_count_after = Chat.objects.count()
         friend_request_count_after = FriendRequest.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(friend_count_before, friend_count_after)
+        self.assertEqual(chat_count_before, chat_count_after)
         self.assertEqual(friend_request_count_before - 1, friend_request_count_after)
         self.assertFalse(FriendRequest.objects.filter(sender_id=5, receiver=self.user).exists())
 
