@@ -8,7 +8,6 @@ import ClubApplicants from "./ClubApplicants";
 import ClubFeed from "./ClubFeed";
 import LandingProfile from "./LandingProfile";
 import ClubScheduling from "./ClubScheduling";
-import useGetUser from "../../helpers";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

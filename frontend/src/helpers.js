@@ -6,9 +6,9 @@ export default function useGetUser() {
     const [user, setUser] = useState("");
 
     const getUser = (e) => {
-        axiosInstance.get(`get_current_user`).then(response => { // use .then to make react wait for response
+        axiosInstance.get('/get_current_user/')
+        .then(response => { // use .then to make react wait for response
             const user = response.data;
-            console.log(response.data)
             setUser(user);
             return user;
         }).catch(error => {

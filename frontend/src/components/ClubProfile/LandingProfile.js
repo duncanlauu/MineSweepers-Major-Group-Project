@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react'
-import {Container, Row, Col, Button} from 'reactstrap';
-import Gravatar from 'react-gravatar';
-import {BookProfile} from './ClubProfileElements';
-import axiosInstance from '../../axios';
-import { useParams } from 'react-router-dom';
-import useGetUser from '../../helpers';
+import React, { useState } from "react";
+import { Container, Row, Col, Button } from "reactstrap";
+import Gravatar from "react-gravatar";
+import { BookProfile } from "./ClubProfileElements";
+import axiosInstance from "../../axios";
+import { useParams } from "react-router-dom";
 
 const LandingProfile = () => {
 
@@ -15,8 +14,8 @@ const LandingProfile = () => {
     const [ownerDetails, setOwnerDetails] = useState(null);
     let history = [];
 
-    const currentUser = useGetUser();
-    const user_id = currentUser.id
+    const currentUser = JSON.parse(localStorage.user);
+    const user_id = currentUser.id;
     console.log("User ID: " + user_id);
 
     const [applied, setApplied] = useState();

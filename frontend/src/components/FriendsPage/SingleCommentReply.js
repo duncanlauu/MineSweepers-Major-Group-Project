@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
-import useGetUser from "../../helpers";
 import Gravatar from "react-gravatar"
 import { ReplyLineBox } from "./UserProfileElements";
 import { useNavigate } from "react-router";
@@ -12,7 +11,7 @@ export default function SingleCommentReply(props) {
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
 
     const navigate = useNavigate()
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
-import useGetUser from '../../helpers'
 import { HeadingText } from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import { BookProfile, FilterButton } from './RecommenderPageElements'
@@ -10,7 +9,7 @@ import { Oval } from 'react-loader-spinner';
 
 
 const RecommenderPage = () => {
-    const user = useGetUser();
+    const user = JSON.parse(localStorage.user);
     if (user) {
         console.log("User ID: " + user.id);
     }

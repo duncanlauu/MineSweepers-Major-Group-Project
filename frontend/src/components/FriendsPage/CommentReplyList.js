@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from "react"
+import React, { useState, useEffect} from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SingleCommentReply from "./SingleCommentReply";
@@ -35,15 +35,11 @@ export default function CommentReplyList(props){
     }
 
     const uploadReply = (e, index) => {
-        // console.log(writtenReply.myReply)
-        // console.log(currentPost.id)
-        // console.log(currentComment.id)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-                // console.log(res.data)
                 getRepliesUnderComments()
             })
     }
@@ -88,7 +84,6 @@ export default function CommentReplyList(props){
 
 
                     {repliesUnderComment.map((reply, index) => {
-                        // console.log(reply);
                         return (
                             <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
                                 <ReplyLine>
