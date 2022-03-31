@@ -9,7 +9,7 @@ import {Oval} from 'react-loader-spinner';
 import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
-    const user = JSON.parse(localStorage.user);
+    const user = JSON.parse(localStorage.getItem("user"));
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function getTopClubs() {
@@ -61,7 +61,7 @@ const ClubRecommendationPage = () => {
                     <Col xs={8}>
                         <HeadingText>Clubs For You</HeadingText>
                         <LoadingIndicator/>
-                        <RecommenderContainer>
+                        <RecommenderContainer data-testid="recommender_container">
                             {clubRecommendations.map(
                                 clubRecommendation => {
                                     console.log(clubRecommendation)

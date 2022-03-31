@@ -11,7 +11,7 @@ export default function SinglePostComment(props) {
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const currentUser = JSON.parse(localStorage.user);
+    const currentUser = JSON.parse(localStorage.getItem("user"));
 
     const navigate = useNavigate()
 

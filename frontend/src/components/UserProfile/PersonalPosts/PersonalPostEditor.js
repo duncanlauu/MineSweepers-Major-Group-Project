@@ -12,7 +12,7 @@ export default function PersonalPostEditor(props) {
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
     const [clubData, setClubData] = useState("")
-    const currentUser = JSON.parse(localStorage.user);
+    const currentUser = JSON.parse(localStorage.getItem('user'));
     const [availableClubs, setAvailableClubs] = useState("") 
     const navigate = useNavigate();
 

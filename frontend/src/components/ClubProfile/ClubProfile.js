@@ -15,7 +15,7 @@ const ClubProfile = () => {
   const { club_id } = useParams();
 
   const [club, setClub] = useState(null);
-  const currentUser = JSON.parse(localStorage.user)
+  const currentUser = JSON.parse(localStorage.getItem('user'))
   const [memberStatus, setMemberStatus] = useState("notApplied");
 
   useEffect(() => {

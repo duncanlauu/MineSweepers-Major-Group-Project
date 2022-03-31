@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, {useState, useEffect, useRef} from "react"
 import axiosInstance from '../../axios'
-import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
+import {Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
 import Gravatar from "react-gravatar"
-import { ReplyLineBox } from "../UserProfile/UserProfileElements";
-import { useNavigate } from "react-router";
+import {ReplyLineBox} from "../UserProfile/UserProfileElements";
+import {useNavigate} from "react-router";
 
 export default function SingleCommentReply(props) {
 
@@ -11,7 +11,7 @@ export default function SingleCommentReply(props) {
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const currentUser = JSON.parse(localStorage.user);
+    const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const navigate = useNavigate()
 
@@ -36,20 +36,26 @@ export default function SingleCommentReply(props) {
         navigate(`/user_profile/${singleReply.author}/`)
     }
 
-    return(
+    return (
         <div className="singleComment" key={singleReply.id}>
             <Row>
                 <Col>
                     <Row>
-                        <Col xs="2" style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "flex-start"}}>
-                            <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{ 
+                        <Col xs="2" style={{
+                            height: "3rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "flex-start"
+                        }}>
+                            <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{
                                 borderRadius: "50px",
                                 marginTop: "0rem",
                                 marginBottom: "0rem"
-                            }} 
-                        />
+                            }}
+                            />
                         </Col>
-                        <Col xs="8" style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Col xs="8"
+                             style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <ReplyLineBox>
                                 <h6> {singleReply.content} </h6>
                             </ReplyLineBox>
@@ -68,7 +74,6 @@ export default function SingleCommentReply(props) {
             </Row>
         </div>
     )
-
 
 
 }

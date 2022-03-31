@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
+import React, {useState, useEffect} from "react"
+import {Container, Form, FormGroup, Label, Input, Row, Col, Button} from "reactstrap"
 import axiosInstance from '../../../axios'
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 
 
 export default function PersonalPostForm(props) {
@@ -10,15 +10,15 @@ export default function PersonalPostForm(props) {
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
     const [clubData, setClubData] = useState(null)
-    const currentUser = JSON.parse(localStorage.user);
-    const [availableClubs, setAvailableClubs] = useState("") 
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+    const [availableClubs, setAvailableClubs] = useState("")
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
-        club_id : '',
-        title : '',
-        content : '', 
-        image_link : '',
-        book_link : ''
+        club_id: '',
+        title: '',
+        content: '',
+        image_link: '',
+        book_link: ''
     })
 
     const [formData, updateFormData] = useState(initialFormData)
@@ -32,14 +32,14 @@ export default function PersonalPostForm(props) {
 
     const handleChange = (e) => {
         updateFormData({
-          ...formData, 
-          [e.target.name]: e.target.value.trim(), 
+            ...formData,
+            [e.target.name]: e.target.value.trim(),
         })
-      }
-    
+    }
+
     const handlePostFriendRequest = (e) => {
         e.preventDefault()
-        
+
         axiosInstance
             .post("posts/", {
                 club : getClubId(clubData),
@@ -83,8 +83,8 @@ export default function PersonalPostForm(props) {
     }
 
     const displayPersonalPostForm = (e) => {
-        
-        return(
+
+        return (
             <Container fluid>
             <Row>
                 <Col>
