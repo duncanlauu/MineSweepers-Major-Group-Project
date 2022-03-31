@@ -64,7 +64,7 @@ export const FriendLine = styled.div`
 `;
 
 export const FriendRecommenderContainer = styled.div`
-  height: 50rem;
+  height: 55rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;

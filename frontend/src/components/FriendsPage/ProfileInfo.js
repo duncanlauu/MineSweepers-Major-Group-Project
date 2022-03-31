@@ -16,6 +16,8 @@ import UserProfileEditor from "./UserProfileEditor";
 import useGetUser from "../../helpers";
 import axiosInstance from '../../axios';
 import { useNavigate } from "react-router";
+import LocationCity from '@mui/icons-material/LocationCity';
+import AssignmentInd from '@mui/icons-material/AssignmentInd';
 
 export default function ProfileInfo(props) {
 
@@ -174,8 +176,17 @@ export default function ProfileInfo(props) {
 
                                 {isLoggedInUser === true &&
                                     <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <Button color="primary" onClick={() => changeModalVisibility()}
-                                            style={{ borderRadius: "100px", height: "4rem" }}
+                                        <Button onClick={() => changeModalVisibility()}
+                                            style={{
+                                                backgroundColor: "#653FFD",
+                                                fontFamily: "Source Sans Pro",
+                                                fontWeight: "500",
+                                                fontSize: "15px",
+                                                alignItems: "center",
+                                                justifyContent: "space-around",
+                                                width: "80%",
+                                                marginBottom: "1rem"
+                                            }}
                                         >
                                             Edit Profile
                                         </Button>
@@ -185,10 +196,12 @@ export default function ProfileInfo(props) {
                                 <Row>
                                     <div style={{ textAlign: "center" }}>
                                         {currentUser.location != "" &&
-                                            <h5> From: {currentUser.location} </h5>
+                                            <h5> 
+                                                <LocationCity/> {currentUser.location} 
+                                            </h5>
                                         }
                                         {currentUser.bio != "" &&
-                                            <h5> Bio: {currentUser.bio} </h5>
+                                            <h5> <AssignmentInd/> {currentUser.bio} </h5>
                                         }
                                     </div>
                                 </Row>
