@@ -84,7 +84,7 @@ def seed_default_objects():
     add_read_and_liked_books(books, val)
     val.add_friend(jeb)
     val.add_friend(bob)
-    val.add_friend(billie)
+    val.add_friend(billie) 
     jeb.add_friend(val)
     jeb.add_friend(bob)
     jeb.add_friend(billie)
@@ -94,6 +94,19 @@ def seed_default_objects():
     billie.add_friend(jeb)
     billie.add_friend(bob)
     billie.add_friend(val)
+
+    jeb_billie_chat = Chat.objects.create()
+    jeb_billie_chat.participants.set([jeb, billie])
+    jeb_val_chat = Chat.objects.create()
+    jeb_val_chat.participants.set([jeb, val])
+    jeb_bob_chat = Chat.objects.create()
+    jeb_bob_chat.participants.set([jeb, bob])
+    val_billie_chat = Chat.objects.create()
+    val_billie_chat.participants.set([val, billie])
+    val_bob_chat = Chat.objects.create()
+    val_bob_chat.participants.set([val, bob])
+    billie_bob_chat = Chat.objects.create()
+    billie_bob_chat.participants.set([billie, bob])
 
     kerbal = Club.objects.create(
         name="Kerbal book club",
