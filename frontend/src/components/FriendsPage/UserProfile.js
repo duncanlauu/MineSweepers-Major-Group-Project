@@ -120,20 +120,16 @@ const UserProfile = () => {
                       <PersonalPostList/>
                     </TabPane>
 
-                                        <TabPane tabId="2">
-                                            <FriendRequestList/>
+                    <TabPane tabId="2">
+                        <FriendRequestList/>
 
-                                            <FriendListContainer>
-                                                <FriendsList/>
-                                            </FriendListContainer>
-                                        </TabPane>
+                        <FriendListContainer>
+                            <FriendsList/>
+                        </FriendListContainer>
+                    </TabPane>
 
                     <TabPane tabId="3">
-                      {user_id == undefined ? (
                         <BookRatingList />
-                      ) : (
-                        <BookRatingList requestedUser_id={user_id} />
-                      )}
                     </TabPane>
 
                   </TabContent>

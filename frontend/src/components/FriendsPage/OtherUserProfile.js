@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
     Container,
     Row,
@@ -25,6 +25,7 @@ import FriendsList from "./FriendsList";
 import SuggestedUserList from "./SuggestedUserList";
 import {useParams} from 'react-router';
 import ProfileInfo from "./ProfileInfo";
+import BookRatingList from "./BookRatingList";
 
 const OtherUserProfile = () => {
 
@@ -56,32 +57,52 @@ const OtherUserProfile = () => {
                                     marginBottom: "1rem",
                                     width: "100%",
                                     marginTop: "1rem",
-                                    borderRadius: "100px"
+                                    borderRadius: "100px",
                                 }}
                                 >
-                                    <NavItem style={{width: "50%"}}>
-                                        <NavLink className={classnames({active: currentActiveTab === "1"})}
-                                                 onClick={() => {
-                                                     toggle("1");
-                                                 }}>
+                                    <NavItem style={{width: "33%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "1",
+                                            })}
+                                            onClick={() => {
+                                                toggle("1");
+                                            }}
+                                        >
                                             <div style={{textAlign: "center"}}>
                                                 <TabsText>
                                                     Posts
                                                 </TabsText>
                                             </div>
-
                                         </NavLink>
                                     </NavItem>
 
-                                    <NavItem style={{width: "50%"}}>
-                                        <NavLink className={classnames({active: currentActiveTab === "2"})}
-                                                 onClick={() => {
-                                                     toggle("2");
-                                                 }}>
+                                    <NavItem style={{width: "33%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "2",
+                                            })}
+                                            onClick={() => {
+                                                toggle("2");
+                                            }}
+                                        >
                                             <div style={{textAlign: "center"}}>
-                                                <TabsText>
-                                                    Friends
-                                                </TabsText>
+                                                <TabsText>Friends</TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
+
+                                    <NavItem style={{width: "33%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "3",
+                                            })}
+                                            onClick={() => {
+                                                toggle("3");
+                                            }}
+                                        >
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>Book ratings</TabsText>
                                             </div>
                                         </NavLink>
                                     </NavItem>
@@ -97,6 +118,10 @@ const OtherUserProfile = () => {
                                             <FriendListContainer>
                                                 <FriendsList requestedUser_id={user_id}/>
                                             </FriendListContainer>
+                                        </TabPane>
+
+                                        <TabPane tabId="3">
+                                            <BookRatingList requestedUser_id={user_id}/>
                                         </TabPane>
 
                                     </TabContent>
