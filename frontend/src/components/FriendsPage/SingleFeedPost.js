@@ -17,9 +17,9 @@ export default function SingleFeedPost(props) {
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
+        getPostUpvotes(props.feedPost.id)
         getPostCreatorName(props.feedPost.author_id)
         getPostCreatorEmail(props.feedPost.author_id)
-        getPostUpvotes()
     }, []);
 
     const getPostCreatorName = (author_id) => {
@@ -40,31 +40,29 @@ export default function SingleFeedPost(props) {
         .catch(error => console.error(error));
     }
 
-    const getPostUpvotes = () => {
-        console.log("U are alright mate.")
-        axiosInstance.get(`posts/${feedPost.id}/`)
+    const getPostUpvotes = (postID) => {
+        axiosInstance.get(`posts/${postID}`)
         .then((res) => {
-            console.log("HELLO", res.data.upvotes.length)
-            setLikesCount(res.data.upvotes.length)
-            setLikesUsersList(res.data.upvotes)
+            setLikesCount(res.data.post.upvotes.length)
+            setLikesUsersList(res.data.post.upvotes)
         })
         .catch(error => console.error(error));
     }
 
-    const uploadComment = (post_id, e, index) => {
-        console.log(writtenComment.myComment)
-        axiosInstance
-            .post(`posts/${post_id}/comments/`, {
-                content: writtenComment.myComment,
-            })
-            .then((res) => {
-                console.log(res.data)
-                const comment = { author: localStorage.username, content: writtenComment.myComment }
-                console.log(commentsRef.current[index])
-                commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
-            })
-    }
+    // const uploadComment = (post_id, e, index) => {
+    //     console.log(writtenComment.myComment)
+    //     axiosInstance
+    //         .post(`posts/${post_id}/comments/`, {
+    //             content: writtenComment.myComment,
+    //         })
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             const comment = { author: localStorage.username, content: writtenComment.myComment }
+    //             console.log(commentsRef.current[index])
+    //             commentsRef.current[index].addComment(comment)
+    //             console.log("adding post in parent: ", comment)
+    //         })
+    // }
 
     const likePost = () => {
         console.log("liking post", feedPost.id)
@@ -145,7 +143,7 @@ export default function SingleFeedPost(props) {
                 <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
                     view all comments
                 </Button>
-                <div>{likesCount}</div>
+                <h5> <b> Likes: {likesCount} </b></h5> {/* need style */}
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>

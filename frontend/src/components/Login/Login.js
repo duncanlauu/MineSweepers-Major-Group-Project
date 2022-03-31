@@ -6,10 +6,8 @@ import useAuth from '../hooks/useAuth'
 import useHasRated from '../hooks/useHasRated'
 import { Link } from 'react-router-dom'
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
-
 import axiosInstance from '../../axios'
 import { useNavigate, useLocation } from "react-router-dom";
-import { getCircularProgressUtilityClass } from '@mui/material'
 import Nav from '../Nav/Nav'
 
 import useGetUser from '../../helpers'
@@ -69,6 +67,7 @@ export default function SignIn() {
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
                 localStorage.setItem('username', user)
+                localStorage.setItem('user', JSON.stringify(currentUser))
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
                 console.log("From: ", from)
@@ -76,7 +75,6 @@ export default function SignIn() {
                 setUser('')
                 setPassword('')
 
-                console.log(" Current sick person logged in: " , currentUser.id)
                 postRecommenderCalculation(currentUser)
 
                 axiosInstance
@@ -92,8 +90,6 @@ export default function SignIn() {
                     })
                 setHasRated({ hasRated: "true" }) // additional default call to avoid issues with asynchronous loading.
                 navigate(from)
-                console.log(response);
-                console.log(response.data);
             })
             .catch((e) => {
                 setErrMsg("Invalid username/password")

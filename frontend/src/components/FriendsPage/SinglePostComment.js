@@ -8,7 +8,7 @@ export default function SinglePostComment(props) {
 
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
-    const currentUser = useGetUser();
+    const currentUser = localStorage.username;
 
     useEffect(() => {
         setCurrentPost(props.currentPost)

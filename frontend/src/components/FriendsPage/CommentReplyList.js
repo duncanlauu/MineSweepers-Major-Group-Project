@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from "react"
+import React, { useState, useEffect} from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SingleCommentReply from "./SingleCommentReply";
@@ -21,8 +21,6 @@ export default function CommentReplyList(props){
         axiosInstance
             .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
-                console.log("Sick replies:::")
-                console.log(res.data.replies)
                 const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
             })
@@ -37,15 +35,11 @@ export default function CommentReplyList(props){
     }
 
     const uploadReply = (e, index) => {
-        console.log(writtenReply.myReply)
-        console.log(currentPost.id)
-        console.log(currentComment.id)
         axiosInstance
             .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-                console.log(res.data)
                 getRepliesUnderComments()
             })
     }

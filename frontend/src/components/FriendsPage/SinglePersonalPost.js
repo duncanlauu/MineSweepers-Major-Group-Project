@@ -7,44 +7,43 @@ import {
 import PersonalPostEditor from "./PersonalPostEditor"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { PostContainer, PostHeadingText } from "./UserProfileElements"
+import {PostHeadingText } from "./UserProfileElements"
 import useGetUser from "../../helpers"
 
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("dummy")
     const [isModalVisible, setModalVisibility] = useState()
-    const currentUser = useGetUser();
+    const currentUser = useGetUser()
 
     useEffect(() => {
         setPersonalPost(props.personalPost)
+        console.log("HELLO", JSON.parse(localStorage.user).email)
     }, []);
 
     const deletePost = (post_id, e) => {
         axiosInstance
             .delete(`posts/${post_id}`)
             .then((res) => {
-                console.log(res)
                 props.updatePageAfterDeletion()
             })
             .catch(error => console.error(error));
     }
 
-    const uploadComment = (post_id, e, index) => {
-        console.log(writtenComment.myComment)
-        axiosInstance
-            .post(`posts/${post_id}/comments/`, {
-                content: writtenComment.myComment,
-            })
-            .then((res) => {
-                console.log(res.data)
-                const comment = { author: localStorage.username, content: writtenComment.myComment }
-                console.log(commentsRef.current[index])
-                commentsRef.current[index].addComment(comment)
-                console.log("adding post in parent: ", comment)
-            })
-    }
+    // const uploadComment = (post_id, e, index) => {
+    //     console.log(writtenComment.myComment)
+    //     axiosInstance
+    //         .post(`posts/${post_id}/comments/`, {
+    //             content: writtenComment.myComment,
+    //         })
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             const comment = { author: localStorage.username, content: writtenComment.myComment }
+    //             console.log(commentsRef.current[index])
+    //             commentsRef.current[index].addComment(comment)
+    //             console.log("adding post in parent: ", comment)
+    //         })
+    // }
 
     // const handleCommentChange = (e) => {
     //     updateWrittenComment({

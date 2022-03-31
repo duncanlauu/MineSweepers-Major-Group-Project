@@ -8,7 +8,7 @@ export default function SingleCommentReply(props) {
     const [singleReply, setSingleReply] = useState("");
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
-    const currentUser = useGetUser();
+    const currentUser = localStorage.username;
 
     useEffect(() => {
         setCurrentPost(props.currentPost)
