@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
 import Nav from '../Nav/Nav'
 import Chat2 from './Chat2'
-import { ChatContainer, EmptyChatContainer, EmptyChatText, TitleBar } from './ChatElements'
+import { ChatContainer, EmptyChatContainer, EmptyChatText, SidePanelContainer, TitleBar } from './ChatElements'
 import Sidepanel2 from './Sidepanel2'
 
 function ChatUI() {
@@ -11,35 +11,30 @@ function ChatUI() {
     let params = useParams();
 
   return (
-    <Container fluid>
+    <html style={{ height: '100%' }}>
+    <Container fluid style={{ height:"46vw" }}>
         <Row style={{ marginBottom: "3rem" }}>
             <Nav />
         </Row>
-        <Row>
+        <Row style={{ height:"37vw" }}>
             <Col xs={1} />
-            <Col xs={3} style={{ padding: "0px" }}>
-                <ChatContainer>
-                    <TitleBar>
-                        <span>Conversations</span>
-                    </TitleBar>
+            <Col xs={3}>
+                <Container fluid style={{ backgroundColor:"#fff", height:"100%", overflow:"hidden", padding:"0", borderRadius:"10px" }}>
+                    <Container style={{ display: "flex", height:"3rem", backgroundColor:"#653FFD", width:"100%", fontFamily:"Source Sans Pro", fontSize:"15px", alignItems:"center", color:"#fff", justifyContent:"flex-start" }}>
+                        Conversations
+                    </Container>
                     <Sidepanel2 />
-                </ChatContainer>
+                </Container>
             </Col>
             <Col xs={7}>
-                <ChatContainer>
-                    {/* <EmptyChatContainer>
-                        <img src='../../../static/images/Outbox.svg' alt='Outbox' />
-                        <EmptyChatText>
-                            Send messages to individual users<br />
-                            or a club you're part of.
-                        </EmptyChatText>
-                    </EmptyChatContainer> */}
+                <Container fluid style={{ backgroundColor:"#fff", height:"37vw", borderRadius:"10px", padding:"0px" }}>
                     <Chat2 chatID={params.chatID} />
-                </ChatContainer>
+                </Container>
             </Col>
             <Col xs={1} />
         </Row>
     </Container>
+    </html>
   )
 }
 

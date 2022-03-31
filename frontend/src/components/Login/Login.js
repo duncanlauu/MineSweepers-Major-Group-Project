@@ -132,13 +132,18 @@ export default function SignIn() {
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Col sm={{ size: 10, offset: 4 }}>
+                                    <Col sm={{ size: 10, offset: 1 }} style={{ display:"flex", flexDirection:"column", alignItems:"center" }} >
                                         <Button
                                             type="submit"
                                             onClick={handleSubmit}
-                                            style={{ backgroundColor: "#653FFD", width: "7rem" }}>
+                                            style={{ backgroundColor: "#653FFD", width: "7rem", marginBottom:"2rem" }}>
                                             Log In
                                         </Button>
+                                        <ParaText style={{ marginBottom: "1rem" }}>
+                                            <Link to="/password_reset/" style={{ color: "#0057FF", textDecoration: "none" }}>
+                                                Forgot Password?
+                                            </Link>
+                                        </ParaText>
                                     </Col>
                                 </FormGroup>
                             </form>

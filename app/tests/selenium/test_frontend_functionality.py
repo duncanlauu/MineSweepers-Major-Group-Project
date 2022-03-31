@@ -139,26 +139,30 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_everything(self):
         
         # Website title
-        # self.browser.get(f"{self.live_server_url}/")
-        # self.assertEquals(self.browser.title, "Bookgle")
+        self.browser.get(f"{self.live_server_url}/")
+        self.assertEquals(self.browser.title, "Bookgle")
 
-        # # Landing Page
-        # self._test_landing_page_log_in_and_sing_up_buttons()
+        # Landing Page
+        self._test_logo_button_goes_to_landing_page_when_not_logged_in("")
+        self._test_landing_page_log_in_and_sing_up_buttons()
 
         # # Log in
+        self._test_logo_button_goes_to_landing_page_when_not_logged_in("log_in")
         # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        # self._text_sign_up_here_button_goes_to_sign_up()
-        # self._test_unsuccessful_log_in() 
-        # self._test_successful_log_in()
+        self._text_sign_up_here_button_goes_to_sign_up()
+        self._test_unsuccessful_log_in() 
+        self._test_successful_log_in()
+        self._test_forgot_password_button_goes_to_password_reset()
 
-        # self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
 
         # # Sign up
+        self._test_logo_button_goes_to_landing_page_when_not_logged_in("sign_up")
         # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        # self._test_log_in_here_button_goes_to_log_in()
-        # self._test_sign_up_with_blank_fields()
-        # self._test_sign_up_username_too_short()
-        # self._test_sing_up_invalid_email()
+        self._test_log_in_here_button_goes_to_log_in()
+        self._test_sign_up_with_blank_fields()
+        self._test_sign_up_username_too_short()
+        self._test_sing_up_invalid_email()
         
         # # Sign up and New User Book Rating Page
         # self._test_sign_up_and_book_rating() 
@@ -174,10 +178,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # Navbar
-        # self._test_search_bar_open_close(f"all_clubs/") # has issues on home due to the ddos spam situation
+        self._test_search_bar_open_close(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_search_bar_find_user(f"all_clubs/") # has issues on home due to the ddos spam situation
-        # self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
-        # self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
+        self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
+        self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -191,9 +195,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_friends_page_user_profile_cotains_correct_information()
         # self._test_friends_page_posts_tab_contains_correct_information()
         # self._test_edit_post()
-        self._test_delete_post()
-        self._test_accept_friend_request()
-        self._test_reject_friend_request()
+        # self._test_delete_post()
+        # self._test_accept_friend_request()
+        # self._test_reject_friend_request()
         # self._test_delete_friend()
         # test for suggested friends
 
@@ -248,9 +252,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
+    def _test_forgot_password_button_goes_to_password_reset(self):
+
+        # http://127.0.0.1:8000/password_reset/
+        pass
+
+
     def _test_sing_up_invalid_email(self):
         number_of_users_before = User.objects.count()
-        self.browser.get(f"{self.live_server_url}/sign_up")
+        self.browser.get(f"{self.live_server_url}/sign_up/")
         self.wait_until_element_found('//button[.="Sign Up"]')
         self.browser.find_element_by_name("email").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
@@ -277,18 +287,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _test_sign_up_username_too_short(self):
         number_of_users_before = User.objects.count()
-        self.browser.get(f"{self.live_server_url}/sign_up")
+        self.browser.get(f"{self.live_server_url}/sign_up/")
         self.wait_until_element_found('//button[.="Sign Up"]')
         self.browser.find_element_by_name("username").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue("Username must consist of at least three alphanumericals" in body_text)
+        self.browser.find_element_by_name("username").send_keys("a")
+        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Username must consist of at least three alphanumericals" in body_text)
         self.browser.find_element_by_name("username").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
-        body_text = self.browser.find_element_by_tag_name("body").text
-        self.assertTrue("Username must consist of at least three alphanumericals" in body_text)
-        self.browser.find_element_by_name("username").send_keys("a")
-        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertFalse("Username must consist of at least three alphanumericals" in body_text)
         number_of_users_after = User.objects.count()
@@ -697,24 +711,35 @@ class FrontendFunctionalityTest(LiveServerTestCase):
  
     def _test_landing_page_log_in_and_sing_up_buttons(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         self.browser.execute_script("window.history.go(-1)")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
         self.wait_until_element_found("//button[.='Sign Up']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
         self.browser.execute_script("window.history.go(-1)")
 
     def _test_logo_button_goes_to_log_in_when_not_logged_in(self, url):
         # self.browser.get(f"{self.live_server_url}/")
-        # self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        # self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         # self.wait_until_element_found("//button[.='Log In']")
         self.browser.get(f"{self.live_server_url}/{url}")
         logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
         logo_button.click()
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+
+    def _test_logo_button_goes_to_landing_page_when_not_logged_in(self, url):
+        # self.browser.get(f"{self.live_server_url}/")
+        # self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
+        # self.wait_until_element_found("//button[.='Log In']")
+        self.browser.get(f"{self.live_server_url}/{url}")
+        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
+        logo_button.click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
+
 
     def _test_logo_button_goes_to_home_when_logged_in(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
@@ -726,7 +751,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _text_sign_up_here_button_goes_to_sign_up(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
         logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
         logo_button.click()
@@ -735,24 +760,24 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _test_unsuccessful_log_in(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         username_input = self.browser.find_element_by_name("username")
         password_input = self.browser.find_element_by_name("password")
         username_input.send_keys(self.login_data['username'])
         password_input.send_keys("WrongPassword123")
         log_in_button.click()
         sleep(1) # make method to wait a little
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Invalid username/password" in body_text)
 
     def _test_successful_log_in(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         username_input = self.browser.find_element_by_name("username")
         password_input = self.browser.find_element_by_name("password")
         username_input.send_keys(self.login_data['username'])
@@ -764,7 +789,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _test_log_in_here_button_goes_to_log_in(self):
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
         self.wait_until_element_found("//button[.='Sign Up']")
         logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
         logo_button.click()
@@ -774,12 +799,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_sign_up_with_blank_fields(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
         sleep(1)
         number_of_users_after = User.objects.count()
         self.assertEqual(number_of_users_after, number_of_users_before)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
         body_text = self.browser.find_element_by_tag_name("body").text
         number_of_empty_field_error_messages = body_text.count("This field may not be blank.")
         self.assertEqual(number_of_empty_field_error_messages, 5)
@@ -788,10 +813,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_sign_up_and_book_rating(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up']").click()
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
         self.wait_until_element_found("//button[.='Sign Up']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
         # Sign up
         self.browser.find_element_by_name("first_name").send_keys(self.new_user_data['first_name'])
         self.browser.find_element_by_name("last_name").send_keys(self.new_user_data['last_name'])
@@ -825,11 +850,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_log_out(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         # Log in
         self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
         self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
@@ -838,19 +863,19 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
         # Navigate to LOG OUT with buttons (NOT Implemented in frontend yet?)
         self.browser.get(f"{self.live_server_url}/log_out")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
         # Check that logged out??
 
     def _test_recommendations_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         # Log in
         self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
         self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
@@ -881,11 +906,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_friends_page(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         # Log in
         self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
         self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
@@ -929,11 +954,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         new_password = "NewPassword123"
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in']")
-        self.wait_until_element_found("//a[@href='/sign_up']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in']").click()
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
         self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         # Log in
         self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
         self.browser.find_element_by_name("password").send_keys(new_password)
@@ -970,7 +995,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     # Helpers
 
     def _log_in(self):
-        self.browser.get(f"{self.live_server_url}/log_in")
+        self.browser.get(f"{self.live_server_url}/log_in/")
         log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
         username_input = self.browser.find_element_by_name("username")
         password_input = self.browser.find_element_by_name("password")
