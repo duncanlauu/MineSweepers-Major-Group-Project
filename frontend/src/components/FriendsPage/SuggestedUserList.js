@@ -11,7 +11,7 @@ export default function SuggestedUserList(props) {
 
     useEffect(() => {
        getAllSuggestedUsers();
-    }, [currentUser]);
+    }, []);
 
     const getAllSuggestedUsers = () => {
         axiosInstance
