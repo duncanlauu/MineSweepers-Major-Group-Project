@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
 import Gravatar from "react-gravatar"
-import { ReplyLineBox } from "./UserProfileElements";
+import { ReplyLineBox } from "../UserProfile/UserProfileElements";
 import { useNavigate } from "react-router";
 
 export default function SingleCommentReply(props) {

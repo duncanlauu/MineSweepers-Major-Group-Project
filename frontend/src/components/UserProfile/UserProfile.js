@@ -25,17 +25,17 @@ import {
     SuggestedUserContainer
 } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
-import PersonalPostList from "./PersonalPostList";
-import FriendsList from "./FriendsList";
-import FriendRequestList from "./FriendRequestList";
-import SuggestedUserList from "./SuggestedUserList";
+import PersonalPostList from "./PersonalPosts/PersonalPostList";
+import FriendsList from "./Friends/FriendsList";
+import FriendRequestList from "./Friends/FriendRequestList";
+import SuggestedUserList from "./SuggestedUsers/SuggestedUserList";
 import {useNavigate} from "react-router";
 import ProfileInfo from "./ProfileInfo";
 import { useParams } from "react-router";
 import axiosInstance from "../../axios";
 import UserProfileEditor from "./UserProfileEditor";
-import PersonalPostForm from "./PersonalPostForm";
-import BookRatingList from "./BookRatingList";
+import PersonalPostForm from "./PersonalPosts/PersonalPostForm";
+import BookRatingList from "./BookRatings/BookRatingList";
 
 const UserProfile = () => {
 

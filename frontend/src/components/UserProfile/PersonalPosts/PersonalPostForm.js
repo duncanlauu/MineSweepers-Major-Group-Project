@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import { useNavigate } from "react-router";
 
 

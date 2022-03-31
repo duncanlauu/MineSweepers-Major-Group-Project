@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import SingleFriend from "./SingleFriend";
 
 

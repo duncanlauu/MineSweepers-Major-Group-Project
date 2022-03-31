@@ -20,12 +20,12 @@ import {
     SuggestedUserContainer
 } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
-import PersonalPostList from "./PersonalPostList";
-import FriendsList from "./FriendsList";
-import SuggestedUserList from "./SuggestedUserList";
+import PersonalPostList from "./PersonalPosts/PersonalPostList";
+import FriendsList from "./Friends/FriendsList";
+import SuggestedUserList from "./SuggestedUsers/SuggestedUserList";
 import {useParams} from 'react-router';
 import ProfileInfo from "./ProfileInfo";
-import BookRatingList from "./BookRatingList";
+import BookRatingList from "./BookRatings/BookRatingList";
 
 const OtherUserProfile = () => {
 

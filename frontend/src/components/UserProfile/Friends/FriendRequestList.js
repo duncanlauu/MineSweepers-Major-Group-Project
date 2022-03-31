@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import { Button, UncontrolledCollapse } from "reactstrap";
 import SingleFriendRequest from "./SingleFriendRequest";
-import { FriendLine } from "./UserProfileElements";
+import { FriendLine } from "../UserProfileElements";
 
 export default function FriendRequestList(props) {
 

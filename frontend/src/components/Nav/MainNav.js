@@ -13,7 +13,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
-import PersonalPostForm from '../FriendsPage/PersonalPostForm';
+import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
 
 class MainNav extends React.Component {
     constructor(props) {

@@ -4,7 +4,7 @@ import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
 import Gravatar from "react-gravatar"
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
-import { CommentLineBox } from "./UserProfileElements";
+import { CommentLineBox } from "../UserProfile/UserProfileElements";
 
 export default function SinglePostComment(props) {
 

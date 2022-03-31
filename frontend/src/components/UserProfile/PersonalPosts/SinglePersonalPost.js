@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import {
     Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse,
     Modal, ModalBody
 } from "reactstrap"
 import PersonalPostEditor from "./PersonalPostEditor"
-import PostCommentList from "./PostCommentList"
+import PostCommentList from "../../Feed/PostCommentList"
 import Gravatar from "react-gravatar"
-import {PostHeadingText } from "./UserProfileElements"
+import {PostHeadingText } from "../UserProfileElements"
 
 export default function SinglePersonalPost(props) {
 

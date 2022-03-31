@@ -13,7 +13,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {HeadingText, NavMenu, ParaText, SearchBarHeading, SearchContainer, SearchResult, SearchText, SubHeadingText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
-import PersonalPostForm from '../FriendsPage/PersonalPostForm';
+import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
 import axiosInstance from '../../axios';
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';

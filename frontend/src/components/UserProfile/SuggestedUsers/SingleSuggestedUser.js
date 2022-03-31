@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
 import {Link} from 'react-router-dom'
-import { SuggestedUserLine, SuggestedUserText, SuggestedUserNameContainer } from "./UserProfileElements";
+import { SuggestedUserLine, SuggestedUserText, SuggestedUserNameContainer } from "../UserProfileElements";
 import { useNavigate } from "react-router";
 
 export default function SingleSuggestedUser(props) {

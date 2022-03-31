@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { ParaText } from "./HomePageElements";
 import { IoIosArrowForward } from "react-icons/io";
 
-import FeedPostList from "../FriendsPage/FeedPostList";
+import FeedPostList from "../Feed/FeedPostList";
 
 const HomePage = () => {
   const currentUser = JSON.parse(localStorage.user);

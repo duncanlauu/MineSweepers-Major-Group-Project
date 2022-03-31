@@ -3,7 +3,7 @@ import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { PostHeadingText } from "./UserProfileElements"
+import { PostHeadingText } from "../UserProfile/UserProfileElements"
 import { useNavigate } from "react-router";
 import ThumbUp from '@mui/icons-material/ThumbUp';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../axios";
+import axiosInstance from "../../../axios";
 import { Row, Col } from "reactstrap";
-import { BookLine } from "./UserProfileElements";
+import { BookLine } from "../UserProfileElements";
 import ReactStars from "react-stars";
 import { useNavigate } from "react-router";
 

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
-import { UserNameContainer, UserNameText } from "./UserProfileElements";
+import { UserNameContainer, UserNameText } from "../UserProfileElements";
 import { useNavigate } from "react-router";
 
 export default function SingleFriendRequest(props) {
