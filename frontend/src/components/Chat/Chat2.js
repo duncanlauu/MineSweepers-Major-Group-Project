@@ -16,7 +16,7 @@ class Chat2 extends React.Component {
 
     initialiseChat() {
         this.setState({chatID: this.props.chatID})
-        this.currentUser = localStorage.username
+        this.currentUser = JSON.parse(localStorage.user).username
         WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
         if (this.state.chatID != undefined) {

@@ -4,13 +4,12 @@ import Gravatar from "react-gravatar";
 import { BookProfile } from "./ClubProfileElements";
 import axiosInstance from "../../axios";
 import { useParams } from "react-router-dom";
-import useGetUser from "../../helpers";
 
 const LandingProfile = () => {
   const { club_id } = useParams();
   console.log("Club ID: " + club_id);
 
-  const currentUser = useGetUser();
+  const currentUser = JSON.parse(localStorage.user);
   const user_id = currentUser.id;
   console.log("User ID: " + user_id);
 

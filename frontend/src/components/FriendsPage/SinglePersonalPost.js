@@ -8,7 +8,6 @@ import PersonalPostEditor from "./PersonalPostEditor"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
 import {PostHeadingText } from "./UserProfileElements"
-import useGetUser from "../../helpers"
 
 export default function SinglePersonalPost(props) {
 
@@ -16,7 +15,7 @@ export default function SinglePersonalPost(props) {
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState()
-    const currentUser = useGetUser()
+    const currentUser = JSON.parse(localStorage.user)
 
     useEffect(() => {
         setPersonalPost(props.personalPost)

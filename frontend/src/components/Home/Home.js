@@ -1,12 +1,10 @@
 import {Link} from 'react-router-dom'
 import {Button} from 'reactstrap';
-import useGetUser from '../../helpers';
 import React from 'react'
-import Hello from '../Hello/Hello';
 
 export default function Home() {
 
-    const user = useGetUser(); // custom hook to get user
+    const user = JSON.parse(localStorage.user); // custom hook to get user
     return (
         <div>
             <h1>Homepage</h1>

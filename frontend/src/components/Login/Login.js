@@ -12,6 +12,7 @@ import Nav from '../Nav/Nav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
+
 export default function SignIn() {
     const { setAuth } = useAuth();
     const { setHasRated } = useHasRated();
@@ -22,7 +23,7 @@ export default function SignIn() {
     const usernameRef = useRef();
     const errRef = useRef();
 
-    const [user, setUser] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
@@ -37,14 +38,14 @@ export default function SignIn() {
 
     useEffect(() => {
         setErrMsg('')
-    }, [user, password])
+    }, [username, password])
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
         axiosInstance
             .post(`token/`, {
-                username: user,
+                username: username,
                 password: password,
             })
             .then((response) => {
@@ -52,12 +53,20 @@ export default function SignIn() {
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
-                localStorage.setItem('user', JSON.stringify(currentUser))
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
-                console.log("From: ", from)
-                setAuth({ user })
-                setUser('')
+
+                axiosInstance.get('/get_current_user/')
+                .then(response => { // use .then to make react wait for response
+                    const user = response.data;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    setAuth({ user })
+                }).catch(error => {
+                    console.log("Error: ", JSON.stringify(error, null, 4));
+                    throw error;
+                })
+
+                setUsername('')
                 setPassword('')
 
                 axiosInstance
@@ -75,8 +84,10 @@ export default function SignIn() {
                 navigate(from)
             })
             .catch((e) => {
+                console.error(e)
                 setErrMsg("Invalid username/password")
             })
+            
     }
 
     return (
@@ -85,15 +96,15 @@ export default function SignIn() {
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <h3 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" style={{textAlign: "center"}}>{errMsg}</h3>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>
-                        <HeadingText>Sign into your account</HeadingText><br />
+                        <HeadingText>Sign into your account</HeadingText><br></br><br></br>
                         <ParaText>
                             If you haven't created one yet, you can do so <Link to="/sign_up/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
                             </Link> .
-                        </ParaText>
+                        </ParaText><br></br>
+                        <ParaText ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" style={{ color: "#FF0000", textDecoration: "none" }}><b>{errMsg}</b></ParaText>
 
                         <LoginContainer>
                             <form style={{ width: "80%" }}>
@@ -101,8 +112,8 @@ export default function SignIn() {
                                     <Label><ParaText>Username</ParaText></Label>
                                     <Input
                                         name="username"
-                                        onChange={(e) => setUser(e.target.value)}
-                                        value={user}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        value={username}
                                         ref={usernameRef}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         required

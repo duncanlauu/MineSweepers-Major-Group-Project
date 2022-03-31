@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router";
 import axiosInstance from '../../axios';
 import BookRatingCard from './BookRatingCard';
 import { Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand } from 'reactstrap'
-import useGetUser from "../../helpers";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import { Oval } from 'react-loader-spinner';
 import useHasRated from '../hooks/useHasRated';

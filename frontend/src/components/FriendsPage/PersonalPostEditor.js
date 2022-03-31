@@ -3,7 +3,6 @@ import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reac
 import axiosInstance from '../../axios'
 
 import { useNavigate } from "react-router";
-import useGetUser from "../../helpers";
 
 
 export default function PersonalPostEditor(props) {
@@ -13,7 +12,7 @@ export default function PersonalPostEditor(props) {
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
     const [clubData, setClubData] = useState("")
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
     const [availableClubs, setAvailableClubs] = useState("") 
     const navigate = useNavigate();
 

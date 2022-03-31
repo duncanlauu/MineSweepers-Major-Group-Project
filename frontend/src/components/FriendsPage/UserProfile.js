@@ -15,7 +15,6 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import Gravatar from "react-gravatar";
-import useGetUser from "../../helpers";
 import {
   DataContainer,
   DataContainerCard,
@@ -41,10 +40,10 @@ import PersonalPostForm from "./PersonalPostForm";
 import BookRatingList from "./BookRatingList";
 
 const UserProfile = () => {
-  const [currentUser, setCurrentUser] = useState(useGetUser());
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.user));
   const [currentActiveTab, setCurrentActiveTab] = useState("1");
   const { user_id } = useParams();
-  const currentLoggedInUser = useGetUser();
+  const currentLoggedInUser = JSON.parse(localStorage.user);
   const navigate = useNavigate();
   const [isLoggedInUser, setIsLoggedInUser] = useState(true);
   const [isModalVisible, setModalVisibility] = useState();
