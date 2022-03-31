@@ -14,6 +14,7 @@ import Nav from '../Nav/Nav'
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 
 export default function SignIn() {
+
     const { setAuth } = useAuth();
     const { setHasRated } = useHasRated();
     const navigate = useNavigate();
@@ -57,37 +58,34 @@ export default function SignIn() {
                     'JWT ' + localStorage.getItem('access_token')
 
                 axiosInstance.get('/get_current_user/')
-                .then(response => { // use .then to make react wait for response
+                .then(response => {
                     const user = response.data;
                     localStorage.setItem('user', JSON.stringify(user));
                     setAuth({ user })
-                }).catch(error => {
-                    console.log("Error: ", JSON.stringify(error, null, 4));
-                    throw error;
-                })
 
-                setUsername('')
-                setPassword('')
+                    setUsername('')
+                    setPassword('')
+    
+                    axiosInstance
+                        .get(`ratings/`)
+                        .then((r) => {
+                            const rated = r.data.ratings.length > 0
+                            if (rated) {
+                                setHasRated({ hasRated: "true" })
+                            } else {
+                                setHasRated({ hasRated: "false" })
+                            }
+                            localStorage.setItem('hasRated', rated)
+                        })
+                    setHasRated({ hasRated: "true" }) // additional default call to avoid issues with asynchronous loading.
+                    navigate(from)
 
-                axiosInstance
-                    .get(`ratings/`)
-                    .then((r) => {
-                        const rated = r.data.ratings.length > 0
-                        if (rated) {
-                            setHasRated({ hasRated: "true" })
-                        } else {
-                            setHasRated({ hasRated: "false" })
-                        }
-                        localStorage.setItem('hasRated', rated)
-                    })
-                setHasRated({ hasRated: "true" }) // additional default call to avoid issues with asynchronous loading.
-                navigate(from)
+                }).catch(error => {console.error(e)})
             })
             .catch((e) => {
                 console.error(e)
                 setErrMsg("Invalid username/password")
             })
-            
     }
 
     return (

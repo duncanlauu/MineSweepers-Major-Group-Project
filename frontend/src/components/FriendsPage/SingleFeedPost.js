@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
-import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
+import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { FeedPostContainer, PostHeadingText } from "./UserProfileElements"
-import { border } from "@mui/system"
+import { PostHeadingText } from "./UserProfileElements"
 import { useNavigate } from "react-router";
 
 export default function SingleFeedPost(props) {
@@ -12,7 +11,6 @@ export default function SingleFeedPost(props) {
     const [feedPost, setFeedPosts] = useState("")
     const [posterName, setPosterName] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("")
     const [likesCount, setLikesCount] = useState(0)
     const [likesUsersList, setLikesUsersList] = useState([])
 
@@ -21,23 +19,15 @@ export default function SingleFeedPost(props) {
     useEffect(() => {
         setFeedPosts(props.feedPost)
         getPostUpvotes(props.feedPost.id)
-        getPostCreatorName(props.feedPost.author_id)
-        getPostCreatorEmail(props.feedPost.author_id)
+        getPostCreatorNameAndEmail(props.feedPost.author_id)
     }, []);
 
-    const getPostCreatorName = (author_id) => {
+    const getPostCreatorNameAndEmail = (author_id) => {
+        console.log("TEST1", author_id)
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("The post creator is: " + res.data.username)
+            console.log("TEST", res.data)
             setPosterName(res.data.username)
-        })
-        .catch(error => console.error(error));
-    }
-
-    const getPostCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            console.log("The post creator is: " + res.data.username)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
@@ -64,15 +54,6 @@ export default function SingleFeedPost(props) {
             })
             .catch(error => console.error(error));
     }
-
-    // const handleCommentChange = (e) => {
-    //     updateWrittenComment({
-    //         writtenComment,
-    //         [e.target.name]: e.target.value,
-    //     })
-    //     setPosterName(props.feedPost.author__username)
-    //     setPosterEmail(props.feedPost.author__email)
-    // }, []);
 
     const navigateToProfile = () => {
         navigate(`/friends_page/${props.feedPost.author}/`)
