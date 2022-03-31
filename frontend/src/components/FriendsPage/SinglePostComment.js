@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
-import useGetUser from "../../helpers";
 import Gravatar from "react-gravatar"
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
@@ -12,7 +11,7 @@ export default function SinglePostComment(props) {
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
 
     const navigate = useNavigate()
 
@@ -25,7 +24,6 @@ export default function SinglePostComment(props) {
     const getCommentCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            // console.log("The post creator is: " + res.data.username)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
@@ -47,7 +45,6 @@ export default function SinglePostComment(props) {
     }
 
     const commentsRef = useRef([]);
-    // used to have unique togglers
     const togglerID = "toggler" + singleComment.id
     const HashtagTogglerId = "#toggler" + singleComment.id
 
@@ -85,8 +82,6 @@ export default function SinglePostComment(props) {
                 <Row>
                     <UncontrolledCollapse toggler={HashtagTogglerId}>
                         <div>
-                            {/* <PostComments ref={el => commentsRef.current[0] = el}  personalPost={personalPost} /> */}
-                            {/* <PostCommentList post={personalPost}/> */}
                             <hr style={{marginTop: "0rem"}}/>
                             <Row>
                                 <Col xs="2"> </Col>

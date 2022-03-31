@@ -6,10 +6,10 @@ export default function Profile() {
     return (
         <div className="contact-profile">
             {
-                localStorage.username !== null ?
+                JSON.parse(localStorage.user).username !== null ?
                     <Hoc>
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-                        <p>{localStorage.username}</p>
+                        <p>{JSON.parse(localStorage.user).username}</p>
                         <div className="social-media">
                             <i className="fa fa-facebook" aria-hidden="true"></i>
                             <i className="fa fa-twitter" aria-hidden="true"></i>

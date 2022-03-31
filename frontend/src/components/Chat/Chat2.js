@@ -3,7 +3,9 @@ import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
 import { EmptyChatContainer, EmptyChatText, MessageSendBox,
-     MessagingProfileHeading, MessageText, MessagingProfilePara} from './ChatElements';
+     MessagingProfileHeading, MessageText, MessagingProfilePara, ReceivedMessagePara} from './ChatElements';
+import Gravatar from 'react-gravatar';
+import { Container } from 'reactstrap';
 
 class Chat2 extends React.Component {
 
@@ -16,7 +18,7 @@ class Chat2 extends React.Component {
 
     initialiseChat() {
         this.setState({chatID: this.props.chatID})
-        this.currentUser = localStorage.username
+        this.currentUser = JSON.parse(localStorage.user).username
         WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
         if (this.state.chatID != undefined) {
@@ -108,18 +110,36 @@ class Chat2 extends React.Component {
     renderMessages = (messages) => {
         console.log("renderMessages")
         console.log(messages)
+
         return messages.map((message, i, arr) => (
             <li
                 key={message.id}
-                style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
+                style={{
+                    marginBottom: '15px', 
+                    backgroundColor: message.author === this.currentUser ? '#653FFD' : '#ECECEC', 
+                    borderRadius: message.author === this.currentUser ? "20px 20px 0px 20px" : "20px 20px 20px 0px",
+                    padding: "1rem 1rem 0.2rem 1rem",
+                    color: message.author === this.currentUser ? '#fff' : '#000',
+                    textAlign: message.author === this.currentUser ? 'right' : 'left',
+                    maxWidth: "50%",
+                    position: 'relative',
+                    marginLeft: message.author === this.currentUser ? 'auto' : '0',
+                }}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png"/>
+                <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
+                {/* {message.author === this.currentUser
+                    ? <Gravatar email={this.currentUser.email} style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
+                    : <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
+                } */}
                 <p>
-                    <MessagingProfileHeading>{message.author}</MessagingProfileHeading>
+                    {message.author === this.currentUser ? <></> : <MessagingProfileHeading>{message.author}</MessagingProfileHeading>}
                     <br/>
                     <MessageText>{message.content}</MessageText>
                     <br/>
-                    <MessagingProfilePara>{this.renderTimestamp(message.timestamp)}</MessagingProfilePara>
+                    {message.author === this.currentUser 
+                        ? <MessagingProfilePara>{this.renderTimestamp(message.timestamp)}</MessagingProfilePara>
+                        : <ReceivedMessagePara>{this.renderTimestamp(message.timestamp)}</ReceivedMessagePara>
+                    }
                 </p>
             </li>
         ));
@@ -158,51 +178,29 @@ class Chat2 extends React.Component {
         }
     }
 
-    emptyChatWindow() {
-        return(
-            <>
-
-            </>
-        );
-    }
-
     render() {
         const messages = this.state.messages;
         const invalidChatID = this.state.chatID == undefined;
         return (
             <Hoc>
+                <Container style={{ display: "flex", height:"3.5rem", backgroundColor:"#F3F3F3", width:"100%", fontFamily:"Source Sans Pro", fontSize:"15px", alignItems:"center", color:"#fff", justifyContent:"flex-end", borderRadius:"10px 10px 0px 0px" }}>
+                    <img src='../../../static/images/DeleteChatIcon.svg' alt='Delete Chat' onClick={this.leaveChatHandler} style={{ cursor: 'pointer' }} />
+                </Container>
                 <div>
-                    <button 
-                        onClick={this.leaveChatHandler} 
-                        id="chat-message-submit" 
-                        className="submit"
-                        style={{
-                            backgroundColor:"#E6E4E4",
-                            color: '#653FFD',
-                            fontSize: '12px',
-                            border: '0',
-                            borderRadius: '100px',
-                            fontWeight: '600'
-                        }}>
-                        <span style={{ paddingLeft: '5px',
-                            paddingRight: '5px' }}>Leave Conversation</span>
-                    </button>
-                </div>
-                <div className="messages">
                     {invalidChatID
                         ?
                         <>
-                            <EmptyChatContainer>
+                            {/* <EmptyChatContainer>
                                 <img src='../../../static/images/Outbox.svg' alt='Outbox' />
                                 <EmptyChatText>
                                     Send messages to individual users<br />
                                     or a club you're part of.
                                 </EmptyChatText>
-                            </EmptyChatContainer>
+                            </EmptyChatContainer> */}
                         </>
                         : <div/>
                     }
-                    <ul id="chat-log">
+                    <ul id="chat-log" style={{ overflowY:"scroll", height:"30.5vw", paddingLeft:"2rem", paddingRight:"2rem" }}>
                         {
                             messages &&
                             this.renderMessages(messages)
@@ -226,13 +224,13 @@ class Chat2 extends React.Component {
                             <MessageSendBox>
                             <input
                                 style={{
-                                    borderRadius:"100px",
+                                    borderRadius:"0px 0px 10px 10px",
                                     fontFamily:"Source Sans Pro",
                                     fontSize: "15px",
                                     width: "100%",
-                                    height: "3rem",
+                                    height: "4rem",
                                     textIndent: "2rem",
-                                    backgroundColor: "#E6E4E4",
+                                    backgroundColor: "#F2F2F2",
                                     border: '0',
                                 }}
                                 onChange={this.messageChangeHandler}
@@ -241,7 +239,7 @@ class Chat2 extends React.Component {
                                 id="chat-message-input"
                                 type="text"
                                 placeholder="Start typing..."/>
-                            <button className="submit" style={{ backgroundColor:"#fff", borderRadius:"100px", border: "0px" }}>
+                            <button className="submit" style={{ paddingRight:"1rem" }}>
                                 <img src='../../../static/images/SendMessage.svg' alt='Send Icon' />
                             </button>
                             </MessageSendBox>

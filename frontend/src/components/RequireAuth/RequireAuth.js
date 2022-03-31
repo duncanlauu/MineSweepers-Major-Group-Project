@@ -5,7 +5,6 @@ import React from "react";
 const RequireAuth = () => {
     const { auth } = useAuth();
     const location = useLocation();
-    // console.log("require auth called ")
     return (
         auth?.user
             ? <Outlet />

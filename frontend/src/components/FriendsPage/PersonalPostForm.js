@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
 import axiosInstance from '../../axios'
-
 import { useNavigate } from "react-router";
-import useGetUser from "../../helpers";
 
 
 export default function PersonalPostForm(props) {
@@ -13,7 +11,7 @@ export default function PersonalPostForm(props) {
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
     const [clubData, setClubData] = useState("")
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
     const [availableClubs, setAvailableClubs] = useState("") 
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)

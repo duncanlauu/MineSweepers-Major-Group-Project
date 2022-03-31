@@ -7,16 +7,14 @@ import {
 import PersonalPostEditor from "./PersonalPostEditor"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { PostContainer, PostHeadingText } from "./UserProfileElements"
-import useGetUser from "../../helpers"
+import {PostHeadingText } from "./UserProfileElements"
 
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("dummy")
     const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState()
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user)
 
     useEffect(() => {
         setPersonalPost(props.personalPost)
@@ -35,7 +33,6 @@ export default function SinglePersonalPost(props) {
         axiosInstance
             .delete(`posts/${post_id}`)
             .then((res) => {
-                console.log(res)
                 props.updatePageAfterDeletion()
             })
             .catch(error => console.error(error));

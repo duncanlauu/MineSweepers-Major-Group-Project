@@ -1,24 +1,23 @@
-import React from "react";
-import {Button, Container, Input, Modal, ModalBody, ModalHeader, NavbarBrand} from "reactstrap";
+import React from 'react'
+import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
 import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
-import Box from "@mui/material/Box";
-import {IconButton} from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from "./NavElements";
-import {Link} from "react-router-dom";
-import PersonalPostForm from "../FriendsPage/PersonalPostForm";
-import axiosInstance from "../../axios";
-import {trackPromise, usePromiseTracker} from "react-promise-tracker";
-import {Oval} from "react-loader-spinner";
-import {SearchUserCard} from "./SearchUserCard";
-import {SearchBookCard} from "./SearchBookCard";
+import Box from '@mui/material/Box';
+import {IconButton} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from './NavElements';
+import {Link} from 'react-router-dom'
+import PersonalPostForm from '../FriendsPage/PersonalPostForm';
+import axiosInstance from '../../axios';
+import {usePromiseTracker} from "react-promise-tracker";
+import {trackPromise} from 'react-promise-tracker';
+import {Oval} from 'react-loader-spinner';
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             modal: false,
-            search: "",
+            search: '',
         };
         this.toggle = this.toggle.bind(this);
         this.state = {
@@ -36,145 +35,127 @@ class Nav extends React.Component {
 
     toggle() {
         this.setState({
-            modal: !this.state.modal,
+            modal: !this.state.modal
         });
     }
 
     handleChange(e) {
         this.setState({
-            search: e.target.value,
+            search: e.target.value
+
         });
-        console.log(this.state.search);
+        console.log(this.state.search)
     }
 
     changeModalVisibility() {
         this.setState({
-            postModal: !this.state.postModal,
-        });
+            postModal: !this.state.postModal
+        })
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         console.log("submitting");
 
         trackPromise(
             axiosInstance
                 .get(`search/`, {
-                    params: {search_query: this.state.search},
+                    params: {search_query: this.state.search}
+
                 })
                 .then((res) => {
-                    console.log(res);
-                    console.log(res.data);
+                    console.log(res)
+                    console.log(res.data)
                     this.setState({
-                        searchBooks: JSON.parse(res.data)["books"],
-                        searchClubs: JSON.parse(res.data)["clubs"],
-                        searchUsers: JSON.parse(res.data)["users"],
+                        searchBooks: JSON.parse(res.data)['books'],
+                        searchClubs: JSON.parse(res.data)['clubs'],
+                        searchUsers: JSON.parse(res.data)['users'],
                     });
                 })
         );
-    };
+    }
 
     render() {
         return (
             <div>
-                <Container
-                    fluid
-                    style={{
-                        backgroundColor: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Link to="/home/" style={{color: "#000"}}>
-                        <NavbarBrand
-                            style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}
-                        >
-                            bookgle
-                        </NavbarBrand>
-                    </Link>
-                    {this.isAuthenticated ? (
+                <Container fluid style={{
+                    backgroundColor: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                }}>
+                    {this.isAuthenticated
+                        ? <Link to="/home/" style={{color: "#000"}}>
+                            <NavbarBrand
+                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                        </Link>
+                        : <Link to="/" style={{color: "#000"}}>
+                            <NavbarBrand
+                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                        </Link>
+                    }
+                    {this.isAuthenticated ?
                         <>
                             <Button
-                                type="button"
-                                data-testid="search-button"
+                                type='button'
                                 style={{
                                     backgroundColor: "#FFF",
                                     border: "0px",
                                 }}
                                 text={this.state.search}
-                                onClick={this.toggle}
-                            >
-                                <Box
-                                    style={{
-                                        backgroundColor: "#ECECEC",
-                                        height: "3rem",
-                                        width: "30rem",
-                                        display: "flex",
-                                        borderRadius: "100px",
-                                        alignItems: "center",
-                                        justifyContent: "flex-end",
-                                    }}
-                                >
-                                    {this.state.search === "" ? (
-                                        <SearchText> </SearchText>
-                                    ) : (
-                                        <SearchText>{this.state.search}</SearchText>
-                                    )}
-                                    <IconButton type="submit">
+                                onClick={this.toggle}>
+                                <Box style={{
+                                    backgroundColor: "#ECECEC",
+                                    height: "3rem",
+                                    width: "30rem",
+                                    display: "flex",
+                                    borderRadius: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end"
+                                }}>
+                                    {this.state.search === ''
+                                        ? <SearchText> </SearchText>
+                                        : <SearchText>{this.state.search}</SearchText>}
+                                    <IconButton type='submit'>
                                         <BiSearch/>
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <div
-                                    onClick={this.changeModalVisibility}
-                                    style={{cursor: "pointer"}}
-                                >
-                                    <img
-                                        src="../../../static/images/NewPostButton.svg"
-                                        alt="New Post Button"
-                                    />
+                                <div onClick={this.changeModalVisibility} style={{cursor: 'pointer'}}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button'/>
                                 </div>
                                 <Link to="/create_club/" style={{color: "#000"}}>
-                                    <img
-                                        src="../../../static/images/NewClubButton.svg"
-                                        alt="New Club Button"
-                                    />
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button'/>
                                 </Link>
                                 <Link to="/chat2/" style={{color: "#000"}}>
-                                    <img
-                                        src="../../../static/images/ChatIcon.svg"
-                                        alt="Open Chats"
-                                        style={{marginLeft: "1rem"}}
-                                    />
+                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
+                                         style={{marginLeft: "1rem"}}/>
                                 </Link>
                                 <Link to="/friends_page/" style={{color: "#000"}}>
-                                    <AccountCircleIcon fontSize="large" data-testid="friends-link"/>
+                                    <AccountCircleIcon fontSize='large'/>
                                 </Link>
                             </NavMenu>
                         </>
-                    ) : (
-                        <></>
-                    )}
+                        : <></>
+                    }
                 </Container>
                 <Modal
                     isOpen={this.state.modal}
                     toggle={this.toggle}
                     className={this.props.className}
                     style={{
-                        top: "20%",
-                        left: "0",
-                    }}
-                >
+                        top: '20%',
+                        left: '0'
+                    }}>
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
                             <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
                                 <BiSearch style={{height: "2rem", width: "2rem"}}/>
                             </Button>
                             <Input
-                                type="text"
-                                placeholder="Search..."
+                                type='text'
+                                placeholder='Search...'
                                 style={{
                                     height: "5rem",
                                     width: "25rem",
@@ -183,7 +164,7 @@ class Nav extends React.Component {
                                     boxShadow: "none",
                                     padding: "none",
                                     fontFamily: "Source Sans Pro",
-                                    fontSize: "20px",
+                                    fontSize: "20px"
                                 }}
                                 onChange={this.handleChange}
                                 value={this.state.search}
@@ -193,97 +174,60 @@ class Nav extends React.Component {
                     </ModalHeader>
                     <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
                         {/* User Search Results */}
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <img
-                                src="../../../static/images/UserIcon.svg"
-                                alt="New Club Button"
-                            />
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
                         <ul>
-                            {this.state.searchUsers.map((user, index) => (
+                            {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
-                                    <Link to={`/friends_page/${user.id}`}>
-                                        <SearchUserCard
-                                            username={user.username}
-                                            email={user.email}
-                                            bio={user.bio}
-                                        />
-                                    </Link>
+                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
                                 </li>
-                            ))}
+                            )}
                         </ul>
                         {/* Club Search Results */}
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <img
-                                src="../../../static/images/ClubIcon.svg"
-                                alt="New Club Button"
-                            />
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
                         <ul>
-                            {this.state.searchClubs.map((club, index) => (
+                            {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
-                                    <Link to={`/club_profile/${club.id}`}>
-                                        <SearchUserCard
-                                            username={club.name}
-                                            email={club.owner.email}
-                                            bio={club.description}
-                                        />
+                                    <Link to={`/club_profile/${club.id}/`}>
+                                        <SearchClubCard name={club.name} ownerEmail={club.owner.email}
+                                                        description={club.description}/>
                                     </Link>
                                 </li>
-                            ))}
+                            )}
                         </ul>
                         {/* Book Search Results */}
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <img
-                                src="../../../static/images/BookIcon.svg"
-                                alt="New Club Button"
-                            />
+                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
                         <ul>
-                            {this.state.searchBooks.map((book, index) => (
+                            {this.state.searchBooks.map((book, index) =>
                                 <li key={index}>
                                     <Link to={`/book_profile/${book.ISBN}`}>
-                                        <SearchBookCard
-                                            name={book.title}
-                                            author={book.author}
-                                            image={book.image_links_small}
-                                        />
+                                        <SearchBookCard name={book.title} author={book.author}
+                                                        image={book.image_links_small}/>
                                     </Link>
                                 </li>
-                            ))}
+                            )}
                         </ul>
                     </ModalBody>
                 </Modal>
+
 
                 <Modal
                     isOpen={this.state.postModal}
                     toggle={this.changeModalVisibility}
                     style={{
                         left: 0,
-                        top: 100,
+                        top: 100
                     }}
                 >
+
                     <ModalBody style={{overflowY: "scroll"}}>
                         <PersonalPostForm/>
                     </ModalBody>
@@ -293,17 +237,17 @@ class Nav extends React.Component {
     }
 }
 
-export default Nav;
+export default Nav
 
 Nav.defaultProps = {
-    isAuthenticated: true,
-};
+    isAuthenticated: true
+}
 
 const SearchButtonStyle = {
-    backgroundColor: "#653FFD",
-    color: "#fff",
-    borderRadius: "5px",
-};
+    backgroundColor: '#653FFD',
+    color: '#fff',
+    borderRadius: '5px',
+}
 
 const LoadingIndicator = (props) => {
     const {promiseInProgress} = usePromiseTracker();

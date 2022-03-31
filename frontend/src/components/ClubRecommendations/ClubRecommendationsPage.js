@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Container, Row, Col} from 'reactstrap'
 import axiosInstance from '../../axios'
-import useGetUser from '../../helpers'
 import {HeadingText} from '../Login/LoginElements'
 import Nav from '../Nav/Nav'
 import {RecommenderContainer} from './RecommenderPageElements'
@@ -10,8 +9,7 @@ import {Oval} from 'react-loader-spinner';
 import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
-    const user = useGetUser();
-    console.log(user)
+    const user = JSON.parse(localStorage.user);
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function getTopClubs() {
@@ -24,7 +22,6 @@ const ClubRecommendationPage = () => {
                     for (let i = 0; i < res.data.length; i++) {
                         recommendations.push(res.data[i].club);
                     }
-                    console.log(recommendations)
                     setClubRecommendations(recommendations);
                 })
                 .catch(error => {

@@ -28,6 +28,7 @@ import RecommenderPage from "./RecommenderPage/RecommenderPage";
 import ListOfClubs from "./ListOfClubs/ListOfClubs";
 import ChatUI from "./Chat/ChatUI";
 import BookProfilePage from "./BookProfilePage/BookProfilePage";
+import PasswordResetMailSentConfirmation from "./PasswordResetMailSentConfirmation/PasswordResetMailSentConfirmation";
 
 
 export default class App extends Component {
@@ -48,6 +49,8 @@ export default class App extends Component {
                                     <Route path='log_in' element={<Login/>}/>
                                     <Route path='sign_up' element={<SignUp/>}/>
                                     <Route path='password_reset' element={<PasswordReset/>}/>
+                                    <Route path='password_reset/instructions_sent'
+                                           element={<PasswordResetMailSentConfirmation/>}/>
                                     <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm/>}/>
 
                                     {/* protected routes */}

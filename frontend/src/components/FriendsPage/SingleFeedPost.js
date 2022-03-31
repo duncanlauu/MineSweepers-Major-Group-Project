@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
-import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
+import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { FeedPostContainer, PostHeadingText } from "./UserProfileElements"
-import { border } from "@mui/system"
+import { PostHeadingText } from "./UserProfileElements"
 import { useNavigate } from "react-router";
 
 export default function SingleFeedPost(props) {
@@ -12,15 +11,45 @@ export default function SingleFeedPost(props) {
     const [feedPost, setFeedPosts] = useState("")
     const [posterName, setPosterName] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("dummy")
+    const [likesCount, setLikesCount] = useState(0)
+    const [likesUsersList, setLikesUsersList] = useState([])
 
     const navigate = useNavigate()
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
-        setPosterName(props.feedPost.author__username)
-        setPosterEmail(props.feedPost.author__email)
+        getPostUpvotes(props.feedPost.id)
+        getPostCreatorNameAndEmail(props.feedPost.author)
     }, []);
+
+    const getPostCreatorNameAndEmail = (author_id) => {
+        axiosInstance.get(`user/get_update/${author_id}/`)
+        .then((res) => {
+            setPosterName(res.data.username)
+            setPosterEmail(res.data.email)
+        })
+        .catch(error => console.error(error));
+    }
+
+    const getPostUpvotes = (postID) => {
+        axiosInstance.get(`posts/${postID}`)
+        .then((res) => {
+            setLikesCount(res.data.post.upvotes.length)
+            setLikesUsersList(res.data.post.upvotes)
+        })
+        .catch(error => console.error(error));
+    }
+
+    const likePost = () => {
+        axiosInstance
+        .put(`posts/${props.feedPost.id}`, {
+            "action": "upvote"
+        })
+        .then((res) => {
+            getPostUpvotes(props.feedPost.id)
+        })
+        .catch(error => console.error(error));
+    }
 
     const navigateToProfile = () => {
         navigate(`/friends_page/${props.feedPost.author}/`)
@@ -28,7 +57,6 @@ export default function SingleFeedPost(props) {
     }
 
     const commentsRef = useRef([]);
-    // used to have unique togglers
     const togglerID = "toggler" + feedPost.id
     const HashtagTogglerId = "#toggler" + feedPost.id
 
@@ -80,9 +108,19 @@ export default function SingleFeedPost(props) {
                     </CardText>
                 </CardBody>
                 
+                
                 <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
                     view all comments
                 </Button>
+                <div style={{
+                    textAlign: "center"}
+                    }>
+                <Button style={{borderRadius: "25px", height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
+                +
+                </Button> &nbsp;&nbsp;
+                <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}
+                </div>
+                <br></br>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
