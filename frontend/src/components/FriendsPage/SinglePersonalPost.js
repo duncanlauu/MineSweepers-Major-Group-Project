@@ -14,7 +14,7 @@ export default function SinglePersonalPost(props) {
     const [personalPost, setPersonalPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState()
-    const currentUser = JSON.parse(localStorage.user)
+    const currentUser = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
         setPersonalPost(props.personalPost)

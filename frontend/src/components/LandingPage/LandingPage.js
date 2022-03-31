@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Container, Row, Col, Button} from 'reactstrap'
-import {BlueCircle, ButtonContainer, LoginText, LogoText, PurpleCircle, RoundedButton, UnderLineText, WelcomeText} from './LandingPageElements'
+import {BlueCircle, ButtonContainer, LoginText, LogoText, PurpleCircle, UnderLineText, WelcomeText} from './LandingPageElements'
 import Nav from '../Nav/Nav'
 
 const LandingPage = () => {

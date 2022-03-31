@@ -60,6 +60,7 @@ export default function SignIn() {
                                     <Label><ParaText>Email</ParaText></Label>
                                     <Input
                                         name="email"
+                                        data-testid="email"
                                         onChange={handleChange}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         required

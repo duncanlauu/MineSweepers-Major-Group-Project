@@ -9,7 +9,7 @@ import { Oval } from 'react-loader-spinner';
 
 
 const RecommenderPage = () => {
-    const user = JSON.parse(localStorage.user);
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
         console.log("User ID: " + user.id);
     }
