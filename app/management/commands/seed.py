@@ -134,7 +134,7 @@ def seed_books():
     filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = len(df)
+    total = 3000#len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]

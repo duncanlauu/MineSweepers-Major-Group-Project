@@ -191,9 +191,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_friends_page_user_profile_cotains_correct_information()
         # self._test_friends_page_posts_tab_contains_correct_information()
         # self._test_edit_post()
-        # self._test_delete_post()
-        # self._test_accept_friend_request()
-        # self._test_reject_friend_request()
+        self._test_delete_post()
+        self._test_accept_friend_request()
+        self._test_reject_friend_request()
         # self._test_delete_friend()
         # test for suggested friends
 
@@ -562,7 +562,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_delete_friend(self):
         self.browser.get(f"{self.live_server_url}/friends_page")
         self.browser.find_element_by_xpath("//text[.='Friends']").click()
-        sleep(15)
+        # sleep(15)
         self.browser.find_element_by_xpath("//button[.='X']").click() #probably getting the element from posts page thats why it doesnt work
         # can get user id from delete button maybe can be used when checking db
         sleep(1)
@@ -572,6 +572,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_accept_friend_request(self):
         self.browser.get(f"{self.live_server_url}/friends_page")
         self.browser.find_element_by_xpath("//text[.='Friends']").click()
+        sleep(100)
         self.browser.find_element_by_id("friendRequestToggler").click()
         self.browser.find_element_by_xpath("//p[.=' Accept ']").click()
         sleep(1)
@@ -601,6 +602,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_delete_post(self):
         self.browser.get(f"{self.live_server_url}/friends_page")
         self.browser.find_element_by_xpath("//text[.='Posts']").click()
+        sleep(1)
         self.browser.find_element_by_xpath("//button[.='X']").click()
         sleep(1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
