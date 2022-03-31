@@ -83,11 +83,15 @@ export default function SignUp() {
                             'JWT ' + localStorage.getItem('access_token')
                         // console.log("logging in after sign up ")
 
-                        setAuth({ "user": username })
+                        setAuth({"user": username})
                         navigate("/sign_up/rating/")
+                    })
+                    .catch((err) => {
+                        console.log(err)
                     })
             })
             .catch((e) => {
+                console.log("I'm here instead")
                 setFirstNameErr(e.response.data.first_name)
                 setLastNameErr(e.response.data.last_name)
                 setUsernameErr(e.response.data.username)

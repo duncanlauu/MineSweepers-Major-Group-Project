@@ -57,6 +57,80 @@ const generatePostResponse = (url, data) => {
                     }
                 })
             }
+        case "token/":
+            if (data.password === "Password123") {
+                return Promise.resolve({data: {}})
+            } else {
+                return Promise.reject({data: {}})
+            }
+        case `user/sign_up/`:
+            if (data.first_name === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "first_name": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if (data.last_name === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "last_name": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if (data.username === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "username": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if(data.email === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "email": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if(data.password === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "password": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if(data.bio === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "bio": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if(data.location === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "location": "This field may not be blank."
+                        }
+                    }
+                })
+            } else if(data.birthday === "") {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "birthday": "This field may not be blank."
+                        }
+                    }
+                })
+            } else {
+                return Promise.resolve({data: {}})
+            }
         default:
             console.log("no matching mock for url ", url)
             return {data: {}};
