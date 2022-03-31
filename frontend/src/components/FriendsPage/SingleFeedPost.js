@@ -41,16 +41,14 @@ export default function SingleFeedPost(props) {
     }
 
     const likePost = () => {
-        console.log("liking post", feedPost.id)
         axiosInstance
-            .put(`posts/${feedPost.id}/`, {
-                action: "upvote",
-            })
-            .then((res) => {
-                console.log(res)
-                console.log("upvote successful")
-            })
-            .catch(error => console.error(error));
+        .put(`posts/${props.feedPost.id}`, {
+            "action": "upvote"
+        })
+        .then((res) => {
+            getPostUpvotes(props.feedPost.id)
+        })
+        .catch(error => console.error(error));
     }
 
     const navigateToProfile = () => {
@@ -110,13 +108,19 @@ export default function SingleFeedPost(props) {
                     </CardText>
                 </CardBody>
                 
-                <Button style={{borderRadius: "20px", height: "5rem"}} onClick={likePost}>
-                    +
-                </Button>
+                
                 <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
                     view all comments
                 </Button>
-                <h5> <b> Likes: {likesCount} </b></h5> {/* need style */}
+                <div style={{
+                    textAlign: "center"}
+                    }>
+                <Button style={{borderRadius: "25px", height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
+                +
+                </Button> &nbsp;&nbsp;
+                <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}
+                </div>
+                <br></br>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
