@@ -1,19 +1,5 @@
-from app.views.feed_views import AllCommentsView, AllPostsView, AllRepliesView, ClubFeedView, CommentView, FeedView, PostView, \
-    ReplyView, OtherUserPostsView
 from django.urls import path, include
-from app.views.friend_views import FriendRequestsView, FriendsView, FriendView, OtherUserFriendsView
-from app.views.rating_views import AllRatingsView, OtherUserRatingsView, RatingView, BookRatingsView
-from .views.authentication_views import GetCurrentUserView
-from .views.genres_view import GenresView
-from .views.recommender_views import RecommenderAPI
-from .views.scheduling_views import SchedulingView, CalendarView, MeetingsView
-from .views.static_views import HelloWorldView
-from .views.account_views import CreateUser
-from .views.authentication_views import BlacklistTokenView
-from .views.chat_views import ChatListView, ChatLeaveView
-from .views.club_views import Clubs, SingleClub, UserClubView
-from .views.search_view import SearchView
-from .views.book_views import Books
+from .views import *
 
 app_name = 'app'
 
@@ -77,7 +63,6 @@ urlpatterns = [
 
     # Others
     path('get_current_user/', GetCurrentUserView.as_view(), name='current_user'),
-    path('hello/', HelloWorldView.as_view(), name='hello_world'),
 
     # Genre API
     path('genres/', GenresView.as_view(), name='genres'),
