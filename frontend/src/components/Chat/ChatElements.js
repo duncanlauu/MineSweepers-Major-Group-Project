@@ -27,8 +27,9 @@ export const MessageProfile = styled.div`
 
 export const MessageSendBox = styled.div`
     display: flex;
-    width: 95%;
+    width: 100%;
     flex-direction: row;
+    background-color: #F2F2F2;
 `
 
 export const MessageText = styled.text`
@@ -51,6 +52,19 @@ export const MessagingProfilePara = styled.text`
     opacity: 50%;
     font-size: 12px;
     font-weight: 500;
+`
+
+export const ReceivedMessagePara = styled.text`
+    font-family: 'Source Sans Pro';
+    color: #000;
+    opacity: 50%;
+    font-size: 12px;
+`
+
+export const SidePanelTextPreview = styled.text`
+    font-family: 'Source Sans Pro';
+    color: #585858;
+    font-size: 12px;
 `
 
 export const MessagingDisplay = styled.div`
@@ -91,12 +105,24 @@ export const EmptyChatContainer = styled.div`
 `
 
 export const ChatContainer = styled.div`
-    height: 100%;
+    height: 36vw;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow-y: scroll;
+`
+
+export const SidePanelContainer = styled.div`
+    height: 36vw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 3rem;
