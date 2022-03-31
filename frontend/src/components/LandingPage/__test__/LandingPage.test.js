@@ -51,4 +51,24 @@ describe("Components exist", () => {
             expect(screen.getByText(/SIGN UP/i)).toBeInTheDocument()
         })
     })
+
+    test("contains link to log in", async () => {
+        act(() => {
+            render(routerWrapper(<LandingPage/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(/LOG IN/i).closest('a')).toHaveAttribute('href', '/log_in')
+        })
+    })
+
+    test("contains link to sign up", async () => {
+        act(() => {
+            render(routerWrapper(<LandingPage/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(/SIGN UP/i).closest('a')).toHaveAttribute('href', '/sign_up')
+        })
+    })
 })

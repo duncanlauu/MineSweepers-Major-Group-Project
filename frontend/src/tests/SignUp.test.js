@@ -81,22 +81,4 @@ jest.mock('react-router-dom', () => ({
     
     mock.restore();
     mock.resetHistory();
-    
   });
-
-
-  
-    
-       
-   
-    
-
-    
-    
-    
-    
-    
-
-
-
-

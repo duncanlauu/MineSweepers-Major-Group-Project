@@ -63,7 +63,6 @@ export default function CreateClub() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", formData)
 
         axiosInstance
             .post(`clubs/`, {
@@ -73,7 +72,6 @@ export default function CreateClub() {
                 public: privacyValue
             })
             .then((res) => {
-                navigate("/home/")
                 console.log(res)
                 console.log(res.data)
             })
@@ -83,7 +81,6 @@ export default function CreateClub() {
             })
     }
 
-    // Todo: move styles to a CSS file?
     return (
         <div id="ParentDiv" style={{overflow: "hidden"}}>
             <Row>
@@ -107,7 +104,7 @@ export default function CreateClub() {
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
-                                <div>{nameErr}</div>
+                                <div data-testid="name-errors">{nameErr}</div>
 
                                 <FormGroup>
                                     <Label for="description"><ParaText>Description</ParaText></Label>
@@ -138,6 +135,7 @@ export default function CreateClub() {
                                         value={privacyValue === true}
                                         card={
                                             <DropdownCard
+                                                data-testid="privacy-public"
                                                 imageURL="../../../static/images/PrivacyFalse.svg"
                                                 setting="Public"
                                                 desc="Allows access to any user who wishes to join the club."/>
@@ -151,6 +149,7 @@ export default function CreateClub() {
                                         value={visibilityValue === true}
                                         card={
                                             <DropdownCard
+                                                data-testid="visibility-visible"
                                                 imageURL="../../../static/images/VisibilityTrue.svg"
                                                 setting="Visible"
                                                 desc="Your club will be visible in searches and the database."/>

@@ -43,6 +43,26 @@ const generateGetResponse = (url) => {
     }
 }
 
+const generatePostResponse = (url, data) => {
+    switch (url) {
+        case "clubs/":
+            if (data.name !== "") {
+                return Promise.resolve({data: {}})
+            } else {
+                return Promise.reject({
+                    response: {
+                        data: {
+                            "name": "This field may not be blank."
+                        }
+                    }
+                })
+            }
+        default:
+            console.log("no matching mock for url ", url)
+            return {data: {}};
+    }
+}
+
 export default {
     defaults: {
         headers: {
@@ -75,7 +95,7 @@ export default {
                 }
             },
             get: jest.fn((url) => Promise.resolve(generateGetResponse(url))),
-            post: jest.fn(() => Promise.resolve({data: {}})),
+            post: jest.fn((url, data) => generatePostResponse(url, data)),
             put: jest.fn(() => Promise.resolve({data: {}})),
             delete: jest.fn(() => Promise.resolve({data: {}})),
         }
