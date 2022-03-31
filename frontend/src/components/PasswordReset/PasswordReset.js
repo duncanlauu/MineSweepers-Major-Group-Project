@@ -46,7 +46,7 @@ export default function SignIn() {
     return (
         <div style={{ overflow:"hidden" }}>
             <Row>
-                <Nav />
+                <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>

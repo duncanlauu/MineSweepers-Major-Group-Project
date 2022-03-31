@@ -673,3 +673,21 @@ body {
 .fa {
   font-size: 1.5em !important;
 }
+
+.sent {
+  float: right;
+  background-color: #653ffd;
+  border-radius: '25px 25px 0px 25px';
+  color: '#fff';
+  font-family: 'Source Sans Pro';
+  font-size: '15px';
+}
+
+.replies {
+  float: left;
+  background-color: #ececec;
+  border-radius: '25px 25px 25px 0px';
+  color: '#000';
+  font-family: 'Source Sans Pro';
+  font-size: '15px';
+}
