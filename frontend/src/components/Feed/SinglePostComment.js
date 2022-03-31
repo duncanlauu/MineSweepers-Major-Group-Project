@@ -32,8 +32,7 @@ export default function SinglePostComment(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${singleComment.author}/`)
-        //window.location.reload()
+        navigate(`/user_profile/${singleComment.author}/`)
     }
 
     const commentsRef = useRef([]);

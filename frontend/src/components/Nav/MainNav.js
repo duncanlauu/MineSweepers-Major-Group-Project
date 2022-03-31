@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
+import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input, Col} from 'reactstrap'
 import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
 import {BiUserCircle} from "@react-icons/all-files/bi/BiUserCircle"
 import {AiOutlinePlus} from "@react-icons/all-files/ai/AiOutlinePlus";
@@ -10,22 +10,34 @@ import {IconButton} from '@mui/material';
 import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import {NavMenu, SearchContainer, SearchResult, SearchText} from './NavElements';
+import {HeadingText, NavMenu, ParaText, SearchBarHeading, SearchContainer, SearchResult, SearchText, SubHeadingText} from './NavElements';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
+import axiosInstance from '../../axios';
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import {Oval} from 'react-loader-spinner';
 
 class MainNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            search: '',
         };
         this.toggle = this.toggle.bind(this);
         this.state = {
-            postModal: false
+            postModal: false,
+            searchBooks: [],
+            searchClubs: [],
+            searchUsers: [],
+            searchFriends: [],
         };
         this.changeModalVisibility = this.changeModalVisibility.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.isAuthenticated = this.props.isAuthenticated;
     }
 
     toggle() {
@@ -34,10 +46,40 @@ class MainNav extends React.Component {
         });
     }
 
+    handleChange(e) {
+        this.setState({
+            search: e.target.value
+
+        });
+        console.log(this.state.search)
+    }
+
     changeModalVisibility() {
         this.setState({
             postModal: !this.state.postModal
         })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("submitting");
+
+        trackPromise(
+        axiosInstance
+            .get(`search/`, {
+                params: {search_query: this.state.search}
+
+            })
+            .then((res) => {
+                console.log(res)
+                console.log(res.data)
+                this.setState({
+                    searchBooks: JSON.parse(res.data)['books'],
+                    searchClubs: JSON.parse(res.data)['clubs'],
+                    searchUsers: JSON.parse(res.data)['users'],
+                });
+            })
+        );
     }
 
     render() {
@@ -49,75 +91,72 @@ class MainNav extends React.Component {
                     alignItems: "center",
                     justifyContent: "space-between"
                 }}>
-                    <Link to="/home/" style={{color: "#000"}}>
+                    {this.isAuthenticated
+                        ? <Link to="/home/" style={{color: "#000"}}>
+                            <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                            </Link>
+                        : <Link to="/" style={{color: "#000"}}>
                         <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
-                    </Link>
-                    <Button
-                        type='button'
-                        style={{
-                            backgroundColor: "#FFF",
-                            border: "0px",
-                        }}
-                        onClick={this.toggle}>
-                        <Box style={{
-                            backgroundColor: "#ECECEC",
-                            height: "3rem",
-                            width: "30rem",
-                            display: "flex",
-                            borderRadius: "100px",
-                            alignItems: "center",
-                            justifyContent: "flex-end"
-                        }}>
-                            <IconButton type='submit'>
-                                <BiSearch/>
-                            </IconButton>
-                        </Box>
-                    </Button>
-                    <NavMenu>
-                        <Button style={{marginRight: "1rem"}} onClick={this.changeModalVisibility}>
-                            New Post                    
-                        </Button>
-                        <Link to="/create_club/" style={{color: "#000"}}>
+                        </Link>
+                    }
+                    {this.isAuthenticated ?
+                        <>
                             <Button
                                 type='button'
                                 style={{
-                                    backgroundColor: "#653FFD",
-                                    fontFamily: "Source Sans Pro",
-                                    fontWeight: "500",
-                                    alignItems: "center",
-                                    justifyContent: "space-around",
-                                    marginRight: "2rem",
+                                    backgroundColor: "#FFF",
+                                    border: "0px",
                                 }}
-                            ><AiOutlinePlus
-                                style={{
-                                    backgroundColor: "#4F30CC",
-                                    borderRadius: "2px",
-                                    height: "2rem",
-                                    width: "2rem",
-                                    marginRight: "1rem"
-                                }}/>New Club</Button>
-                        </Link>
-                        <ChatBubbleOutline fontSize='large'/>
-                        <Link to="/notifications/" style={{color: "#000"}}>
-                            <NotificationsNoneIcon fontSize='large'/>
-                        </Link>
-                        <Link to="/friends_page/" style={{color: "#000"}}>
-                            <AccountCircleIcon fontSize='large'/>
-                        </Link>
-                    </NavMenu>
+                                text={this.state.search}
+                                onClick={this.toggle}>
+                                <Box style={{
+                                    backgroundColor: "#ECECEC",
+                                    height: "3rem",
+                                    width: "30rem",
+                                    display: "flex",
+                                    borderRadius: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end"
+                                }}>
+                                    {this.state.search === '' 
+                                    ? <SearchText> </SearchText> 
+                                    : <SearchText>{this.state.search}</SearchText>}
+                                    <IconButton type='submit'>
+                                        <BiSearch/>
+                                    </IconButton>
+                                </Box>
+                            </Button>
+                            <NavMenu>
+                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
+                                </div>
+                                <Link to="/create_club/" style={{color: "#000"}}>
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
+                                </Link>
+                                <Link to="/chat2/" style={{color: "#000"}}>
+                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats' style={{ marginLeft:"1rem" }} />
+                                </Link>
+                                <Link to="/user_profile/" style={{color: "#000"}}>
+                                    <AccountCircleIcon fontSize='large'/>
+                                </Link>
+                            </NavMenu>
+                        </>
+                        : <></>
+                    }
                 </Container>
                 <Modal
                     isOpen={this.state.modal}
                     toggle={this.toggle}
                     className={this.props.className}
                     style={{
-                        left: 0,
-                        top: 100
-                    }}
-                >
-                    <ModalHeader toggle={this.toggle}>
+                        top: '20%',
+                        left: '0'
+                    }}>
+                    <ModalHeader toggle={this.toggle} >
                         <SearchContainer>
-                            <BiSearch style={{height: "2rem", width: "2rem"}}/>
+                            <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
+                                <BiSearch style={{height: "2rem", width: "2rem"}} />
+                            </Button>
                             <Input
                                 type='text'
                                 placeholder='Search...'
@@ -131,73 +170,68 @@ class MainNav extends React.Component {
                                     fontFamily: "Source Sans Pro",
                                     fontSize: "20px"
                                 }}
+                                onChange={this.handleChange}
+                                value={this.state.search}
                             />
+                            <LoadingIndicator/>
                         </SearchContainer>
                     </ModalHeader>
-                    <ModalBody style={{overflowY: "scroll"}}>
+                    <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
                         {/* User Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <BiUserCircle/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Users</span>
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
-                        <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                Pamela M. Beesly<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>pambeesly@dundermifflin.org</span>
-                            </SearchText>
-                        </SearchResult>
+                        <ul>
+                            {this.state.searchUsers.map((user, index) =>
+                                <li key={index}>
+                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
+                                </li>
+                            )}
+                        </ul>
                         {/* Club Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <GrGroup/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Clubs</span>
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
-                        <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                SlytherintoLibraries<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>21 Members</span>
-                            </SearchText>
-                        </SearchResult>
-                        {/* Club Search Results */}
+                        <ul>
+                            {this.state.searchClubs.map((club, index) =>
+                                <li key={index}>
+                                    <Link to={`/club_profile/${club.id}/`}>
+                                        <SearchClubCard name={club.name} ownerEmail={club.owner.email} description={club.description} />
+                                    </Link>
+                                </li>
+                            )}
+                        </ul>
+                        {/* Book Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <AiOutlineBook/>
-                            <span style={{
-                                fontFamily: "Source Sans Pro",
-                                fontWeight: "600",
-                                marginLeft: "3px"
-                            }}>Books</span>
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button' />
+                            <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
-                        <SearchResult>
-                            <Gravatar email='blah@blah.com'/>
-                            <SearchText>
-                                Bob the Builder<br/>
-                                <span style={{fontWeight: "500", fontSize: "small"}}>Keith Chapman</span>
-                            </SearchText>
-                        </SearchResult>
+                        <ul>
+                            {this.state.searchBooks.map((book, index) =>
+                                <li key={index}>
+                                    <Link to={`/book_profile/${book.ISBN}`}>
+                                        <SearchBookCard name={book.title} author={book.author} image={book.image_links_small} />
+                                    </Link>
+                                </li>
+                            )}
+                        </ul>
                     </ModalBody>
                 </Modal>
 
 
                 <Modal
-                    isOpen = {this.state.postModal}
-                    toggle = {this.changeModalVisibility}
+                    isOpen={this.state.postModal}
+                    toggle={this.changeModalVisibility}
                     style={{
-                    left: 0,
-                    top: 100
-                }}
+                        left: 0,
+                        top: 100
+                    }}
                 >
 
-                <ModalBody style={{overflowY: "scroll"}}>
-                    <PersonalPostForm />
+                    <ModalBody style={{overflowY: "scroll"}}>
+                        <PersonalPostForm/>
                     </ModalBody>
                 </Modal>
             </div>
@@ -206,3 +240,93 @@ class MainNav extends React.Component {
 }
 
 export default MainNav
+
+MainNav.defaultProps = {
+    isAuthenticated: true
+}
+
+const SearchButtonStyle = {
+    backgroundColor: '#653FFD',
+    color: '#fff',
+    borderRadius: '5px',
+}
+
+const SearchUserCard = (props) => {
+    const username = props.username;
+    const email = props.email;
+    const bio = props.bio.slice(0, 35) + '...';
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <Gravatar email={email} style={{ borderRadius:'100px' }} />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{username}</HeadingText><br />
+                <SubHeadingText>{email}</SubHeadingText><br />
+                <ParaText>
+                    {bio}
+                </ParaText>
+            </Col>
+        </Container>
+    );
+}
+
+const SearchClubCard = (props) => {
+    const name = props.name;
+    const ownerEmail = props.ownerEmail;
+    const description = props.description.slice(0, 35) + '...';
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <Gravatar email={ownerEmail} style={{ borderRadius:'100px' }} />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{name}</HeadingText><br />
+                <SubHeadingText>{ownerEmail}</SubHeadingText><br />
+                <ParaText>
+                    {description}
+                </ParaText>
+            </Col>
+        </Container>
+    );
+}
+
+const SearchBookCard = (props) => {
+    const name = props.name;
+    const author = props.author;
+    const imageURL = props.image;
+
+    return(
+        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
+            <Col xs={3}>
+                <img src={imageURL} alt="Book Cover" />
+            </Col>
+            <Col xs={9} style={{ padding:'0px' }}>
+                <HeadingText>{name}</HeadingText><br />
+                <SubHeadingText>{author}</SubHeadingText><br />
+            </Col>
+        </Container>
+    );
+}
+
+const LoadingIndicator = (props) => {
+    const { promiseInProgress } = usePromiseTracker();
+
+    return (
+        promiseInProgress && 
+        <Container>
+            <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: '10'
+                }}>
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25"/>
+            </div>
+        </Container>
+    );
+}

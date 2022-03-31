@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { useParams } from "react-router";
 import axiosInstance from "../../axios";
 import BookProfileCard from "./BookProfileCard";
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 import { Card, CardSubtitle, CardTitle } from "reactstrap";
 import { useNavigate } from "react-router";
 
@@ -116,7 +116,7 @@ const BookProfilePage = () => {
   return (
     <div>
       <Row style={{ marginBottom: "3rem" }}>
-        <Nav />
+        <MainNav />
       </Row>
       <Container fluid>
         <Row

@@ -47,7 +47,7 @@ export default function PersonalPostForm(props) {
                 content : formData.content, 
             })
             .then((res) => {
-                navigate("/friends_page/")
+                navigate("/user_profile/")
                 navigate("/home/")
             })
             .catch((e) => {

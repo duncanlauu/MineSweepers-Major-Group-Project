@@ -16,21 +16,10 @@ export default function SinglePersonalPost(props) {
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = JSON.parse(localStorage.user)
 
-    // TODO: use author__email in props.personalPost, instead of get_update
     useEffect(() => {
         setPersonalPost(props.personalPost)
         setPosterEmail(props.personalPost.author__email)
-        // getPostCreatorEmail(props.personalPost.author)
     }, []);
-
-    // TODO: don't need this method
-    const getPostCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-            .then((res) => {
-                setPosterEmail(res.data.email)
-            })
-            .catch(error => console.error(error));
-    }
 
     const deletePost = (post_id, e) => {
         axiosInstance

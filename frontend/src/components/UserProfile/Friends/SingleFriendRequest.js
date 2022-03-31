@@ -42,7 +42,7 @@ export default function SingleFriendRequest(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${friendRequest.sender}/`)
+        navigate(`/user_profile/${friendRequest.sender}/`)
         window.location.reload()
     }
 

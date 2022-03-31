@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Button, CardImg, CardBody, CardTitle, CardSubtitle, Card } from 'reactstrap'
 import { HeadingText, ParaText } from '../Login/LoginElements'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 import axiosInstance from '../../axios'
 import Gravatar from 'react-gravatar'
 import { ClubProfile } from '../ClubProfile/ClubProfileElements'
@@ -64,7 +64,7 @@ function ListOfClubs() {
   return (
     <Container fluid>
       <Row style={{ marginBottom: "3rem" }}>
-        <Nav />
+        <MainNav />
       </Row>
       <Row xs={1} md={columnsPerRow}>
         <Col xs={2} />

@@ -43,7 +43,7 @@ export default function UserProfileEditor(props) {
             })
             .then((res) => {
                 navigate("/home/")
-                navigate("/friends_page/")
+                navigate("/user_profile/")
                 console.log("New profile content: ")
                 console.log(res)
             })

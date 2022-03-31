@@ -15,7 +15,6 @@ export default function SingleCommentReply(props) {
 
     const navigate = useNavigate()
 
-    // TODO: use props.reply.author__email
     useEffect(() => {
         setCurrentPost(props.currentPost)
         setSingleComment(props.currentComment)
@@ -34,8 +33,7 @@ export default function SingleCommentReply(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${singleReply.author}/`)
-        //window.location.reload()
+        navigate(`/user_profile/${singleReply.author}/`)
     }
 
     return(

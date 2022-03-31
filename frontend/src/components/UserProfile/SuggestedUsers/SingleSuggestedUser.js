@@ -57,7 +57,7 @@ export default function SingleSuggestedUser(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${currentSuggestedUser.id}/`)
+        navigate(`/user_profile/${currentSuggestedUser.id}/`)
         window.location.reload()
     }
 
@@ -78,21 +78,7 @@ export default function SingleSuggestedUser(props) {
                                     {suggestedUserName} 
                                 </SuggestedUserText>
                             </SuggestedUserNameContainer>
-                            
-                            {/* <h5 className="friend_username"> {suggestedUserName} </h5> */}
                         </Col>
-                        {/* <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
-                            <Button color="primary" onClick={(e) => postFriendRequest(currentSuggestedUser.id)}
-                                style={{height: "4rem", width: "6rem"}}
-                            >
-                                <p> Follow </p>
-                            </Button>
-                            <Button onClick={(e) => cancelFriendRequest(currentSuggestedUser.id)}
-                                style={{height: "4rem", width: "1rem", borderTopRightRadius: "20px", borderBottomRightRadius: "20px"}} 
-                            >
-                                <p> X </p>
-                            </Button>
-                        </Col> */}
                     </Row>
                 </SuggestedUserLine>
         </div>
