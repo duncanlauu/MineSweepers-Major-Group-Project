@@ -21,17 +21,7 @@ export default function SinglePostComment(props) {
         setCurrentPost(props.currentPost)
         setSingleComment(props.comment)
         setPosterEmail(props.comment.author__email)
-        // getCommentCreatorEmail(props.comment.author_id)
     }, []);
-
-    const getCommentCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            // console.log("The post creator is: " + res.data.username)
-            setPosterEmail(res.data.email)
-        })
-        .catch(error => console.error(error));
-    }
 
     const deleteComment = (comment_id, e) => {
         axiosInstance
@@ -44,8 +34,8 @@ export default function SinglePostComment(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${singleComment.author_id}/`)
-        window.location.reload()
+        navigate(`/friends_page/${singleComment.author}/`)
+        //window.location.reload()
     }
 
     const commentsRef = useRef([]);
@@ -70,7 +60,7 @@ export default function SinglePostComment(props) {
                         </CommentLineBox>
                     </Col>
                     <Col xs="3" style={{display: "flex", justifyContent: "flex-end"}}>
-                        {singleComment.author_id == currentUser.id  &&   
+                        {singleComment.author == currentUser.id  &&   
                             <Button color="danger" name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
                                 style={{height: "3rem", borderTopLeftRadius: "100px", borderBottomLeftRadius: "100px"}}
                             >

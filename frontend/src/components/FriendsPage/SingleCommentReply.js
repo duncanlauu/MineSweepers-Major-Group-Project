@@ -22,8 +22,6 @@ export default function SingleCommentReply(props) {
         setSingleComment(props.currentComment)
         setSingleReply(props.reply)
         setPosterEmail(props.reply.author__email)
-        console.log('replier email', props.reply.author__email)
-        // getReplyCreatorEmail(props.reply.author_id)
     }, []);
 
     const deleteComment = (comment_id, e) => {
@@ -36,18 +34,9 @@ export default function SingleCommentReply(props) {
             .catch(error => console.error(error));
     }
 
-    const getReplyCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            // console.log("The post creator is: " + res.data.username)
-            setPosterEmail(res.data.email)
-        })
-        .catch(error => console.error(error));
-    }
-
     const navigateToProfile = () => {
-        navigate(`/friends_page/${singleReply.author_id}/`)
-        window.location.reload()
+        navigate(`/friends_page/${singleReply.author}/`)
+        //window.location.reload()
     }
 
     return(
@@ -68,7 +57,7 @@ export default function SingleCommentReply(props) {
                                 <h6> {singleReply.content} </h6>
                             </ReplyLineBox>
                         </Col>
-                        {singleReply.author_id == currentUser.id  &&
+                        {singleReply.author == currentUser.id  &&
                             <Col xs="2" style={{display: "flex", justifyContent: "flex-end"}}>
                                 <Button color="danger" name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} 
                                     style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
