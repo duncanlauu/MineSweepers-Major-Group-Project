@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
-import useGetUser from "../../helpers";
 import Gravatar from "react-gravatar"
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
@@ -12,11 +11,10 @@ export default function SinglePostComment(props) {
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
 
     const navigate = useNavigate()
 
-    // TODO: delete get_update, use props.comment.author__email
     useEffect(() => {
         setCurrentPost(props.currentPost)
         setSingleComment(props.comment)
@@ -39,7 +37,6 @@ export default function SinglePostComment(props) {
     }
 
     const commentsRef = useRef([]);
-    // used to have unique togglers
     const togglerID = "toggler" + singleComment.id
     const HashtagTogglerId = "#toggler" + singleComment.id
 
@@ -60,7 +57,7 @@ export default function SinglePostComment(props) {
                         </CommentLineBox>
                     </Col>
                     <Col xs="3" style={{display: "flex", justifyContent: "flex-end"}}>
-                        {singleComment.author == currentUser.id  &&   
+                        {singleComment.author == currentUser.id  &&
                             <Button color="danger" name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
                                 style={{height: "3rem", borderTopLeftRadius: "100px", borderBottomLeftRadius: "100px"}}
                             >
@@ -77,8 +74,6 @@ export default function SinglePostComment(props) {
                 <Row>
                     <UncontrolledCollapse toggler={HashtagTogglerId}>
                         <div>
-                            {/* <PostComments ref={el => commentsRef.current[0] = el}  personalPost={personalPost} /> */}
-                            {/* <PostCommentList post={personalPost}/> */}
                             <hr style={{marginTop: "0rem"}}/>
                             <Row>
                                 <Col xs="2"> </Col>

@@ -3,7 +3,6 @@ import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reac
 import axiosInstance from '../../axios'
 
 import { useNavigate } from "react-router";
-import useGetUser from "../../helpers";
 
 
 export default function PersonalPostEditor(props) {
@@ -12,8 +11,8 @@ export default function PersonalPostEditor(props) {
     const [titleErr, setTitleErr] = useState('')
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
-    const [clubData, setClubData] = useState(null)
-    const currentUser = useGetUser();
+    const [clubData, setClubData] = useState("")
+    const currentUser = JSON.parse(localStorage.user);
     const [availableClubs, setAvailableClubs] = useState("") 
     const navigate = useNavigate();
 
@@ -43,8 +42,6 @@ export default function PersonalPostEditor(props) {
             .then((res) => {
                 navigate("/home/")
                 navigate("/friends_page/")
-                console.log("We just posted: ")
-                console.log(res)
             })
             .catch((e) => {
                 console.log(e.response.data)

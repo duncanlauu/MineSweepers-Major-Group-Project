@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from app.models import Club, User
+from app.models import Club, User, Chat
 from app.serializers import ClubSerializer
 
 
@@ -37,13 +37,16 @@ class ClubsTestCase(APITestCase):
 
     def test_correct_post(self):
         club_count_before = Club.objects.count()
+        chat_count_before = Chat.objects.count()
         response = self.client.post(self.url, data={"name": "This is a name", "description": "This is a description"})
         club_count_after = Club.objects.count()
+        chat_count_after = Chat.objects.count()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['name'], "This is a name")
         self.assertEqual(response.data['description'], "This is a description")
         self.assertEqual(Club.objects.get(name="This is a name").owner, self.user)
         self.assertEqual(club_count_after, club_count_before + 1)
+        self.assertEqual(chat_count_after, chat_count_before + 1)
 
     def test_incorrect_post(self):
         club_count_before = Club.objects.count()

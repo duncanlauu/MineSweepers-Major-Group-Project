@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
 import axiosInstance from '../../axios'
-
 import { useNavigate } from "react-router";
-import useGetUser from "../../helpers";
 
 
 export default function PersonalPostForm(props) {
@@ -12,7 +10,7 @@ export default function PersonalPostForm(props) {
     const [contentErr, setContentErr] = useState('')
     const [clubIDErr, setClubIDErr] = useState('')
     const [clubData, setClubData] = useState(null)
-    const currentUser = useGetUser();
+    const currentUser = JSON.parse(localStorage.user);
     const [availableClubs, setAvailableClubs] = useState("") 
 
     const initialFormData = Object.freeze({ // After the user has typed in their data, it can no longer be changed. (.freeze)
@@ -51,8 +49,6 @@ export default function PersonalPostForm(props) {
             .then((res) => {
                 navigate("/friends_page/")
                 navigate("/home/")
-                console.log("We just posted: ")
-                console.log(res.data)
             })
             .catch((e) => {
                 console.log(e.response.data)
@@ -85,7 +81,7 @@ export default function PersonalPostForm(props) {
         }
         return null;
     }
-    
+
     const displayPersonalPostForm = (e) => {
         
         return(
@@ -129,7 +125,7 @@ export default function PersonalPostForm(props) {
                                 <FormGroup>
                                     <Label for="club_id"> <h5><b> Club </b> (opt.) </h5> </Label>
                                     <br/>
-                                    <select        
+                                    <select
                                         value={clubData}
                                         onChange={(e) => setClubData(e.target.value)}
                                         style={{border: "0", backgroundColor: "#F3F3F3",  borderRadius: "20px"}}

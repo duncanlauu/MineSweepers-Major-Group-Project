@@ -10,13 +10,12 @@ import ClubProfileTabs from "./ClubProfileTabs.js";
 import Gravatar from "react-gravatar";
 import { useParams } from "react-router";
 import axiosInstance from "../../axios";
-import useGetUser from "../../helpers";
 
 const ClubProfile = () => {
   const { club_id } = useParams();
 
   const [club, setClub] = useState(null);
-  const currentUser = useGetUser();
+  const currentUser = JSON.parse(localStorage.user)
   const [memberStatus, setMemberStatus] = useState("notApplied");
 
   useEffect(() => {

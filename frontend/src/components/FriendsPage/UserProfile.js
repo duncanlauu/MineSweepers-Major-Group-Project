@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
 import {
-    Container,
-    Row,
-    Col,
-    Nav,
-    NavItem,
-    NavLink,
-    TabContent,
-    TabPane,
-} from 'reactstrap'
-import classnames from 'classnames';
-import useGetUser from "../../helpers";
+  Container,
+  Row,
+  Col,
+  Button,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  CardGroup,
+  Modal,
+  ModalBody,
+} from "reactstrap";
+import classnames from "classnames";
+import Gravatar from "react-gravatar";
 import {
     DataContainer,
     DataContainerCard,

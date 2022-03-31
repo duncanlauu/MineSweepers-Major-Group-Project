@@ -2,12 +2,11 @@ import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Col, Container, Row} from "reactstrap";
 import {HeadingText, ParaText} from "../CreateClub/CreateClubElements";
-import useGetUser from "../../helpers";
 import {MeetingProfile} from "./MeetingPageElements";
 
 
 export default function Meetings() {
-    const user = useGetUser()
+    const user = JSON.parse(localStorage.user)
     const [meetings, updateMeetings] = useState([])
 
     useEffect(() => {

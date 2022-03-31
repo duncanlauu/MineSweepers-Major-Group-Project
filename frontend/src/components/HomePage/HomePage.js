@@ -15,11 +15,10 @@ import { Link } from "react-router-dom";
 import { ParaText } from "./HomePageElements";
 import { IoIosArrowForward } from "react-icons/io";
 
-import useGetUser from "../../helpers";
 import FeedPostList from "../FriendsPage/FeedPostList";
 
 const HomePage = () => {
-  const currentUser = useGetUser();
+  const currentUser = JSON.parse(localStorage.user);
 
   let calculatedRecommendations = false;
   useEffect(() => {

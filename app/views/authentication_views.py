@@ -23,7 +23,6 @@ class BlacklistTokenView(APIView):
 
 class GetCurrentUserView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    # renderer_classes = (UserJSONRenderer,)
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
