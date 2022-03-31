@@ -102,7 +102,7 @@ def seed_default_objects():
     )
     kerbal.admins.set([bob])
     kerbal.members.set([val, billie])
-    kerbal.club_chat.participants.set([jeb, billie, bob, val]) # Chat
+    kerbal.club_chat.participants.set([jeb, billie, bob, val])
     kerbal.books.set(get_n_random_books_from(10, books))
     kerbal.save()
 
@@ -242,8 +242,8 @@ def seed_friends():
         for friend in potential_friends:
             user.add_friend(friend)
             friend.add_friend(user)
-            chat = Chat.objects.create() # Chat
-            chat.participants.set([user, friend]) # Chat 
+            chat = Chat.objects.create() 
+            chat.participants.set([user, friend]) 
         user.save()
         print(f'Created all friends for {user}')
 
@@ -542,7 +542,7 @@ def generate_club_users(club, num_of_members, num_of_admins, num_of_applicants):
     applicants = users[num_of_members + num_of_admins:]
     club.members.set(members)
     club.admins.set(admins)
-    club.club_chat.participants.set([club.owner] + members + admins) # Chat
+    club.club_chat.participants.set([club.owner] + members + admins)
     club.applicants.set(applicants)
     return club
 
