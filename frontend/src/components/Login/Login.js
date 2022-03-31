@@ -52,7 +52,6 @@ export default function SignIn() {
                 const refresh_token = response.data.refresh
                 localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                 localStorage.setItem('refresh_token', refresh_token)
-                localStorage.setItem('username', user)
                 localStorage.setItem('user', JSON.stringify(currentUser))
                 axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                     'JWT ' + localStorage.getItem('access_token')
@@ -86,7 +85,7 @@ export default function SignIn() {
                 <Nav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <h2 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</h2>
+                <h3 ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" style={{textAlign: "center"}}>{errMsg}</h3>
                 <Row style={{ marginTop: "6rem" }}>
                     <Col />
                     <Col>

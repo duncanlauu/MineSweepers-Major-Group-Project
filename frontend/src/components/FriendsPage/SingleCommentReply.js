@@ -11,12 +11,8 @@ export default function SingleCommentReply(props) {
     const [singleReply, setSingleReply] = useState("");
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
-<<<<<<< HEAD
-    const currentUser = localStorage.username;
-=======
     const [posterEmail, setPosterEmail] = useState("");
     const currentUser = useGetUser();
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
 
     const navigate = useNavigate()
 

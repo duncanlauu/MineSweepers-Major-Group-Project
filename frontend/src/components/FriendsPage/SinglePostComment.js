@@ -11,12 +11,8 @@ export default function SinglePostComment(props) {
 
     const [singleComment, setSingleComment] = useState("");
     const [currentPost, setCurrentPost] = useState("");
-<<<<<<< HEAD
-    const currentUser = localStorage.username;
-=======
     const [posterEmail, setPosterEmail] = useState("");
     const currentUser = useGetUser();
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
 
     const navigate = useNavigate()
 
@@ -29,7 +25,6 @@ export default function SinglePostComment(props) {
     const getCommentCreatorEmail = (author_id) => {
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            // console.log("The post creator is: " + res.data.username)
             setPosterEmail(res.data.email)
         })
         .catch(error => console.error(error));
@@ -51,7 +46,6 @@ export default function SinglePostComment(props) {
     }
 
     const commentsRef = useRef([]);
-    // used to have unique togglers
     const togglerID = "toggler" + singleComment.id
     const HashtagTogglerId = "#toggler" + singleComment.id
 
@@ -89,8 +83,6 @@ export default function SinglePostComment(props) {
                 <Row>
                     <UncontrolledCollapse toggler={HashtagTogglerId}>
                         <div>
-                            {/* <PostComments ref={el => commentsRef.current[0] = el}  personalPost={personalPost} /> */}
-                            {/* <PostCommentList post={personalPost}/> */}
                             <hr style={{marginTop: "0rem"}}/>
                             <Row>
                                 <Col xs="2"> </Col>

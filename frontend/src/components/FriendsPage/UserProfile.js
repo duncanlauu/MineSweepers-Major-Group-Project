@@ -143,104 +143,6 @@ const UserProfile = () => {
                   </Col>
                 </Row>
 
-<<<<<<< HEAD
-                <Row style={{ marginTop: "6rem" }}>
-                    <Col xs="3">
-                        <ProfileInfoContainer>
-                            <ProfileInfoCard>
-                                <Row style={{justifyContent: "center"}}>
-                                    <Col xs="8">
-                                        <Gravatar email='user@example.com' size={150} style={{ 
-                                                borderRadius: "50px",
-                                                marginTop: "1rem",
-                                                marginBottom: "1rem"
-                                            }} 
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row style={{justifyContent: "center", marginTop: "1rem"}}>
-                                    <ProfileInfoDetails>
-                                        <Row style={{justifyContent: "center", marginTop: "1rem"}}>
-                                            <div style={{textAlign : "center", borderBottomStyle: "dotted"}}>
-                                                <h3> <b>{currentUser.first_name} {currentUser.last_name} </b></h3>  
-                                                <h4> <b> <i> @{currentUser.username} </i></b></h4>  
-                                            </div>
-                                        </Row>
-                                        <Row>
-                                            <div style={{textAlign : "center"}}>
-                                                {currentUser.location != "" && 
-                                                    <h5> From: {currentUser.location} </h5>
-                                                }
-                                                {currentUser.bio != "" && 
-                                                    <h5> Bio: {currentUser.bio} </h5>
-                                                }
-                                            </div>
-                                        </Row>        
-                                    </ProfileInfoDetails>
-                                </Row>
-                            </ProfileInfoCard>
-                        </ProfileInfoContainer>
-                    </Col>
-
-                    <Col xs="6">
-                        <DataContainer>
-                            <DataContainerCard>
-                            <Nav tabs style={{
-                                    marginBottom: "1rem",
-                                    width: "100%",
-                                    marginTop: "1rem",
-                                    borderRadius: "100px"
-                                }}
-                            >
-                                <NavItem style={{width: "50%"}}>
-                                    <NavLink className={classnames({active: currentActiveTab === "1"})} onClick={() => {toggle("1");}}>
-                                        <div style={{textAlign: "center"}}>
-                                            <TabsText>
-                                                Posts 
-                                            </TabsText>
-                                        </div>
-
-                                    </NavLink>
-                                </NavItem>
-
-                                <NavItem style={{width: "50%"}}>
-                                    <NavLink className={classnames({active: currentActiveTab === "2"})} onClick={() => {toggle("2");}}>
-                                        <div style={{textAlign: "center"}}>
-                                            <TabsText>
-                                                Friends 
-                                            </TabsText>
-                                        </div>
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
-                            
-                            <DataContainerBelowTabs>
-                                <TabContent activeTab={currentActiveTab}>
-                                    <TabPane tabId="1">
-                                        <PersonalPostList/>
-                                    </TabPane>
-
-                                    <TabPane tabId="2">
-                                        <FriendRequestList/>
-                                        
-                                        <FriendListContainer>
-                                            <FriendsList />
-                                        </FriendListContainer>
-                                    </TabPane>
-
-                                </TabContent>
-                            </DataContainerBelowTabs>
-                        </DataContainerCard>
-                        </DataContainer>
-                    </Col>
-
-                    <Col xs="3">
-                        <FriendRecommenderContainer>
-                            <h3> Suggested People </h3>
-                            <SuggestedUserList/>
-                        </FriendRecommenderContainer>
-                    </Col>
-=======
                 <Row style={{ justifyContent: "center", marginTop: "1rem" }}>
                   <ProfileInfoDetails>
                     <Row
@@ -315,7 +217,6 @@ const UserProfile = () => {
                       </div>
                     </Row>
                   </ProfileInfoDetails>
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
                 </Row>
               </ProfileInfoCard>
             </ProfileInfoContainer>

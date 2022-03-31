@@ -13,21 +13,14 @@ import useGetUser from "../../helpers"
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
-<<<<<<< HEAD
-=======
     const [writtenComment, updateWrittenComment] = useState("dummy")
     const [posterEmail, setPosterEmail] = useState("");
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = useGetUser()
 
     useEffect(() => {
         setPersonalPost(props.personalPost)
-<<<<<<< HEAD
-        console.log("HELLO", JSON.parse(localStorage.user).email)
-=======
         getPostCreatorEmail(props.personalPost.author)
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     }, []);
 
     const getPostCreatorEmail = (author_id) => {
@@ -47,31 +40,6 @@ export default function SinglePersonalPost(props) {
             .catch(error => console.error(error));
     }
 
-<<<<<<< HEAD
-    // const uploadComment = (post_id, e, index) => {
-    //     console.log(writtenComment.myComment)
-    //     axiosInstance
-    //         .post(`posts/${post_id}/comments/`, {
-    //             content: writtenComment.myComment,
-    //         })
-    //         .then((res) => {
-    //             console.log(res.data)
-    //             const comment = { author: localStorage.username, content: writtenComment.myComment }
-    //             console.log(commentsRef.current[index])
-    //             commentsRef.current[index].addComment(comment)
-    //             console.log("adding post in parent: ", comment)
-    //         })
-    // }
-
-    // const handleCommentChange = (e) => {
-    //     updateWrittenComment({
-    //         writtenComment,
-    //         [e.target.name]: e.target.value,
-    //     })
-    // }
-
-=======
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     const changeModalVisibility = () => {
         setModalVisibility(!isModalVisible);
     }

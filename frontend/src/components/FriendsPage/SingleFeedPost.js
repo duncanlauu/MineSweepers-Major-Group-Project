@@ -20,7 +20,6 @@ export default function SingleFeedPost(props) {
 
     useEffect(() => {
         setFeedPosts(props.feedPost)
-<<<<<<< HEAD
         getPostUpvotes(props.feedPost.id)
         getPostCreatorName(props.feedPost.author_id)
         getPostCreatorEmail(props.feedPost.author_id)
@@ -53,21 +52,6 @@ export default function SingleFeedPost(props) {
         .catch(error => console.error(error));
     }
 
-    // const uploadComment = (post_id, e, index) => {
-    //     console.log(writtenComment.myComment)
-    //     axiosInstance
-    //         .post(`posts/${post_id}/comments/`, {
-    //             content: writtenComment.myComment,
-    //         })
-    //         .then((res) => {
-    //             console.log(res.data)
-    //             const comment = { author: localStorage.username, content: writtenComment.myComment }
-    //             console.log(commentsRef.current[index])
-    //             commentsRef.current[index].addComment(comment)
-    //             console.log("adding post in parent: ", comment)
-    //         })
-    // }
-
     const likePost = () => {
         console.log("liking post", feedPost.id)
         axiosInstance
@@ -81,24 +65,21 @@ export default function SingleFeedPost(props) {
             .catch(error => console.error(error));
     }
 
-    const handleCommentChange = (e) => {
-        updateWrittenComment({
-            writtenComment,
-            [e.target.name]: e.target.value,
-        })
-=======
-        setPosterName(props.feedPost.author__username)
-        setPosterEmail(props.feedPost.author__email)
-    }, []);
+    // const handleCommentChange = (e) => {
+    //     updateWrittenComment({
+    //         writtenComment,
+    //         [e.target.name]: e.target.value,
+    //     })
+    //     setPosterName(props.feedPost.author__username)
+    //     setPosterEmail(props.feedPost.author__email)
+    // }, []);
 
     const navigateToProfile = () => {
         navigate(`/friends_page/${props.feedPost.author}/`)
         window.location.reload()
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
     }
 
     const commentsRef = useRef([]);
-    // used to have unique togglers
     const togglerID = "toggler" + feedPost.id
     const HashtagTogglerId = "#toggler" + feedPost.id
 

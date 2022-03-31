@@ -35,21 +35,11 @@ export default function CommentReplyList(props){
     }
 
     const uploadReply = (e, index) => {
-<<<<<<< HEAD
-=======
-        // console.log(writtenReply.myReply)
-        // console.log(currentPost.id)
-        // console.log(currentComment.id)
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
         axiosInstance
             .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
-<<<<<<< HEAD
-=======
-                // console.log(res.data)
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
                 getRepliesUnderComments()
             })
     }
@@ -94,7 +84,6 @@ export default function CommentReplyList(props){
 
 
                     {repliesUnderComment.map((reply, index) => {
-                        // console.log(reply);
                         return (
                             <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
                                 <ReplyLine>

@@ -145,10 +145,6 @@ class FeedAPIViewTestCase(APITestCase):
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
         self.assertEqual(edited_post.content, new_content)
-<<<<<<< HEAD
-
-=======
->>>>>>> a3584c9bd444d4c2088ab9af7c93482c19f7ded9
 
     def test_partial_edit_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
