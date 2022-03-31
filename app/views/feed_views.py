@@ -23,6 +23,7 @@ class FeedView(APIView):
                     'author__username',
                     'author__email',
                     'club',
+                    'club__name',
                     'title',
                     'content',
                     'created_at')
@@ -41,6 +42,7 @@ class AllPostsView(APIView):
                     'author__username',
                     'author__email',
                     'club',
+                    'club__name',
                     'title',
                     'content',
                     'created_at')
@@ -118,6 +120,7 @@ class OtherUserPostsView(APIView):
                             'author__username',
                             'author__email',
                             'club',
+                            'club__name',
                             'title',
                             'content',
                             'created_at')
@@ -326,6 +329,7 @@ class ClubFeedView(APIView):
                     'author__username',
                     'author__email',
                     'club',
+                    'club__name',
                     'title',
                     'content',
                     'created_at')

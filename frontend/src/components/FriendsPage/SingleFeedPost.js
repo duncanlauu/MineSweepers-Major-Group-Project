@@ -20,8 +20,6 @@ export default function SingleFeedPost(props) {
         setFeedPosts(props.feedPost)
         setPosterName(props.feedPost.author__username)
         setPosterEmail(props.feedPost.author__email)
-        console.log("Feed name: ")
-        console.log(props.feedPost.club)
     }, []);
 
     const navigateToProfile = () => {
@@ -61,7 +59,7 @@ export default function SingleFeedPost(props) {
                         </Col>
                         <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
                             {feedPost.club != null &&
-                                <h5> <b> Club: {feedPost.club} </b></h5>
+                                <h5> <b> Club: {feedPost.club__name} </b></h5>
                             }
                         </Col>
                     </Row>

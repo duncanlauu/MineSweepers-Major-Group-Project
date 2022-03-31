@@ -80,7 +80,7 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         posts = response.data['posts']
         for post in posts:
-            self.assertEqual(post['author_id'], self.user.id)
+            self.assertEqual(post['author'], self.user.id)
         self.assertEqual(len(posts), self.user.posts.count())
 
     def test_create_post_without_optional_fields(self):
