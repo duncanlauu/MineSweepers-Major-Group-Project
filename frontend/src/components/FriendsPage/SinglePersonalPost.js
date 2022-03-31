@@ -12,7 +12,6 @@ import {PostHeadingText } from "./UserProfileElements"
 export default function SinglePersonalPost(props) {
 
     const [personalPost, setPersonalPost] = useState("");
-    const [writtenComment, updateWrittenComment] = useState("dummy")
     const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState()
     const currentUser = JSON.parse(localStorage.user)

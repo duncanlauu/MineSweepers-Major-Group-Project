@@ -19,14 +19,12 @@ export default function SingleFeedPost(props) {
     useEffect(() => {
         setFeedPosts(props.feedPost)
         getPostUpvotes(props.feedPost.id)
-        getPostCreatorNameAndEmail(props.feedPost.author_id)
+        getPostCreatorNameAndEmail(props.feedPost.author)
     }, []);
 
     const getPostCreatorNameAndEmail = (author_id) => {
-        console.log("TEST1", author_id)
         axiosInstance.get(`user/get_update/${author_id}/`)
         .then((res) => {
-            console.log("TEST", res.data)
             setPosterName(res.data.username)
             setPosterEmail(res.data.email)
         })
