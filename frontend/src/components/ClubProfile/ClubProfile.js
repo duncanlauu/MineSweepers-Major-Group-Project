@@ -43,7 +43,7 @@ const ClubProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [currentUser]);
+  }, []);
 
   if (!club) return null;
 

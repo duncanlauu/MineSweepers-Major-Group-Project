@@ -1,6 +1,6 @@
 from app.models import User
 from ..serializers import RegisterUserSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 # from https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3
 class CreateUser(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         reg_serializer = RegisterUserSerializer(data=request.data)

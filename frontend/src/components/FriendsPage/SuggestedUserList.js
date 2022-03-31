@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react"
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
-import { Button } from "reactstrap";
 import SingleSuggestedUser from "./SingleSuggestedUser";
 
 export default function SuggestedUserList(props) {
@@ -50,7 +48,6 @@ export default function SuggestedUserList(props) {
                     <h3> No friends suggestions yet. Please re-login to see more. </h3>
                  </h3>
             )
-
         }
     }
     return (
