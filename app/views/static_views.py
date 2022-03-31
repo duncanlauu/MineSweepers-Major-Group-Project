@@ -11,10 +11,3 @@ class UserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-class HelloWorldView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response(data={"hello": "world"}, status=status.HTTP_200_OK)

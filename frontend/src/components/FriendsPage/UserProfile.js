@@ -27,6 +27,11 @@ import FriendRequestList from "./FriendRequestList";
 import SuggestedUserList from "./SuggestedUserList";
 import {useNavigate} from "react-router";
 import ProfileInfo from "./ProfileInfo";
+import { useParams } from "react-router";
+import axiosInstance from "../../axios";
+import UserProfileEditor from "./UserProfileEditor";
+import PersonalPostForm from "./PersonalPostForm";
+import BookRatingList from "./BookRatingList";
 
 const UserProfile = () => {
 
@@ -51,49 +56,69 @@ const UserProfile = () => {
                         <ProfileInfo/>
                     </Col>
 
-                    <Col xs="6">
-                        <DataContainer>
-                            <DataContainerCard>
-                                <Nav tabs style={{
-                                    marginBottom: "1rem",
-                                    width: "100%",
-                                    marginTop: "1rem",
-                                    borderRadius: "100px"
-                                }}
-                                >
-                                    <NavItem style={{width: "50%"}}>
-                                        <NavLink className={classnames({active: currentActiveTab === "1"})}
-                                                 onClick={() => {
-                                                     toggle("1");
-                                                 }}>
-                                            <div style={{textAlign: "center"}}>
-                                                <TabsText>
-                                                    Posts
-                                                </TabsText>
-                                            </div>
+          <Col xs="6">
+            <DataContainer>
+              <DataContainerCard>
+                <Nav tabs style={{
+                    marginBottom: "1rem",
+                    width: "100%",
+                    marginTop: "1rem",
+                    borderRadius: "100px",
+                  }}
+                >
+                  <NavItem style={{ width: "33%" }}>
+                    <NavLink
+                      className={classnames({
+                        active: currentActiveTab === "1",
+                      })}
+                      onClick={() => {
+                        toggle("1");
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        <TabsText>
+                            Posts
+                        </TabsText>
+                      </div>
+                    </NavLink>
+                  </NavItem>
 
-                                        </NavLink>
-                                    </NavItem>
+                  <NavItem style={{ width: "33%" }}>
+                    <NavLink
+                      className={classnames({
+                        active: currentActiveTab === "2",
+                      })}
+                      onClick={() => {
+                        toggle("2");
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        <TabsText>Friends</TabsText>
+                      </div>
+                    </NavLink>
+                  </NavItem>
 
-                                    <NavItem style={{width: "50%"}}>
-                                        <NavLink className={classnames({active: currentActiveTab === "2"})}
-                                                 onClick={() => {
-                                                     toggle("2");
-                                                 }}>
-                                            <div style={{textAlign: "center"}}>
-                                                <TabsText>
-                                                    Friends
-                                                </TabsText>
-                                            </div>
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
+                  <NavItem style={{ width: "33%" }}>
+                    <NavLink
+                      className={classnames({
+                        active: currentActiveTab === "3",
+                      })}
+                      onClick={() => {
+                        toggle("3");
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        <TabsText>Book ratings</TabsText>
+                      </div>
+                    </NavLink>
+                  </NavItem>
+                </Nav>
 
-                                <DataContainerBelowTabs>
-                                    <TabContent activeTab={currentActiveTab}>
-                                        <TabPane tabId="1">
-                                            <PersonalPostList/>
-                                        </TabPane>
+                <DataContainerBelowTabs>
+                  <TabContent activeTab={currentActiveTab}>
+                    <TabPane tabId="1">
+                      <PersonalPostList/>
+                    </TabPane>
 
                                         <TabPane tabId="2">
                                             <FriendRequestList/>
@@ -103,11 +128,19 @@ const UserProfile = () => {
                                             </FriendListContainer>
                                         </TabPane>
 
-                                    </TabContent>
-                                </DataContainerBelowTabs>
-                            </DataContainerCard>
-                        </DataContainer>
-                    </Col>
+                    <TabPane tabId="3">
+                      {user_id == undefined ? (
+                        <BookRatingList />
+                      ) : (
+                        <BookRatingList requestedUser_id={user_id} />
+                      )}
+                    </TabPane>
+
+                  </TabContent>
+                </DataContainerBelowTabs>
+              </DataContainerCard>
+            </DataContainer>
+          </Col>
 
 
                     <Col xs="3">
