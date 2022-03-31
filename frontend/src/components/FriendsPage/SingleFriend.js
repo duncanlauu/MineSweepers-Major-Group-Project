@@ -58,7 +58,7 @@ export default function SingleFriend(props) {
                             }} 
                         />
                     </Col>
-                    <Col xs="6" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <Col xs="8" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                         <UserNameContainer onClick={navigateToProfile}>
                             <UserNameText>
                                 {currentFriend.username}
@@ -66,14 +66,14 @@ export default function SingleFriend(props) {
                         </UserNameContainer>
                     </Col>
                     { props.requestedUser_id == undefined && 
-                        <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
+                        <Col xs="2" style={{display: 'flex', justifyContent: "flex-end"}}>
                             <Button style={{borderRadius: "20px", height: "5rem"}} name={currentFriend.id} onClick={(e) => deleteFriend(currentFriend.id, e)}>
                                 X
                             </Button>
                         </Col>
                     }
 
-                    { props.requestedUser_id !== undefined && 
+                    {/* { props.requestedUser_id !== undefined && 
                         <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
                             <Button color="primary" onClick={(e) => postFriendRequest(currentFriend.id)}
                                 style={{height: "5rem", width: "6rem"}}
@@ -86,7 +86,7 @@ export default function SingleFriend(props) {
                                 <p> X </p>
                             </Button>
                         </Col>
-                    }
+                    } */}
                 </Row>
             </FriendLine>
 

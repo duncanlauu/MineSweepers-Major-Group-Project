@@ -72,7 +72,7 @@ export default function SingleSuggestedUser(props) {
                                 marginBottom: "1rem"}} 
                             />
                         </Col>
-                        <Col xs="6" style={{height: "4rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Col xs="9" style={{height: "4rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <SuggestedUserNameContainer onClick={navigateToProfile}>
                                 <SuggestedUserText>
                                     {suggestedUserName} 
@@ -81,7 +81,7 @@ export default function SingleSuggestedUser(props) {
                             
                             {/* <h5 className="friend_username"> {suggestedUserName} </h5> */}
                         </Col>
-                        <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
+                        {/* <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
                             <Button color="primary" onClick={(e) => postFriendRequest(currentSuggestedUser.id)}
                                 style={{height: "4rem", width: "6rem"}}
                             >
@@ -92,7 +92,7 @@ export default function SingleSuggestedUser(props) {
                             >
                                 <p> X </p>
                             </Button>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </SuggestedUserLine>
         </div>
