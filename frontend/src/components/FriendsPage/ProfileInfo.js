@@ -23,6 +23,7 @@ export default function ProfileInfo(props) {
     const [currentUser, setCurrentUser] = useState("")
     const [isModalVisible, setModalVisibility] = useState()
     const [isLoggedInUser, setIsLoggedInUser] = useState()
+    const [rerenderToggle, setRerenderToggle] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -52,6 +53,7 @@ export default function ProfileInfo(props) {
                     navigate('/error/')
                 }
                 setCurrentUser(res.data)
+                console.log(res.data)
             })
             .catch(err => {
                 console.log(err);
@@ -78,6 +80,16 @@ export default function ProfileInfo(props) {
                     action: "cancel"
                 }
             })
+    }
+
+    const deleteFriend = (id, e) => {
+        axiosInstance
+            .delete(`friends/${id}`)
+            .then((res) => {
+                console.log(res)
+                props.updatePageAfterDeletion()
+            })
+            .catch(error => console.error(error));
     }
 
     const displayFriends = (e) => {
@@ -107,18 +119,58 @@ export default function ProfileInfo(props) {
 
                                 {isLoggedInUser === false &&
                                     <Row style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
-                                        <Button color="primary" onClick={(e) => postFriendRequest(currentUser.id)}
-                                            style={{ height: "4rem", width: "8rem" }}
-                                        >
-                                            <p> Follow </p>
-                                        </Button>
-                                        <Button onClick={(e) => cancelFriendRequest(currentUser.id)}
-                                            style={{ height: "4rem", width: "4rem" }}
-                                        >
-                                            <p> X </p>
-                                        </Button>
+                                        {currentUser.user_is_friends === true && currentUser.user_sent_request === false &&
+                                            <Button onClick={(e) => { deleteFriend(currentUser.id); window.location.reload() }}
+                                                style={{
+                                                    backgroundColor: "#ECECEC",
+                                                    color: "#653FFD",
+                                                    fontFamily: "Source Sans Pro",
+                                                    fontWeight: "500",
+                                                    fontSize: "15px",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-around",
+                                                    width: "80%"
+                                                }}
+                                            >
+                                                Following
+                                            </Button>
+                                        }
+
+                                        {currentUser.user_is_friends === false && currentUser.user_sent_request === true &&
+                                            <Button onClick={(e) => { cancelFriendRequest(currentUser.id); window.location.reload() }}
+                                                style={{
+                                                    backgroundColor: "#ECECEC",
+                                                    color: "#653FFD",
+                                                    fontFamily: "Source Sans Pro",
+                                                    fontWeight: "500",
+                                                    fontSize: "15px",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-around",
+                                                    width: "80%"
+                                                }}
+                                            >
+                                                Requested
+                                            </Button>
+                                        }
+
+                                        {currentUser.user_is_friends === false && currentUser.user_sent_request === false &&
+                                            <Button onClick={(e) => { postFriendRequest(currentUser.id); window.location.reload() }}
+                                                style={{
+                                                    backgroundColor: "#653FFD",
+                                                    fontFamily: "Source Sans Pro",
+                                                    fontWeight: "500",
+                                                    fontSize: "15px",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-around",
+                                                    width: "80%"
+                                                }}
+                                            >
+                                                Follow
+                                            </Button>
+                                        }
                                     </Row>
                                 }
+
 
                                 {isLoggedInUser === true &&
                                     <div style={{ display: "flex", justifyContent: "center" }}>
