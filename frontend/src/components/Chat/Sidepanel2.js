@@ -91,7 +91,7 @@ export default function Sidepanel2(props) {
 
 
     return (
-        <div id="sidepanel">
+        <div id="sidepanel" style={{ height:"100%", overflowY:"scroll" }}>
             <div id="profile">
                 {/* <div className="wrap">
                     <ImageDiv>

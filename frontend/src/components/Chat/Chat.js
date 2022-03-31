@@ -179,13 +179,13 @@ class Chat extends React.Component {
                     {invalidChatID
                         ?
                         <>
-                            <EmptyChatContainer>
+                            {/* <EmptyChatContainer>
                                 <img src='../../../static/images/Outbox.svg' alt='Outbox' />
                                 <EmptyChatText>
                                     Send messages to individual users<br />
                                     or a club you're part of.
                                 </EmptyChatText>
-                            </EmptyChatContainer>
+                            </EmptyChatContainer> */}
                         </>
                         : <div/>
                     }

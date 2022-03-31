@@ -1,7 +1,7 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import { MessageProfile, MessagingDisplay, MessagingProfileHeading, MessagingProfilePara } from './ChatElements';
+import { MessageProfile, MessagingDisplay, MessagingProfileHeading, MessagingProfilePara, SidePanelTextPreview } from './ChatElements';
 import { Col } from 'reactstrap'
 
 const Contact = (props) => (
@@ -23,7 +23,8 @@ const Contact = (props) => (
                     <Col xs={9} style={{ marginLeft:"1rem" }}>
                         <MessagingDisplay>
                             <MessagingProfileHeading className='name'>{props.name}</MessagingProfileHeading>
-                            <MessagingProfilePara className='preview'>{props.lastMessage}</MessagingProfilePara>
+                            {props.lastMessage && props.lastMessage.length > 25 ? <SidePanelTextPreview className='preview'>{props.lastMessage.slice(0,25)}...</SidePanelTextPreview> : <></>}
+                            {props.lastMessage && props.lastMessage.length <= 25 ? <SidePanelTextPreview className='preview'>{props.lastMessage}</SidePanelTextPreview> : <></>}
                             <p>{props.lastUpdated}</p>
                         </MessagingDisplay>
                     </Col>
