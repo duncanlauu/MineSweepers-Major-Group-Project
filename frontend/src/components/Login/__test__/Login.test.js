@@ -49,7 +49,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/Password/i)).toBeInTheDocument()
+            expect(screen.getByTestId(/password/i)).toBeInTheDocument()
         })
     })
 

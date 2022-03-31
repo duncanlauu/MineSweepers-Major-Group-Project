@@ -133,7 +133,7 @@ const generatePostResponse = (url, data) => {
             }
         default:
             console.log("no matching mock for url ", url)
-            return {data: {}};
+            return Promise.resolve({data: {}});
     }
 }
 

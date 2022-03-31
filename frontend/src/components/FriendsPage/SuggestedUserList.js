@@ -7,7 +7,7 @@ import SingleSuggestedUser from "./SingleSuggestedUser";
 export default function SuggestedUserList(props) {
 
     const [mySuggestedUsers, setSuggestedUsers] = useState("")
-    const currentUser = JSON.parse(localStorage.user);
+    const currentUser = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
        getAllSuggestedUsers();

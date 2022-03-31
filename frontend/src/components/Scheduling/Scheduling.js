@@ -12,7 +12,7 @@ export default function Scheduling() {
     const {club_id} = useParams();
     console.log("Club ID: " + club_id);
 
-    const user = JSON.parse(localStorage.user);
+    const user = JSON.parse(localStorage.getItem('user'));
     const [books, setBooks] = useState([]);
     const [bookData, setBookData] = useState([]);
 

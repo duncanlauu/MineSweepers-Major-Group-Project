@@ -8,6 +8,20 @@ import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
 import LandingPage from "../LandingPage";
 import routerWrapper from "../../../test-helpers";
+import fakeLocalStorage from "../../../fakeLocalStorage";
+import user from "../../../mocksData/getCurrentUser.json";
+
+
+beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+        value: fakeLocalStorage,
+    });
+});
+
+beforeEach(() => {
+    window.localStorage.clear();
+    window.localStorage.setItem("user", JSON.stringify(user));
+});
 
 
 describe("Components exist", () => {
@@ -18,37 +32,28 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/Welcome to/i)).toBeInTheDocument()
+            expect(screen.getByText(/Welcome to Bookgle, a social media app/i)).toBeInTheDocument()
+            expect(screen.getByText(/where the bookworms of our society converge./i)).toBeInTheDocument()
         })
     })
 
-    test("contains logo text", async () => {
+    test("contains log in button", async () => {
         act(() => {
             render(routerWrapper(<LandingPage/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/bookgle/i)).toBeInTheDocument()
+            expect(screen.getByText(/Or log into an existing account./i)).toBeInTheDocument()
         })
     })
 
-    test("contains LOG IN button", async () => {
+    test("contains sign up button", async () => {
         act(() => {
             render(routerWrapper(<LandingPage/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/LOG IN/i)).toBeInTheDocument()
-        })
-    })
-
-    test("contains SIGN UP button", async () => {
-        act(() => {
-            render(routerWrapper(<LandingPage/>))
-        })
-
-        await waitFor(() => {
-            expect(screen.getByText(/SIGN UP/i)).toBeInTheDocument()
+            expect(screen.getByText(/Sign Up Today/i)).toBeInTheDocument()
         })
     })
 
@@ -58,7 +63,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/LOG IN/i).closest('a')).toHaveAttribute('href', '/log_in')
+            expect(screen.getByText(/Or log into an existing account./i).closest('a')).toHaveAttribute('href', '/log_in/')
         })
     })
 
@@ -68,7 +73,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/SIGN UP/i).closest('a')).toHaveAttribute('href', '/sign_up')
+            expect(screen.getByText(/Sign Up Today/i).closest('a')).toHaveAttribute('href', '/sign_up/')
         })
     })
 })

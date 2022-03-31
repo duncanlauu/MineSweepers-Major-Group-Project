@@ -6,7 +6,7 @@ import {MeetingProfile} from "./MeetingPageElements";
 
 
 export default function Meetings() {
-    const user = JSON.parse(localStorage.user)
+    const user = JSON.parse(localStorage.getItem('user'))
     const [meetings, updateMeetings] = useState([])
 
     useEffect(() => {

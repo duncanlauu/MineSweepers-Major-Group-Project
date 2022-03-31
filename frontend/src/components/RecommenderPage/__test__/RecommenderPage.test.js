@@ -7,7 +7,21 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { act } from 'react-dom/test-utils';
 import RecommenderPage from '../RecommenderPage';
-import routerWrapper from '../../../test_helpers'
+import routerWrapper from '../../../test-helpers'
+import fakeLocalStorage from "../../../fakeLocalStorage";
+import user from "../../../mocksData/getCurrentUser.json";
+
+
+beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+        value: fakeLocalStorage,
+    });
+});
+
+beforeEach(() => {
+    window.localStorage.clear();
+    window.localStorage.setItem("user", JSON.stringify(user));
+});
 
 
 describe('Components exist', () => {

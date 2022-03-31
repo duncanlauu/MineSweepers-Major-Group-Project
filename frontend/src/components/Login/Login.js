@@ -100,14 +100,14 @@ export default function SignIn() {
                 <Row style={{marginTop: "6rem"}}>
                     <Col/>
                     <Col>
-                        <HeadingText>Sign into your account</HeadingText><br></br><br></br>
+                        <HeadingText>Sign into your account</HeadingText><br/><br/>
                         <ParaText>
                             If you haven't created one yet, you can do so <Link to="/sign_up/" style={{
                             color: "#0057FF",
                             textDecoration: "none"
                         }}>here <FaExternalLinkAlt style={{height: "15px", color: "#0057FF"}}/>
                         </Link> .
-                        </ParaText><br></br>
+                        </ParaText><br/>
                         <ParaText ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive"
                                   style={{color: "#FF0000", textDecoration: "none"}}><b>{errMsg}</b></ParaText>
 
@@ -117,6 +117,7 @@ export default function SignIn() {
                                     <Label><ParaText>Username</ParaText></Label>
                                     <Input
                                         name="username"
+                                        data-testid="username"
                                         onChange={(e) => setUsername(e.target.value)}
                                         value={username}
                                         ref={usernameRef}

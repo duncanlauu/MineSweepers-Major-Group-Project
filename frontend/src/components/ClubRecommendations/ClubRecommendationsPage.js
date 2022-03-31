@@ -9,7 +9,7 @@ import {Oval} from 'react-loader-spinner';
 import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
-    const user = JSON.parse(localStorage.user);
+    const user = JSON.parse(localStorage.getItem("user"));
     const [clubRecommendations, setClubRecommendations] = useState([])
 
     function getTopClubs() {

@@ -18,7 +18,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import FeedPostList from "../FriendsPage/FeedPostList";
 
 const HomePage = () => {
-  const currentUser = JSON.parse(localStorage.user);
+  const currentUser = JSON.parse(localStorage.getItem('user'));
 
   let calculatedRecommendations = false;
   useEffect(() => {

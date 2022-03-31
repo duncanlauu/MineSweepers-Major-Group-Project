@@ -14,7 +14,7 @@ const LandingProfile = () => {
     const [ownerDetails, setOwnerDetails] = useState(null);
     let history = [];
 
-    const currentUser = JSON.parse(localStorage.user);
+    const currentUser = JSON.parse(localStorage.getItem('user'));
     const user_id = currentUser.id;
     console.log("User ID: " + user_id);
 

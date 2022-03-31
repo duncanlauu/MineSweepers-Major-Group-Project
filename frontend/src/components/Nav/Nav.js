@@ -11,6 +11,10 @@ import axiosInstance from '../../axios';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import {Oval} from 'react-loader-spinner';
+import SearchBookCard from "./SearchBookCard";
+import SearchUserCard from "./SearchUserCard";
+import SearchClubCard from "./SearchClubCard";
+
 
 class Nav extends React.Component {
     constructor(props) {
@@ -98,6 +102,7 @@ class Nav extends React.Component {
                         <>
                             <Button
                                 type='button'
+                                data-testid='search-button'
                                 style={{
                                     backgroundColor: "#FFF",
                                     border: "0px",
@@ -132,7 +137,7 @@ class Nav extends React.Component {
                                     <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
                                          style={{marginLeft: "1rem"}}/>
                                 </Link>
-                                <Link to="/friends_page/" style={{color: "#000"}}>
+                                <Link data-testid="friends-link" to="/friends_page/" style={{color: "#000"}}>
                                     <AccountCircleIcon fontSize='large'/>
                                 </Link>
                             </NavMenu>
