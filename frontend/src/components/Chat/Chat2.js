@@ -2,9 +2,9 @@ import React from 'react';
 import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
+import Gravatar from 'react-gravatar';
 import { EmptyChatContainer, EmptyChatText, MessageSendBox,
      MessagingProfileHeading, MessageText, MessagingProfilePara, ReceivedMessagePara} from './ChatElements';
-import Gravatar from 'react-gravatar';
 import { Container } from 'reactstrap';
 
 class Chat2 extends React.Component {
@@ -126,7 +126,7 @@ class Chat2 extends React.Component {
                     marginLeft: message.author === this.currentUser ? 'auto' : '0',
                 }}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
+                <Gravatar email={message.gravatar} size={30} />
                 {/* {message.author === this.currentUser
                     ? <Gravatar email={this.currentUser.email} style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
                     : <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
