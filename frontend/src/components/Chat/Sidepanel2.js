@@ -9,13 +9,6 @@ export default function Sidepanel2(props) {
 
     const [chats, setChats] = useState([])
 
-    // ? Why are you here
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.token !== null && newProps.username !== null) {
-    //         getUserChats(newProps.token, newProps.username);
-    //     }
-    // }
-
     useEffect(() => {
         getUserChats()
     }, []);
