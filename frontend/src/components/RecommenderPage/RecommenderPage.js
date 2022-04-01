@@ -3,9 +3,10 @@ import { Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
 import { HeadingText } from '../Login/LoginElements'
 import MainNav from '../Nav/MainNav'
-import { BookHeading, BookProfile, FilterButton, RatingPill, RatingsText, YearAuthorInfo } from './RecommenderPageElements'
+import { FilterButton } from './RecommenderPageElements'
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import { Oval } from 'react-loader-spinner';
+import IndividualBookCard from './IndividualBookCard'
 
 
 const RecommenderPage = () => {
@@ -39,33 +40,6 @@ const RecommenderPage = () => {
             .catch(err => {
                 console.log(err);
             })
-    }
-
-    function IndividualBookCard(props) {
-        return (
-            <Row>
-                <BookProfile>
-                    <Col xs={2}>
-                        <img src={props.imageURL} alt="Book Cover" />
-                    </Col>
-                    <Col xs={10}>
-                        <a href={`/book_profile/${props.isbn}`}>
-                            <BookHeading>{props.title}</BookHeading><br />
-                        </a>
-                        <YearAuthorInfo>{props.author}, {props.year}</YearAuthorInfo><br />
-                        <div style={{ display:"flex", flexDirection:"row" }}>
-                            <RatingPill style={{ borderRadius: "10px", marginRight:"1rem" }}>
-                                <span>
-                                    {props.rating.toString().slice(0,3)}
-                                </span>
-                                <img src='../../../static/images/RatingStar.svg' />
-                            </RatingPill>
-                            <RatingsText>{props.numberOfRatings.toString()} ratings</RatingsText>
-                        </div>
-                    </Col>
-                </BookProfile>
-            </Row>
-        )
     }
 
     useEffect(() => {
