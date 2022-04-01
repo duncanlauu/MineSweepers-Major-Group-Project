@@ -5,6 +5,7 @@ import Gravatar from "react-gravatar";
 import { HeadingText } from "../Login/LoginElements";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axios";
+import { jsx } from "@emotion/react";
 
 function ClubApplicants() {
   const [club, setClub] = useState(null);
@@ -13,8 +14,22 @@ function ClubApplicants() {
   const [members, setMembers] = useState([]);
   const [applicants, setApplicants] = useState([]);
 
+  let ownerData = [];
+  let adminData = [];
+  let memberData = [];
+  let applicantData = [];
+
   const { club_id } = useParams();
   console.log("Club ID on Members Page: " + club_id);
+
+  const managementButtonStyle = {
+    backgroundColor: "#fff",
+    border: "2px solid #653FFD",
+    fontFamily: "Source Sans Pro",
+    color:"#000",
+    borderRadius: "100px",
+    marginRight: "10px"
+  }
 
   useEffect(() => {
     axiosInstance
@@ -33,6 +48,41 @@ function ClubApplicants() {
 
         setApplicants(res.data.applicants);
         console.log("Applicants: " + res.data.applicants);
+
+        // Get owner data
+        ownerData.push(
+          axiosInstance
+            .get(`user/get_update/${res.data.owner}`)
+            .then(ownerRes => console.log(ownerRes.data))
+        )
+        
+        // Get admin data
+        for (let adm = 0; adm < res.data.admins.length; adm++) {
+          adminData.push(
+            axiosInstance
+              .get(`user/get_update/${res.data.admins[adm]}`)
+              .then(adminRes => console.log(adminRes))
+          )
+        }
+
+        // Get member data
+        for (let mem = 0; mem < res.data.members.length; mem++) {
+          memberData.push(
+            axiosInstance
+              .get(`user/get_update/${res.data.members[mem]}`)
+              .then(memberRes => console.log(memberRes))
+          )
+        }
+
+        // Get applicant data
+        for (let app = 0; app < res.data.applicants.length; app++) {
+          applicantData.push(
+            axiosInstance
+              .get(`user/get_update/${res.data.applicants[app]}`)
+              .then(applicantRes => console.log(applicantRes))
+          )
+        }
+        getData();
       })
       .catch((err) => {
         console.log(err);
@@ -54,36 +104,47 @@ function ClubApplicants() {
         <Col xs={9}>
           <HeadingText>{props.name}</HeadingText>
           {isApplicant ? (
-            <>
-              <Button onClick={(e) => acceptClubApplicant(club_id, user_id)}>
+            <div style={{ float:"right" }}>
+              <Button 
+                style={managementButtonStyle} 
+                onClick={(e) => acceptClubApplicant(club_id, user_id)}>
                 Accept
               </Button>
-              <Button onClick={(e) => rejectClubApplicant(club_id, user_id)}>
+              <Button 
+                style={managementButtonStyle} 
+                onClick={(e) => rejectClubApplicant(club_id, user_id)}>
                 Reject
               </Button>
-            </>
+            </div>
           ) : (
             <></>
           )}
           {isMember ? (
-            <>
-              <Button onClick={(e) => removeClubMember(club_id, user_id)}>
+            <div style={{ float:"right" }}>
+              <Button 
+                style={managementButtonStyle} 
+                onClick={(e) => removeClubMember(club_id, user_id)}>
                 Remove
               </Button>
-              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
-            </>
+              <Button 
+                style={managementButtonStyle} 
+                onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+            </div>
           ) : (
             <></>
           )}
           {isAdmin ? (
-            <>
+            <div style={{ float:"right" }}>
               <Button
+                style={managementButtonStyle}
                 onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}
               >
                 Make Owner
               </Button>
-              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
-            </>
+              <Button 
+                style={managementButtonStyle}
+                onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+            </div>
           ) : (
             <></>
           )}
@@ -173,7 +234,7 @@ function ClubApplicants() {
 
   return (
     <>
-      <IndividualMemberCard name={owner.username} isOwner={true} />
+      <IndividualMemberCard name={owner} isOwner={true} />
       <hr />
       <ul>
         {admins.map((admin) => (

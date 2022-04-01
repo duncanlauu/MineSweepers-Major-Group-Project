@@ -141,7 +141,7 @@ export default function Scheduling() {
                             <SchedulingContainer>
                                 <FormLayout>
                                     <FormGroup>
-                                        <Label for="name">Name </Label>
+                                        <Label for="name"><ParaText>Name</ParaText></Label>
                                         <Input
                                             id="name"
                                             data-testid="name"
@@ -153,7 +153,7 @@ export default function Scheduling() {
                                     <div>{nameErr}</div>
 
                                     <FormGroup>
-                                        <Label for="description"> Description </Label>
+                                        <Label for="description"><ParaText>Description</ParaText></Label>
                                         <Input
                                             id="description"
                                             data-testid="description"
@@ -169,7 +169,7 @@ export default function Scheduling() {
                                         <Label
                                             for="book"
                                             data-testid="book"
-                                        > Book </Label>
+                                        ><ParaText>Book</ParaText></Label>
                                         <br/>
                                         <select
                                             value={bookData}
@@ -186,7 +186,7 @@ export default function Scheduling() {
 
 
                                     <FormGroup>
-                                        <Label for="start_time"> Start time </Label>
+                                        <Label for="start_time"><ParaText>Start time</ParaText></Label>
                                         <Input
                                             id="start_time"
                                             data-testid="start_time"
@@ -200,7 +200,7 @@ export default function Scheduling() {
 
 
                                     <FormGroup>
-                                        <Label for="end_time"> End time </Label>
+                                        <Label for="end_time"><ParaText>End time</ParaText></Label>
                                         <Input
                                             id="end_time"
                                             data-testid="end_time"
@@ -214,7 +214,7 @@ export default function Scheduling() {
 
 
                                     <FormGroup>
-                                        <Label for="link"> Meeting link </Label>
+                                        <Label for="link"><ParaText>Meeting link</ParaText></Label>
                                         <Input
                                             id="link"
                                             data-testid="link"

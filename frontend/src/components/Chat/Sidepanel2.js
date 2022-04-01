@@ -116,9 +116,27 @@ export default function Sidepanel2(props) {
                 <input type="text" placeholder="Search contacts..."/>
             </div> */}
             <div id="contacts">
-                <ul>
+                {/* <ul>
                     {activeChats.length === 0 ? <>You have no active chats.</> : activeChats}
-                </ul>
+                </ul> */}
+                {activeChats.length === 0
+                    ? 
+                    <div 
+                        style={{ 
+                            display:"flex", 
+                            alignItems:"center", 
+                            justifyContent:"center",
+                            fontFamily: "Source Sans Pro",
+                            fontSize:"15px",
+                            marginTop:"3rem"
+                    }}>
+                        You have no active chats.
+                    </div>
+                    :
+                    <ul>
+                        {activeChats}
+                    </ul>
+                }
             </div>
         </div>
     );
