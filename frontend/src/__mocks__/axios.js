@@ -1,4 +1,8 @@
 import currentUser from '../mocksData/getCurrentUser.json'
+import currentUser2 from '../mocksData/getCurrentUser2.json'
+import currentUser3 from '../mocksData/getCurrentUser3.json'
+import currentUser4 from '../mocksData/getCurrentUser4.json'
+import currentUser5 from '../mocksData/getCurrentUser5.json'
 import myTop10Recommendations from '../mocksData/getMyTop10Recommendations.json'
 import tenGenres from '../mocksData/getTenGenres.json'
 import top10GlobalRecommendations from '../mocksData/getTop10GlobalRecommendations.json'
@@ -39,6 +43,16 @@ const generateGetResponse = (url) => {
             return {data: topClubs}
         case "/user/get_update/1/":
             return {data: currentUser};
+        case "user/get_update/1/":
+            return {data: currentUser};
+        case "user/get_update/2/":
+            return {data: currentUser2};
+        case "user/get_update/3/":
+            return {data: currentUser3};
+        case "user/get_update/4/":
+            return {data: currentUser4};
+        case "user/get_update/5/":
+            return {data: currentUser5};
         case "meetings/1":
             return {data: myMeetings};
         case `/recommender/0/12/top_n_global/`:
@@ -50,7 +64,7 @@ const generateGetResponse = (url) => {
         case `ratings/other_user/2`:
             return {data: ratings2};
         default:
-            console.log("no matching mock for url ", url)
+            console.log("no matching mock for url", url)
             return {data: {}};
     }
 }
