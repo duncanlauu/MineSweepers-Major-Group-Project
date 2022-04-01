@@ -64,7 +64,7 @@ export const FriendLine = styled.div`
 `;
 
 export const FriendRecommenderContainer = styled.div`
-  height: 50rem;
+  height: 55rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;
@@ -179,3 +179,4 @@ export const BookLine = styled.div`
   background-color: #f5f5f5;
   border-radius: 0px 10px 10px 0px;
 `;
+

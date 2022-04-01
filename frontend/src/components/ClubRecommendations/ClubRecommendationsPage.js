@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Button, Container, Row, Col} from 'reactstrap'
 import axiosInstance from '../../axios'
 import {HeadingText} from '../Login/LoginElements'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 import {RecommenderContainer} from './RecommenderPageElements'
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
@@ -54,7 +54,7 @@ const ClubRecommendationPage = () => {
         return (
             <Container fluid>
                 <Row style={{marginBottom: "3rem"}}>
-                    <Nav/>
+                    <MainNav/>
                 </Row>
                 <Row>
                     <Col/>
@@ -83,7 +83,7 @@ const ClubRecommendationPage = () => {
         return (
             <Container fluid>
                 <Row style={{marginBottom: "3rem"}}>
-                    <Nav/>
+                    <MainNav/>
                 </Row>
                 <Row>
                     <Col/>

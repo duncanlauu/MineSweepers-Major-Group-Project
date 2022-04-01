@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar";
-import { FriendLine, UserNameContainer, UserNameText} from "./UserProfileElements";
+import { FriendLine, UserNameContainer, UserNameText} from "../UserProfileElements";
 import { useNavigate } from "react-router";
 
 export default function SingleFriend(props) {
@@ -25,25 +25,8 @@ export default function SingleFriend(props) {
             .catch(error => console.error(error));
     }
 
-    const postFriendRequest = (receiver, e) => {
-        axiosInstance
-            .post("friend_requests/", {
-                other_user_id: receiver
-            })
-    }
-
-    const cancelFriendRequest = (receiver, e) => {
-        axiosInstance
-            .delete("friend_requests/", {
-                data: {
-                    other_user_id: receiver,
-                    action: "cancel"
-                }
-            })
-    }
-
     const navigateToProfile = () => {
-        navigate(`/friends_page/${currentFriend.id}/`)
+        navigate(`/user_profile/${currentFriend.id}/`)
         window.location.reload()
     }
 
@@ -58,7 +41,7 @@ export default function SingleFriend(props) {
                             }} 
                         />
                     </Col>
-                    <Col xs="6" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <Col xs="8" style={{height: "5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                         <UserNameContainer onClick={navigateToProfile}>
                             <UserNameText>
                                 {currentFriend.username}
@@ -66,24 +49,9 @@ export default function SingleFriend(props) {
                         </UserNameContainer>
                     </Col>
                     { props.requestedUser_id == undefined && 
-                        <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
+                        <Col xs="2" style={{display: 'flex', justifyContent: "flex-end"}}>
                             <Button style={{borderRadius: "20px", height: "5rem"}} name={currentFriend.id} onClick={(e) => deleteFriend(currentFriend.id, e)}>
                                 X
-                            </Button>
-                        </Col>
-                    }
-
-                    { props.requestedUser_id !== undefined && 
-                        <Col xs="4" style={{display: 'flex', justifyContent: "flex-end"}}>
-                            <Button color="primary" onClick={(e) => postFriendRequest(currentFriend.id)}
-                                style={{height: "5rem", width: "6rem"}}
-                            >
-                                <p> Follow </p>
-                            </Button>
-                            <Button onClick={(e) => cancelFriendRequest(currentFriend.id)}
-                                style={{height: "5rem", width: "1rem", borderTopRightRadius: "20px", borderBottomRightRadius: "20px"}} 
-                            >
-                                <p> X </p>
                             </Button>
                         </Col>
                     }

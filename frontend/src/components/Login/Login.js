@@ -6,10 +6,9 @@ import useAuth from '../hooks/useAuth'
 import useHasRated from '../hooks/useHasRated'
 import {Link} from 'react-router-dom'
 import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
-
 import axiosInstance from '../../axios'
 import {useNavigate, useLocation} from "react-router-dom";
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -94,7 +93,7 @@ export default function SignIn() {
     return (
         <div style={{overflowX: "hidden"}}>
             <Row>
-                <Nav isAuthenticated={false}/>
+                <MainNav isAuthenticated={false}/>
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>

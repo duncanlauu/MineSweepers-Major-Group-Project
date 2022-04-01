@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../../axios";
+import axiosInstance from "../../../axios";
 import SingleBookRating from "./SingleBookRating";
 
 export default function BookRatingList(props) {

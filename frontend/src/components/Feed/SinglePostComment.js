@@ -4,7 +4,7 @@ import { Row, Col, Button, Input, UncontrolledCollapse } from "reactstrap"
 import Gravatar from "react-gravatar"
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
-import { CommentLineBox } from "./UserProfileElements";
+import { CommentLineBox } from "../UserProfile/UserProfileElements";
 
 export default function SinglePostComment(props) {
 
@@ -18,16 +18,8 @@ export default function SinglePostComment(props) {
     useEffect(() => {
         setCurrentPost(props.currentPost)
         setSingleComment(props.comment)
-        getCommentCreatorEmail(props.comment.author_id)
+        setPosterEmail(props.comment.author__email)
     }, []);
-
-    const getCommentCreatorEmail = (author_id) => {
-        axiosInstance.get(`user/get_update/${author_id}/`)
-        .then((res) => {
-            setPosterEmail(res.data.email)
-        })
-        .catch(error => console.error(error));
-    }
 
     const deleteComment = (comment_id, e) => {
         axiosInstance
@@ -40,8 +32,7 @@ export default function SinglePostComment(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${singleComment.author_id}/`)
-        window.location.reload()
+        navigate(`/user_profile/${singleComment.author}/`)
     }
 
     const commentsRef = useRef([]);
@@ -65,7 +56,7 @@ export default function SinglePostComment(props) {
                         </CommentLineBox>
                     </Col>
                     <Col xs="3" style={{display: "flex", justifyContent: "flex-end"}}>
-                        {singleComment.author_id == currentUser.id  &&   
+                        {singleComment.author == currentUser.id  &&
                             <Button color="danger" name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
                                 style={{height: "3rem", borderTopLeftRadius: "100px", borderBottomLeftRadius: "100px"}}
                             >

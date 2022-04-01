@@ -9,7 +9,7 @@ import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
 import useAuth from '../hooks/useAuth';
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 
 
 export default function SignUp() {
@@ -113,7 +113,7 @@ export default function SignUp() {
     return (
         <div id="ParentDiv" style={{overflowX: "hidden"}}>
             <Row>
-                <Nav isAuthenticated={false}/>
+                <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid style={{overflowX: "hidden", overflowY: "hidden"}}>
                 <Row style={{marginTop: "3rem"}}>

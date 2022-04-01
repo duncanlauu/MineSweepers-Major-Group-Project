@@ -2,7 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SinglePostComment from "./SinglePostComment";
-import { CommentLine, CommentSectionContainer } from "./UserProfileElements";
+import { CommentLine, CommentSectionContainer } from "../UserProfile/UserProfileElements";
 
 export default function PostCommentList(props){
 
