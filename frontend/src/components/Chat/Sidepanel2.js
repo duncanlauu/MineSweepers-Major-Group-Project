@@ -84,7 +84,11 @@ export default function Sidepanel2(props) {
                 gravatar = chat.participants[0].email
             }
         } else {
-            gravatar = chat.participants[0].email
+            if(chat.owner_gravatar != ""){
+                gravatar = chat.owner_gravatar
+            } else {
+                gravatar = chat.participants[0].email
+            }
         }
         return gravatar;
     }
