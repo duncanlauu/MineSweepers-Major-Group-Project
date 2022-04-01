@@ -334,7 +334,8 @@ class Club(models.Model):
         self.banned_users.remove(user)
 
     def transfer_ownership(self, user):
-        self.add_admin(self.owner)
+        self.add_member(self.owner)
+        self.promote(self.owner)
         self.owner = user
 
 
