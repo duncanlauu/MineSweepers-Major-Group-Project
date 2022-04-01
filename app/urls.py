@@ -45,7 +45,7 @@ urlpatterns = [
     path('feed/clubs/<int:club_id>', ClubFeedView.as_view(), name='club_feed'),
 
     # Club API
-    path('user/get_update/<int:id>/', CreateUser.as_view(), name="get_update"),
+    path('user/get_update/<int:id>/', UserDetails.as_view(), name="get_update"),
     path('clubs/', Clubs.as_view(), name='clubs'),
     path('clubs/user/<int:user_id>', UserClubView.as_view(), name='user_clubs'),
     path('singleclub/<int:id>/', SingleClub.as_view(), name='retrieve_single_club'),

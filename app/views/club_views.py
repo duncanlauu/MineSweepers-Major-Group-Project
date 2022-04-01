@@ -98,6 +98,14 @@ class SingleClub(APIView):
                     club.add_applicant(user)
                     return self.update(request, club)
 
+                elif action == 'promote':
+                    club.promote(user)
+                    return self.update(request, club)
+                
+                elif action == 'demote':
+                    club.demote(user)
+                    return self.update(request, club)
+
                 elif action == 'transfer':
                     club.transfer_ownership(user)
                     return self.update(request, club)

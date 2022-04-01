@@ -14,7 +14,8 @@ export default function Logout() {
             refresh_token: localStorage.getItem('refresh_token'),
         });
         localStorage.clear()
-        setAuth({})
+        setAuth({});
+        // setAuth({ user: undefined });
         setHasRated({})
         axiosInstance.defaults.headers['Authorization'] = null; // remove the headers
         navigate('/')
