@@ -10,10 +10,10 @@ const Contact = (props) => (
         <li className="contact">
             <div className='wrap'>
                 <MessageProfile>
-                    <Col xs={3}>
-                        <Gravatar email={props.gravatar} size={50} />
+                    <Col xs={3} style={{ marginLeft:"1rem" }}>
+                        <Gravatar email={props.gravatar} size={50} style={{ borderRadius:"100px" }} />
                     </Col>
-                    <Col xs={9} style={{ marginLeft:"1rem" }}>
+                    <Col xs={9}>
                         <MessagingDisplay>
                             <MessagingProfileHeading className='name'>{props.name}</MessagingProfileHeading>
                             {props.lastMessage && props.lastMessage.length > 25 ? <SidePanelTextPreview className='preview'>{props.lastMessage.slice(0,25)}...</SidePanelTextPreview> : <></>}

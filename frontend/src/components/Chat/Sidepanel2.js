@@ -38,14 +38,38 @@ export default function Sidepanel2(props) {
     const activeChats = chats.map(c => {
         console.log(c)
         return (
-            <Contact
-                key={c.id}
-                name={getChatName(c)}
-                gravatar={getChatGravatar(c)}
-                chatURL={`/chat2/${c.id}`}
-                lastMessage={c.last_message}
-                lastUpdated={c.last_updated}
-            />
+            // <Contact
+            //     key={c.id}
+            //     name={getChatName(c)}
+            //     gravatar={getChatGravatar(c)}
+            //     chatURL={`/chat2/${c.id}`}
+            //     lastMessage={c.last_message}
+            //     lastUpdated={c.last_updated}
+            // />
+            <div>
+                {getChatName(c) == "Bookgle User (Left the chat)"
+                    ?
+                    <div style={{ opacity:"25%" }}>
+                        <Contact
+                            key={c.id}
+                            name={getChatName(c)}
+                            gravatar={getChatGravatar(c)}
+                            chatURL={`/chat2/${c.id}`}
+                            lastMessage={c.last_message}
+                            lastUpdated={c.last_updated}
+                        />
+                    </div>
+                    :
+                    <Contact
+                        key={c.id}
+                        name={getChatName(c)}
+                        gravatar={getChatGravatar(c)}
+                        chatURL={`/chat2/${c.id}`}
+                        lastMessage={c.last_message}
+                        lastUpdated={c.last_updated}
+                    />
+                }
+            </div>
         )
     })
 

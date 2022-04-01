@@ -4,12 +4,13 @@ import Hoc from './hoc/hoc';
 import axiosInstance from '../../axios'
 import Gravatar from 'react-gravatar';
 import { EmptyChatContainer, EmptyChatText, MessageSendBox,
-     MessagingProfileHeading, MessageText, MessagingProfilePara, ReceivedMessagePara} from './ChatElements';
+     MessagingProfileHeading, MessageText, MessagingProfilePara, ReceivedMessagePara, MessageHeader, EmptyChatNotif} from './ChatElements';
 import { Container } from 'reactstrap';
 
 class Chat2 extends React.Component {
 
     state = {
+        messages: [],
         message: '',
         chatID: ''
     }
@@ -131,7 +132,8 @@ class Chat2 extends React.Component {
             <li
                 key={message.id}
                 style={{
-                    marginBottom: '15px', 
+                    marginBottom: '15px',
+                    marginTop: "15px",
                     backgroundColor: message.author === this.currentUser ? '#653FFD' : '#ECECEC', 
                     borderRadius: message.author === this.currentUser ? "20px 20px 0px 20px" : "20px 20px 20px 0px",
                     padding: "1rem 1rem 0.2rem 1rem",
@@ -142,13 +144,10 @@ class Chat2 extends React.Component {
                     marginLeft: message.author === this.currentUser ? 'auto' : '0',
                 }}
                 className={message.author === this.currentUser ? 'sent' : 'replies'}>
-                <Gravatar email={message.gravatar} size={30} />
-                {/* {message.author === this.currentUser
-                    ? <Gravatar email={this.currentUser.email} style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
-                    : <img src="http://emilcarlsson.se/assets/mikeross.png" style={{ height:"3rem", width:"3rem", borderRadius:"100px" }} />
-                } */}
+                <Gravatar email={message.gravatar} size={30} style={{ borderRadius:"100px" }} />
+                {message.author === this.currentUser ? <></> : <MessagingProfileHeading style={{ marginLeft:"1rem" }}>{message.author}</MessagingProfileHeading>}
+                
                 <p>
-                    {message.author === this.currentUser ? <></> : <MessagingProfileHeading>{message.author}</MessagingProfileHeading>}
                     <br/>
                     <MessageText>{message.content}</MessageText>
                     <br/>
@@ -162,7 +161,9 @@ class Chat2 extends React.Component {
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({behavior: "smooth"});
+        if (this.messagesEnd) {
+            this.messagesEnd.scrollIntoView({behavior: "smooth"});
+        }
     }
 
     componentDidMount() {
@@ -198,71 +199,85 @@ class Chat2 extends React.Component {
         const messages = this.state.messages;
         const invalidChatID = this.state.chatID == undefined;
         return (
-            <Hoc>
-                <Container style={{ display: "flex", height:"3.5rem", backgroundColor:"#F3F3F3", width:"100%", fontFamily:"Source Sans Pro", fontSize:"15px", alignItems:"center", color:"#fff", justifyContent:"flex-end", borderRadius:"10px 10px 0px 0px" }}>
-                    <img src='../../../static/images/DeleteChatIcon.svg' alt='Delete Chat' onClick={this.leaveChatHandler} style={{ cursor: 'pointer' }} />
-                </Container>
+            <div>
+            {invalidChatID
+                ?
                 <div>
-                    {invalidChatID
-                        ?
-                        <>
-                            {/* <EmptyChatContainer>
-                                <img src='../../../static/images/Outbox.svg' alt='Outbox' />
-                                <EmptyChatText>
-                                    Send messages to individual users<br />
-                                    or a club you're part of.
-                                </EmptyChatText>
-                            </EmptyChatContainer> */}
-                        </>
-                        : <div/>
-                    }
-                    <ul id="chat-log" style={{ overflowY:"scroll", height:"30.5vw", paddingLeft:"2rem", paddingRight:"2rem" }}>
-                        {
-                            messages &&
-                            this.renderMessages(messages)
-                        }
-                        <div style={{float: "left", clear: "both"}}
-                             ref={(el) => {
-                                 this.messagesEnd = el;
-                             }}>
-                        </div>
-                    </ul>
+                    <EmptyChatContainer>
+                        <img src='../../../static/images/Outbox.svg' alt='Outbox' style={{ marginTop:"5rem" }} />
+                        <EmptyChatText>
+                            Send messages to individual users<br />
+                            or a club you're part of.
+                        </EmptyChatText>
+                    </EmptyChatContainer>
                 </div>
-                <div
-                    className="message-input"
-                    style={{
-                        width: "100%",
-                        alignItems:  "center",
-                        justifyContent: "center"
-                    }}>
-                    <form onSubmit={this.sendMessageHandler}>
-                        <div className="wrap">
-                            <MessageSendBox>
-                            <input
-                                style={{
-                                    borderRadius:"0px 0px 10px 10px",
-                                    fontFamily:"Source Sans Pro",
-                                    fontSize: "15px",
-                                    width: "100%",
-                                    height: "4rem",
-                                    textIndent: "2rem",
-                                    backgroundColor: "#F2F2F2",
-                                    border: '0',
-                                }}
-                                onChange={this.messageChangeHandler}
-                                value={this.state.message}
-                                required
-                                id="chat-message-input"
-                                type="text"
-                                placeholder="Start typing..."/>
-                            <button className="submit" style={{ paddingRight:"1rem" }}>
-                                <img src='../../../static/images/SendMessage.svg' alt='Send Icon' />
-                            </button>
-                            </MessageSendBox>
+                : 
+                <>
+                    <Hoc>
+                        <Container style={{ display: "flex", height:"3.5rem", backgroundColor:"#F3F3F3", width:"100%", fontFamily:"Source Sans Pro", fontSize:"15px", alignItems:"center", color:"#fff", justifyContent:"flex-end", borderRadius:"10px 10px 0px 0px" }}>
+                            <img src='../../../static/images/DeleteChatIcon.svg' alt='Delete Chat' onClick={this.leaveChatHandler} style={{ cursor: 'pointer' }} />
+                        </Container>
+                        <div>
+                            <ul id="chat-log" 
+                                style={{ overflowY:"scroll", height:"31.5vw", paddingLeft:"2rem", paddingRight:"2rem", marginBottom:"0px" }}>
+                                {
+                                    messages &&
+                                    this.renderMessages(messages)
+                                }
+                                {
+                                    messages.length == 0 
+                                    ? 
+                                        <EmptyChatNotif>
+                                            Start the conversation.
+                                        </EmptyChatNotif> 
+                                    :   <></>
+                                }
+                                <div style={{float: "left", clear: "both"}}
+                                    ref={(el) => {
+                                        this.messagesEnd = el;
+                                    }}>
+                                </div>
+                            </ul>
                         </div>
-                    </form>
-                </div>
-            </Hoc>
+                        <div
+                            className="message-input"
+                            style={{
+                                width: "100%",
+                                alignItems:  "center",
+                                justifyContent: "center",
+                                borderRadius: "0px 0px 10px 10px"
+                            }}>
+                            <form onSubmit={this.sendMessageHandler}>
+                                <div className="wrap">
+                                    <MessageSendBox>
+                                    <input
+                                        style={{
+                                            borderRadius:"0px 0px 10px 10px",
+                                            fontFamily:"Source Sans Pro",
+                                            fontSize: "15px",
+                                            width: "100%",
+                                            height: "4rem",
+                                            textIndent: "2rem",
+                                            backgroundColor: "#F2F2F2",
+                                            border: '0',
+                                        }}
+                                        onChange={this.messageChangeHandler}
+                                        value={this.state.message}
+                                        required
+                                        id="chat-message-input"
+                                        type="text"
+                                        placeholder="Start typing..."/>
+                                    <button className="submit" style={{ paddingRight:"1rem", border: "0px", backgroundColor: "#F2F2F2" }}>
+                                        <img src='../../../static/images/SendMessageIcon.svg' alt='Send Icon' />
+                                    </button>
+                                    </MessageSendBox>
+                                </div>
+                            </form>
+                        </div>
+                    </Hoc>
+                </>
+            }
+            </div>
         );
     };
 }
