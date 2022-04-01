@@ -1,19 +1,18 @@
 import React, {useState, useRef} from "react";
 import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
 import {SignUpContainer, FormLayout} from "./SignUpStyle";
-import { HeadingText, ParaText } from "../Login/LoginElements";
-import { Link } from "react-router-dom";
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
+import {HeadingText, ParaText} from "../Login/LoginElements";
+import {Link} from "react-router-dom";
+import {FaExternalLinkAlt} from 'react-icons/fa'
+import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
 
 import axiosInstance from '../../axios'
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 import useAuth from '../hooks/useAuth';
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 
 
 export default function SignUp() {
-    
 
     const [firstNameErr, setFirstNameErr] = useState("")
     const [lastNameErr, setLastNameErr] = useState("")
@@ -26,7 +25,7 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
-    const { setAuth } = useAuth();
+    const {setAuth} = useAuth();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
@@ -94,6 +93,9 @@ export default function SignUp() {
 
                         navigate("/sign_up/rating/")
                     })
+                    .catch((err) => {
+                        console.log(err)
+                    })
             })
             .catch((e) => {
                 setFirstNameErr(e.response.data.first_name)
@@ -109,29 +111,33 @@ export default function SignUp() {
 
     // Todo: move styles to a CSS file?
     return (
-        <div id="ParentDiv" style={{ overflowX: "hidden" }}>
+        <div id="ParentDiv" style={{overflowX: "hidden"}}>
             <Row>
-                <Nav isAuthenticated={false} />
+                <MainNav isAuthenticated={false} />
             </Row>
-            <Container fluid style={{ overflowX: "hidden", overflowY: "hidden" }}>
-                <Row style={{ marginTop: "3rem" }}>
-                    <Col />
+            <Container fluid style={{overflowX: "hidden", overflowY: "hidden"}}>
+                <Row style={{marginTop: "3rem"}}>
+                    <Col/>
                     <Col>
-                        <HeadingText>Create an account</HeadingText><br />
-                        <ParaText>If you already have one, you can log in <Link to="/log_in/" style={{ color: "#0057FF", textDecoration: "none" }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
+                        <HeadingText>Create an account</HeadingText><br/>
+                        <ParaText>If you already have one, you can log in <Link to="/log_in/" style={{
+                            color: "#0057FF",
+                            textDecoration: "none"
+                        }}>here <FaExternalLinkAlt style={{height: "15px", color: "#0057FF"}}/>
                         </Link> .
                         </ParaText>
-                        <SignUpContainer style={{ overflowY: "scroll", overflowX: "hidden" }}>
+                        <SignUpContainer style={{overflowY: "scroll", overflowX: "hidden"}}>
                             <FormLayout> {/*  might have to add more info here */}
                                 <Row>
                                     <Col xs="6">
                                         <FormGroup>
                                             <Label for="first_name"><ParaText>First Name</ParaText></Label>
                                             <Input
+                                                data-testid="first_name"
                                                 id="first_name"
                                                 name="first_name" // name to target from JS
                                                 onChange={handleChange}
-                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
                                         <div>{firstNameErr}</div>
@@ -140,10 +146,11 @@ export default function SignUp() {
                                         <FormGroup>
                                             <Label for="last_name"><ParaText>Last Name</ParaText></Label>
                                             <Input
+                                                data-testid="last_name"
                                                 id="last_name"
                                                 name="last_name"
                                                 onChange={handleChange}
-                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
                                         <div>{lastNameErr}</div>
@@ -153,10 +160,11 @@ export default function SignUp() {
                                 <FormGroup>
                                     <Label for="username"><ParaText>Username</ParaText></Label>
                                     <Input
+                                        data-testid="username"
                                         id="username"
                                         name="username"
                                         onChange={handleChange}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <div>{usernameErr}</div>
@@ -164,29 +172,31 @@ export default function SignUp() {
                                 <FormGroup>
                                     <Label for="email"><ParaText>Email</ParaText></Label>
                                     <Input
+                                        data-testid="email"
                                         type="email"
                                         id="email"
                                         name="email"
                                         onChange={handleChange}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <div>{emailErr}</div>
 
                                 <FormGroup>
                                     <Label for="password"><ParaText>Password</ParaText></Label>
-                                    <Container fluid style={{ display: "flex", flexDirection: "row", padding: "0px" }}>
+                                    <Container fluid style={{display: "flex", flexDirection: "row", padding: "0px"}}>
                                         <Input
                                             type={passwordVisible ? "text" : "password"}
                                             id="password"
+                                            data-testid="password"
                                             name="password"
                                             onChange={handleChange}
-                                            style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                            style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                         <Button
                                             onClick={togglePassword}
-                                            style={{ backgroundColor: "#653FFD" }}>
-                                            {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
+                                            style={{backgroundColor: "#653FFD"}}>
+                                            {passwordVisible ? <BsFillEyeSlashFill/> : <BsFillEyeFill/>}
                                         </Button>
                                     </Container>
                                 </FormGroup>
@@ -195,10 +205,11 @@ export default function SignUp() {
                                 <FormGroup>
                                     <Label for="bio"><ParaText>Bio</ParaText></Label>
                                     <Input
+                                        data-testid="bio"
                                         id="bio"
                                         name="bio"
                                         onChange={handleChange}
-                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
                                 <div>{bioErr}</div>
@@ -208,10 +219,11 @@ export default function SignUp() {
                                         <FormGroup>
                                             <Label for="location"><ParaText>Location</ParaText></Label>
                                             <Input
+                                                data-testid="location"
                                                 id="location"
                                                 name="location"
                                                 onChange={handleChange}
-                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
                                         <div>{locationErr}</div>
@@ -220,11 +232,12 @@ export default function SignUp() {
                                         <FormGroup>
                                             <Label for="birthday"><ParaText>Birthday</ParaText></Label>
                                             <Input
+                                                data-testid="birthday"
                                                 id="birthday"
                                                 type="date"
                                                 name="birthday"
                                                 onChange={handleChange}
-                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
                                             />
                                         </FormGroup>
                                         <div>{birthdayErr}</div>
@@ -232,12 +245,12 @@ export default function SignUp() {
                                 </Row>
 
                                 <FormGroup>
-                                    <Col sm={{ size: 10, offset: 4 }}>
+                                    <Col sm={{size: 10, offset: 4}}>
                                         <Button
                                             type="submit"
                                             className="submit"
                                             onClick={handleSubmit}
-                                            style={{ backgroundColor: "#653FFD", width: "7rem", marginBottom: "1rem" }}
+                                            style={{backgroundColor: "#653FFD", width: "7rem", marginBottom: "1rem"}}
                                         >
                                             Sign Up
                                         </Button>
@@ -248,7 +261,7 @@ export default function SignUp() {
                         </SignUpContainer>
 
                     </Col>
-                    <Col />
+                    <Col/>
                 </Row>
             </Container>
         </div>
