@@ -65,7 +65,6 @@ export default class App extends Component {
                                             <Route path='notifications' element={<Notifications />} />
                                             <Route path='user_profile/' element={<UserProfile />} />
                                             <Route path='user_profile/:user_id' element={<OtherUserProfile />} />
-                                            <Route path="chat/:chatID" element={<ChatWrapper />} />
                                             <Route path="/chat/" element={<ChatUI />} />
                                             <Route path="/chat/:chatID" element={<ChatUI />} />
                                             <Route path="/scheduling/:club_id" element={<Scheduling />} />

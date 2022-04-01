@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
 import MainNav from '../Nav/MainNav'
 import Chat from './Chat'
-import { ChatContainer, EmptyChatContainer, EmptyChatText, SidePanelContainer, TitleBar } from './ChatElements'
 import Sidepanel from './Sidepanel'
 
 function ChatUI() {

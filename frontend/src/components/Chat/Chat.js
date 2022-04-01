@@ -82,7 +82,6 @@ class Chat extends React.Component {
     }
 
     leaveChatHandler = (e) => {
-        console.log("BYEE")
         axiosInstance
             .delete(`chat/leave/${this.props.chatID}/`)
             .then((res) => {
