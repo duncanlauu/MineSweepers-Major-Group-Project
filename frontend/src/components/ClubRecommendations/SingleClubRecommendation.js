@@ -14,6 +14,7 @@ export default function SingleClubRecommendation(props) {
     }, [])
 
     const getUserEmail = (user_id) => {
+        console.log(user_id)
         axiosInstance
             .get(`user/get_update/${user_id}/`)
             .then((res) => {
