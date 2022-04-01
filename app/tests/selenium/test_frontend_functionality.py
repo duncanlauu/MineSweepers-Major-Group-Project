@@ -3,7 +3,7 @@ from django.test import LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 from django.test import override_settings
-from app.models import User, Club, Chat, Book, Post, BookRating
+from app.models import User, Club, Chat, Book, Post, BookRating, Comment, Reply
 from django.core.management import call_command
 from django.core import mail
 
@@ -169,7 +169,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Home Page
         # self._test_page_contains_functional_navbar("home")
         self._test_reply_to_comment_on_post()
-        # self._test_comment_on_post()
+        self._test_comment_on_post()
         # # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
         # # # Navbar
@@ -475,23 +475,25 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     # Home
     def _test_reply_to_comment_on_post(self): #broken if there are no comments on first post
+        number_of_replies_before = Reply.objects.all().count()
         self.browser.get(f"{self.live_server_url}/home")
-        # sleep(500)
-
-        # Get all posts
         self.wait_until_element_found("//div[@class='SingleFeedPost']")
         posts = self.browser.find_elements_by_xpath("//div[@class='SingleFeedPost']")
         first_post = posts[0]
         first_post_view_all_comments_button = first_post.find_element_by_xpath(".//button[.='view all comments']")
         first_post_id = first_post_view_all_comments_button.get_attribute("id").replace("toggler", "")
         first_post_view_all_comments_button.click()
-        self.wait_until_element_found("//div[@class='singleComment']")
-        # sleep(100)
+        self.wait_until_element_found("//div[@class='singleComment']", 20)
         comments = first_post.find_elements_by_xpath(".//div[@class='singleComment']")
         first_comment = comments[0]
         first_comment.find_element_by_xpath(".//button[.='Reply']").click()
         first_comment.find_element_by_name("myReply").send_keys("New Reply To Comment")
         first_comment.find_element_by_xpath("//p[.=' Send ']").click()
+        sleep(1)
+        number_of_replies_after = Reply.objects.all().count()
+        print(number_of_replies_after)
+        # self.assertEquals(number_of_replies_after, number_of_replies_before + 1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
 
 
@@ -511,20 +513,39 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _test_comment_on_post(self): # Broken (hypothesis, send buttons for replies collapsed and hidden being targeted)
+        number_of_comments_before = Comment.objects.count()
         self.browser.get(f"{self.live_server_url}/home")
-        sleep(1) # wait for element?
-        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
-        sleep(1)
+        self.wait_until_element_found("//div[@class='SingleFeedPost']")
+        posts = self.browser.find_elements_by_xpath("//div[@class='SingleFeedPost']")
+        first_post = posts[0]
+        first_post_view_all_comments_button = first_post.find_element_by_xpath(".//button[.='view all comments']")
+        first_post_id = first_post_view_all_comments_button.get_attribute("id").replace("toggler", "")
+        first_post_view_all_comments_button.click()
+        self.wait_until_element_found("//div[@class='singleComment']")
         self.browser.find_element_by_name("myComment").send_keys("New Comment")
-        sleep(1)
-        # sleep(500)
         send_button = self.browser.find_element_by_xpath("//p[.=' Send ']")
         self.browser.implicitly_wait(10)
         ActionChains(self.browser).move_to_element(send_button).click(send_button).perform()
-        # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
-        
-        # Check in db if comment added ??
+        sleep(1)
+        number_of_comments_after = Comment.objects.count()
+        self.assertEqual(number_of_comments_after, number_of_comments_before + 1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+
+
+        # sleep(1) # wait for element?
+        # self.browser.find_element_by_xpath("//button[.='view all comments']").click()
+        # sleep(1)
+        # self.browser.find_element_by_name("myComment").send_keys("New Comment")
+        # sleep(1)
+        # # sleep(500)
+        # send_button = self.browser.find_element_by_xpath("//p[.=' Send ']")
+        # self.browser.implicitly_wait(10)
+        # ActionChains(self.browser).move_to_element(send_button).click(send_button).perform()
+        # # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
+        
+        # # Check in db if comment added ??
+        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
 
     def _test_navbar_new_post(self, url):
