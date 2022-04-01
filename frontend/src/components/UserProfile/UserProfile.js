@@ -16,61 +16,60 @@ import {
 import classnames from "classnames";
 import Gravatar from "react-gravatar";
 import {
-    DataContainer,
-    DataContainerCard,
-    DataContainerBelowTabs,
-    FriendRecommenderContainer,
-    FriendListContainer,
-    TabsText,
-    SuggestedUserContainer
+  DataContainer,
+  DataContainerCard,
+  DataContainerBelowTabs,
+  FriendRecommenderContainer,
+  FriendListContainer,
+  TabsText,
+  SuggestedUserContainer,
 } from "./UserProfileElements";
 import MainNav from "../Nav/MainNav";
 import PersonalPostList from "./PersonalPosts/PersonalPostList";
 import FriendsList from "./Friends/FriendsList";
 import FriendRequestList from "./Friends/FriendRequestList";
 import SuggestedUserList from "./SuggestedUsers/SuggestedUserList";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import ProfileInfo from "./ProfileInfo";
-import { useParams } from "react-router";
-import axiosInstance from "../../axios";
-import UserProfileEditor from "./UserProfileEditor";
-import PersonalPostForm from "./PersonalPosts/PersonalPostForm";
 import BookRatingList from "./BookRatings/BookRatingList";
+import ClubList from "./Clubs/ClubList";
 
 const UserProfile = () => {
+  const [currentActiveTab, setCurrentActiveTab] = useState("1");
+  const navigate = useNavigate();
+  const currrentUser = JSON.parse(localStorage.getItem("user"));
 
-    const [currentActiveTab, setCurrentActiveTab] = useState("1");
-    const navigate = useNavigate()
-
-    const toggle = (tab) => {
-        if (currentActiveTab !== tab) {
-            setCurrentActiveTab(tab)
-        }
+  const toggle = (tab) => {
+    if (currentActiveTab !== tab) {
+      setCurrentActiveTab(tab);
     }
+  };
 
-    return (
-        <div>
-            <Container fluid>
-                <Row style={{marginBottom: "3rem"}}>
-                    <MainNav/>
-                </Row>
+  return (
+    <div>
+      <Container fluid>
+        <Row style={{ marginBottom: "3rem" }}>
+          <MainNav />
+        </Row>
 
-                <Row style={{marginTop: "6rem"}}>
-                    <Col xs="3">
-                        <ProfileInfo/>
-                    </Col>
+        <Row style={{ marginTop: "6rem" }}>
+          <Col xs="3">
+            <ProfileInfo />
+          </Col>
 
           <Col xs="6">
             <DataContainer>
               <DataContainerCard>
-                <Nav tabs style={{
+                <Nav
+                  tabs
+                  style={{
                     marginBottom: "1rem",
                     width: "100%",
                     marginTop: "1rem",
                     borderRadius: "100px",
                   }}
                 >
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "20%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "1",
@@ -80,14 +79,12 @@ const UserProfile = () => {
                       }}
                     >
                       <div style={{ textAlign: "center" }}>
-                        <TabsText>
-                            Posts
-                        </TabsText>
+                        <TabsText>Posts</TabsText>
                       </div>
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "20%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "2",
@@ -102,13 +99,28 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "33%" }}>
+                  <NavItem style={{ width: "20%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "3",
                       })}
                       onClick={() => {
                         toggle("3");
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        <TabsText>Clubs</TabsText>
+                      </div>
+                    </NavLink>
+                  </NavItem>
+
+                  <NavItem style={{ width: "40%" }}>
+                    <NavLink
+                      className={classnames({
+                        active: currentActiveTab === "4",
+                      })}
+                      onClick={() => {
+                        toggle("4");
                       }}
                     >
                       <div style={{ textAlign: "center" }}>
@@ -121,39 +133,41 @@ const UserProfile = () => {
                 <DataContainerBelowTabs>
                   <TabContent activeTab={currentActiveTab}>
                     <TabPane tabId="1">
-                      <PersonalPostList/>
+                      <PersonalPostList />
                     </TabPane>
 
                     <TabPane tabId="2">
-                        <FriendRequestList/>
+                      <FriendRequestList />
 
-                        <FriendListContainer>
-                            <FriendsList/>
-                        </FriendListContainer>
+                      <FriendListContainer>
+                        <FriendsList />
+                      </FriendListContainer>
                     </TabPane>
 
                     <TabPane tabId="3">
-                        <BookRatingList />
+                      <ClubList requestedUser_id={currrentUser.id} />
                     </TabPane>
 
+                    <TabPane tabId="4">
+                      <BookRatingList />
+                    </TabPane>
                   </TabContent>
                 </DataContainerBelowTabs>
               </DataContainerCard>
             </DataContainer>
           </Col>
 
+          <Col xs="3">
+            <FriendRecommenderContainer>
+              <SuggestedUserContainer>
+                <SuggestedUserList />
+              </SuggestedUserContainer>
+            </FriendRecommenderContainer>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
+};
 
-                    <Col xs="3">
-                        <FriendRecommenderContainer>
-                            <SuggestedUserContainer>
-                                <SuggestedUserList/>
-                            </SuggestedUserContainer>
-                        </FriendRecommenderContainer>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
-    )
-}
-
-export default UserProfile
+export default UserProfile;

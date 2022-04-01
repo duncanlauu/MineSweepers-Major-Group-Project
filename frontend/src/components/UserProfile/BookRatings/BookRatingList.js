@@ -23,17 +23,16 @@ export default function BookRatingList(props) {
             .catch((error) => console.error(error));
     };
 
-    const getAllRatingsOfOtherUser = () => {
-        axiosInstance
-            .get(`ratings/other_user/${props.requestedUser_id}`)
-            .then((res) => {
-                console.log("other user data", res.data);
-                const allRatings = res.data;
-                setRatings(allRatings);
-                console.log("ratings", ratings);
-            })
-            .catch((error) => console.error(error));
-    };
+  const getAllRatingsOfOtherUser = () => {
+    axiosInstance
+      .get(`ratings/other_user/${props.requestedUser_id}`)
+      .then((res) => {
+        const allRatings = res.data;
+        setRatings(allRatings);
+      })
+      .catch((error) => console.error(error));
+  };
+
 
     const displayRatings = (e) => {
         console.log("Ratings", ratings);
