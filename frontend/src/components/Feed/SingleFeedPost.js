@@ -121,7 +121,7 @@ export default function SingleFeedPost(props) {
                             <div style={{
                                 textAlign: "center"}
                                 }>
-                            <Button style={{ height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
+                            <Button name="like-button" style={{ height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
                                 <ThumbUp/>
                             </Button> &nbsp;&nbsp;
                             <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}

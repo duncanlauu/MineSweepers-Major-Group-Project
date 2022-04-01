@@ -149,7 +149,7 @@ def seed_books():
     filepath = 'app/files/BX_Books_genres.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
-    total = 3000#len(df)
+    total = len(df)
     books_db = []
     for i in range(total):
         book = df.iloc[i]
@@ -294,7 +294,7 @@ def seed_feed():
     """Main seeder for seeding posts, comments, and replies"""
 
     min_number_of_posts = 1
-    max_number_of_posts = 2
+    max_number_of_posts = 1
     faker = Faker('en_GB')
     for user in User.objects.all():
         num_of_posts = random.randint(min_number_of_posts, max_number_of_posts)
