@@ -88,24 +88,40 @@ class Chat2 extends React.Component {
             .catch(error => console.error(error));
     }
 
+    // Returns a string based on a timestamp, displays the time that passed since the message was sent
+    // If more than a day then it displays it as yesterday and then shows how many days ago, weeks or months
     renderTimestamp = timestamp => {
-        //broken 
-
-        let prefix = '';
-        const timeDiff = Math.round((new Date().getTime() - new Date(timestamp).getTime()) / 60000);
-        if (timeDiff < 1) { // less than one minute ago
-            prefix = 'Just now';
-        } else if (timeDiff < 60 && timeDiff > 1) { // less than sixty minutes ago
-            prefix = `${timeDiff} minutes ago`;
-        } else if (timeDiff < 24 * 60 && timeDiff > 60) { // less than 24 hours ago
-            prefix = `${Math.round(timeDiff / 60)} hours ago`;
-        } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) { // less than 7 days ago
-            prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+        const date = new Date(timestamp);
+        const today = new Date();
+        if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+            return `${date.getHours()}:${this.renderMinutes(date)}`;
         } else {
-            prefix = `${new Date(timestamp)}`;
+            const days = Math.floor((today - date) / 1000 / 60 / 60 / 24);
+            if (days <= 1) {
+                return `Yesterday at ${date.getHours()}:${this.renderMinutes(date)}`;
+            } else if (days < 7) {
+                return `${days} days ago`;
+            } else if (days < 30) {
+                return `${Math.floor(days / 7)} weeks ago`;
+            } else {
+                return `${Math.floor(days / 30)} months ago`;
+            }
         }
-        return prefix
     }
+
+    //Returns the minutes from date object but adds a leading 0 if the minutes is less than 10
+    renderMinutes = (date) => {
+        if (date.getMinutes() < 10) {
+            return `0${date.getMinutes()}`;
+        } else {
+            return date.getMinutes();
+        }
+    }
+
+    
+
+        
+
 
     renderMessages = (messages) => {
         console.log("renderMessages")
