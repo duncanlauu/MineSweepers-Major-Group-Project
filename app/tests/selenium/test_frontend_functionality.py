@@ -194,10 +194,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_user_profile_posts_tab_contains_correct_information()
         # self._test_edit_post()
         # self._test_delete_post()
-        # self._test_accept_friend_request() NOT WORKING
-        # self._test_reject_friend_request() NOT WORKING
+        # self._test_accept_friend_request() #NOT WORKING
+        # self._test_reject_friend_request()# NOT WORKING
         # self._test_delete_friend()
-        # self._test_user_profile_suggested_friends() NOT WORKING
+        self._test_user_profile_suggested_friends() #NOT WORKING
         # test for suggested user
 
         # Club Profile Page
@@ -221,8 +221,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # # All Clubs Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"all_clubs")
         # contains navbar
-        self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
-        self._test_all_clubs_page_visit_club_profile()
+        # self._test_all_clubs_page_contains_all_visible_clubs() #if pagination is implemented this wont work
+        # self._test_all_clubs_page_visit_club_profile()
         
         # # Book Profile Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"book_profile/{self.book.pk}")
@@ -938,20 +938,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _test_user_profile_suggested_friends(self):
         self.browser.get(f"{self.live_server_url}/user_profile")
-        sleep(10)
+        sleep(8)
         self.browser.get(f"{self.live_server_url}/user_profile/")
-        sleep(2)
-        # self.wait_until_element_found("//div[@name='suggested-friend']", 30)
-        # friends = self.browser.find_elements_by_xpath("//div[@class='friend']")
-        suggested_friends = self.browser.find_elements_by_name("suggested-friend")
-        frist_suggested_friend = suggested_friends[0]
-        frist_suggested_friend.click()
-        suggested_user = User.objects.get(username=frist_suggested_friend.text)
-
+        self.wait_until_element_found("//div[@name='suggested-friend']", 30)
+        suggested_user = self.browser.find_element_by_name("suggested-friend")
+        suggested_user_name = suggested_user.text
+        suggested_user.click()
+        user = User.objects.get(username=suggested_user_name)
         sleep(4)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{suggested_user.pk}/")
-        print(suggested_friends)
-        sleep(100)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{user.pk}/")
+        self._close_db_connections()
 
     def _test_delete_friend(self):
         self.browser.get(f"{self.live_server_url}/user_profile")
