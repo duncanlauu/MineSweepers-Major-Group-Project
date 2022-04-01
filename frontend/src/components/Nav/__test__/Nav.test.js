@@ -6,7 +6,7 @@ import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
-import Nav from "../Nav";
+import MainNav from "../MainNav";
 import routerWrapper from "../../../test-helpers";
 
 
@@ -14,7 +14,7 @@ describe("Components exist", () => {
 
     test("contains home link", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
@@ -24,7 +24,7 @@ describe("Components exist", () => {
 
     test("contains search button", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
@@ -34,7 +34,7 @@ describe("Components exist", () => {
 
     test("contains new post button", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
@@ -44,7 +44,7 @@ describe("Components exist", () => {
 
     test("contains new club button", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
@@ -54,7 +54,7 @@ describe("Components exist", () => {
 
     test("contains open chats button", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
@@ -64,7 +64,7 @@ describe("Components exist", () => {
 
     test("contains friends page button", async () => {
         act(() => {
-            render(routerWrapper(<Nav/>))
+            render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {

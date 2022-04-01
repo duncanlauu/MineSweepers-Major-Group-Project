@@ -18,6 +18,10 @@ import axiosInstance from '../../axios';
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 import {Oval} from 'react-loader-spinner';
+import SearchBookCard from "./SearchBookCard";
+import SearchUserCard from "./SearchUserCard";
+import SearchClubCard from "./SearchClubCard";
+
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -249,66 +253,6 @@ const SearchButtonStyle = {
     backgroundColor: '#653FFD',
     color: '#fff',
     borderRadius: '5px',
-}
-
-const SearchUserCard = (props) => {
-    const username = props.username;
-    const email = props.email;
-    const bio = props.bio.slice(0, 35) + '...';
-
-    return(
-        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
-            <Col xs={3}>
-                <Gravatar email={email} style={{ borderRadius:'100px' }} />
-            </Col>
-            <Col xs={9} style={{ padding:'0px' }}>
-                <HeadingText>{username}</HeadingText><br />
-                <SubHeadingText>{email}</SubHeadingText><br />
-                <ParaText>
-                    {bio}
-                </ParaText>
-            </Col>
-        </Container>
-    );
-}
-
-const SearchClubCard = (props) => {
-    const name = props.name;
-    const ownerEmail = props.ownerEmail;
-    const description = props.description.slice(0, 35) + '...';
-
-    return(
-        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
-            <Col xs={3}>
-                <Gravatar email={ownerEmail} style={{ borderRadius:'100px' }} />
-            </Col>
-            <Col xs={9} style={{ padding:'0px' }}>
-                <HeadingText>{name}</HeadingText><br />
-                <SubHeadingText>{ownerEmail}</SubHeadingText><br />
-                <ParaText>
-                    {description}
-                </ParaText>
-            </Col>
-        </Container>
-    );
-}
-
-const SearchBookCard = (props) => {
-    const name = props.name;
-    const author = props.author;
-    const imageURL = props.image;
-
-    return(
-        <Container fluid style={{ display:'flex', flexDirection:'row', marginBottom:'2rem' }}>
-            <Col xs={3}>
-                <img src={imageURL} alt="Book Cover" />
-            </Col>
-            <Col xs={9} style={{ padding:'0px' }}>
-                <HeadingText>{name}</HeadingText><br />
-                <SubHeadingText>{author}</SubHeadingText><br />
-            </Col>
-        </Container>
-    );
 }
 
 const LoadingIndicator = (props) => {
