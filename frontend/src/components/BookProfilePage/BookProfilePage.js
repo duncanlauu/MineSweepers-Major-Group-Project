@@ -33,11 +33,7 @@ const BookProfilePage = () => {
         axiosInstance
             .get("ratings/")
             .then((res) => {
-                console.log("User Ratings: ");
-                console.log(res.data);
-
                 let rated_books = [];
-
                 for (let i = 0; i < res.data.ratings.length; i++) {
                     rated_books.push(res.data.ratings[i]);
                     console.log(i);
@@ -45,11 +41,7 @@ const BookProfilePage = () => {
                 console.log(rated_books);
 
                 rated_books.forEach((rated_book) => {
-                    console.log("loop book:");
-                    console.log(rated_book);
-                    console.log(book_id);
-                    if (rated_book.book === book_id) {
-                        console.log("was in rating check");
+                    if (rated_book.book__ISBN === book_id) {
                         setClearable(false);
                         setRatings(rated_book.rating);
                         setPreviousRating(rated_book);
