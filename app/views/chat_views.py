@@ -2,7 +2,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from app.models import Chat, User
+from app.models import Chat, User, Club
 from app.serializers import ChatSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -39,8 +39,14 @@ class ChatListView(ListAPIView):
                 response["last_message"] = last_message.content
                 response["last_update"] = last_message.timestamp
 
-        return Response(serializer.data)
+            if response["group_chat"]:
+                club = Club.objects.get(name=response["name"])
+                response["owner_gravatar"] = club.owner.email
+            else:
+                response["owner_gravatar"] = ""
 
+        return Response(serializer.data)
+            
 
 class ChatLeaveView(APIView):
     """API View to leave a chat"""

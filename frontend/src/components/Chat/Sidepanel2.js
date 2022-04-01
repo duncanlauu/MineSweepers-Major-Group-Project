@@ -9,13 +9,6 @@ export default function Sidepanel2(props) {
 
     const [chats, setChats] = useState([])
 
-    // ? Why are you here
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.token !== null && newProps.username !== null) {
-    //         getUserChats(newProps.token, newProps.username);
-    //     }
-    // }
-
     useEffect(() => {
         getUserChats()
     }, []);
@@ -38,29 +31,54 @@ export default function Sidepanel2(props) {
     const activeChats = chats.map(c => {
         console.log(c)
         return (
-            <Contact
-                key={c.id}
-                name={getChatName(c)}//"asd"//{c.name == "" ? c.name : c.participants}
-                picURL={getChatGravatar(c)}
-                status="busy" // get rid of?
-                chatURL={`/chat2/${c.id}`}
-                lastMessage={c.last_message}
-                lastUpdated={c.last_updated}
-            />
+            // <Contact
+            //     key={c.id}
+            //     name={getChatName(c)}
+            //     gravatar={getChatGravatar(c)}
+            //     chatURL={`/chat2/${c.id}`}
+            //     lastMessage={c.last_message}
+            //     lastUpdated={c.last_updated}
+            // />
+            <div>
+                {getChatName(c) == "Bookgle User (Left the chat)"
+                    ?
+                    <div style={{ opacity:"25%" }}>
+                        <Contact
+                            key={c.id}
+                            name={getChatName(c)}
+                            gravatar={getChatGravatar(c)}
+                            chatURL={`/chat2/${c.id}`}
+                            lastMessage={c.last_message}
+                            lastUpdated={c.last_updated}
+                        />
+                    </div>
+                    :
+                    <Contact
+                        key={c.id}
+                        name={getChatName(c)}
+                        gravatar={getChatGravatar(c)}
+                        chatURL={`/chat2/${c.id}`}
+                        lastMessage={c.last_message}
+                        lastUpdated={c.last_updated}
+                    />
+                }
+            </div>
         )
     })
 
     function getChatName(chat) {
         let chatName = "undefined";
         if (chat.group_chat == false) {
-            console.log(JSON.parse(localStorage.getItem('user')).username)
+            console.log(localStorage.username)
             console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != JSON.parse(localStorage.getItem('user')).username) {
+                    if (participant.username != localStorage.username) {
                         chatName = participant.username;
                     }
                 }
+            } else if (chat.participants.length == 1) {
+                chatName = "Bookgle User (Left the chat)"
             }
         } else {
             chatName = chat.name;
@@ -69,24 +87,27 @@ export default function Sidepanel2(props) {
     }
 
     function getChatGravatar(chat) {
-        //TO BE IMPLEMENTED
-        return "http://emilcarlsson.se/assets/louislitt.png";
-    }
-
-    // function getChatLastMessage(chat){
-    //     let lastMessage = "";
-    //     if(chat.messages.length > 0){
-    //         lastMessage = chat.messages.slice(-1).pop().content;
-    //     }
-    //     return lastMessage;
-    // }
-
-    function getLastUpdatedTime(chat) {
-        let lastMessage = "";
-        if (chat.messages.length > 0) {
-            lastMessage = chat.messages.slice(-1).pop().content;
+        let gravatar = "undefined";
+        if (chat.group_chat == false) {
+            console.log(localStorage.username)
+            console.log(chat.participants.length)
+            if (chat.participants.length == 2) {
+                for (const participant of chat.participants) {
+                    if (participant.username != localStorage.username) {
+                        gravatar = participant.email
+                    }
+                }
+            } else if (chat.participants.length == 1) {
+                gravatar = chat.participants[0].email
+            }
+        } else {
+            if(chat.owner_gravatar != ""){
+                gravatar = chat.owner_gravatar
+            } else {
+                gravatar = chat.participants[0].email
+            }
         }
-        return lastMessage;
+        return gravatar;
     }
 
 
