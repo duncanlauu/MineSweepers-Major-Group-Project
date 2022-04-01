@@ -186,7 +186,9 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
-                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
+                                    <Link to={`/user_profile/${user.id}/`}>
+                                        <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
+                                    </Link>
                                 </li>
                             )}
                         </ul>
@@ -198,7 +200,7 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
-                                    <Link to={`/club_profile/${club.id}/`}>
+                                    <Link to={`/club_profile/${club.id}/`} onClick={window.location.reload()}>
                                         <SearchClubCard name={club.name} ownerEmail={club.owner.email}
                                                         description={club.description}/>
                                     </Link>
