@@ -279,11 +279,13 @@ class Club(models.Model):
     def member_count(self):
         return self.members.count()
 
-    def add_admin(self, user):
+    def promote(self, user):
         self.admins.add(user)
+        self.members.remove(user)
 
-    def remove_admin(self, user):
+    def demote(self, user):
         self.admins.remove(user)
+        self.members.add(user)
 
     def admin_count(self):
         return self.admins.count()
