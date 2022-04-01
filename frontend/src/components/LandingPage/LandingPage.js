@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Container, Row, Col, Button} from 'reactstrap'
 import {BlueCircle, ButtonContainer, LoginText, LogoText, PurpleCircle, RoundedButton, UnderLineText, WelcomeText} from './LandingPageElements'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 
 const LandingPage = () => {
     return (
@@ -10,7 +10,7 @@ const LandingPage = () => {
             style={{ overflow: "hidden" }}>
             <Container fluid style={{ padding:"0px" }}>
                 <Row style={{ marginBottom: "8rem" }}>
-                    <Nav isAuthenticated={false}/>
+                    <MainNav isAuthenticated={false}/>
                 </Row>
                 <Row>
                     <Col xs={2}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 import Chat2 from './Chat2'
 import { ChatContainer, EmptyChatContainer, EmptyChatText, SidePanelContainer, TitleBar } from './ChatElements'
 import Sidepanel2 from './Sidepanel2'
@@ -14,7 +14,7 @@ function ChatUI() {
     <html style={{ height: '100%' }}>
     <Container fluid style={{ height:"46vw" }}>
         <Row style={{ marginBottom: "3rem" }}>
-            <Nav />
+            <MainNav />
         </Row>
         <Row style={{ height:"37vw" }}>
             <Col xs={1} />

@@ -4,7 +4,7 @@ import { HeadingText, LoginContainer, ParaText } from './PasswordResetElements'
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -46,7 +46,7 @@ export default function SignIn() {
     return (
         <div style={{ overflow: "hidden" }}>
             <Row>
-                <Nav isAuthenticated={false} />
+                <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid>
                 <Row style={{ marginTop: "6rem" }}>
@@ -60,6 +60,7 @@ export default function SignIn() {
                                     <Label><ParaText>Email</ParaText></Label>
                                     <Input
                                         name="email"
+                                        data-testid="email"
                                         onChange={handleChange}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         required

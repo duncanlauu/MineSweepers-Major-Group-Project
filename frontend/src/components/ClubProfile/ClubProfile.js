@@ -5,7 +5,7 @@ import {
   ProfileContainer,
   ProfileHeader,
 } from "./ClubProfileElements";
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 import ClubProfileTabs from "./ClubProfileTabs.js";
 import Gravatar from "react-gravatar";
 import { useParams } from "react-router";
@@ -14,6 +14,8 @@ import axiosInstance from "../../axios";
 const ClubProfile = () => {
   const { club_id } = useParams();
   const [club, setClub] = useState(null);
+  
+  const currentUser = JSON.parse(localStorage.getItem('user'))
   const [memberStatus, setMemberStatus] = useState("notApplied");
 
   useEffect(() => {
@@ -53,7 +55,7 @@ const ClubProfile = () => {
     <div>
       <Container fluid>
         <Row style={{ marginBottom: "3rem" }}>
-          <Nav />
+          <MainNav />
         </Row>
         <Row>
           <Col />
