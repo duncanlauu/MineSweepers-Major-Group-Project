@@ -6,7 +6,7 @@ import {FaExternalLinkAlt} from 'react-icons/fa'
 import axiosInstance from '../../axios'
 import {useNavigate} from "react-router";
 import {useParams} from "react-router-dom";
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
 export default function SignIn() {
@@ -63,7 +63,7 @@ export default function SignIn() {
     return (
         <div style={{ overflow:"hidden" }}>
             <Row>
-                <Nav isAuthenticated={false} />
+                <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>
@@ -75,21 +75,23 @@ export default function SignIn() {
                                 <FormGroup>
                                     <Label><ParaText>New Password</ParaText></Label>
                                     <Input
+                                        data-testid="new_password"
                                         name="new_password"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
                                     />
                                 </FormGroup>
-                                <div>{newPasswordErr}</div>
+                                <div data-testid="new_password_errors">{newPasswordErr}</div>
                                 <FormGroup>
                                     <Label><ParaText>Confirm New Password</ParaText></Label>
                                     <Input
                                         name="re_new_password"
+                                        data-testid="re_new_password"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
                                     />
                                 </FormGroup>
-                                <div>{ReNewPasswordErr}</div>
+                                <div data-testid="re_new_password_errors">{ReNewPasswordErr}</div>
                                 <FormGroup>
                                     <Col sm={{size: 10, offset: 4}}>
                                         <Button 

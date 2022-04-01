@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router";
-import {Container, Row, Col, FormGroup, Label, Input, Button, Dropdown, DropdownToggle, DropdownItem} from 'reactstrap'
+import {Container, Row, Col, FormGroup, Label, Input, Button} from 'reactstrap'
 import {SignUpContainer, FormLayout, HeadingText, ParaText, RadioHeading, RadioPara} from "./CreateClubElements";
 import axiosInstance from '../../axios'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 
 export default function CreateClub() {
 
@@ -38,23 +38,23 @@ export default function CreateClub() {
         setVisibilityValue(!visibilityValue);
     }
 
-    const RadioButton = ({ card, value, onClick }) => {
-        return(
+    const RadioButton = ({card, value, onClick}) => {
+        return (
             <label>
-                <input type="radio" checked={value} onClick={onClick} />
+                <input type="radio" checked={value} onClick={onClick}/>
                 {card}
             </label>
         );
     }
 
     function DropdownCard(props) {
-        return(
-            <Container fluid style={{display:'flex', flexDirection:'row'}}>
+        return (
+            <Container fluid style={{display: 'flex', flexDirection: 'row'}}>
                 <Col xs={3}>
-                    <img src={props.imageURL} alt="Privacy Settings" />
+                    <img src={props.imageURL} alt="Privacy Settings"/>
                 </Col>
-                <Col xs={9} style={{ padding:'0px' }}>
-                    <RadioHeading>{props.setting}</RadioHeading><br />
+                <Col xs={9} style={{padding: '0px'}}>
+                    <RadioHeading>{props.setting}</RadioHeading><br/>
                     <RadioPara>{props.desc}</RadioPara>
                 </Col>
             </Container>
@@ -63,7 +63,6 @@ export default function CreateClub() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", formData)
 
         axiosInstance
             .post(`clubs/`, {
@@ -73,7 +72,6 @@ export default function CreateClub() {
                 public: privacyValue
             })
             .then((res) => {
-                navigate("/home/")
                 console.log(res)
                 console.log(res.data)
             })
@@ -83,11 +81,10 @@ export default function CreateClub() {
             })
     }
 
-    // Todo: move styles to a CSS file?
     return (
-        <div id="ParentDiv" style={{ overflow: "hidden" }}>
+        <div id="ParentDiv" style={{overflow: "hidden"}}>
             <Row>
-                <Nav />
+                <MainNav />
             </Row>
             <Container fluid>
                 <Row style={{marginTop: "6rem"}}>
@@ -95,24 +92,26 @@ export default function CreateClub() {
                     <Col>
                         <HeadingText>Create a Club</HeadingText>
                         <ParaText/>
-                        <SignUpContainer style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+                        <SignUpContainer style={{overflowY: 'scroll', overflowX: 'hidden'}}>
                             <FormLayout> {/*  might have to add more info here */}
                                 <FormGroup>
                                     <Label for="name"><ParaText>Name</ParaText></Label>
                                     <Input
                                         id="name"
+                                        data-testid="name"
                                         name="name"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
                                     />
                                 </FormGroup>
-                                <div>{nameErr}</div>
+                                <div data-testid="name-errors">{nameErr}</div>
 
                                 <FormGroup>
                                     <Label for="description"><ParaText>Description</ParaText></Label>
                                     <Input
                                         id="description"
                                         type="textarea"
+                                        data-testid="description"
                                         name="description"
                                         onChange={handleChange}
                                         style={{border: "0", backgroundColor: "#F3F3F3"}}
@@ -122,46 +121,48 @@ export default function CreateClub() {
 
                                 <FormGroup>
                                     <Label for="privacy"><ParaText>Privacy</ParaText></Label>
-                                        <RadioButton 
-                                            onClick={handlePrivacyChange} 
-                                            value={privacyValue === false} 
-                                            card={
-                                            <DropdownCard 
+                                    <RadioButton
+                                        onClick={handlePrivacyChange}
+                                        value={privacyValue === false}
+                                        card={
+                                            <DropdownCard
                                                 imageURL="../../../static/images/PrivacyTrue.svg"
                                                 setting="Private"
-                                                desc="Users will not be able to join your club without your approval." />
-                                        }></RadioButton>
-                                        <RadioButton 
-                                            onClick={handlePrivacyChange} 
-                                            value={privacyValue === true} 
-                                            card={
-                                            <DropdownCard 
+                                                desc="Users will not be able to join your club without your approval."/>
+                                        }/>
+                                    <RadioButton
+                                        onClick={handlePrivacyChange}
+                                        value={privacyValue === true}
+                                        card={
+                                            <DropdownCard
+                                                data-testid="privacy-public"
                                                 imageURL="../../../static/images/PrivacyFalse.svg"
                                                 setting="Public"
-                                                desc="Allows access to any user who wishes to join the club." />
-                                        }></RadioButton>
+                                                desc="Allows access to any user who wishes to join the club."/>
+                                        }/>
                                 </FormGroup>
 
                                 <FormGroup>
                                     <Label for="visibility"><ParaText>Visibility</ParaText></Label>
-                                        <RadioButton 
-                                            onClick={handleVisibilityChange} 
-                                            value={visibilityValue === true} 
-                                            card={
-                                            <DropdownCard 
+                                    <RadioButton
+                                        onClick={handleVisibilityChange}
+                                        value={visibilityValue === true}
+                                        card={
+                                            <DropdownCard
+                                                data-testid="visibility-visible"
                                                 imageURL="../../../static/images/VisibilityTrue.svg"
                                                 setting="Visible"
-                                                desc="Your club will be visible in searches and the database." />
-                                        }></RadioButton>
-                                        <RadioButton 
-                                            onClick={handleVisibilityChange} 
-                                            value={visibilityValue === false} 
-                                            card={
-                                            <DropdownCard 
+                                                desc="Your club will be visible in searches and the database."/>
+                                        }/>
+                                    <RadioButton
+                                        onClick={handleVisibilityChange}
+                                        value={visibilityValue === false}
+                                        card={
+                                            <DropdownCard
                                                 imageURL="../../../static/images/VisibilityFalse.svg"
                                                 setting="Invisible"
-                                                desc="Your club will be invisible to all users. It cannot be searched or seen in the database." />
-                                        }></RadioButton>
+                                                desc="Your club will be invisible to all users. It cannot be searched or seen in the database."/>
+                                        }/>
                                 </FormGroup>
 
                                 <FormGroup>

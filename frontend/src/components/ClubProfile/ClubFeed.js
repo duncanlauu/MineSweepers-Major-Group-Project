@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../axios";
 import { useParams } from "react-router-dom";
-import SingleFeedPost from "../FriendsPage/SingleFeedPost";
+import SingleFeedPost from "../Feed/SingleFeedPost";
 
 const ClubFeed = () => {
   const { club_id } = useParams();
