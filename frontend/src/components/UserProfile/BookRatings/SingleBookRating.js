@@ -50,7 +50,7 @@ export default function SingleBookRating(props) {
           >
             {props.book.book__title}
           </Col>
-          <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }} data-testid={"rating"}>
             <ReactStars
               count={5}
               edit={false}

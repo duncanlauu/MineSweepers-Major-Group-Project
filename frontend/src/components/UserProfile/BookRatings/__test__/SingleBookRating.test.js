@@ -14,7 +14,11 @@ describe("Components exist", () => {
 
     test("contains book's cover", async () => {
         act(() => {
-            render(routerWrapper(<SingleBookRating book_id={"0195153448"}/>))
+            render(routerWrapper(<SingleBookRating book={{
+                "book__ISBN": "0195153448",
+                "book__image_links_small": "Link 1",
+                "book__title": "Title 1"
+            }}/>))
         })
 
         await waitFor(() => {
@@ -24,17 +28,39 @@ describe("Components exist", () => {
 
     test("contains title", async () => {
         act(() => {
-            render(routerWrapper(<SingleBookRating book_id={"0195153448"}/>))
+            render(routerWrapper(<SingleBookRating book={{
+                "book__ISBN": "0195153448",
+                "book__image_links_small": "Link 1",
+                "book__title": "Title 1"
+            }}/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByText("Classical Mythology")).toBeInTheDocument()
+            expect(screen.getByText("Title 1")).toBeInTheDocument()
+        })
+    })
+
+    test("contains book's cover", async () => {
+        act(() => {
+            render(routerWrapper(<SingleBookRating book={{
+                "book__ISBN": "0195153448",
+                "book__image_links_small": "Link 1",
+                "book__title": "Title 1"
+            }}/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByAltText(`Book's cover`)).toBeInTheDocument()
         })
     })
 
     test("contains rating stars", async () => {
         act(() => {
-            render(routerWrapper(<SingleBookRating book_id={"0195153448"}/>))
+            render(routerWrapper(<SingleBookRating book={{
+                "book__ISBN": "0195153448",
+                "book__image_links_small": "Link 1",
+                "book__title": "Title 1"
+            }}/>))
         })
 
         await waitFor(() => {
