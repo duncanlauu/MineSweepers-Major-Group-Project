@@ -1,6 +1,6 @@
 from app.models import User, FriendRequest
 from ..serializers import RegisterUserSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 # from https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3
 class CreateUser(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         reg_serializer = RegisterUserSerializer(data=request.data)
@@ -17,6 +17,10 @@ class CreateUser(APIView):
             if new_user:
                 return Response(status=status.HTTP_201_CREATED)
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetails(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         try:
