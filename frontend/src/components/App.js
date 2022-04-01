@@ -57,25 +57,25 @@ export default class App extends Component {
                                     {/* protected routes */}
                                     <Route element={<RequireAuth />}>
                                         <Route path='sign_up/rating' element={<SignUpRating />} />
-                                        {/* <Route element={<RequireRatings />}> */}
                                         <Route path='log_out' element={<Logout />} />
-                                        <Route path='home' element={<HomePage />} />
-                                        <Route path='club_profile/:club_id' element={<ClubProfile />} />
-                                        <Route path='create_club' element={<CreateClub />} />
-                                        <Route path='notifications' element={<Notifications />} />
-                                        <Route path='user_profile/' element={<UserProfile />} />
-                                        <Route path='user_profile/:user_id' element={<OtherUserProfile />} />
-                                        <Route path="chat/:chatID" element={<ChatWrapper />} />
-                                        <Route path="/chat/" element={<ChatWrapper />} />
-                                        <Route path="/chat2/" element={<ChatUI />} />
-                                        <Route path="/chat2/:chatID" element={<ChatUI />} />
-                                        <Route path="/scheduling/:club_id" element={<Scheduling />} />
-                                        <Route path="/meetings/" element={<Meetings />} />
-                                        <Route path="/recommendations/" element={<RecommenderPage />} />
-                                        <Route path='recommend_clubs' element={<ClubRecommendationPage />} />
-                                        <Route path='book_profile/:book_id' element={<BookProfilePage />} />
-                                        <Route path="/all_clubs/" element={<ListOfClubs />} />
-                                        {/* </Route> */}
+                                        <Route element={<RequireRatings />}>
+                                            <Route path='home' element={<HomePage />} />
+                                            <Route path='club_profile/:club_id' element={<ClubProfile />} />
+                                            <Route path='create_club' element={<CreateClub />} />
+                                            <Route path='notifications' element={<Notifications />} />
+                                            <Route path='user_profile/' element={<UserProfile />} />
+                                            <Route path='user_profile/:user_id' element={<OtherUserProfile />} />
+                                            <Route path="chat/:chatID" element={<ChatWrapper />} />
+                                            <Route path="/chat/" element={<ChatWrapper />} />
+                                            <Route path="/chat2/" element={<ChatUI />} />
+                                            <Route path="/chat2/:chatID" element={<ChatUI />} />
+                                            <Route path="/scheduling/:club_id" element={<Scheduling />} />
+                                            <Route path="/meetings/" element={<Meetings />} />
+                                            <Route path="/recommendations/" element={<RecommenderPage />} />
+                                            <Route path='recommend_clubs' element={<ClubRecommendationPage />} />
+                                            <Route path='book_profile/:book_id' element={<BookProfilePage />} />
+                                            <Route path="/all_clubs/" element={<ListOfClubs />} />
+                                        </Route>
                                     </Route>
 
                                     {/* error, catch all */}
