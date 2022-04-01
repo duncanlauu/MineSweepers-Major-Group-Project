@@ -1,22 +1,15 @@
 import React from 'react'
-import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input, Col} from 'reactstrap'
+import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
 import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
-import {BiUserCircle} from "@react-icons/all-files/bi/BiUserCircle"
-import {AiOutlinePlus} from "@react-icons/all-files/ai/AiOutlinePlus";
-import {GrGroup} from "@react-icons/all-files/gr/GrGroup"
-import {AiOutlineBook} from '@react-icons/all-files/ai/AiOutlineBook'
 import Box from '@mui/material/Box';
 import {IconButton} from '@mui/material';
-import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import {HeadingText, NavMenu, ParaText, SearchBarHeading, SearchContainer, SearchResult, SearchText, SubHeadingText} from './NavElements';
-import Gravatar from 'react-gravatar';
+import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from './NavElements';
 import {Link} from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
 import axiosInstance from '../../axios';
-import { usePromiseTracker } from "react-promise-tracker";
-import { trackPromise } from 'react-promise-tracker';
+import {usePromiseTracker} from "react-promise-tracker";
+import {trackPromise} from 'react-promise-tracker';
 import {Oval} from 'react-loader-spinner';
 import SearchBookCard from "./SearchBookCard";
 import SearchUserCard from "./SearchUserCard";
@@ -69,20 +62,20 @@ class MainNav extends React.Component {
         console.log("submitting");
 
         trackPromise(
-        axiosInstance
-            .get(`search/`, {
-                params: {search_query: this.state.search}
+            axiosInstance
+                .get(`search/`, {
+                    params: {search_query: this.state.search}
 
-            })
-            .then((res) => {
-                console.log(res)
-                console.log(res.data)
-                this.setState({
-                    searchBooks: JSON.parse(res.data)['books'],
-                    searchClubs: JSON.parse(res.data)['clubs'],
-                    searchUsers: JSON.parse(res.data)['users'],
-                });
-            })
+                })
+                .then((res) => {
+                    console.log(res)
+                    console.log(res.data)
+                    this.setState({
+                        searchBooks: JSON.parse(res.data)['books'],
+                        searchClubs: JSON.parse(res.data)['clubs'],
+                        searchUsers: JSON.parse(res.data)['users'],
+                    });
+                })
         );
     }
 
@@ -97,16 +90,19 @@ class MainNav extends React.Component {
                 }}>
                     {this.isAuthenticated
                         ? <Link to="/home/" style={{color: "#000"}}>
-                            <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
-                            </Link>
+                            <NavbarBrand
+                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                        </Link>
                         : <Link to="/" style={{color: "#000"}}>
-                        <NavbarBrand style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                            <NavbarBrand
+                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
                         </Link>
                     }
                     {this.isAuthenticated ?
                         <>
                             <Button
                                 type='button'
+                                data-testid="search-button"
                                 style={{
                                     backgroundColor: "#FFF",
                                     border: "0px",
@@ -122,25 +118,26 @@ class MainNav extends React.Component {
                                     alignItems: "center",
                                     justifyContent: "flex-end"
                                 }}>
-                                    {this.state.search === '' 
-                                    ? <SearchText> </SearchText> 
-                                    : <SearchText>{this.state.search}</SearchText>}
+                                    {this.state.search === ''
+                                        ? <SearchText> </SearchText>
+                                        : <SearchText>{this.state.search}</SearchText>}
                                     <IconButton type='submit'>
                                         <BiSearch/>
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
-                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
+                                <div onClick={this.changeModalVisibility} style={{cursor: 'pointer'}}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button'/>
                                 </div>
                                 <Link to="/create_club/" style={{color: "#000"}}>
-                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button'/>
                                 </Link>
                                 <Link to="/chat2/" style={{color: "#000"}}>
-                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats' style={{ marginLeft:"1rem" }} />
+                                    <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
+                                         style={{marginLeft: "1rem"}}/>
                                 </Link>
-                                <Link to="/user_profile/" style={{color: "#000"}}>
+                                <Link to="/user_profile/" data-testid={"user-profile"} style={{color: "#000"}}>
                                     <AccountCircleIcon fontSize='large'/>
                                 </Link>
                             </NavMenu>
@@ -156,10 +153,10 @@ class MainNav extends React.Component {
                         top: '20%',
                         left: '0'
                     }}>
-                    <ModalHeader toggle={this.toggle} >
+                    <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
                             <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
-                                <BiSearch style={{height: "2rem", width: "2rem"}} />
+                                <BiSearch style={{height: "2rem", width: "2rem"}}/>
                             </Button>
                             <Input
                                 type='text'
@@ -183,40 +180,42 @@ class MainNav extends React.Component {
                     <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
                         {/* User Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button' />
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
-                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
+                                    <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
                                 </li>
                             )}
                         </ul>
                         {/* Club Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button' />
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
                         <ul>
                             {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
                                     <Link to={`/club_profile/${club.id}/`}>
-                                        <SearchClubCard name={club.name} ownerEmail={club.owner.email} description={club.description} />
+                                        <SearchClubCard name={club.name} ownerEmail={club.owner.email}
+                                                        description={club.description}/>
                                     </Link>
                                 </li>
                             )}
                         </ul>
                         {/* Book Search Results */}
                         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button' />
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button'/>
                             <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
                         <ul>
                             {this.state.searchBooks.map((book, index) =>
                                 <li key={index}>
                                     <Link to={`/book_profile/${book.ISBN}`}>
-                                        <SearchBookCard name={book.title} author={book.author} image={book.image_links_small} />
+                                        <SearchBookCard name={book.title} author={book.author}
+                                                        image={book.image_links_small}/>
                                     </Link>
                                 </li>
                             )}
@@ -256,19 +255,19 @@ const SearchButtonStyle = {
 }
 
 const LoadingIndicator = (props) => {
-    const { promiseInProgress } = usePromiseTracker();
+    const {promiseInProgress} = usePromiseTracker();
 
     return (
-        promiseInProgress && 
+        promiseInProgress &&
         <Container>
             <div style={{
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: '10'
-                }}>
+                display: 'flex',
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: '10'
+            }}>
                 <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25"/>
             </div>
         </Container>

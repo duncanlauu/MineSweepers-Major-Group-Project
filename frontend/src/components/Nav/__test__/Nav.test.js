@@ -62,13 +62,13 @@ describe("Components exist", () => {
         })
     })
 
-    test("contains friends page button", async () => {
+    test("contains user profile button", async () => {
         act(() => {
             render(routerWrapper(<MainNav/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByTestId(/friends-link/i)).toBeInTheDocument()
+            expect(screen.getByTestId(/user-profile/i)).toBeInTheDocument()
         })
     })
 })
