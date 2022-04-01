@@ -15,7 +15,6 @@ const LandingProfile = (props) => {
   let history = [];
 
   const memberStatus = props.memberStatus;
- 
 
   const [modalVisible, setModalVisible] = useState(false);
 
