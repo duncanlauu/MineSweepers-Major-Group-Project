@@ -89,7 +89,8 @@ class Chat2 extends React.Component {
     }
 
     // Returns a string based on a timestamp, displays the time that passed since the message was sent
-    // If more than a day then it displays it as yesterday and then shows how many days ago, weeks or months
+    // If more than a day passed then it displays it as yesterday 
+    // If more time passed then shows how many days ago, weeks or months
     renderTimestamp = timestamp => {
         const date = new Date(timestamp);
         const today = new Date();
