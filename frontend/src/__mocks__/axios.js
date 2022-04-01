@@ -15,6 +15,7 @@ import topClubs from '../mocksData/getTopClubs.json'
 import myMeetings from '../mocksData/getMyMeetings.json'
 import top12Global from '../mocksData/getTop12Global.json'
 import clubs from '../mocksData/clubs.json'
+import friend_requests from '../mocksData/friend_requests.json'
 import ratings from '../mocksData/ratings.json'
 import ratings2 from '../mocksData/ratings2.json'
 
@@ -59,6 +60,8 @@ const generateGetResponse = (url) => {
             return {data: top12Global};
         case `clubs/`:
             return {data: clubs};
+        case `friend_requests/`:
+            return {data: friend_requests};
         case `ratings/`:
             return {data: ratings};
         case `ratings/other_user/2`:

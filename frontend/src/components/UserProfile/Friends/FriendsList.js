@@ -8,7 +8,7 @@ export default function FriendsList(props){
     const [myFriends, setFriends] = useState("")
 
     useEffect(() => {
-        if(props.requestedUser_id == undefined){
+        if(props.requestedUser_id === undefined){
             getAllFriends()
         }else{
             getAllFriendsOfOtherUser()

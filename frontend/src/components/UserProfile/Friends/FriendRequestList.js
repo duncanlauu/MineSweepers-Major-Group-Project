@@ -17,6 +17,7 @@ export default function FriendRequestList(props) {
             .get(`friend_requests/`)
             .then((res) => {
                 const allFriendRequests = res.data.incoming;
+                console.log(allFriendRequests);
                 setFriendRequests(allFriendRequests)
             })
             .catch(error => console.error(error));

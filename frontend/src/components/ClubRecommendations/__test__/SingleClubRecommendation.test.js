@@ -37,7 +37,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByAltText("Gravatar for test@test.org")).toBeInTheDocument()
+            expect(screen.getByAltText("Gravatar for test1@test.org")).toBeInTheDocument()
         })
     })
 })

@@ -48,7 +48,7 @@ export default function SingleFriend(props) {
                             </UserNameText>
                         </UserNameContainer>
                     </Col>
-                    { props.requestedUser_id == undefined && 
+                    { props.requestedUser_id === undefined &&
                         <Col xs="2" style={{display: 'flex', justifyContent: "flex-end"}}>
                             <Button style={{borderRadius: "20px", height: "5rem"}} name={currentFriend.id} onClick={(e) => deleteFriend(currentFriend.id, e)}>
                                 X
