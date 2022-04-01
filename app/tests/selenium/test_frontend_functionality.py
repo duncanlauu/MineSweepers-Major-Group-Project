@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
 from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users, seed_default_objects, \
-    seed_friends, seed_friend_requests, seed_meetings, seed_feed, print_info
+    seed_friends, seed_friend_requests, seed_meetings, seed_feed, seed_messages, print_info
 from surprise import SVD
 
 from django.db import connections
@@ -63,6 +63,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         cls.browser = webdriver.Chrome(
             executable_path="app/tests/selenium/chromedriver", options=chrome_options
         )
+        cls.actions = ActionChains(cls.browser)
         cls.browser.delete_all_cookies()
 
         
@@ -95,6 +96,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_friend_requests()
         seed_meetings()
         seed_feed()
+        seed_messages()
         print_info()
 
         # # Train the recommender system model
@@ -138,50 +140,43 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def test_everything(self):
         
-        # Website title
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
+        # # Website title
+        # self.browser.get(f"{self.live_server_url}/")
+        # self.assertEquals(self.browser.title, "Bookgle")
 
-        # Landing Page
-        self._test_logo_button_goes_to_landing_page_when_not_logged_in("")
-        self._test_landing_page_log_in_and_sing_up_buttons()
+        # # Landing Page
+        # self._test_boogkle_logo_redirects_to_landing_page("")
+        # self._test_landing_page_log_in_button()
+        # self._test_landing_page_sign_up_button()
 
-        # # Log in
-        self._test_logo_button_goes_to_landing_page_when_not_logged_in("log_in")
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("log_in")
-        self._text_sign_up_here_button_goes_to_sign_up()
-        self._test_unsuccessful_log_in() 
-        self._test_successful_log_in()
-        self._test_forgot_password_button_goes_to_password_reset()
+        # # Log In Page
+        # self._test_boogkle_logo_redirects_to_landing_page("log_in")
+        # self._text_sign_up_here_button_redirects_to_sign_up()
+        # self._test_forgot_password_button_redirects_to_password_reset()
+        # self._test_log_in_with_wrong_password() 
+        # self._test_log_in()
 
-        self.browser.get(f"{self.live_server_url}/log_out") # Log out user
+        # # Sign Up Page
+        # self._test_boogkle_logo_redirects_to_landing_page("sign_up")
+        # self._test_log_in_here_button_redirects_to_log_in()
+        # self._test_sign_up_with_blank_fields()
+        # self._test_sign_up_username_too_short()
+        # self._test_sign_up_invalid_email()
+        # # Sign Up Page and new user Book Rating Page
+        # # self._test_sign_up_and_book_rating() 
 
-        # # Sign up
-        self._test_logo_button_goes_to_landing_page_when_not_logged_in("sign_up")
-        # self._test_logo_button_goes_to_log_in_when_not_logged_in("sign_up")
-        self._test_log_in_here_button_goes_to_log_in()
-        self._test_sign_up_with_blank_fields()
-        self._test_sign_up_username_too_short()
-        self._test_sing_up_invalid_email()
-        
-        # # Sign up and New User Book Rating Page
-        # self._test_sign_up_and_book_rating() 
-
-        self.browser.get(f"{self.live_server_url}/log_out")
-
-        # # Home Page
         self._log_in()
-        # self._test_logo_button_goes_to_home_when_logged_in("home")
-        # # self._test_page_has_navbar("home") #not implemented yer
-        # self._test_reply_to_comment_on_post()
+        # Home Page
+        # self._test_page_contains_functional_navbar("home")
+        self._test_reply_to_comment_on_post()
         # self._test_comment_on_post()
-        # self._test_recommendations_page() # finish once i can be bothered to run AI training
+        # # self._test_recommendations_page() # finish once i can be bothered to run AI training
 
-        # # Navbar
-        self._test_search_bar_open_close(f"all_clubs/") # has issues on home due to the ddos spam situation
-        # self._test_search_bar_find_user(f"all_clubs/") # has issues on home due to the ddos spam situation
-        self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
-        self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # # # Navbar
+        # self._test_search_bar_open_close(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # # self._test_search_bar_find_user(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_club(f"all_clubs/") # has issues on home due to the ddos spam situation
+        # self._test_search_bar_find_book(f"all_clubs/") # has issues on home due to the ddos spam situation
         # self._test_navbar_new_post("home")
         # self._test_navbar_create_club("home")
         # # Maybe test for also post with club id
@@ -252,34 +247,113 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_404_page()
         # self._test_password_reset()
 
-    def _test_forgot_password_button_goes_to_password_reset(self):
+    
 
-        # http://127.0.0.1:8000/password_reset/
-        pass
+    # Landing Page
+    def _test_boogkle_logo_redirects_to_landing_page(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath('//a[.="bookgle"]').click()
+        self.wait_until_element_found("//a[@href='/log_in/']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
 
+    def _test_landing_page_log_in_button(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
+        self.wait_until_element_found("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
 
-    def _test_sing_up_invalid_email(self):
+    def _test_landing_page_sign_up_button(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
+        self.wait_until_element_found("//button[.='Sign Up']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
+
+    # Log In Page
+    def _text_sign_up_here_button_redirects_to_sign_up(self):
+        self.browser.get(f"{self.live_server_url}/log_in/")
+        self.browser.find_element_by_xpath('//a[.="here "]').click()
+        self.wait_until_element_found("//button[.='Sign Up']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
+
+    def _test_log_in_with_wrong_password(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
+        self.wait_until_element_found("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
+        self.browser.find_element_by_name("password").send_keys("WrongPassword123")
+        self.browser.find_element_by_xpath("//button[.='Log In']").click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+        body_text = self.browser.find_element_by_tag_name("body").text
+        self.assertTrue("Invalid username/password" in body_text)
+
+    def _test_log_in(self):
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
+        self.wait_until_element_found("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
+        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
+        self.browser.find_element_by_xpath("//button[.='Log In']").click()
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+        self.browser.get(f"{self.live_server_url}/log_out")
+    
+    def _test_forgot_password_button_redirects_to_password_reset(self):
+        self.browser.get(f"{self.live_server_url}/log_in/")
+        self.browser.find_element_by_xpath('//a[.="Forgot Password?"]').click()
+        self.wait_until_element_found("//button[.='Send Reset Email']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/password_reset/")
+
+    # Sign Up Page
+    def _test_log_in_here_button_redirects_to_log_in(self):
+        self.browser.get(f"{self.live_server_url}/sign_up/")
+        self.browser.find_element_by_xpath('//a[.="here "]').click()
+        self.wait_until_element_found("//button[.='Log In']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+
+    def _test_sign_up_with_blank_fields(self):
+        number_of_users_before = User.objects.count()
+        self.browser.get(f"{self.live_server_url}/")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
+        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
+        number_of_users_after = User.objects.count()
+        self.assertEqual(number_of_users_after, number_of_users_before)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
+        body_text = self.browser.find_element_by_tag_name("body").text
+        number_of_empty_field_error_messages = body_text.count("This field may not be blank.")
+        self.assertEqual(number_of_empty_field_error_messages, 5)
+        self.assertTrue("Date has wrong format. Use one of these formats instead: YYYY-MM-DD." in  body_text)
+
+    def _test_sign_up_invalid_email(self):
         number_of_users_before = User.objects.count()
         self.browser.get(f"{self.live_server_url}/sign_up/")
         self.wait_until_element_found('//button[.="Sign Up"]')
         self.browser.find_element_by_name("email").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Enter a valid email address." in body_text)
         self.browser.find_element_by_name("email").send_keys("@")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Enter a valid email address." in body_text)
         self.browser.find_element_by_name("email").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Enter a valid email address." in body_text)
         self.browser.find_element_by_name("email").send_keys(".")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("Enter a valid email address." in body_text)
         self.browser.find_element_by_name("email").send_keys("com")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
         number_of_users_after = User.objects.count()
         self.assertFalse("Enter a valid email address." in body_text)
@@ -307,6 +381,206 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertFalse("Username must consist of at least three alphanumericals" in body_text)
         number_of_users_after = User.objects.count()
         self.assertEqual(number_of_users_after, number_of_users_before)
+
+    def _test_sign_up_and_book_rating(self):
+        number_of_users_before = User.objects.count()
+        self.browser.get(f"{self.live_server_url}/")
+        self.wait_until_element_found("//a[@href='/sign_up/']")
+        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
+        self.wait_until_element_found("//button[.='Sign Up']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
+        self.browser.find_element_by_name("first_name").send_keys(self.new_user_data['first_name'])
+        self.browser.find_element_by_name("last_name").send_keys(self.new_user_data['last_name'])
+        self.browser.find_element_by_name("username").send_keys(self.new_user_data['username'])
+        self.browser.find_element_by_name("email").send_keys(self.new_user_data['email'])
+        self.browser.find_element_by_name("password").send_keys(self.new_user_data['password'])
+        self.browser.find_element_by_name("bio").send_keys(self.new_user_data['bio'])
+        self.browser.find_element_by_name("location").send_keys(self.new_user_data['location'])
+        self.browser.find_element_by_name("birthday").send_keys(self.new_user_data['birthday'])
+        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
+        sleep(1)
+        number_of_users_after = User.objects.count()
+        self.assertEqual(number_of_users_after, number_of_users_before+1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating/")
+        self.wait_until_element_found("//span[@data-index='3']", 20)
+        self.browser.find_element_by_xpath("//span[@data-index='3']").click()
+        sleep(1)
+        self.browser.find_element(by=By.XPATH, value='//button[.="Clear"]').click()
+        sleep(1)
+        self.browser.find_element_by_xpath("//span[@data-index='4']").click()
+        sleep(1)
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        sleep(2)
+        self.browser.find_element_by_xpath('//button[.="Finish"]').click()
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+        self.browser.get(f"{self.live_server_url}/log_out")
+
+    # Page Contains Functional Navbar
+    def _test_page_contains_functional_navbar(self, url):
+        self._test_boogkle_logo_redirects_to_home_when_logged_in(url)
+        self._test_open_and_close_search_bar(url)
+        self._test_new_post_button(url)
+        self._test_new_club_button(url)
+        self._test_open_chat_button(url)
+        self._test_open_friends_page_button(url)
+        # self._test_log_out_button(url)
+
+    def _test_boogkle_logo_redirects_to_home_when_logged_in(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath('//a[.="bookgle"]').click()
+        self.wait_until_element_found('//text[.="See all recommendations"]')
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+    def _test_open_and_close_search_bar(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.wait_until_element_found("//button[@name='search-bar']")
+        self.browser.find_element_by_name("search-bar").click()
+        self.browser.find_element_by_name("search-bar-input").send_keys("J")
+        self.browser.find_element_by_name("search-bar-button").click()
+        sleep(1)
+        self.browser.find_element_by_xpath("//button[@aria-label='Close']").click()
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+    def _test_new_post_button(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click()
+        self.wait_until_element_found("//button[.='Post!']")
+        self.browser.find_element_by_name("content").send_keys("New Post Content")
+        self.actions.move_to_element_with_offset(self.browser.find_element_by_tag_name('body'), 0,0)
+        self.actions.move_by_offset(10, 10).click().perform()
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+    def _test_new_club_button(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click()
+        self.wait_until_element_found("//button[.='Create']")
+        self.browser.find_element_by_id("description").send_keys("New Club Description!!")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
+
+    def _test_open_chat_button(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click()
+        self.wait_until_element_found("//img[@alt='Send Icon']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
+
+    def _test_open_friends_page_button(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//a[@href='/friends_page/']").click()
+        self.wait_until_element_found("//button[.='Edit Profile']")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
+
+    # def _test_log_out_button(self, url): #Not Implemented in frontend
+        # self.browser.get(f"{self.live_server_url}/{url}")
+        # self.browser.find_element_by_xpath("//img[@alt='Log Out']").click()
+
+    # Home
+    def _test_reply_to_comment_on_post(self): #broken if there are no comments on first post
+        self.browser.get(f"{self.live_server_url}/home")
+        # sleep(500)
+
+        # Get all posts
+        self.wait_until_element_found("//div[@class='SingleFeedPost']")
+        posts = self.browser.find_elements_by_xpath("//div[@class='SingleFeedPost']")
+        first_post = posts[0]
+        first_post_view_all_comments_button = first_post.find_element_by_xpath(".//button[.='view all comments']")
+        first_post_id = first_post_view_all_comments_button.get_attribute("id").replace("toggler", "")
+        first_post_view_all_comments_button.click()
+        self.wait_until_element_found("//div[@class='singleComment']")
+        # sleep(100)
+        comments = first_post.find_elements_by_xpath(".//div[@class='singleComment']")
+        first_comment = comments[0]
+        first_comment.find_element_by_xpath(".//button[.='Reply']").click()
+        first_comment.find_element_by_name("myReply").send_keys("New Reply To Comment")
+        first_comment.find_element_by_xpath("//p[.=' Send ']").click()
+
+
+
+        # self.wait_until_element_found("//button[.='view all comments']")
+        # # sleep(10)
+        # self.browser.find_element_by_xpath("//button[.='view all comments']").click()
+        # sleep(10)
+        # self.wait_until_element_found("//button[.='Reply']")
+        # sleep(1)
+        # self.browser.find_element_by_xpath("//button[.='Reply']").click()
+        # sleep(1)
+        # self.browser.find_element_by_name("myReply").send_keys("New Reply To Comment")
+        # sleep(1)
+        # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
+        # sleep(1)
+        # # Check in db if reply to comment added ??
+        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+    def _test_comment_on_post(self): # Broken (hypothesis, send buttons for replies collapsed and hidden being targeted)
+        self.browser.get(f"{self.live_server_url}/home")
+        sleep(1) # wait for element?
+        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
+        sleep(1)
+        self.browser.find_element_by_name("myComment").send_keys("New Comment")
+        sleep(1)
+        # sleep(500)
+        send_button = self.browser.find_element_by_xpath("//p[.=' Send ']")
+        self.browser.implicitly_wait(10)
+        ActionChains(self.browser).move_to_element(send_button).click(send_button).perform()
+        # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
+        
+        # Check in db if comment added ??
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+
+    def _test_navbar_new_post(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
+        self.browser.find_element_by_name("title").send_keys("New Post Title")
+        self.browser.find_element_by_name("content").send_keys("New Post Content")
+        # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
+        self.browser.find_element_by_xpath("//button[.='Post!']").click()
+        sleep(2)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+        # check database that number of posts went up
+        # check on home page that it contains info about this post
+
+    def _test_navbar_create_club(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
+        number_of_clubs_before = Club.objects.count()
+        number_of_chats_before = Chat.objects.count()
+        self.browser.find_element_by_name("name").send_keys(self.new_club_data['name']) #ID / NAME inconsistent
+        self.browser.find_element_by_id("description").send_keys(self.new_club_data['description']) #ID / NAME inconsistent
+        sleep(2)
+        self.browser.find_element_by_xpath("//button[.='Create']").click()
+        sleep(1)
+        number_of_clubs_after = Club.objects.count()
+        number_of_chats_after = Chat.objects.count()
+        self.assertEqual(number_of_clubs_after, number_of_clubs_before+1)
+        self.assertEqual(number_of_chats_after, number_of_chats_before+1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
+
+    def _test_navbar_open_chat(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
+
+    def _test_navbar_friends_page(self, url):
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.find_element_by_xpath("//a[@href='/friends_page/']").click() # a real element name would be nice
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
+        sleep(1)
+        
+
+
+
+    # Home Page
+    
+
+    
+
+
+    
 
     def _test_book_profile_see_your_recommendations_button(self):
         self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
@@ -467,15 +741,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             self.assertTrue(post['title'] in body_text)
             self.assertTrue(post_content in body_text)
 
-    def _test_search_bar_open_close(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.wait_until_element_found("//button[@name='search-bar']")
-        self.browser.find_element_by_name("search-bar").click()
-        self.browser.find_element_by_name("search-bar-input").send_keys("J")
-        self.browser.find_element_by_name("search-bar-button").click()
-        sleep(8) # add better wait
-        self.browser.find_element_by_xpath("//button[@aria-label='Close']").click()
-        sleep(1)
+    
 
     def _test_search_bar_find_user(self, url):
         user = User.objects.get(username="Val")
@@ -623,80 +889,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # check db that it deleted post
 
 
-    #kinda works but maybe replying to comments itself is broken???
-    def _test_reply_to_comment_on_post(self): #broken if there are no comments on first post
-        self.browser.get(f"{self.live_server_url}/home")
-        sleep(1) # wait for element?
-        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
-        sleep(1)
-        self.browser.find_element_by_xpath("//button[.='Reply']").click()
-        sleep(1)
-        self.browser.find_element_by_name("myReply").send_keys("New Reply To Comment")
-        sleep(1)
-        self.browser.find_element_by_xpath("//p[.=' Send ']").click()
-        sleep(5)
-        # Check in db if reply to comment added ??
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-
-    def _test_comment_on_post(self): # Broken (hypothesis, send buttons for replies collapsed and hidden being targeted)
-        self.browser.get(f"{self.live_server_url}/home")
-        sleep(1) # wait for element?
-        self.browser.find_element_by_xpath("//button[.='view all comments']").click()
-        sleep(1)
-        self.browser.find_element_by_name("myComment").send_keys("New Comment")
-        sleep(1)
-        # sleep(500)
-        send_button = self.browser.find_element_by_xpath("//p[.=' Send ']")
-        self.browser.implicitly_wait(10)
-        ActionChains(self.browser).move_to_element(send_button).click(send_button).perform()
-        # self.browser.find_element_by_xpath("//p[.=' Send ']").click()
-        
-        # Check in db if comment added ??
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-
-    def _test_navbar_new_post(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
-        self.browser.find_element_by_name("title").send_keys("New Post Title")
-        self.browser.find_element_by_name("content").send_keys("New Post Content")
-        # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
-        self.browser.find_element_by_xpath("//button[.='Post!']").click()
-        sleep(2)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-        # check database that number of posts went up
-        # check on home page that it contains info about this post
-
-    def _test_navbar_create_club(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click() # a real element name would be nice
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
-        number_of_clubs_before = Club.objects.count()
-        number_of_chats_before = Chat.objects.count()
-        self.browser.find_element_by_name("name").send_keys(self.new_club_data['name']) #ID / NAME inconsistent
-        self.browser.find_element_by_id("description").send_keys(self.new_club_data['description']) #ID / NAME inconsistent
-        sleep(2)
-        self.browser.find_element_by_xpath("//button[.='Create']").click()
-        sleep(1)
-        number_of_clubs_after = Club.objects.count()
-        number_of_chats_after = Chat.objects.count()
-        self.assertEqual(number_of_clubs_after, number_of_clubs_before+1)
-        self.assertEqual(number_of_chats_after, number_of_chats_before+1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+    
 
 
-    def _test_navbar_open_chat(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click() # a real element name would be nice
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
-
-    def _test_navbar_friends_page(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//a[@href='/friends_page/']").click() # a real element name would be nice
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/friends_page/")
-        sleep(1)
 
     def _test_page_has_navbar(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
@@ -709,26 +904,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_page_does_not_have_navbar(self, url):
         pass
  
-    def _test_landing_page_log_in_and_sing_up_buttons(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        self.browser.execute_script("window.history.go(-1)")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
-        self.wait_until_element_found("//button[.='Sign Up']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
-        self.browser.execute_script("window.history.go(-1)")
-
-    def _test_logo_button_goes_to_log_in_when_not_logged_in(self, url):
-        # self.browser.get(f"{self.live_server_url}/")
-        # self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        # self.wait_until_element_found("//button[.='Log In']")
-        self.browser.get(f"{self.live_server_url}/{url}")
-        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
-        logo_button.click()
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+    
 
     def _test_logo_button_goes_to_landing_page_when_not_logged_in(self, url):
         # self.browser.get(f"{self.live_server_url}/")
@@ -741,110 +917,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
 
 
-    def _test_logo_button_goes_to_home_when_logged_in(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.wait_until_element_found('//a[.="bookgle"]') # added later
-        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
-        logo_button.click()
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-
-    def _text_sign_up_here_button_goes_to_sign_up(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
-        logo_button.click()
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
-
-    def _test_unsuccessful_log_in(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        username_input = self.browser.find_element_by_name("username")
-        password_input = self.browser.find_element_by_name("password")
-        username_input.send_keys(self.login_data['username'])
-        password_input.send_keys("WrongPassword123")
-        log_in_button.click()
-        sleep(1) # make method to wait a little
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        body_text = self.browser.find_element_by_tag_name("body").text
-        self.assertTrue("Invalid username/password" in body_text)
-
-    def _test_successful_log_in(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        log_in_button = self.browser.find_element_by_xpath("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        username_input = self.browser.find_element_by_name("username")
-        password_input = self.browser.find_element_by_name("password")
-        username_input.send_keys(self.login_data['username'])
-        password_input.send_keys(self.login_data['password'])
-        log_in_button.click()
-        sleep(1) # make method to wait a little
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
 
-    def _test_log_in_here_button_goes_to_log_in(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
-        self.wait_until_element_found("//button[.='Sign Up']")
-        logo_button = self.browser.find_element_by_xpath('//a[.="here "]')
-        logo_button.click()
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
+    
 
-    def _test_sign_up_with_blank_fields(self):
-        number_of_users_before = User.objects.count()
-        self.browser.get(f"{self.live_server_url}/")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
-        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
-        sleep(1)
-        number_of_users_after = User.objects.count()
-        self.assertEqual(number_of_users_after, number_of_users_before)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
-        body_text = self.browser.find_element_by_tag_name("body").text
-        number_of_empty_field_error_messages = body_text.count("This field may not be blank.")
-        self.assertEqual(number_of_empty_field_error_messages, 5)
-        self.assertTrue("Date has wrong format. Use one of these formats instead: YYYY-MM-DD." in  body_text)
 
-    def _test_sign_up_and_book_rating(self):
-        number_of_users_before = User.objects.count()
-        self.browser.get(f"{self.live_server_url}/")
-        self.wait_until_element_found("//a[@href='/sign_up/']")
-        self.browser.find_element_by_xpath("//a[@href='/sign_up/']").click()
-        self.wait_until_element_found("//button[.='Sign Up']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/")
-        # Sign up
-        self.browser.find_element_by_name("first_name").send_keys(self.new_user_data['first_name'])
-        self.browser.find_element_by_name("last_name").send_keys(self.new_user_data['last_name'])
-        self.browser.find_element_by_name("username").send_keys(self.new_user_data['username'])
-        self.browser.find_element_by_name("email").send_keys(self.new_user_data['email'])
-        self.browser.find_element_by_name("password").send_keys(self.new_user_data['password'])
-        self.browser.find_element_by_name("bio").send_keys(self.new_user_data['bio'])
-        self.browser.find_element_by_name("location").send_keys(self.new_user_data['location'])
-        self.browser.find_element_by_name("birthday").send_keys(self.new_user_data['birthday'])
-        self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
-        sleep(1)
-        number_of_users_after = User.objects.count()
-        self.assertEqual(number_of_users_after, number_of_users_before+1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating/")
-        sleep(10)
-        self.wait_until_element_found("//span[@data-index='3']", 20)
-        self.browser.find_element_by_xpath("//span[@data-index='3']").click()
-        sleep(1)
-        self.browser.find_element(by=By.XPATH, value='//button[.="Clear"]').click()
-        sleep(1)
-        self.browser.find_element_by_xpath("//span[@data-index='4']").click()
-        sleep(1)
-        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        sleep(1)
-        self.browser.find_element_by_xpath('//button[.="Finish"]')
-        sleep(1)
-        self.browser.find_element_by_xpath('//button[.="Finish"]').click()
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+    
 
 
     def _test_log_out(self):
