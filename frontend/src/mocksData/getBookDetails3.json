@@ -1,0 +1,11 @@
+{
+  "id": "00000000001",
+  "title": "Test Book 1",
+  "author": "Test Author",
+  "publication_date": "2000",
+  "publisher": "Test Books",
+  "image_links_large": "http://www.example.com",
+  "image_links_medium": "http://www.example.com",
+  "image_links_small": "http://www.example.com",
+  "genre": "Test"
+}
