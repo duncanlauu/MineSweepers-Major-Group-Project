@@ -56,7 +56,6 @@ export default function SingleFeedPost(props) {
         window.location.reload()
     }
 
-    const commentsRef = useRef([]);
     const togglerID = "toggler" + feedPost.id
     const HashtagTogglerId = "#toggler" + feedPost.id
 
