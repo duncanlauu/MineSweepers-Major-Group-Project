@@ -264,7 +264,7 @@ def seed_friends():
 def seed_friend_requests():
     """Seed a number of friend requests"""
 
-    min_number_of_friend_requests = 2
+    min_number_of_friend_requests = 4
     max_number_of_friend_requests = 10
     for user in User.objects.all():
         num_of_friend_requests = random.randint(

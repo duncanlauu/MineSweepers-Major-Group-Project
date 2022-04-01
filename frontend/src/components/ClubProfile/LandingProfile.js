@@ -20,10 +20,6 @@ const LandingProfile = (props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-    const user_id = currentUser.id;
-    console.log("User ID: " + user_id);
-
 
   function IndividualBookCard(props) {
     return (

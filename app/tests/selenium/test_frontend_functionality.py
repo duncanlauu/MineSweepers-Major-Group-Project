@@ -96,21 +96,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_clubs(10)
         seed_friends()
         seed_friend_requests()
+        seed_friend_requests()
         seed_meetings()
         seed_feed()
         seed_messages()
         print_info()
 
-        # # Train the recommender system model
-        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        # self.dump_file_path = 'app/files/dump_file'
-        # self.dataframe = get_combined_data(self.csv_file_path)
-        # self.data = get_dataset_from_dataframe(self.dataframe)
-        # self.trainset = get_trainset_from_dataset(self.data)
-        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        # train_model(self.algo, self.trainset)
-        # self.pred = test_model(self.algo, self.trainset)
-        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # Train the recommender system model
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -182,20 +183,21 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_navbar_new_post(f"all_clubs/")
         # self._test_navbar_create_club(f"all_clubs/")
         # Maybe test for also post with club id
-        self._test_navbar_open_chat(f"all_clubs/")
-        self._test_navbar_user_page(f"all_clubs/")
+        # self._test_navbar_open_chat(f"all_clubs/") # can be deleted I think
+        # self._test_navbar_user_profile(f"all_clubs/") # can be deleted I think
 
-        # Friends Page
-        # self._test_logo_button_goes_to_home_when_logged_in("user_page")
+        # User Page
+        # self._test_logo_button_goes_to_home_when_logged_in("user_profile")
         # contains navbar test
         # maybe check if info on profile panel is correct
-        # self._test_user_page_user_profile_cotains_correct_information()
-        # self._test_user_page_posts_tab_contains_correct_information()
+        # self._test_user_profile_user_profile_cotains_correct_information()
+        # self._test_user_profile_posts_tab_contains_correct_information()
         # self._test_edit_post()
         # self._test_delete_post()
         # self._test_accept_friend_request()
         # self._test_reject_friend_request()
         # self._test_delete_friend()
+        self._test_user_profile_suggested_friends()
         # test for suggested user
 
         # Club Profile Page
@@ -240,7 +242,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_create_new_club()
         # self._test_log_out()
         # self._test_recommendations_page()
-        # self._test_user_page()
+        # self._test_user_profile()
         # self._test_scheduling_page()
         # self._test_chat_page()
         # self._test_meetings_page()
@@ -462,7 +464,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self._test_new_post_button(url)
         self._test_new_club_button(url)
         self._test_open_chat_button(url)
-        self._test_open_user_page_button(url)
+        self._test_open_user_profile_button(url)
         # self._test_log_out_button(url)
 
     def _test_boogkle_logo_redirects_to_home_when_logged_in(self, url):
@@ -521,7 +523,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
         self._close_db_connections()
 
-    def _test_open_user_page_button(self, url):
+    def _test_open_user_profile_button(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.browser.find_element_by_xpath("//a[@href='/user_profile/']").click()
@@ -659,11 +661,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
 
-    def _test_navbar_user_page(self, url):
+    def _test_navbar_user_profile(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//a[@href='/user_page/']").click() # a real element name would be nice
+        self.browser.find_element_by_xpath("//a[@href='/user_profile/']").click() # a real element name would be nice
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
         sleep(1)
         
 
@@ -848,7 +850,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//text[.='%s']" % user.username)
         self.browser.find_element_by_xpath("//text[.='%s']" % user.username).click()
         sleep(2) # wait to find
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/{user.pk}")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{user.pk}")
 
     def _test_search_bar_find_club(self, url):
         club_name = self.club.name
@@ -878,8 +880,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}")
 
 
-    def _test_user_page_posts_tab_contains_correct_information(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+    def _test_user_profile_posts_tab_contains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Posts']").click()
         self.wait_until_element_found("//i[normalize-space()='@%s']" % self.user.username)
         body_text = self.browser.find_element_by_tag_name("body").text
@@ -889,8 +891,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             post_content = post['content'].replace('\n', ' ')
             self.assertTrue(post_content in body_text)
 
-    def _test_user_page_user_profile_cotains_correct_information(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+    def _test_user_profile_user_profile_cotains_correct_information(self):
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.wait_until_element_found("//i[normalize-space()='@%s']" % self.user.username)
         body_text = self.browser.find_element_by_tag_name("body").text
         # Check for user picture
@@ -934,53 +936,77 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.browser.find_element_by_xpath('//button[.="Schedule a Meeting"]').click()
         # self.browser.find_element_by_xpath('//button[.="Members"]').click()
 
+    def _test_user_profile_suggested_friends(self):
+        self.browser.get(f"{self.live_server_url}/user_profile")
+        sleep(10)
+        self.browser.get(f"{self.live_server_url}/user_profile/")
+        self.browser.implicitly_wait(10)
+        # self.wait_until_element_found("//div[@name='suggested-friend']", 30)
+        # friends = self.browser.find_elements_by_xpath("//div[@class='friend']")
+        suggested_friends = self.browser.find_elements_by_name("suggested-friend")
+        frist_suggested_friend = suggested_friends[0]
+        frist_suggested_friend.click()
+        suggested_user = User.objects.get(username=frist_suggested_friend.text)
+
+        sleep(4)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{suggested_user.pk}/")
+        print(suggested_friends)
+        sleep(100)
+
+
+        pass
+
     def _test_delete_friend(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Friends']").click()
         # sleep(15)
         self.browser.find_element_by_xpath("//button[.='X']").click() #probably getting the element from posts page thats why it doesnt work
         # can get user id from delete button maybe can be used when checking db
         sleep(1)
 
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
 
     def _test_accept_friend_request(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Friends']").click()
-        sleep(100)
+        sleep(1)
         self.browser.find_element_by_id("friendRequestToggler").click()
+        sleep(1)
         self.browser.find_element_by_xpath("//p[.=' Accept ']").click()
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
         # Check in db that user went down, maybe on website one less name
 
     def _test_reject_friend_request(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Friends']").click()
+        sleep(1)
         self.browser.find_element_by_id("friendRequestToggler").click()
+        sleep(1)
         self.browser.find_element_by_xpath("//p[.=' Reject ']").click()
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
         # Check in db that friend requests went down, maybe on website one less name
 
     def _test_edit_post(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Posts']").click()
+        sleep(1)
         self.browser.find_element_by_xpath("//button[.='Edit']").click()
         self.browser.find_element_by_name("title").send_keys(" Edited.")
         self.browser.find_element_by_name("content").send_keys(" Edited.")
         self.browser.find_element_by_xpath("//button[.='Save']").click()
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
         # check db that it edited post
 
     def _test_delete_post(self):
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
         self.browser.find_element_by_xpath("//text[.='Posts']").click()
         sleep(1)
         self.browser.find_element_by_xpath("//button[.='X']").click()
         sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_page/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
         # check db that it deleted post
 
 
@@ -1076,7 +1102,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     # def _test_club_list(self):
     #     pass
 
-    def _test_user_page(self):
+    def _test_user_profile(self):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
         self.wait_until_element_found("//a[@href='/log_in/']")
@@ -1089,7 +1115,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
         self.browser.find_element_by_xpath('//button[.="Log In"]').click()
         # Navigate to Friends Page with buttons (NOT Implemented in frontend yet?)
-        self.browser.get(f"{self.live_server_url}/user_page")
+        self.browser.get(f"{self.live_server_url}/user_profile")
 
     # def _test_page_redicrects_to_log_in_when_not_logged_in(self):
     #     pass
