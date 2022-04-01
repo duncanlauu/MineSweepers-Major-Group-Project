@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react"
-import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
-import { Button } from "reactstrap";
+import axiosInstance from '../../../axios'
 import SingleSuggestedUser from "./SingleSuggestedUser";
 
 export default function SuggestedUserList(props) {
@@ -11,14 +9,13 @@ export default function SuggestedUserList(props) {
 
     useEffect(() => {
        getAllSuggestedUsers();
-    }, [currentUser]);
+    }, []);
 
     const getAllSuggestedUsers = () => {
         axiosInstance
             .get(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
             .then((res) => {
-                console.log("get-request for suggested users worked!")
-                console.log(res.data)
+                console.log('suggested users', res.data)
                 const allSuggestedUsers = res.data;
                 setSuggestedUsers(allSuggestedUsers)
             })
@@ -35,7 +32,6 @@ export default function SuggestedUserList(props) {
                     
 
                     {mySuggestedUsers.map((suggestedUser, index) => {
-                        console.log(suggestedUser.recommended_user);
                         return (
                             <div key={suggestedUser.id}>
                                 <SingleSuggestedUser suggestedUser={suggestedUser.recommended_user}/>
@@ -50,7 +46,6 @@ export default function SuggestedUserList(props) {
                     <h3> No friends suggestions yet. Please re-login to see more. </h3>
                  </h3>
             )
-
         }
     }
     return (

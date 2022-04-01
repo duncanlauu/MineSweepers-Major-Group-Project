@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from "react"
 import {Button} from "reactstrap"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 import SinglePersonalPost from "./SinglePersonalPost";
 
 export default function PersonalPostList(props){

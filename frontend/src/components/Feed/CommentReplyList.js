@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react"
 import axiosInstance from '../../axios'
 import { Row, Col, Button, Input } from "reactstrap"
 import SingleCommentReply from "./SingleCommentReply";
-import { ReplyLine } from "./UserProfileElements";
+import { ReplyLine } from "../UserProfile/UserProfileElements";
 
 export default function CommentReplyList(props){
 

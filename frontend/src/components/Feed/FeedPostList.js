@@ -15,7 +15,6 @@ export default function FeedPostList(props){
             .then((res) => {
                 const allFeedPosts = res.data.posts;
                 setFeedPosts(allFeedPosts)
-                console.log("Feed posts: ", allFeedPosts)
             })
             .catch(error => console.error(error));
     }

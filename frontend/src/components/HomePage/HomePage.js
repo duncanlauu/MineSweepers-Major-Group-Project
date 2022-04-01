@@ -10,12 +10,12 @@ import {
   FeedContainer,
 } from "./HomePageElements";
 import Gravatar from "react-gravatar";
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 import { Link } from "react-router-dom";
 import { ParaText } from "./HomePageElements";
 import { IoIosArrowForward } from "react-icons/io";
 
-import FeedPostList from "../FriendsPage/FeedPostList";
+import FeedPostList from "../Feed/FeedPostList";
 
 const HomePage = () => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -75,7 +75,7 @@ const HomePage = () => {
   return (
     <Container fluid>
       <Row style={{ marginBottom: "3rem" }}>
-        <Nav />
+        <MainNav />
       </Row>
       <Row>
         <Col />

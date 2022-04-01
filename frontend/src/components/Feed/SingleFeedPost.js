@@ -3,8 +3,9 @@ import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { PostHeadingText } from "./UserProfileElements"
+import { PostHeadingText } from "../UserProfile/UserProfileElements"
 import { useNavigate } from "react-router";
+import ThumbUp from '@mui/icons-material/ThumbUp';
 
 export default function SingleFeedPost(props) {
 
@@ -52,13 +53,13 @@ export default function SingleFeedPost(props) {
     }
 
     const navigateToProfile = () => {
-        navigate(`/friends_page/${props.feedPost.author}/`)
-        window.location.reload()
+        navigate(`/user_profile/${props.feedPost.author}/`)
     }
 
     const commentsRef = useRef([]);
     const togglerID = "toggler" + feedPost.id
     const HashtagTogglerId = "#toggler" + feedPost.id
+
 
     return(
         <div className="feedPost" key={feedPost.id}>
@@ -86,7 +87,7 @@ export default function SingleFeedPost(props) {
                         </Col>
                         <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
                             {feedPost.club != null &&
-                                <h5> <b> Club: {feedPost.club} </b></h5>
+                                <h5> <b> {feedPost.club__name} </b></h5>
                             }
                         </Col>
                     </Row>
@@ -108,19 +109,27 @@ export default function SingleFeedPost(props) {
                     </CardText>
                 </CardBody>
                 
-                
-                <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
-                    view all comments
-                </Button>
-                <div style={{
-                    textAlign: "center"}
-                    }>
-                <Button style={{borderRadius: "25px", height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
-                +
-                </Button> &nbsp;&nbsp;
-                <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}
+                <div>
+                    <Row>
+                        <Col/>
+                        <Col>
+                            <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
+                                view all comments
+                            </Button>
+                        </Col>
+                        <Col>
+                            <div style={{
+                                textAlign: "center"}
+                                }>
+                            <Button style={{ height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
+                                <ThumbUp/>
+                            </Button> &nbsp;&nbsp;
+                            <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}
+                            </div>
+                        </Col>
+                    </Row>
+                    <br></br>
                 </div>
-                <br></br>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>

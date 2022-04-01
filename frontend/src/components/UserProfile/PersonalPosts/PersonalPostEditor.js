@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap"
-import axiosInstance from '../../axios'
+import axiosInstance from '../../../axios'
 
 import { useNavigate } from "react-router";
 
@@ -19,7 +19,6 @@ export default function PersonalPostEditor(props) {
     useEffect(() => {
         if (typeof (currentUser.id) != "undefined") {
             getAvailableClubs();
-            console.log("current user!: " + currentUser.id)
         }
     }, [currentUser]);
 
@@ -36,13 +35,13 @@ export default function PersonalPostEditor(props) {
         axiosInstance
             .put(`posts/${props.personalPost.id}`, {
                 action: "edit",
-                club : formData.club_id,
+                club : getClubId(clubData),
                 title : formData.title,
-                content : formData.content, 
+                content : formData.content,
             })
             .then((res) => {
                 navigate("/home/")
-                navigate("/friends_page/")
+                navigate("/user_profile/")
             })
             .catch((e) => {
                 console.log(e.response.data)
@@ -65,24 +64,37 @@ export default function PersonalPostEditor(props) {
             .catch(error => console.error(error));
     }
 
+    const getClubId = (club) => {
+        console.log(clubData)
+        for (let i = 0; i < availableClubs.length; ++i) {
+            console.log(availableClubs[i])
+            if (availableClubs[i]['name'] === clubData) {
+                return availableClubs[i].id;
+            }
+        }
+        return null;
+    }
+
     const displayPersonalPostForm = (e) => {
         return(
             <Container fluid>
             <Row>
                 <Col>
-                    <h1> Edit Post </h1>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <h1> Edit Post </h1>
+                    </div>
                     
 
                     <Container>
                     <Form> 
                         
                         <FormGroup>
-                            <Label for="title"> Title </Label>
+                            <Label for="title"><h5><b> Title </b></h5> </Label>
                             <Input
                                 id="title"
                                 name="title"
                                 onChange={handleChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                style={{ border: "0", backgroundColor: "#F3F3F3",  borderRadius: "20px" }}
                                 value={formData.title}
                             />
                             <p></p>
@@ -90,12 +102,12 @@ export default function PersonalPostEditor(props) {
                         <div>{titleErr}</div>
 
                         <FormGroup>
-                            <Label for="content"> Content </Label>
+                            <Label for="content"> <h5><b> Content </b></h5> </Label>
                             <Input type="textarea" rows="5"
                                 id="content"
                                 name="content"
                                 onChange={handleChange}
-                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                style={{ border: "0", backgroundColor: "#F3F3F3",  borderRadius: "20px" }}
                                 value={formData.content}
                             />
                         </FormGroup>
@@ -105,22 +117,18 @@ export default function PersonalPostEditor(props) {
                             <Row>
                             <Col xs="3">
                                 <FormGroup>
-                                    <Label for="club_id"> Club ID </Label>
+                                    <Label for="club_id"> <h5><b> Club </b> (opt.) </h5> </Label>
                                     <br/>
                                     <select
-                                        
                                         value={clubData}
                                             onChange={(e) => setClubData(e.target.value)}
-                                            style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                            style={{border: "0", backgroundColor: "#F3F3F3",  borderRadius: "20px"}}
                                         >
                                         <option/>
-
                                         {availableClubs.map(club =>
                                             <option> {club.name} </option>
                                         )}
-                                            
                                     </select>
-
                                 </FormGroup>
                                 <div>{clubIDErr}</div>
                             </Col>
@@ -128,16 +136,16 @@ export default function PersonalPostEditor(props) {
                         }
 
                         <FormGroup>
-                            <Col sm={{ size: 10, offset: 5 }}>
+                            <div style={{display: "flex", justifyContent: "center"}}>
                                 <Button
                                 type="submit"
                                 className="submit"
                                 onClick={handleEditRequest}
-                                style={{ width: "7rem" }}
+                                style={{ width: "7rem", borderRadius: "50px" }}
                                 >
                                 Save
                                 </Button>
-                            </Col>
+                            </div>
                         </FormGroup> 
 
                     </Form>

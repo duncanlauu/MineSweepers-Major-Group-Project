@@ -5,7 +5,7 @@ import {
   ProfileContainer,
   ProfileHeader,
 } from "./ClubProfileElements";
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 import ClubProfileTabs from "./ClubProfileTabs.js";
 import Gravatar from "react-gravatar";
 import { useParams } from "react-router";
@@ -43,7 +43,7 @@ const ClubProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [currentUser]);
+  }, []);
 
   if (!club) return null;
 
@@ -51,7 +51,7 @@ const ClubProfile = () => {
     <div>
       <Container fluid>
         <Row style={{ marginBottom: "3rem" }}>
-          <Nav />
+          <MainNav />
         </Row>
         <Row>
           <Col />
