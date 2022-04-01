@@ -56,34 +56,34 @@ function ClubProfileTabs(props) {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
           <Tab label="Profile" {...a11yProps(0)} />
-          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
             <Tab label="Members" {...a11yProps(1)} />
           )}
-          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
             <Tab label="Feed" {...a11yProps(2)} />
           )}
-          {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+          {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
             <Tab label="Meetings" {...a11yProps(3)} />
           )}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <LandingProfile />
+        <LandingProfile memberStatus={memberStatus} setMemberStatus={props.setMemberStatus}/>
       </TabPanel>
 
-      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
         <TabPanel value={value} index={1}>
-          <ClubApplicants />
+          <ClubApplicants memberStatus={memberStatus}/>
         </TabPanel>
       )}
 
-      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
         <TabPanel value={value} index={2}>
           <ClubFeed />
         </TabPanel>
       )}
 
-      {(memberStatus !== "notApplied" && memberStatus !== "applied") && (
+      {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
         <TabPanel value={value} index={3}>
           <ClubScheduling />
         </TabPanel>

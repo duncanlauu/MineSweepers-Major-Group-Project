@@ -20,7 +20,7 @@ export default function Sidepanel(props) {
 
 
     const getUserChats = (e) => {
-        const username = JSON.parse(localStorage.user).username
+        const username = JSON.parse(localStorage.getItem('user')).username
         axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
             .then(res => {
                 let userChats = res.data;
@@ -51,11 +51,11 @@ export default function Sidepanel(props) {
     function getChatName(chat) {
         let chatName = "undefined";
         if (chat.group_chat == false) {
-            console.log(JSON.parse(localStorage.user).username)
+            console.log(JSON.parse(localStorage.getItem('user')).username)
             console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != JSON.parse(localStorage.user).username) {
+                    if (participant.username != JSON.parse(localStorage.getItem('user')).username) {
                         chatName = participant.username;
                     }
                 }

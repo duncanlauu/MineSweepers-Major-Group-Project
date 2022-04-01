@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Club 1",
+    "owner": {
+      "id": 1,
+      "name": "Owner 1",
+      "email": "owner1@example.com"
+    },
+    "members": [1, 2, 3]
+  },
+  {
+    "id": 2,
+    "name": "Club 2",
+    "owner": {
+      "id": 2,
+      "name": "Owner 2",
+      "email": "owner2@example.com"
+    },
+    "members": [1, 2, 3]
+  },
+  {
+    "id": 3,
+    "name": "Club 3",
+    "owner": {
+      "id": 3,
+      "name": "Owner 3",
+      "email": "owner3@example.com"
+    },
+    "members": [1, 2, 3]
+  },
+  {
+    "id": 4,
+    "name": "Club 4",
+    "owner": {
+      "id": 4,
+      "name": "Owner 4",
+      "email": "owner4@example.com"
+    },
+    "members": [1, 2, 3]
+  },
+  {
+    "id": 5,
+    "name": "Club 5",
+    "owner": {
+      "id": 5,
+      "name": "Owner 5",
+      "email": "owner5@example.com"
+    },
+    "members": [1, 2, 3]
+  }
+]

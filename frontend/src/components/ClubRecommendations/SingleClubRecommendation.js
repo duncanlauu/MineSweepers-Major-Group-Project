@@ -25,7 +25,7 @@ export default function SingleClubRecommendation(props) {
     return (
         <ClubProfile>
             <Col xs={3}>
-                <Gravatar email={ownerEmail}/>
+                <Gravatar email={ownerEmail} data-testid="gravatar"/>
             </Col>
             <Col xs={9}>
                 <a href={`/club_profile/${props.club.id}`}>

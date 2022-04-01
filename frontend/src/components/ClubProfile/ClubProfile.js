@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import {
   BookProfile,
   ProfileContainer,
   ProfileHeader,
 } from "./ClubProfileElements";
-import Nav from "../Nav/Nav";
+import MainNav from "../Nav/MainNav";
 import ClubProfileTabs from "./ClubProfileTabs.js";
 import Gravatar from "react-gravatar";
 import { useParams } from "react-router";
@@ -13,12 +13,14 @@ import axiosInstance from "../../axios";
 
 const ClubProfile = () => {
   const { club_id } = useParams();
-
   const [club, setClub] = useState(null);
-  const currentUser = JSON.parse(localStorage.user)
+  
+  const currentUser = JSON.parse(localStorage.getItem('user'))
   const [memberStatus, setMemberStatus] = useState("notApplied");
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    console.log("currentUser", currentUser);
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
@@ -33,6 +35,8 @@ const ClubProfile = () => {
           setMemberStatus("applied");
         } else if (res.data.admins.includes(currentUserId)) {
           setMemberStatus("admin");
+        } else if (res.data.banned_users.includes(currentUserId)) {
+          setMemberStatus("banned");
         } else if (res.data.owner === currentUserId) {
           setMemberStatus("owner");
         } else {
@@ -43,7 +47,7 @@ const ClubProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [currentUser]);
+  }, []);
 
   if (!club) return null;
 
@@ -51,7 +55,7 @@ const ClubProfile = () => {
     <div>
       <Container fluid>
         <Row style={{ marginBottom: "3rem" }}>
-          <Nav />
+          <MainNav />
         </Row>
         <Row>
           <Col />
@@ -59,7 +63,10 @@ const ClubProfile = () => {
             <ProfileContainer>
               <ProfileHeader>
                 {club.name}
-                <ClubProfileTabs memberStatus={memberStatus} />
+                <ClubProfileTabs
+                  memberStatus={memberStatus}
+                  setMemberStatus={setMemberStatus}
+                />
               </ProfileHeader>
             </ProfileContainer>
           </Col>
