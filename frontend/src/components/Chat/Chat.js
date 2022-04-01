@@ -15,7 +15,7 @@ class Chat extends React.Component {
 
     initialiseChat() {
         this.setState({chatID: this.props.chatID})
-        this.currentUser = localStorage.username
+        this.currentUser = JSON.parse(localStorage.getItem('user')).username
         WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
 
         if (this.state.chatID != undefined) {
@@ -179,13 +179,13 @@ class Chat extends React.Component {
                     {invalidChatID
                         ?
                         <>
-                            <EmptyChatContainer>
+                            {/* <EmptyChatContainer>
                                 <img src='../../../static/images/Outbox.svg' alt='Outbox' />
                                 <EmptyChatText>
                                     Send messages to individual users<br />
                                     or a club you're part of.
                                 </EmptyChatText>
-                            </EmptyChatContainer>
+                            </EmptyChatContainer> */}
                         </>
                         : <div/>
                     }

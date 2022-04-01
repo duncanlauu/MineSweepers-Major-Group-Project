@@ -22,7 +22,7 @@ export default function Sidepanel2(props) {
 
 
     const getUserChats = (e) => {
-        const username = localStorage.username
+        const username = JSON.parse(localStorage.getItem('user')).username
         axiosInstance.get(`http://127.0.0.1:8000/api/chat/?username=${username}`)
             .then(res => {
                 let userChats = res.data;
@@ -53,11 +53,11 @@ export default function Sidepanel2(props) {
     function getChatName(chat) {
         let chatName = "undefined";
         if (chat.group_chat == false) {
-            console.log(localStorage.username)
+            console.log(JSON.parse(localStorage.getItem('user')).username)
             console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != localStorage.username) {
+                    if (participant.username != JSON.parse(localStorage.getItem('user')).username) {
                         chatName = participant.username;
                     }
                 }
@@ -91,7 +91,7 @@ export default function Sidepanel2(props) {
 
 
     return (
-        <div id="sidepanel">
+        <div id="sidepanel" style={{ height:"100%", overflowY:"scroll" }}>
             <div id="profile">
                 {/* <div className="wrap">
                     <ImageDiv>

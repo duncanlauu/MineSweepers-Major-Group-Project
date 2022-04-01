@@ -13,11 +13,9 @@ export default function Logout() {
         const response = axiosInstance.post('user/log_out/blacklist/', {
             refresh_token: localStorage.getItem('refresh_token'),
         });
-        localStorage.removeItem('access_token'); // remove the tokens from local storage
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('hasRated')
-        setAuth({})
+        localStorage.clear()
+        setAuth({});
+        // setAuth({ user: undefined });
         setHasRated({})
         axiosInstance.defaults.headers['Authorization'] = null; // remove the headers
         navigate('/')

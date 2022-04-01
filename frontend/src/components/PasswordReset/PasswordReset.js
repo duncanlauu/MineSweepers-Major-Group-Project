@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import {Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand} from 'reactstrap'
-import {HeadingText, LoginContainer, ParaText} from './PasswordResetElements'
+import React, { useState } from 'react'
+import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
+import { HeadingText, LoginContainer, ParaText } from './PasswordResetElements'
 
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
-import Nav from '../Nav/Nav'
+import { useNavigate } from "react-router";
+import MainNav from '../Nav/MainNav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -36,7 +36,7 @@ export default function SignIn() {
             })
             .then((response) => {
                 console.log(response)
-                navigate("/home") // should go to a webiste that says password reset email sent
+                navigate("/instructions_sent/") // should go to a webiste that says password reset email sent
             })
             .catch((e) => {
                 setEmailErr(e.response.data.email)
@@ -44,22 +44,23 @@ export default function SignIn() {
     }
 
     return (
-        <div style={{ overflow:"hidden" }}>
+        <div style={{ overflow: "hidden" }}>
             <Row>
-                <Nav />
+                <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <Row style={{marginTop: "6rem"}}>
-                    <Col/>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
                     <Col>
-                        <HeadingText>Forgot your Password?</HeadingText><br/>
+                        <HeadingText>Forgot your Password?</HeadingText><br />
                         <ParaText>Don't worry, it happens to the best of us.</ParaText>
                         <LoginContainer>
-                            <form style={{ width:"80%" }}>
+                            <form style={{ width: "80%" }}>
                                 <FormGroup>
                                     <Label><ParaText>Email</ParaText></Label>
                                     <Input
                                         name="email"
+                                        data-testid="email"
                                         onChange={handleChange}
                                         style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         required
@@ -67,10 +68,10 @@ export default function SignIn() {
                                 </FormGroup>
                                 <FormGroup>
                                     <Col sm={{ size: 10, offset: 3 }}>
-                                        <Button 
-                                            type="submit" 
+                                        <Button
+                                            type="submit"
                                             onClick={handleSubmit}
-                                            style={{ backgroundColor: "#653FFD"}}>
+                                            style={{ backgroundColor: "#653FFD" }}>
                                             Send Reset Email
                                         </Button>
                                     </Col>
@@ -78,7 +79,7 @@ export default function SignIn() {
                             </form>
                         </LoginContainer>
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         </div>

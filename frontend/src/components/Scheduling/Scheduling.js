@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Button, Col, Container, FormGroup, Input, Label, Row} from "reactstrap";
 import {FormLayout, HeadingText, ParaText, SchedulingContainer} from "./SchedulingElements";
-import useGetUser from "../../helpers";
 import {useNavigate, useParams} from "react-router";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
@@ -13,7 +12,7 @@ export default function Scheduling() {
     const {club_id} = useParams();
     console.log("Club ID: " + club_id);
 
-    const user = useGetUser();
+    const user = JSON.parse(localStorage.getItem('user'));
     const [books, setBooks] = useState([]);
     const [bookData, setBookData] = useState([]);
 
@@ -129,7 +128,10 @@ export default function Scheduling() {
 
     if (books.length > 0) {
         return (
-            <div id="ParentDiv">
+            <div
+                id="ParentDiv"
+                data-testid="form"
+            >
                 <Row>
                 </Row>
                 <Container fluid>
@@ -226,7 +228,6 @@ export default function Scheduling() {
                                     <div>{linkErr}</div>
 
 
-
                                     <FormGroup>
                                         <Col sm={{size: 10, offset: 5}}>
                                             <Button
@@ -258,9 +259,7 @@ export default function Scheduling() {
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                            <HeadingText
-                                data-testid="waiting_message"
-                            >Please wait for the book recommendations</HeadingText>
+                            <HeadingText>Please wait for the book recommendations</HeadingText>
                             <LoadingIndicator/>
                         </Col>
                         <Col/>

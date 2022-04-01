@@ -7,8 +7,8 @@ from faker import Faker
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 from pandas import read_csv
-from app.models import Book, Comment, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
-    TimePeriod, Post
+from app.models import Book, Comment, Message, Reply, User, BookRating, Club, Meeting, get_all_users_related_to_a_club, generate_link, \
+    TimePeriod, Post, Chat
 from app.management.commands.helpers import print_info
 
 
@@ -26,6 +26,7 @@ class Command(BaseCommand):
         time_function(seed_friend_requests)
         time_function(seed_meetings)
         time_function(seed_feed)
+        time_function(seed_messages)
         print_info()
 
 
@@ -83,7 +84,7 @@ def seed_default_objects():
     add_read_and_liked_books(books, val)
     val.add_friend(jeb)
     val.add_friend(bob)
-    val.add_friend(billie)
+    val.add_friend(billie) 
     jeb.add_friend(val)
     jeb.add_friend(bob)
     jeb.add_friend(billie)
@@ -94,6 +95,19 @@ def seed_default_objects():
     billie.add_friend(bob)
     billie.add_friend(val)
 
+    jeb_billie_chat = Chat.objects.create()
+    jeb_billie_chat.participants.set([jeb, billie])
+    jeb_val_chat = Chat.objects.create()
+    jeb_val_chat.participants.set([jeb, val])
+    jeb_bob_chat = Chat.objects.create()
+    jeb_bob_chat.participants.set([jeb, bob])
+    val_billie_chat = Chat.objects.create()
+    val_billie_chat.participants.set([val, billie])
+    val_bob_chat = Chat.objects.create()
+    val_bob_chat.participants.set([val, bob])
+    billie_bob_chat = Chat.objects.create()
+    billie_bob_chat.participants.set([billie, bob])
+
     kerbal = Club.objects.create(
         name="Kerbal book club",
         description="After our success with space programmes, we decided to start a book club",
@@ -101,6 +115,7 @@ def seed_default_objects():
     )
     kerbal.admins.set([bob])
     kerbal.members.set([val, billie])
+    kerbal.club_chat.participants.set([jeb, billie, bob, val])
     kerbal.books.set(get_n_random_books_from(10, books))
     kerbal.save()
 
@@ -240,6 +255,8 @@ def seed_friends():
         for friend in potential_friends:
             user.add_friend(friend)
             friend.add_friend(user)
+            chat = Chat.objects.create() 
+            chat.participants.set([user, friend]) 
         user.save()
         print(f'Created all friends for {user}')
 
@@ -312,6 +329,29 @@ def seed_replies(comment, user):
         for i in range(0, num_of_replies):
             create_reply(friend, faker, comment)
         print(f'Created all replies for {friend}')
+
+def seed_messages():
+    """Seed a number of messages per chat"""
+    min_number_of_messages = 2
+    max_number_of_messages = 5
+    all_chats = Chat.objects.all()
+    faker = Faker('en_GB')
+    for chat in all_chats:
+        num_of_messages_to_generate = random.randint(
+            min_number_of_messages, max_number_of_messages)
+        chat_participants = chat.participants.all()
+        while(num_of_messages_to_generate > 0):
+            for participant in chat_participants:
+                message = Message.objects.create(
+                    author = participant,
+                    content = faker.text(max_nb_chars=20)
+                )
+                chat.messages.add(message)
+                num_of_messages_to_generate -= 1
+                if(num_of_messages_to_generate == 0):
+                    print(f'Created all messages for {chat}')
+                    break
+    print(f'Created all messages for all chats')
 
 
 def create_user(faker, books):
@@ -515,6 +555,7 @@ def generate_club_users(club, num_of_members, num_of_admins, num_of_applicants):
     applicants = users[num_of_members + num_of_admins:]
     club.members.set(members)
     club.admins.set(admins)
+    club.club_chat.participants.set([club.owner] + members + admins)
     club.applicants.set(applicants)
     return club
 

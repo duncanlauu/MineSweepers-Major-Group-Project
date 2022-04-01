@@ -2,12 +2,11 @@ import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Col, Container, Row} from "reactstrap";
 import {HeadingText, ParaText} from "../CreateClub/CreateClubElements";
-import useGetUser from "../../helpers";
 import {MeetingProfile} from "./MeetingPageElements";
 
 
 export default function Meetings() {
-    const user = useGetUser()
+    const user = JSON.parse(localStorage.getItem('user'))
     const [meetings, updateMeetings] = useState([])
 
     useEffect(() => {
@@ -56,7 +55,7 @@ export default function Meetings() {
                                                 <Col xs={2}>
                                                     <a href={`/book_profile/${meeting['book']['ISBN']}`}>
                                                         <img src={meeting['book']['image_links_small']}
-                                                             alt={"The book's cover"}/>
+                                                             alt={"The book's cover"} data-testid="image"/>
                                                     </a>
                                                 </Col>
                                                 <Col xs={6}>
@@ -79,7 +78,10 @@ export default function Meetings() {
         );
     } else {
         return (
-            <div id="ParentDiv">
+            <div
+                id="ParentDiv"
+                data-testid="waiting_message"
+            >
                 <Row>
                 </Row>
                 <Container fluid>
