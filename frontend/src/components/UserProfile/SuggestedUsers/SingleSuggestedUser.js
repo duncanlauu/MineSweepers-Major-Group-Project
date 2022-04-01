@@ -17,44 +17,9 @@ export default function SingleSuggestedUser(props) {
 
     useEffect(() => {
         setCurrentSuggestedUser(props.suggestedUser)
-        getSuggestedUserName(props.suggestedUser.id)
-        getSuggestedUserEmail(props.suggestedUser.id)
+        setSuggestedUserName(props.suggestedUser.username)
+        setSuggestedUserEmail(props.suggestedUser.email)
     }, []);
-
-
-    const getSuggestedUserName = (suggestedUser_id) => {
-        axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
-        .then((res) => {
-            setSuggestedUserName(res.data.username)
-        })
-        .catch(error => console.error(error));
-    }
-
-    const getSuggestedUserEmail = (suggestedUser_id) => {
-        axiosInstance.get(`user/get_update/${suggestedUser_id}/`)
-        .then((res) => {
-            setSuggestedUserEmail(res.data.email)
-        })
-        .catch(error => console.error(error));
-    }
-
-    const postFriendRequest = (receiver, e) => {
-        axiosInstance
-            .post("friend_requests/", {
-                other_user_id: receiver
-            })
-    }
-
-    // not used at this point.
-    const cancelFriendRequest = (receiver, e) => {
-        axiosInstance
-            .delete("friend_requests/", {
-                data: {
-                    other_user_id: receiver,
-                    action: "cancel"
-                }
-            })
-    }
 
     const navigateToProfile = () => {
         navigate(`/user_profile/${currentSuggestedUser.id}/`)
@@ -63,7 +28,6 @@ export default function SingleSuggestedUser(props) {
 
     return (
         <div className="friend" key={currentSuggestedUser.id} style={{marginBottom: "1rem", marginTop: "1rem"}}>
-            {/* <h1> {currentSuggestedUser.id} </h1> */}
                 <SuggestedUserLine>
                     <Row style={{height: "4rem"}}>
                         <Col xs="2">

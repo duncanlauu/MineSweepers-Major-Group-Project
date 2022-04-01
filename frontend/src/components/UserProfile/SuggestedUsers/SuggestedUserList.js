@@ -15,8 +15,7 @@ export default function SuggestedUserList(props) {
         axiosInstance
             .get(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
             .then((res) => {
-                console.log("get-request for suggested users worked!")
-                console.log(res.data)
+                console.log('suggested users', res.data)
                 const allSuggestedUsers = res.data;
                 setSuggestedUsers(allSuggestedUsers)
             })
@@ -33,7 +32,6 @@ export default function SuggestedUserList(props) {
                     
 
                     {mySuggestedUsers.map((suggestedUser, index) => {
-                        console.log(suggestedUser.recommended_user);
                         return (
                             <div key={suggestedUser.id}>
                                 <SingleSuggestedUser suggestedUser={suggestedUser.recommended_user}/>
