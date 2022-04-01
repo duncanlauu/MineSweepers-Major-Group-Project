@@ -17,55 +17,59 @@ import top12Global from '../mocksData/getTop12Global.json'
 import clubs from '../mocksData/clubs.json'
 import ratings from '../mocksData/ratings.json'
 import ratings2 from '../mocksData/ratings2.json'
+import userChats from '../mocksData/getUserChats.json'
 
 
 const generateGetResponse = (url) => {
     switch (url) {
-        case "genres?n=10":
-            return {data: tenGenres};
-        case "get_current_user":
-            return {data: currentUser};
-        case "recommender/0/10/1/top_n/":
-            return {data: myTop10Recommendations}
-        case "recommender/0/10/top_n_global/":
-            return {data: top10GlobalRecommendations}
-        case "recommender/0/10/top_n_global_for_genre/history/":
-            return {data: top10GlobalHistoryRecommendations}
-        case "recommender/0/10/1/top_n_for_genre/history/":
-            return {data: myTop10HistoryRecommendations}
-        case "books/0195153448":
-            return {data: bookDetails1}
-        case "books/0380715899":
-            return {data: bookDetails2}
-        case "books/00000000001":
-            return {data: bookDetails3}
-        case "recommender/0/10/1/top_n_clubs_top_club_books/":
-            return {data: topClubs}
-        case "/user/get_update/1/":
-            return {data: currentUser};
-        case "user/get_update/1/":
-            return {data: currentUser};
-        case "user/get_update/2/":
-            return {data: currentUser2};
-        case "user/get_update/3/":
-            return {data: currentUser3};
-        case "user/get_update/4/":
-            return {data: currentUser4};
-        case "user/get_update/5/":
-            return {data: currentUser5};
-        case "meetings/1":
-            return {data: myMeetings};
+        case `genres?n=10`:
+            return { data: tenGenres };
+        case `get_current_user`:
+            return { data: currentUser };
+        case `recommender/0/10/1/top_n/`:
+            return { data: myTop10Recommendations }
+        case `recommender/0/10/top_n_global/`:
+            return { data: top10GlobalRecommendations }
+        case `recommender/0/10/top_n_global_for_genre/history/`:
+            return { data: top10GlobalHistoryRecommendations }
+        case `recommender/0/10/1/top_n_for_genre/history/`:
+            return { data: myTop10HistoryRecommendations }
+        case `books/0195153448`:
+            return { data: bookDetails1 }
+        case `books/0380715899`:
+            return { data: bookDetails2 }
+        case `books/00000000001`:
+            return { data: bookDetails3 }
+        case `recommender/0/10/1/top_n_clubs_top_club_books/`:
+            return { data: topClubs }
+        case `/user/get_update/1/`:
+            return { data: currentUser };
+        case `user/get_update/1/`:
+            return { data: currentUser };
+        case `user/get_update/2/`:
+            return { data: currentUser2 };
+        case `user/get_update/3/`:
+            return { data: currentUser3 };
+        case `user/get_update/4/`:
+            return { data: currentUser4 };
+        case `user/get_update/5/`:
+            return { data: currentUser5 };
+        case `meetings/1`:
+            return { data: myMeetings };
         case `/recommender/0/12/top_n_global/`:
-            return {data: top12Global};
+            return { data: top12Global };
         case `clubs/`:
-            return {data: clubs};
+            return { data: clubs };
         case `ratings/`:
-            return {data: ratings};
+            return { data: ratings };
         case `ratings/other_user/2`:
-            return {data: ratings2};
+            return { data: ratings2 };
+        case `chat/?username=test`:
+            return { data: userChats }
+
         default:
             console.log("no matching mock for url", url)
-            return {data: {}};
+            return { data: {} };
     }
 }
 
@@ -73,7 +77,7 @@ const generatePostResponse = (url, data) => {
     switch (url) {
         case "clubs/":
             if (data.name !== "") {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             } else {
                 return Promise.reject({
                     response: {
@@ -85,9 +89,9 @@ const generatePostResponse = (url, data) => {
             }
         case "token/":
             if (data.password === "Password123") {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             } else {
-                return Promise.reject({data: {}})
+                return Promise.reject({ data: {} })
             }
         case `user/sign_up/`:
             if (data.first_name === "") {
@@ -155,11 +159,11 @@ const generatePostResponse = (url, data) => {
                     }
                 })
             } else {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             }
         default:
             console.log("no matching mock for url ", url)
-            return Promise.resolve({data: {}});
+            return Promise.resolve({ data: {} });
     }
 }
 
@@ -172,18 +176,18 @@ export default {
             }
         }
     },
-    get: jest.fn(() => Promise.resolve({data: {}})),
-    post: jest.fn(() => Promise.resolve({data: {}})),
-    put: jest.fn(() => Promise.resolve({data: {}})),
-    delete: jest.fn(() => Promise.resolve({data: {}})),
+    get: jest.fn(() => Promise.resolve({ data: {} })),
+    post: jest.fn(() => Promise.resolve({ data: {} })),
+    put: jest.fn(() => Promise.resolve({ data: {} })),
+    delete: jest.fn(() => Promise.resolve({ data: {} })),
     create: jest.fn(function () {
         return {
             interceptors: {
                 request: {
-                    use: jest.fn(() => Promise.resolve({data: {}})),
+                    use: jest.fn(() => Promise.resolve({ data: {} })),
                 },
                 response: {
-                    use: jest.fn(() => Promise.resolve({data: {}})),
+                    use: jest.fn(() => Promise.resolve({ data: {} })),
                 }
             },
             defaults: {
@@ -196,8 +200,8 @@ export default {
             },
             get: jest.fn((url) => Promise.resolve(generateGetResponse(url))),
             post: jest.fn((url, data) => generatePostResponse(url, data)),
-            put: jest.fn(() => Promise.resolve({data: {}})),
-            delete: jest.fn(() => Promise.resolve({data: {}})),
+            put: jest.fn(() => Promise.resolve({ data: {} })),
+            delete: jest.fn(() => Promise.resolve({ data: {} })),
         }
     }),
 };

@@ -31,22 +31,25 @@ afterEach(() => {
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
     useParams: () => ({
-        chatID: '20'
+        chatID: '19'
     }),
-    useRouteMatch: () => ({ url: '/chat/20' }),
+    useRouteMatch: () => ({ url: '/chat/19' }),
 }));
 
 describe('Components exist', () => {
 
     test('contains heading', async () => {
+
+        window.HTMLElement.prototype.scrollIntoView = function () { };
+
         act(() => {
             render(<ChatUI />, { wrapper: MemoryRouter });
         })
 
-        // await waitFor(() => {
-        //     const headingText = screen.getByText(/conversations/i)
-        //     expect(headingText).toBeInTheDocument()
-        // })
+        await waitFor(() => {
+            const headingText = screen.getByText(/conversations/i)
+            expect(headingText).toBeInTheDocument()
+        })
     })
 
     // test 

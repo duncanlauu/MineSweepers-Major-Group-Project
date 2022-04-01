@@ -39,7 +39,7 @@ export default function Sidepanel(props) {
             //     lastMessage={c.last_message}
             //     lastUpdated={c.last_updated}
             // />
-            <div>
+            <div key={c.id}>
                 {getChatName(c) == "Bookgle User (Left the chat)"
                     ?
                     <div style={{ opacity: "25%" }}>
