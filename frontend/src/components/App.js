@@ -66,9 +66,8 @@ export default class App extends Component {
                                             <Route path='user_profile/' element={<UserProfile />} />
                                             <Route path='user_profile/:user_id' element={<OtherUserProfile />} />
                                             <Route path="chat/:chatID" element={<ChatWrapper />} />
-                                            <Route path="/chat/" element={<ChatWrapper />} />
-                                            <Route path="/chat2/" element={<ChatUI />} />
-                                            <Route path="/chat2/:chatID" element={<ChatUI />} />
+                                            <Route path="/chat/" element={<ChatUI />} />
+                                            <Route path="/chat/:chatID" element={<ChatUI />} />
                                             <Route path="/scheduling/:club_id" element={<Scheduling />} />
                                             <Route path="/meetings/" element={<Meetings />} />
                                             <Route path="/recommendations/" element={<RecommenderPage />} />

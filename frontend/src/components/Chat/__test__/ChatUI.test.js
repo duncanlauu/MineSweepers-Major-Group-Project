@@ -6,7 +6,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { act } from 'react-dom/test-utils';
-import RecommenderPage from '../RecommenderPage';
+import ChatUI from '../ChatUI';
 import routerWrapper from '../../../test-helpers'
 import fakeLocalStorage from "../../../fakeLocalStorage";
 import user from "../../../mocksData/getCurrentUser.json";
@@ -32,14 +32,17 @@ describe('Components exist', () => {
 
     test('contains heading', async () => {
         act(() => {
-            render(routerWrapper(<RecommenderPage />))
+            render(routerWrapper(<ChatUI />))
         })
 
         await waitFor(() => {
-            const headingText = screen.getByText(/Books For You/i)
+            const headingText = screen.getByText(/conversations/i)
             expect(headingText).toBeInTheDocument()
         })
     })
 
-    // test empty query and query with one club + one friend
+    // test 
+    // 1. no chats and 
+    // club + one friend
+    // --> Need to specify option with which JSON to return
 })
