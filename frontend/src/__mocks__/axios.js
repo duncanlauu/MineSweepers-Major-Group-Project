@@ -4,11 +4,15 @@ import tenGenres from '../mocksData/getTenGenres.json'
 import top10GlobalRecommendations from '../mocksData/getTop10GlobalRecommendations.json'
 import top10GlobalHistoryRecommendations from '../mocksData/getTop10GlobalHistoryRecommendations.json'
 import myTop10HistoryRecommendations from '../mocksData/getMyTop10HistoryRecommendations.json'
-import bookDetails from '../mocksData/getBookDetails.json'
+import bookDetails1 from '../mocksData/getBookDetails1.json'
+import bookDetails2 from '../mocksData/getBookDetails2.json'
+import bookDetails3 from '../mocksData/getBookDetails3.json'
 import topClubs from '../mocksData/getTopClubs.json'
 import myMeetings from '../mocksData/getMyMeetings.json'
 import top12Global from '../mocksData/getTop12Global.json'
 import clubs from '../mocksData/clubs.json'
+import ratings from '../mocksData/ratings.json'
+import ratings2 from '../mocksData/ratings2.json'
 
 
 const generateGetResponse = (url) => {
@@ -26,7 +30,11 @@ const generateGetResponse = (url) => {
         case "recommender/0/10/1/top_n_for_genre/history/":
             return {data: myTop10HistoryRecommendations}
         case "books/0195153448":
-            return {data: bookDetails}
+            return {data: bookDetails1}
+        case "books/0380715899":
+            return {data: bookDetails2}
+        case "books/00000000001":
+            return {data: bookDetails3}
         case "recommender/0/10/1/top_n_clubs_top_club_books/":
             return {data: topClubs}
         case "/user/get_update/1/":
@@ -37,6 +45,10 @@ const generateGetResponse = (url) => {
             return {data: top12Global};
         case `clubs/`:
             return {data: clubs};
+        case `ratings/`:
+            return {data: ratings};
+        case `ratings/other_user/2`:
+            return {data: ratings2};
         default:
             console.log("no matching mock for url ", url)
             return {data: {}};
@@ -88,7 +100,7 @@ const generatePostResponse = (url, data) => {
                         }
                     }
                 })
-            } else if(data.email === "") {
+            } else if (data.email === "") {
                 return Promise.reject({
                     response: {
                         data: {
@@ -96,7 +108,7 @@ const generatePostResponse = (url, data) => {
                         }
                     }
                 })
-            } else if(data.password === "") {
+            } else if (data.password === "") {
                 return Promise.reject({
                     response: {
                         data: {
@@ -104,7 +116,7 @@ const generatePostResponse = (url, data) => {
                         }
                     }
                 })
-            } else if(data.bio === "") {
+            } else if (data.bio === "") {
                 return Promise.reject({
                     response: {
                         data: {
@@ -112,7 +124,7 @@ const generatePostResponse = (url, data) => {
                         }
                     }
                 })
-            } else if(data.location === "") {
+            } else if (data.location === "") {
                 return Promise.reject({
                     response: {
                         data: {
@@ -120,7 +132,7 @@ const generatePostResponse = (url, data) => {
                         }
                     }
                 })
-            } else if(data.birthday === "") {
+            } else if (data.birthday === "") {
                 return Promise.reject({
                     response: {
                         data: {

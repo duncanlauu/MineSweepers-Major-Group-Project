@@ -1,14 +1,7 @@
 import React, {useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Container, Col, Row} from "reactstrap";
-import {
-    ClubListItem,
-    Heading2Text,
-    HeadingText,
-    RecommendationContainer,
-    RecommendationInfo,
-    FeedContainer
-} from "./HomePageElements";
+import {ClubListItem, Heading2Text, HeadingText, RecommendationContainer, RecommendationInfo} from "./HomePageElements";
 import Gravatar from "react-gravatar";
 import MainNav from "../Nav/MainNav";
 import {Link} from "react-router-dom";
