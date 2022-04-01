@@ -19,6 +19,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import { RatingsProvider } from "./context/RatingsProvider";
 import RequireAuth from "./RequireAuth/RequireAuth";
 import RequireRatings from "./RequireRating/RequireRating";
+import RequireNotLoggedIn from "./RequireNotLoggedIn/RequireNotLoggedIn";
 import SignUpRating from "./SignUpRating/SignUpRating";
 import Scheduling from "./Scheduling/Scheduling";
 import Meetings from "./Meetings/Meetings";
@@ -45,19 +46,18 @@ export default class App extends Component {
                         <RatingsProvider>
                             <Routes>
                                 <Route path='/' element={<Layout />}>
-                                    {/* public routes */}
-                                    <Route path='/' element={<LandingPage />} />
-                                    <Route path='log_in' element={<Login />} />
-                                    <Route path='sign_up' element={<SignUp />} />
-                                    <Route path='password_reset' element={<PasswordReset />} />
-                                    <Route path='password_reset/instructions_sent'
-                                        element={<PasswordResetMailSentConfirmation />} />
-                                    <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
+                                    <Route element={<RequireNotLoggedIn />}>
+                                        <Route path='/' element={<LandingPage />} />
+                                        <Route path='log_in' element={<Login />} />
+                                        <Route path='sign_up' element={<SignUp />} />
+                                        <Route path='password_reset' element={<PasswordReset />} />
+                                        <Route path='password_reset/instructions_sent' element={<PasswordResetMailSentConfirmation />} />
+                                        <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
+                                    </Route>
 
-                                    {/* protected routes */}
                                     <Route element={<RequireAuth />}>
-                                        <Route path='sign_up/rating' element={<SignUpRating />} />
                                         <Route path='log_out' element={<Logout />} />
+                                        <Route path='sign_up/rating' element={<SignUpRating />} />
                                         <Route element={<RequireRatings />}>
                                             <Route path='home' element={<HomePage />} />
                                             <Route path='club_profile/:club_id' element={<ClubProfile />} />
