@@ -53,7 +53,7 @@ class Chat2 extends React.Component {
     }
 
     addMessage(message) {
-        if (!(JSON.stringify(message) === JSON.stringify(this.state.messages[this.state.messages.length - 1]))) { //fix duplicate messages when sending, horrible implementation
+        if (!(JSON.stringify(message) === JSON.stringify(this.state.messages[this.state.messages.length - 1]))) {
             this.setState({messages: [...this.state.messages, message]});
         }
     }
@@ -70,7 +70,7 @@ class Chat2 extends React.Component {
 
         e.preventDefault();
         const messageObject = {
-            from: this.currentUser, //broken
+            from: this.currentUser, 
             content: this.state.message,
             chatId: this.props.chatID,
         };
