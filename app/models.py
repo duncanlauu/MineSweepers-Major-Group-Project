@@ -266,57 +266,76 @@ class Club(models.Model):
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
 
-    def add_member(self, user):
+    def add_member(self, user): # chat tests missing
+        if user in self.applicants.all():
+            self.applicants.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)    
         user.add_club(self)
         self.members.add(user)
-        self.club_chat.participants.add(user)  # might need to be moved TBD
+        self.club_chat.participants.add(user)
 
-    def remove_member(self, user):
-        user.remove_club(self)
-        self.members.remove(user)
-        self.club_chat.participants.remove(user)  # might need to be moved TBD
+    def remove_member(self, user):   # chat tests missing, add clubs to fixtures
+        if user in self.members.all():
+            self.members.remove(user)
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
-    def member_count(self):
+    def member_count(self): # done
         return self.members.count()
 
-    def promote(self, user):
+    def promote(self, user): #done
         self.admins.add(user)
-        self.members.remove(user)
+        if user in self.members.all():
+            self.members.remove(user)
 
-    def demote(self, user):
-        self.admins.remove(user)
+    def demote(self, user): #done
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.members.add(user)
 
-    def admin_count(self):
+    def admin_count(self): #done
         return self.admins.count()
 
-    def add_applicant(self, user):
+    def add_applicant(self, user): #done
         self.applicants.add(user)
 
-    def remove_applicant(self, user):
-        self.applicants.remove(user)
+    def remove_applicant(self, user): #done
+        if user in self.applicants.all():
+            self.applicants.remove(user)
 
-    def applicant_count(self):
+    def applicant_count(self): #done
         return self.applicants.count()
 
-    def total_people_count(self):
+    def total_people_count(self): #done
         return self.members.count() + self.admins.count() + 1
 
-    def add_banned_user(self, user):
-        user.remove_club(self)
+    def add_banned_user(self, user): # chat tests missing, add clubs to fixtures
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.members.all():
+            self.members.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.banned_users.add(user)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
-    def remove_banned_user(self, user):
-        self.banned_users.remove(user)
+    def remove_banned_user(self, user):  #done
+        if user in self.banned_users.all():
+            self.banned_users.remove(user)
 
-    def banned_user_count(self):
+    def banned_user_count(self):  #done
         return self.banned_users.count()
 
     def add_book(self, book):
         self.books.add(book)
 
     def remove_book(self, book):
-        self.books.remove(book)
+        if book in self.books:
+            self.books.remove(book)
 
     def book_count(self):
         return self.books.count()
@@ -327,13 +346,17 @@ class Club(models.Model):
     def switch_public(self):
         self.public = not self.public
 
-    def remove_user_from_club(self, user):
-        self.members.remove(user)
-        self.admins.remove(user)
-        self.applicants.remove(user)
-        self.banned_users.remove(user)
+    def leave_club(self, user): # chat tests missing, add clubs to fixtures
+        if user in self.members.all():
+            self.members.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
-    def transfer_ownership(self, user):
+    def transfer_ownership(self, user): #done
         self.add_member(self.owner)
         self.promote(self.owner)
         self.owner = user

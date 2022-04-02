@@ -150,6 +150,13 @@ class SingleClubAPITestCase(TestCase):
         self.assertTrue(previous_owner in self.club.admins.all())
         self.assertEqual(Club.objects.get(pk=1).owner, new_owner)
 
+    def test_put_leave_club(self):
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 2, 'action': 'leave'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(self.club.members.filter(pk=2).exists())
+        self.assertTrue(self.member in self.club.members.all())
+
     def test_invalid_put_request(self):
         response = self.client.put(
             reverse('app:manage_club', kwargs={'id': 1, 'action': 'invalid', 'user_id': 4}))

@@ -75,7 +75,7 @@ class SingleClub(APIView):
             if user:
                 club.remove_user_from_club(user)
                 if action == 'accept':
-                    club.add_member(user) #.members.add(user) 
+                    club.add_member(user) 
                     return self.update(request, club)
 
                 elif action == 'remove':
@@ -108,6 +108,10 @@ class SingleClub(APIView):
 
                 elif action == 'transfer':
                     club.transfer_ownership(user)
+                    return self.update(request, club)
+
+                elif action =='leave':
+                    club.leave_club(user)
                     return self.update(request, club)
 
                 else:
