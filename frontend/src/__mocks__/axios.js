@@ -76,6 +76,8 @@ const generateGetResponse = (url) => {
             return {data: top12Global};
         case `clubs/`:
             return {data: clubs};
+        case `clubs/user/1`:
+            return {data: clubs};
         case `friend_requests/`:
             return {data: friend_requests};
         case `friends/`:
@@ -164,7 +166,7 @@ const generateGetResponse = (url) => {
             return {data: posts};
         case `recommender/0/20/1/top_n_users_random_books/`:
             return {data: recommended_users};
-        case `chat/?username=test`:
+        case `chat/?username=test1`:
             return {data: userChats}
         default:
             console.log("no matching mock for url", url)
