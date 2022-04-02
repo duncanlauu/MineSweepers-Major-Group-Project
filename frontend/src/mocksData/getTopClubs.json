@@ -3,45 +3,35 @@
     "club": {
       "id": 1,
       "name": "Club 1",
-      "owner": {
-        "email": "user1@example.org"
-      }
+      "owner": 1
     }
   },
   {
     "club": {
       "id": 2,
       "name": "Club 2",
-      "owner": {
-        "email": "user2@example.org"
-      }
+      "owner": 2
     }
   },
   {
     "club": {
       "id": 3,
       "name": "Club 3",
-      "owner": {
-        "email": "user3@example.org"
-      }
+      "owner": 3
     }
   },
   {
     "club": {
       "id": 4,
       "name": "Club 4",
-      "owner": {
-        "email": "user4@example.org"
-      }
+      "owner": 4
     }
   },
   {
     "club": {
       "id": 5,
       "name": "Club 5",
-      "owner": {
-        "email": "user5@example.org"
-      }
+      "owner": 5
     }
   }
 ]
