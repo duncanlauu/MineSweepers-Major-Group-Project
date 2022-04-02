@@ -93,8 +93,8 @@ export const UserNameText = styled.text`
 
 export const TabsText = styled.text`
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 800;
-  font-size: 25px;
+  font-weight: 700;
+  font-size: 20px;
   color: #585858;
 `;
 export const CommentLine = styled.div`
@@ -175,8 +175,35 @@ export const PostHeadingText = styled.text`
 `;
 
 export const BookLine = styled.div`
-  height: 5rem;
+  height: 7rem;
   width: 100%;
   background-color: #f5f5f5;
   border-radius: 0px 10px 10px 0px;
+  margin-bottom: 1rem;
+`;
+
+export const BookNameContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  overflow-y: scroll;
+`;
+
+export const BookStarsContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  overflow-y: scroll;
+`;
+
+export const ParaText = styled.text`
+  font-family: "Source Sans Pro", sans-serif;
+  color: #653FFD;
 `;

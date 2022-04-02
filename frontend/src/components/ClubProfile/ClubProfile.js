@@ -24,19 +24,19 @@ const ClubProfile = () => {
       .get(`singleclub/${club_id}`)
       .then((res) => {
         console.log(res);
-        setClub(res.data);
-        console.log("Club Data: ", res.data);
+        setClub(res.data.club);
+        console.log("Club Data: ", res.data.club);
         console.log("Current user is: ", currentUser);
         const currentUserId = currentUser.id;
-        if (res.data.members.includes(currentUserId)) {
+        if (res.data.club.members.includes(currentUserId)) {
           setMemberStatus("member");
-        } else if (res.data.applicants.includes(currentUserId)) {
+        } else if (res.data.club.applicants.includes(currentUserId)) {
           setMemberStatus("applied");
-        } else if (res.data.admins.includes(currentUserId)) {
+        } else if (res.data.club.admins.includes(currentUserId)) {
           setMemberStatus("admin");
-        } else if (res.data.banned_users.includes(currentUserId)) {
+        } else if (res.data.club.banned_users.includes(currentUserId)) {
           setMemberStatus("banned");
-        } else if (res.data.owner === currentUserId) {
+        } else if (res.data.club.owner === currentUserId) {
           setMemberStatus("owner");
         } else {
           setMemberStatus("notApplied");
