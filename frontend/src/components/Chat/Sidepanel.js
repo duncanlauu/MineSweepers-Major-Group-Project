@@ -35,7 +35,7 @@ export default function Sidepanel(props) {
             //     key={c.id}
             //     name={getChatName(c)}
             //     gravatar={getChatGravatar(c)}
-            //     chatURL={`/chat2/${c.id}`}
+            //     chatURL={`/chat/${c.id}`}
             //     lastMessage={c.last_message}
             //     lastUpdated={c.last_updated}
             // />
