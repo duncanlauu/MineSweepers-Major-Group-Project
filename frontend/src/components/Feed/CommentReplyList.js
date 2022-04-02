@@ -1,10 +1,10 @@
-import React, { useState, useEffect} from "react"
+import React, {useState, useEffect} from "react"
 import axiosInstance from '../../axios'
-import { Row, Col, Button, Input } from "reactstrap"
+import {Row, Col, Button, Input} from "reactstrap"
 import SingleCommentReply from "./SingleCommentReply";
-import { ReplyLine } from "../UserProfile/UserProfileElements";
+import {ReplyLine} from "../UserProfile/UserProfileElements";
 
-export default function CommentReplyList(props){
+export default function CommentReplyList(props) {
 
     const [currentPost, setCurrentPost] = useState([]);
     const [currentComment, setCurrentComment] = useState([]);
@@ -49,7 +49,7 @@ export default function CommentReplyList(props){
     }
 
 
-    const inputAreaID = "myReply" + currentComment.id 
+    const inputAreaID = "myReply" + currentComment.id
 
     const clearInputField = () => {
         document.getElementById(inputAreaID).value = ''
@@ -65,19 +65,33 @@ export default function CommentReplyList(props){
                         <Row style={{marginBottom: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id={inputAreaID}
-                                    name="myReply"
-                                    placeholder="Leave a reply here..."
-                                    onChange={handleReplyChange}
-                                    style={{ border: "0", backgroundColor: "#fff", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem"}}
-                                /> 
+                                       data-testid={"reply-input"}
+                                       id={inputAreaID}
+                                       name="myReply"
+                                       placeholder="Leave a reply here..."
+                                       onChange={handleReplyChange}
+                                       style={{
+                                           border: "0",
+                                           backgroundColor: "#fff",
+                                           borderBottomLeftRadius: "100px",
+                                           borderTopLeftRadius: "100px",
+                                           height: "3rem"
+                                       }}
+                                />
                             </Col>
                             <Col xs="3">
-                                <Button onClick={(e) => { uploadReply(e, 0) ; clearInputField() }} 
-                                    style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
+                                <Button onClick={(e) => {
+                                    uploadReply(e, 0);
+                                    clearInputField()
+                                }}
+                                        style={{
+                                            borderBottomRightRadius: "100px",
+                                            borderTopRightRadius: "100px",
+                                            height: "3rem"
+                                        }}
                                 >
                                     <p> Send </p>
-                                </Button> 
+                                </Button>
                             </Col>
                         </Row>
                     </div>
@@ -85,10 +99,11 @@ export default function CommentReplyList(props){
 
                     {repliesUnderComment.map((reply, index) => {
                         return (
-                            <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
+                            <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}>
                                 <ReplyLine>
-                                    <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
-                                        reply={reply} updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
+                                    <SingleCommentReply currentPost={currentPost} currentComment={currentComment}
+                                                        reply={reply}
+                                                        updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
                                     />
                                 </ReplyLine>
                             </div>
@@ -97,31 +112,44 @@ export default function CommentReplyList(props){
                 </div>
             )
         } else {
-            return(
+            return (
                 <div>
-                   <div style={{display: "flex", justifyContent: "center"}}>
+                    <div style={{display: "flex", justifyContent: "center"}}>
                         <Row style={{marginBottom: "1rem"}}>
                             <Col xs="9">
                                 <Input type="textarea" rows="1"
-                                    id={inputAreaID}
-                                    name="myReply"
-                                    placeholder="Leave a reply here..."
-                                    onChange={handleReplyChange}
-                                    style={{ border: "0", backgroundColor: "#fff", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem"}}
-                                /> 
+                                       id={inputAreaID}
+                                       name="myReply"
+                                       placeholder="Leave a reply here..."
+                                       onChange={handleReplyChange}
+                                       style={{
+                                           border: "0",
+                                           backgroundColor: "#fff",
+                                           borderBottomLeftRadius: "100px",
+                                           borderTopLeftRadius: "100px",
+                                           height: "3rem"
+                                       }}
+                                />
                             </Col>
                             <Col xs="3">
-                                <Button onClick={(e) => { uploadReply(e, 0) ; clearInputField() }} 
-                                    style={{ borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}
+                                <Button onClick={(e) => {
+                                    uploadReply(e, 0);
+                                    clearInputField()
+                                }}
+                                        style={{
+                                            borderBottomRightRadius: "100px",
+                                            borderTopRightRadius: "100px",
+                                            height: "3rem"
+                                        }}
                                 >
                                     <p> Send </p>
-                                </Button> 
+                                </Button>
                             </Col>
                         </Row>
                     </div>
                 </div>
             )
-            
+
         }
 
     }
@@ -131,7 +159,6 @@ export default function CommentReplyList(props){
             {displayCommentsUnderPost()}
         </>
     )
-
 
 
 }

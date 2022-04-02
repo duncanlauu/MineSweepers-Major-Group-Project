@@ -63,7 +63,7 @@ export default function SinglePersonalPost(props) {
                             }}
                             />
                         </Col>
-                        {props.requestedUser_id == undefined &&
+                        {props.requestedUser_id === undefined &&
                             <Col xs="11" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <div>
                                     <Button style={{ marginRight: "1rem" }} onClick={() => changeModalVisibility()}>

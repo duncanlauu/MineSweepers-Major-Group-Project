@@ -20,6 +20,12 @@ import friends from '../mocksData/friends.json'
 import friends2 from '../mocksData/friends2.json'
 import ratings from '../mocksData/ratings.json'
 import ratings2 from '../mocksData/ratings2.json'
+import replies from '../mocksData/replies.json'
+import replies2 from '../mocksData/replies2.json'
+import replies3 from '../mocksData/replies3.json'
+import replies4 from '../mocksData/replies4.json'
+import replies5 from '../mocksData/replies5.json'
+import comments from '../mocksData/comments.json'
 
 
 const generateGetResponse = (url) => {
@@ -72,6 +78,18 @@ const generateGetResponse = (url) => {
             return {data: ratings};
         case `ratings/other_user/2`:
             return {data: ratings2};
+        case `posts/1/comments/1/replies/`:
+            return {data: replies};
+        case `posts/1/comments/2/replies/`:
+            return {data: replies2};
+        case `posts/1/comments/3/replies/`:
+            return {data: replies3};
+        case `posts/1/comments/4/replies/`:
+            return {data: replies4};
+        case `posts/1/comments/5/replies/`:
+            return {data: replies5};
+        case `posts/1/comments/`:
+            return {data: comments};
         default:
             console.log("no matching mock for url", url)
             return {data: {}};
