@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import {
-  BookProfile,
   ProfileContainer,
   ProfileHeader,
 } from "./ClubProfileElements";
 import MainNav from "../Nav/MainNav";
 import ClubProfileTabs from "./ClubProfileTabs.js";
-import Gravatar from "react-gravatar";
 import { useParams } from "react-router";
 import axiosInstance from "../../axios";
 
 const ClubProfile = () => {
   const { club_id } = useParams();
   const [club, setClub] = useState(null);
-  
+
   const [memberStatus, setMemberStatus] = useState("notApplied");
 
   useEffect(() => {

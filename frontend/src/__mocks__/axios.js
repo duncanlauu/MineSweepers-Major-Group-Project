@@ -18,6 +18,7 @@ import clubs from '../mocksData/clubs.json'
 import ratings from '../mocksData/ratings.json'
 import ratings2 from '../mocksData/ratings2.json'
 import userChats from '../mocksData/getUserChats.json'
+import singleClub1 from '../mocksData/getSingleClub1.json'
 
 
 const generateGetResponse = (url) => {
@@ -66,6 +67,8 @@ const generateGetResponse = (url) => {
             return { data: ratings2 };
         case `chat/?username=test`:
             return { data: userChats }
+        case `singleclub/1`:
+            return { data: singleClub1 }
 
         default:
             console.log("no matching mock for url", url)
