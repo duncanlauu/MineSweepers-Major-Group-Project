@@ -18,7 +18,7 @@ function ChatUI() {
         </Row>
         <Row style={{ height:"37vw" }}>
             <Col xs={1} />
-            <Col xs={3}>
+            <Col xs={3} style={{ height:"36vw" }}>
                 <Container fluid style={{ backgroundColor:"#fff", height:"100%", overflow:"hidden", padding:"0", borderRadius:"10px" }}>
                     <Container style={{ display: "flex", height:"3rem", backgroundColor:"#653FFD", width:"100%", fontFamily:"Source Sans Pro", fontSize:"15px", alignItems:"center", color:"#fff", justifyContent:"flex-start" }}>
                         Conversations
