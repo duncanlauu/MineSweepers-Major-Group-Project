@@ -127,3 +127,24 @@ export const SidePanelContainer = styled.div`
     border-radius: 10px;
     margin-bottom: 3rem;
 `
+
+export const MessageHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`
+
+export const EmptyChatNotif = styled.div`
+    margin-top: 1rem;
+    margin-left: 25rem;
+    height: 3rem;
+    width: fit-content;
+    padding: 1rem;
+    font-size: 18px;
+    border-radius: 5px;
+    font-family: "Source Sans Pro";
+    color: #0057FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`

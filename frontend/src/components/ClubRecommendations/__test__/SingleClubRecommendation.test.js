@@ -30,14 +30,14 @@ describe("Components exist", () => {
     test("contains gravatar", async () => {
         act(() => {
             render(routerWrapper(<SingleClubRecommendation club={{
-                "owner": {"email": "user2@example.org"},
+                "owner": 1,
                 "name": "Club 1",
                 "id": 1
             }}/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByTestId("gravatar")).toBeInTheDocument()
+            expect(screen.getByAltText("Gravatar for test@test.org")).toBeInTheDocument()
         })
     })
 })

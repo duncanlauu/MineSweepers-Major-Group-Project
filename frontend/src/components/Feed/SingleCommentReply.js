@@ -60,7 +60,7 @@ export default function SingleCommentReply(props) {
                                 <h6> {singleReply.content} </h6>
                             </ReplyLineBox>
                         </Col>
-                        {singleReply.author == currentUser.id  &&
+                        {singleReply.author === currentUser.id  &&
                             <Col xs="2" style={{display: "flex", justifyContent: "flex-end"}}>
                                 <Button color="danger" name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} 
                                     style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
