@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {Container, Row, Col, Button} from "reactstrap";
-import {useParams} from "react-router";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Button } from "reactstrap";
+import { useParams } from "react-router";
 import axiosInstance from "../../axios";
 import BookProfileCard from "./BookProfileCard";
 import MainNav from "../Nav/MainNav";
@@ -8,7 +8,8 @@ import { Card, CardSubtitle, CardTitle } from "reactstrap";
 import { useNavigate } from "react-router";
 
 const BookProfilePage = () => {
-    const {book_id} = useParams();
+    let params = useParams();
+    // const {book_id} = useParams();
     const [book, setBook] = useState(null);
     const [toggle, setToggle] = useState(true);
     const [clearable, setClearable] = useState(true);
@@ -19,7 +20,7 @@ const BookProfilePage = () => {
 
     useEffect(() => {
         axiosInstance
-            .get(`books/${book_id}`)
+            .get(`books/${params.book_id}`)
             .then((res) => {
                 console.log(res);
                 setBook(res.data);
@@ -77,10 +78,10 @@ const BookProfilePage = () => {
 
     const handleSubmit = async (e) => {
         if (clearable) {
-            console.log("new rating" + rating + " for book " + book_id);
+            console.log("new rating" + rating + " for book " + params.book_id);
             axiosInstance
                 .post("/ratings/", {
-                    book: book_id,
+                    book: params.book_id,
                     rating: rating * 2,
                 })
                 .then((res) => {
@@ -115,8 +116,8 @@ const BookProfilePage = () => {
 
     return (
         <div>
-            <Row style={{marginBottom: "3rem"}}>
-                <MainNav/>
+            <Row style={{ marginBottom: "3rem" }}>
+                <MainNav />
             </Row>
             <Container fluid>
                 <Row
@@ -128,7 +129,7 @@ const BookProfilePage = () => {
                 >
                     <Col xs="3">
                         <BookProfileCard
-                            id={book_id}
+                            id={params.book_id}
                             image={book.image_links_large}
                             parentCallBack={handleChange}
                             clearable={clearable}
@@ -153,9 +154,9 @@ const BookProfilePage = () => {
                             {clearable ? "Submit rating" : "Update rating"}
                         </Button>
                     </Col>
-                    <Col xs="1"/>
+                    <Col xs="1" />
                     <Col xs="5" style={{}}>
-                        <Card style={{padding: "1rem", borderRadius: "25px"}}>
+                        <Card style={{ padding: "1rem", borderRadius: "25px" }}>
                             <CardTitle
                                 data-testid="title"
                                 tag="h1"
@@ -167,16 +168,16 @@ const BookProfilePage = () => {
                             >
                                 {book.title}
                             </CardTitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="author">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="author">
                                 Author: {book.author}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="publicationDate">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="publicationDate">
                                 Date: {book.publication_date}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="genre">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="genre">
                                 Genre: {book.genre}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="publisher">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="publisher">
                                 Publisher: {book.publisher}
                             </CardSubtitle>
                         </Card>
