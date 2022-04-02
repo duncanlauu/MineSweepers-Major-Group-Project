@@ -54,3 +54,25 @@ export const ParaText = styled.text`
     font-weight: 500;
     color: #071C4E;
 `
+
+export const UsernameText = styled.text`
+    font-family: "Source Sans Pro";
+    font-size: 25px;
+    color: #000;
+    line-height: 25px;
+`
+
+export const NameText = styled.text`
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    color: #653ffd;
+    font-weight: 600;
+`
+
+export const BioText = styled.text`
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    color: #000;
+    line-height: 15px;
+    opacity: 70%;
+`
