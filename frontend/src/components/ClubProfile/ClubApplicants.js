@@ -23,17 +23,17 @@ function ClubApplicants(props) {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        setClub(res.data);
+        setClub(res.data.club);
 
-        setOwner(res.data.owner);
+        setOwner(res.data.club.owner);
 
-        setAdmins(res.data.admins);
+        setAdmins(res.data.club.admins);
 
-        setMembers(res.data.members);
+        setMembers(res.data.club.members);
 
-        setApplicants(res.data.applicants);
+        setApplicants(res.data.club.applicants);
 
-        setBannedUsers(res.data.banned_users);
+        setBannedUsers(res.data.club.banned_users);
 
       })
       .catch((err) => {

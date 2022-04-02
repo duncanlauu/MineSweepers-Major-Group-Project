@@ -41,9 +41,9 @@ const LandingProfile = (props) => {
       .get(`singleclub/${club_id}`)
       .then((res) => {
         console.log(res);
-        setClub(res.data);
+        setClub(res.data.club);
         console.log("Club Data: " + JSON.stringify(res.data));
-        res.data.books.forEach((book_id) =>
+        res.data.club.books.forEach((book_id) =>
           readingHistory.push(
             axiosInstance.get(`books/${book_id}`).then((bookRes) => {
               console.log("Book Response: " + JSON.stringify(bookRes.data));
