@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ClubRecommenderContainer = styled.div`
-  height: 55rem;
+  height: 70rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;
