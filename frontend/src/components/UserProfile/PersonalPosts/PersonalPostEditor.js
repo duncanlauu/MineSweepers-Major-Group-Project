@@ -27,7 +27,7 @@ export default function PersonalPostEditor(props) {
     if (typeof currentUser.id != "undefined") {
       getAvailableClubs();
     }
-  }, [currentUser]);
+  }, []);
 
   const handleChange = (e) => {
     updateFormData({
