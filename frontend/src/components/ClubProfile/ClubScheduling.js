@@ -1,7 +1,9 @@
 import React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Button, Row } from "reactstrap";
+import axiosInstance from "../../axios";
 import { HeadingText } from "../Login/LoginElements";
 import { ScheduleButton } from "./ClubProfileElements";
 
@@ -30,6 +32,9 @@ const ClubScheduling = () => {
           <span>Schedule a Meeting</span>
           </Button>
         </Link>
+      </Row>
+      <Row>
+
       </Row>
     </>
   );

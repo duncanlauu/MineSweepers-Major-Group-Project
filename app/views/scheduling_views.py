@@ -179,3 +179,16 @@ class MeetingsView(APIView):
         list_of_meetings.extend(Meeting.objects.filter(organiser_id=kwargs['id']))
         serializer = MeetingSerializer(list_of_meetings, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ClubMeetingsView(APIView):
+    """This is an API for getting all meetings for a club"""
+
+    def get(self, request, *args, **kwargs):
+        if 'id' not in kwargs:
+            return Response(data='You need to provide the club id', status=status.HTTP_400_BAD_REQUEST)
+        if not Club.objects.filter(pk=kwargs['id']).exists():
+            return Response(data='A club with this id does not exist', status=status.HTTP_400_BAD_REQUEST)
+        meetings = Meeting.objects.filter(club_id=kwargs['id'])
+        serializer = MeetingSerializer(meetings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
