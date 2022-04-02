@@ -1,10 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { ClubProfile } from "./ClubProfileElements";
+import { BioText, ClubProfile, NameText, UsernameText } from "./ClubProfileElements";
 import { Button, Col } from "reactstrap";
 import Gravatar from "react-gravatar";
 import { HeadingText } from "../Login/LoginElements";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axios";
+
+const managementButtonStyle = {
+  backgroundColor: "#fff",
+  border: "2px solid #653FFD",
+  fontFamily: "Source Sans Pro",
+  fontSize:"15px",
+  padding:"0px",
+  color:"#000",
+  height: "2.5rem",
+  borderRadius: "100px",
+  marginRight: "5px",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex"
+}
+
+const buttonStyle = {
+  backgroundColor: "#fff",
+  color: "#653ffd",
+  fontFamily: "Source Sans Pro",
+  fontWeight: "600",
+  borderRadius:"100px",
+  padding: "0px",
+  marginBottom: "5px"
+}
 
 function ClubApplicants(props) {
   const [club, setClub] = useState(null);
@@ -15,7 +40,6 @@ function ClubApplicants(props) {
   const [bannedUsers, setBannedUsers] = useState([]);
   const memberStatus = props.memberStatus;
 
-
   const { club_id } = useParams();
   console.log("Club ID on Members Page: " + club_id);
 
@@ -25,15 +49,15 @@ function ClubApplicants(props) {
       .then((res) => {
         setClub(res.data.club);
 
-        setOwner(res.data.club.owner);
+        setOwner(res.data.owner);
 
-        setAdmins(res.data.club.admins);
+        setAdmins(res.data.admins);
 
-        setMembers(res.data.club.members);
+        setMembers(res.data.members);
 
-        setApplicants(res.data.club.applicants);
+        setApplicants(res.data.applicants);
 
-        setBannedUsers(res.data.club.banned_users);
+        setBannedUsers(res.data.banned_users);
 
       })
       .catch((err) => {
@@ -56,16 +80,22 @@ function ClubApplicants(props) {
     return (
       <ClubProfile>
         <Col xs={3}>
-          <Gravatar email="blah@blah.com" size={70} />
+          <Gravatar email={props.email} size={70} style={{ borderRadius:"100%" }} />
         </Col>
-        <Col xs={9}>
-          <HeadingText>{props.name}</HeadingText>
+        <Col xs={6}>
+          <a href={`/user_profile/${props.userId}`}>
+            <UsernameText>{props.username}</UsernameText>
+          </a><br />
+          <NameText>{props.email}</NameText><br />
+          <BioText>{props.bio}</BioText>
+        </Col>
+        <Col xs={3} style={{ display:"flex", flexDirection:"column", alignContent:"center", justifyContent:"space-between" }}>
           {isApplicant && memberStatus !== "member" ? (
             <>
-              <Button onClick={(e) => acceptClubApplicant(club_id, user_id)}>
+              <Button style={buttonStyle} onClick={(e) => acceptClubApplicant(club_id, user_id)}>
                 Accept
               </Button>
-              <Button onClick={(e) => rejectClubApplicant(club_id, user_id)}>
+              <Button style={buttonStyle} onClick={(e) => rejectClubApplicant(club_id, user_id)}>
                 Reject
               </Button>
             </>
@@ -74,11 +104,11 @@ function ClubApplicants(props) {
           )}
           {isMember && memberStatus !== "member" ? (
             <>
-              <Button onClick={(e) => removeClubMember(club_id, user_id)}>
+              <Button style={buttonStyle} onClick={(e) => removeClubMember(club_id, user_id)}>
                 Remove
               </Button>
-              {memberStatus === "owner" && <Button onClick={(e) => promoteMember(club_id, user_id)}>Promote</Button>}
-              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+              {memberStatus === "owner" && <Button style={buttonStyle} onClick={(e) => promoteMember(club_id, user_id)}>Promote</Button>}
+              <Button style={buttonStyle} onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
              
             </>
           ) : (
@@ -86,20 +116,20 @@ function ClubApplicants(props) {
           )}
           {isAdmin && memberStatus === "owner" ? (
             <>
-              <Button
+              <Button style={buttonStyle}
                 onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}
               >
                 Make Owner
               </Button>
-              <Button onClick={(e) => demoteAdmin(club_id, user_id)}>Demote</Button>
-              <Button onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+              <Button style={buttonStyle} onClick={(e) => demoteAdmin(club_id, user_id)}>Demote</Button>
+              <Button style={buttonStyle} onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
             </>
           ) : (
             <></>
           )}
           {isBanned && memberStatus !== "member" ? (
             <>
-              <Button onClick={(e) => unbanUser(club_id, user_id)}>
+              <Button style={buttonStyle} onClick={(e) => unbanUser(club_id, user_id)}>
                 Unban
               </Button>
             </>
@@ -231,12 +261,23 @@ function ClubApplicants(props) {
   return (
     
     <>
-      <IndividualMemberCard name={owner.username} isOwner={true} />
+      <IndividualMemberCard 
+        username={owner.username} 
+        email={owner.email}
+        userId={owner.id}
+        bio={owner.bio}
+        isOwner={true} />
       <hr />
       <ul>
         {admins.map((admin) => (
           <li key={admin}>
-            <IndividualMemberCard name={admin} isAdmin={true} userId={admin} memberStatus={memberStatus}/>
+            <IndividualMemberCard 
+              username={admin.username}
+              email={admin.email}
+              bio={admin.bio}
+              isAdmin={true} 
+              userId={admin.id} 
+              memberStatus={memberStatus}/>
           </li>
         ))}
       </ul>
@@ -245,9 +286,11 @@ function ClubApplicants(props) {
         {members.map((member) => (
           <li key={member}>
             <IndividualMemberCard
-              name={member}
+              username={member.username}
+              email={member.email}
+              bio={member.bio}
               isMember={true}
-              userId={member}
+              userId={member.id}
               memberStatus={memberStatus}
             />
           </li>
@@ -258,9 +301,11 @@ function ClubApplicants(props) {
         {applicants.map((applicant, index) => (
           <li key={applicant}>
             <IndividualMemberCard
-              name={applicant}
+              username={applicant.username}
+              email={applicant.email}
+              bio={applicant.bio}
               isApplicant={true}
-              userId={applicant}
+              userId={applicant.id}
               memberStatus={memberStatus}
             />
           </li>
@@ -271,9 +316,9 @@ function ClubApplicants(props) {
         {bannedUsers.map((bannedUser) => (
           <li key={bannedUser}>
             <IndividualMemberCard
-              name={bannedUser}
+              username={bannedUser.username}
               isBanned={true}
-              userId={bannedUser}
+              userId={bannedUser.id}
               memberStatus={memberStatus}
             />
           </li>
