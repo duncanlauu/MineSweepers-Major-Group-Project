@@ -7,12 +7,13 @@ import { ImageDiv, MessagingProfilePara } from './ChatElements';
 
 export default function Sidepanel(props) {
 
-    const [chats, setChats] = useState([])
+    // const [chats, setChats] = useState([])
+    // const chats = props.chats
+    // const setChats = props.setChats
 
     useEffect(() => {
         getUserChats()
     }, []);
-
 
     const getUserChats = (e) => {
         const username = JSON.parse(localStorage.getItem('user')).username
@@ -23,12 +24,12 @@ export default function Sidepanel(props) {
                     return (b.last_update).localeCompare(a.last_update);
                 })
                 console.log(userChats)
-                setChats(userChats)
+                props.setChats(userChats)
             });
 
     }
 
-    const activeChats = chats.map(c => {
+    const activeChats = props.chats.map(c => {
         console.log(c)
         return (
             // <Contact

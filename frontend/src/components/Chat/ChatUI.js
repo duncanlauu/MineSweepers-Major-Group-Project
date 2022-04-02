@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
 import MainNav from '../Nav/MainNav'
@@ -8,6 +8,8 @@ import Sidepanel from './Sidepanel'
 function ChatUI() {
 
     let params = useParams();
+
+    const [chats, setChats] = useState([])
 
     return (
         <html style={{ height: '100%' }}>
@@ -22,12 +24,12 @@ function ChatUI() {
                             <Container style={{ display: "flex", height: "3rem", backgroundColor: "#653FFD", width: "100%", fontFamily: "Source Sans Pro", fontSize: "15px", alignItems: "center", color: "#fff", justifyContent: "flex-start" }}>
                                 Conversations
                             </Container>
-                            <Sidepanel />
+                            <Sidepanel chats={chats} setChats={setChats} />
                         </Container>
                     </Col>
                     <Col xs={7}>
                         <Container fluid style={{ backgroundColor: "#fff", height: "37vw", borderRadius: "10px", padding: "0px" }}>
-                            <Chat chatID={params.chatID} />
+                            <Chat chats={chats} setChats={setChats} chatID={params.chatID} />
                         </Container>
                     </Col>
                     <Col xs={1} />

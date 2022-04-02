@@ -8,8 +8,14 @@ import {
     MessagingProfileHeading, MessageText, MessagingProfilePara, ReceivedMessagePara, MessageHeader, EmptyChatNotif
 } from './ChatElements';
 import { Container } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
-class Chat extends React.Component {
+const Chat = (props) => {
+    return (<ChatClass {...props} chats={props.chats} setChats={props.setChats} />)
+}
+
+class ChatClass extends React.Component {
+
 
     state = {
         messages: [],
@@ -88,6 +94,8 @@ class Chat extends React.Component {
                 console.log(res)
             })
             .catch(error => console.error(error));
+        const newChats = this.props.chats.filter(chat => chat.id !== Number(this.props.chatID));
+        this.props.setChats(newChats);
     }
 
     // Returns a string based on a timestamp, displays the time that passed since the message was sent
