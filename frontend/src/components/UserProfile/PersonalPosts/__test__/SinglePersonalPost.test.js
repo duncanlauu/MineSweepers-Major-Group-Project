@@ -8,6 +8,20 @@ import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils';
 import SinglePersonalPost from "../SinglePersonalPost";
 import routerWrapper from "../../../../test-helpers";
+import fakeLocalStorage from "../../../../fakeLocalStorage";
+import user from "../../../../mocksData/getCurrentUser.json";
+
+
+beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+        value: fakeLocalStorage,
+    });
+});
+
+beforeEach(() => {
+    window.localStorage.clear();
+    window.localStorage.setItem("user", JSON.stringify(user));
+});
 
 
 describe("Components exist", () => {

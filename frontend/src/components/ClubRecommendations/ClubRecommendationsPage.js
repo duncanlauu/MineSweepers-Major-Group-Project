@@ -67,7 +67,6 @@ const ClubRecommendationPage = () => {
                                 </div>
                                 {clubRecommendations.map(
                                     clubRecommendation => {
-                                        console.log(clubRecommendation)
                                         return (
                                             <SingleClubRecommendation club={clubRecommendation} />
                                         )
