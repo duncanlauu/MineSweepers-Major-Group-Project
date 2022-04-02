@@ -55,11 +55,11 @@ class SingleClub(APIView):
             members = UserSerializer(club.members.all(), many=True)
             admins = UserSerializer(club.admins.all(), many=True)
             applicants = UserSerializer(club.applicants.all(), many=True)
-            banned_members = UserSerializer(club.banned_members.all(), many=True)
+            banned_users = UserSerializer(club.banned_users.all(), many=True)
             owner = UserSerializer(club.owner)
             return Response(
                 {'club': serializer.data, 'books': books.data, 'members': members.data, 'admins': admins.data,
-                 'owner': owner.data, 'applicants': applicants.data, 'banned_members': banned_members.data},
+                 'owner': owner.data, 'applicants': applicants.data, 'banned_users': banned_users.data},
                 status=status.HTTP_200_OK)
         except Club.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
