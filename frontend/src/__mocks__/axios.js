@@ -32,6 +32,7 @@ import post4 from '../mocksData/post4.json'
 import post5 from '../mocksData/post5.json'
 import posts from '../mocksData/posts.json'
 import comments from '../mocksData/comments.json'
+import recommended_users from '../mocksData/getTopUserRecommendations.json'
 
 
 const generateGetResponse = (url) => {
@@ -160,6 +161,8 @@ const generateGetResponse = (url) => {
             return {data: posts};
         case `posts/user/2`:
             return {data: posts};
+        case `recommender/0/20/1/top_n_users_random_books/`:
+            return {data: recommended_users};
         default:
             console.log("no matching mock for url", url)
             return {data: {}};

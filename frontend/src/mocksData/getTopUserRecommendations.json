@@ -1,0 +1,37 @@
+[
+  {
+    "recommended_user": {
+      "email": "test1@test.org",
+      "username": "test1",
+      "id": 1
+    }
+  },
+  {
+    "recommended_user": {
+      "email": "test2@test.org",
+      "username": "test2",
+      "id": 2
+    }
+  },
+  {
+    "recommended_user": {
+      "email": "test3@test.org",
+      "username": "test3",
+      "id": 3
+    }
+  },
+  {
+    "recommended_user": {
+      "email": "test4@test.org",
+      "username": "test4",
+      "id": 4
+    }
+  },
+  {
+    "recommended_user": {
+      "email": "test5@test.org",
+      "username": "test5",
+      "id": 5
+    }
+  }
+]
