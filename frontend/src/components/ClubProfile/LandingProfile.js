@@ -15,8 +15,6 @@ const LandingProfile = (props) => {
   let history = [];
 
   const memberStatus = props.memberStatus;
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  const user_id = currentUser.id;
 
   const [modalVisible, setModalVisible] = useState(false);
 

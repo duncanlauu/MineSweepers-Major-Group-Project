@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Container, Row, Col} from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Button, Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
-import {HeadingText} from '../Login/LoginElements'
+import { HeadingText } from './RecommenderPageElements'
 import MainNav from '../Nav/MainNav'
-import {RecommenderContainer} from './RecommenderPageElements'
-import {usePromiseTracker, trackPromise} from "react-promise-tracker";
-import {Oval} from 'react-loader-spinner';
+import { ClubRecommenderContainer, RecommenderContainer } from './RecommenderPageElements'
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import { Oval } from 'react-loader-spinner';
 import SingleClubRecommendation from "./SingleClubRecommendation";
 
 const ClubRecommendationPage = () => {
@@ -32,7 +32,7 @@ const ClubRecommendationPage = () => {
 
     const LoadingIndicator = () => {
 
-        const {promiseInProgress} = usePromiseTracker();
+        const { promiseInProgress } = usePromiseTracker();
 
         return (
             promiseInProgress &&
@@ -44,7 +44,7 @@ const ClubRecommendationPage = () => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100"/>
+                    <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100" />
                 </div>
             </Container>
         )
@@ -53,26 +53,30 @@ const ClubRecommendationPage = () => {
     if (clubRecommendations.length > 0) {
         return (
             <Container fluid>
-                <Row style={{marginBottom: "3rem"}}>
-                    <MainNav/>
+                <Row style={{ marginBottom: "3rem" }}>
+                    <MainNav />
                 </Row>
                 <Row>
-                    <Col/>
+                    <Col />
                     <Col xs={8}>
-                        <HeadingText>Clubs For You</HeadingText>
-                        <LoadingIndicator/>
-                        <RecommenderContainer data-testid="recommender_container">
-                            {clubRecommendations.map(
-                                clubRecommendation => {
-                                    console.log(clubRecommendation)
-                                    return (
-                                        <SingleClubRecommendation club={clubRecommendation}/>
-                                    )
-                                }
-                            )}
-                        </RecommenderContainer>
+                        <LoadingIndicator />
+                        <ClubRecommenderContainer>
+                            <RecommenderContainer data-testid="recommender_container">
+                                <div style={{ display: "flex", justifyContent: "center", paddingTop: "2rem", paddingBottom: "2rem"}}>
+                                    <HeadingText>Clubs For You</HeadingText>
+                                </div>
+                                {clubRecommendations.map(
+                                    clubRecommendation => {
+                                        console.log(clubRecommendation)
+                                        return (
+                                            <SingleClubRecommendation club={clubRecommendation} />
+                                        )
+                                    }
+                                )}
+                            </RecommenderContainer>
+                        </ClubRecommenderContainer>
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         )
@@ -82,16 +86,16 @@ const ClubRecommendationPage = () => {
         }
         return (
             <Container fluid>
-                <Row style={{marginBottom: "3rem"}}>
-                    <MainNav/>
+                <Row style={{ marginBottom: "3rem" }}>
+                    <MainNav />
                 </Row>
                 <Row>
-                    <Col/>
+                    <Col />
                     <Col xs={8}>
                         <HeadingText>Clubs For You</HeadingText>
-                        <LoadingIndicator/>
+                        <LoadingIndicator />
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         )

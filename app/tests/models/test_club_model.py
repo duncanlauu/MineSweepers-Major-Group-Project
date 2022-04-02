@@ -93,18 +93,21 @@ class ClubModelTestCase(TestCase):
 
     def test_add_admin(self):
         self.assertEqual(self.club.admins.count(), 1)
-        self.club.add_admin(self.new_user)
+        self.club.add_member(self.new_user)
+        self.club.promote(self.new_user)
         self.assertEqual(self.club.admins.count(), 2)
 
     def test_remove_admin(self):
-        self.club.add_admin(self.new_user)
+        self.club.add_member(self.new_user)
+        self.club.promote(self.new_user)
         self.assertEqual(self.club.admins.count(), 2)
-        self.club.remove_admin(self.new_user)
+        self.club.demote(self.new_user)
         self.assertEqual(self.club.admins.count(), 1)
 
     def test_admin_count(self):
         self.assertEqual(self.club.admin_count(), self.club.admins.count())
-        self.club.add_admin(self.new_user)
+        self.club.add_member(self.new_user)
+        self.club.promote(self.new_user)
         self.assertEqual(self.club.admin_count(), self.club.admins.count())
 
     def test_add_applicant(self):

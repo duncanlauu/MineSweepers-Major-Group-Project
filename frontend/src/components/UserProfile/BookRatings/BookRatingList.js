@@ -27,22 +27,19 @@ export default function BookRatingList(props) {
         axiosInstance
             .get(`ratings/other_user/${props.requestedUser_id}`)
             .then((res) => {
-                console.log("other user data", res.data);
                 const allRatings = res.data;
                 setRatings(allRatings);
-                console.log("ratings", ratings);
             })
             .catch((error) => console.error(error));
     };
 
     const displayRatings = (e) => {
-        console.log("Ratings", ratings);
         if (ratings) {
+            console.log("Ratings", ratings);
             return ratings.map((ratedBook) => {
                 return (
                     <SingleBookRating
-                        book_id={ratedBook.book}
-                        rating={ratedBook.rating}
+                        book={ratedBook}
                     />
                 );
             });

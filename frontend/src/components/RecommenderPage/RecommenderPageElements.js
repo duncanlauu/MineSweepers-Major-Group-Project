@@ -32,3 +32,36 @@ export const FilterButton = styled.button`
     border: 2px #FFFFFF solid;
     font-weight: 600;
 `
+
+export const BookHeading = styled.text`
+    font-family: "Source Sans Pro";
+    font-size: 18px;
+    line-height: 18px;
+    color: #000;
+    font-weight: 600;
+`
+
+export const YearAuthorInfo = styled.text`
+    font-family: "Source Sans Pro";
+    color: #653ffd;
+    font-weight: 600;
+`
+
+export const RatingsText = styled.text`
+    font-family: "Source Sans Pro";
+    color: #000;
+`
+
+export const RatingPill = styled.div`
+    background-color: #4F30CC;
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    color: #fff;
+    border-radius: "10px";
+    width: 4rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`

@@ -8,7 +8,7 @@
         2,
         3
       ],
-      "group_chat": true,
+      "group_chat": false,
       "created_at": "2014-03-16T17:41:29+00:00"
     }
   },
@@ -19,11 +19,9 @@
       "name": "Chat 3",
       "participants": [
         1,
-        2,
-        3,
-        4
+        2
       ],
-      "group_chat": true,
+      "group_chat": false,
       "created_at": "2014-06-16T17:41:29+00:00"
     }
   }
