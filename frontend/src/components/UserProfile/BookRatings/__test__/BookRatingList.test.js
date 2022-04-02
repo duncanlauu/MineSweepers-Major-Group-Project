@@ -26,15 +26,15 @@ beforeEach(() => {
 
 describe("Components exist", () => {
 
-    test("contains books for a logged in user", async () => {
+    test("contains all books for a logged in user", async () => {
         act(() => {
             render(routerWrapper(<BookRatingList/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByText(`Classical Mythology`)).toBeInTheDocument()
-            expect(screen.getByText(`A Soldier of the Great War`)).toBeInTheDocument()
-            expect(screen.getByText(`Test Book 1`)).toBeInTheDocument()
+            for (let i = 1; i <= 3; i++) {
+                expect(screen.getByText(`Title ${i}`)).toBeInTheDocument();
+            }
         })
     })
 
@@ -60,13 +60,14 @@ describe("Components exist", () => {
         })
     })
 
-    test("contains book titles for another user", async () => {
+    test("contains all books for another user", async () => {
         act(() => {
             render(routerWrapper(<BookRatingList requestedUser_id={2}/>))
         })
         await waitFor(() => {
-            expect(screen.getByText(`Classical Mythology`)).toBeInTheDocument()
-            expect(screen.getByText(`A Soldier of the Great War`)).toBeInTheDocument()
+            for (let i = 1; i <= 2; i++) {
+                expect(screen.getByText(`Title ${i}`)).toBeInTheDocument();
+            }
         })
     })
 
