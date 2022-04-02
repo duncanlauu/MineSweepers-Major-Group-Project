@@ -156,6 +156,10 @@ const generateGetResponse = (url) => {
             return {data: post5};
         case `feed/`:
             return {data: posts};
+        case `posts/`:
+            return {data: posts};
+        case `posts/user/2`:
+            return {data: posts};
         default:
             console.log("no matching mock for url", url)
             return {data: {}};
