@@ -142,10 +142,6 @@ describe('Components exist', () => {
             })
         })
 
-    })
-
-    describe('Delete Chat Functionality', () => {
-
         test('contains delete conversation button', async () => {
             act(() => {
                 render(<ChatUI />, { wrapper: MemoryRouter });
@@ -156,6 +152,10 @@ describe('Components exist', () => {
                 expect(deleteConversationButton).toBeInTheDocument()
             })
         })
+
+    })
+
+    describe('Delete Chat Functionality', () => {
 
         test('delete removes selected chat', async () => {
             act(() => {
@@ -184,6 +184,24 @@ describe('Components exist', () => {
         })
 
 
+    })
+
+    describe('Send button functionality', () => {
+
+        // displaying messages is only tested with selenium due to issues with mocking the websocket. 
+
+        test('send message button clears input field', async () => {
+            act(() => {
+                render(<ChatUI />, { wrapper: MemoryRouter });
+            })
+
+            await waitFor(() => {
+                const sendMessageButton = screen.getByRole('img', { name: /send icon/i })
+                fireEvent.click(sendMessageButton)
+                const inputField = screen.getByRole('textbox')
+                expect(inputField).toBeEmpty()
+            })
+        })
     })
 })
 
