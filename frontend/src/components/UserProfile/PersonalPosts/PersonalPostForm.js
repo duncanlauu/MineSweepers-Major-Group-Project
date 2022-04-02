@@ -70,11 +70,11 @@ export default function PersonalPostForm(props) {
     axiosInstance
       .get(`clubs/user/${currentUser.id}`)
       .then((res) => {
-        console.log(res.data.clubs);
-        const allAvailableClubs = res.data.clubs;
+        console.log(res.data);
+        const allAvailableClubs = res.data;
         setAvailableClubs(allAvailableClubs);
         console.log("the current user is: " + currentUser.id);
-        console.log(availableClubs + "=" + res.data.clubs);
+        console.log(availableClubs + "=" + res.data);
       })
       .catch((error) => console.error(error));
   };

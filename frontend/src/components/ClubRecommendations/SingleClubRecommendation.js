@@ -8,13 +8,10 @@ export default function SingleClubRecommendation(props) {
     const [ownerEmail, setOwnerEmail] = useState("")
 
     useEffect(() => {
-        console.log("here")
-        console.log(props.club)
         getUserEmail(props.club.owner)
     }, [])
 
     const getUserEmail = (user_id) => {
-        console.log(user_id)
         axiosInstance
             .get(`user/get_update/${user_id}/`)
             .then((res) => {
