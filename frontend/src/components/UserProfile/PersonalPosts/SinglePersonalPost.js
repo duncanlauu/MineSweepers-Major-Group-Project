@@ -14,7 +14,7 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
-import PersonalPostEditor from "./PersonalPostEditor";
+import PersonalPostForm from "./PersonalPostForm";
 import PostCommentList from "../../Feed/PostCommentList";
 import Gravatar from "react-gravatar";
 import { PostHeadingText } from "../UserProfileElements";
@@ -129,7 +129,7 @@ export default function SinglePersonalPost(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
-          <PersonalPostEditor personalPost={personalPost} />
+          <PersonalPostForm personalPost={personalPost} />
         </ModalBody>
       </Modal>
     </div>
