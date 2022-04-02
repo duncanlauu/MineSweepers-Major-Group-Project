@@ -1,16 +1,22 @@
 {
   "ratings": [
     {
-      "book": "0195153448",
+      "book__ISBN": "0195153448",
+      "book__image_links_small": "Link 1",
+      "book__title": "Title 1",
       "rating": 5
     },
     {
-      "book": "0380715899",
+      "book__ISBN": "1",
+      "book__image_links_small": "Link 2",
+      "book__title": "Title 2",
       "rating": 3
     },
     {
-      "book": "00000000001",
-      "rating": 3
+      "book__ISBN": "2",
+      "book__image_links_small": "Link 3",
+      "book__title": "Title 3",
+      "rating": 4
     }
   ]
 }

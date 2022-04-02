@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from app.models import Book, BookRating, User
-from app.serializers import BookRatingSerializer
+from app.serializers import BookRatingSerializer, BookSerializer
 
 
 class AllRatingsView(APIView):
@@ -14,9 +14,15 @@ class AllRatingsView(APIView):
     def get(self, request):
         """Get all ratings of logged in user"""
         user = request.user
-        user_ratings = BookRating.objects.filter(user=user)
-        serializer = BookRatingSerializer(user_ratings, many=True)
-        return Response({'ratings': serializer.data}, status=status.HTTP_200_OK)
+        user_ratings = BookRating.objects.filter(user=user)\
+            .values("id",
+                    "user",
+                    "book__ISBN",
+                    "book__title",
+                    "book__image_links_small",
+                    "rating",
+                    "created_at")
+        return Response({'ratings': user_ratings}, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Create new rating by logged in user for a particular book"""
@@ -25,13 +31,19 @@ class AllRatingsView(APIView):
         rating_exists = BookRating.objects.filter(
             book_id=book_id, user_id=user.id).exists()
 
+        print('rating_exists', rating_exists)
+        print('book id' + book_id)
+
         if not rating_exists:
+            print('rating does not exist')
             data = request.data.copy()
             data['user'] = user.id
             serializer = BookRatingSerializer(data=data)
             if serializer.is_valid():
+                print('serializer is valid')
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -45,8 +57,10 @@ class RatingView(APIView):
         """Get any rating"""
         try:
             rating = BookRating.objects.get(id=rating_id)
-            serializer = BookRatingSerializer(rating)
-            return Response({'rating': serializer.data}, status=status.HTTP_200_OK)
+            book = Book.objects.get(ISBN=rating.book_id)
+            ratings_data = BookRatingSerializer(rating).data
+            book_data = BookSerializer(book).data
+            return Response({'rating': ratings_data, 'book_data': book_data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -81,9 +95,15 @@ class OtherUserRatingsView(APIView):
         """Get ratings of another user"""
         try:
             other_user = User.objects.get(pk=other_user_id)
-            ratings = BookRating.objects.filter(user=other_user)
-            serializer = BookRatingSerializer(ratings, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            ratings = BookRating.objects.filter(user=other_user) \
+                .values("id",
+                        "user",
+                        "book__ISBN",
+                        "book__title",
+                        "book__image_links_small",
+                        "rating",
+                        "created_at")
+            return Response(ratings, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
