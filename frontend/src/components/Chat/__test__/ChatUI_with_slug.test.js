@@ -142,6 +142,10 @@ describe('Components exist', () => {
             })
         })
 
+    })
+
+    describe('Delete Chat Functionality', () => {
+
         test('contains delete conversation button', async () => {
             act(() => {
                 render(<ChatUI />, { wrapper: MemoryRouter });
@@ -152,6 +156,33 @@ describe('Components exist', () => {
                 expect(deleteConversationButton).toBeInTheDocument()
             })
         })
+
+        test('delete removes selected chat', async () => {
+            act(() => {
+                render(<ChatUI />, { wrapper: MemoryRouter });
+            })
+
+            await waitFor(() => {
+                const deleteConversationButton = screen.getByRole('img', { name: /delete chat/i })
+                fireEvent.click(deleteConversationButton)
+                const deletedConversation = screen.queryAllByText(/billie/i)
+                expect(deletedConversation).toHaveLength(0)
+            })
+        })
+
+        test('delete chat shows conversation placeholder', async () => {
+            act(() => {
+                render(<ChatUI />, { wrapper: MemoryRouter });
+            })
+
+            await waitFor(() => {
+                const deleteConversationButton = screen.getByRole('img', { name: /delete chat/i })
+                fireEvent.click(deleteConversationButton)
+                const placeholder = screen.getByText(/start the conversation\./i)
+                expect(placeholder).toBeInTheDocument()
+            })
+        })
+
 
     })
 })
