@@ -64,7 +64,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         #     chrome_options.add_argument("--headless")
         #     chrome_options.add_argument("--window-size=1200,800")
 
-        cls.browser = webdriver.Chrome(chrome_options)
+        cls.browser = webdriver.Chrome(chrome_options=chrome_options)
 
         # cls.browser = webdriver.Chrome(
         #     executable_path="app/tests/selenium/chromedriver", options=chrome_options
