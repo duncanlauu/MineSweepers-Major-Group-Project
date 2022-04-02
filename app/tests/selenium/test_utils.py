@@ -10,7 +10,7 @@
 
 #     @classmethod
 #     def setUpClass(cls):
-#         cls.browser =  webdriver.Chrome(executable_path="app/tests/selenium/chromedriver")
+#         cls.browser =  webdriver.Chrome()
 #         super(CustomLiveTestCase, cls).setUpClass()
 
 #     @classmethod

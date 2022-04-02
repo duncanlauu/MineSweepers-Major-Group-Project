@@ -153,6 +153,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
 
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+
         # # Landing Page
         self._test_boogkle_logo_redirects_to_landing_page("")
         self._test_landing_page_log_in_button()
