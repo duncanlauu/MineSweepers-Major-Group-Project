@@ -85,4 +85,6 @@ urlpatterns = [
     path('calendar/<int:id>', CalendarView.as_view(), name='calendar_with_id'),
     path('meetings/', MeetingsView.as_view(), name='meetings'),
     path('meetings/<int:id>', MeetingsView.as_view(), name='meetings_with_id'),
+    path('club_meetings/', ClubMeetingsView.as_view(), name='club_meetings'),
+    path('club_meetings/<int:id>', ClubMeetingsView.as_view(), name='club_meetings_with_id'),
 ]
