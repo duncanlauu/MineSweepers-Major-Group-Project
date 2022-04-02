@@ -14,10 +14,10 @@ function IndividualBookCard(props) {
                         <BookHeading>{props.title}</BookHeading><br />
                     </a>
                     <YearAuthorInfo>{props.author}, {props.year}</YearAuthorInfo><br />
-                    <div style={{ display:"flex", flexDirection:"row" }}>
-                        <RatingPill style={{ borderRadius: "10px", marginRight:"1rem" }}>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                        <RatingPill style={{ borderRadius: "10px", marginRight: "1rem" }}>
                             <span>
-                                {props.rating.toString().slice(0,3)}
+                                {props.rating.toString().slice(0, 3)}
                             </span>
                             <img src='../../../static/images/RatingStar.svg' />
                         </RatingPill>

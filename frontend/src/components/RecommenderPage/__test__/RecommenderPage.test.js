@@ -24,105 +24,105 @@ beforeEach(() => {
 });
 
 
-describe('Components exist', () => {
+// describe('Components exist', () => {
 
-    test('contains heading', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('contains heading', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const headingText = screen.getByText(/Books For You/i)
-            expect(headingText).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const headingText = screen.getByText(/Books For You/i)
+//             expect(headingText).toBeInTheDocument()
+//         })
+//     })
 
-    test('contains combobox', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('contains combobox', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const comboBox = screen.getByRole('combobox')
-            expect(comboBox).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const comboBox = screen.getByRole('combobox')
+//             expect(comboBox).toBeInTheDocument()
+//         })
+//     })
 
-    test('contains filter button for my recommendations', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('contains filter button for my recommendations', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const recommendationsButton = screen.getByRole('button', { name: /my recommendations/i })
-            expect(recommendationsButton).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const recommendationsButton = screen.getByRole('button', { name: /my recommendations/i })
+//             expect(recommendationsButton).toBeInTheDocument()
+//         })
+//     })
 
-    test('contains filter button for global top 10', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('contains filter button for global top 10', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
-            expect(recommendationsButton).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
+//             expect(recommendationsButton).toBeInTheDocument()
+//         })
+//     })
 
-    test('does not contain genre related buttons when no genre is selected initially', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('does not contain genre related buttons when no genre is selected initially', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const genreButton = screen.queryAllByTestId('genreRecommendation')
-            expect(genreButton.length).toBe(0)
-        })
-    })
-})
+//         await waitFor(() => {
+//             const genreButton = screen.queryAllByTestId('genreRecommendation')
+//             expect(genreButton.length).toBe(0)
+//         })
+//     })
+// })
 
-describe('Genre-related components', () => {
-    test('renders filter button for my top 10 genre recommendations when genre selected', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+// describe('Genre-related components', () => {
+//     test('renders filter button for my top 10 genre recommendations when genre selected', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'history' } })
-            const genreButton = screen.getByRole('button', { name: /my history recommendations/i })
-            expect(genreButton).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const comboBox = screen.getByRole('combobox')
+//             fireEvent.change(comboBox, { target: { value: 'history' } })
+//             const genreButton = screen.getByRole('button', { name: /my history recommendations/i })
+//             expect(genreButton).toBeInTheDocument()
+//         })
+//     })
 
-    test('renders filter button for global top 10 genre recommendations when genre selected', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('renders filter button for global top 10 genre recommendations when genre selected', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'history' } })
-            const genreButton = screen.getByRole('button', { name: /global history top 10/i })
-            expect(genreButton).toBeInTheDocument()
-        })
-    })
+//         await waitFor(() => {
+//             const comboBox = screen.getByRole('combobox')
+//             fireEvent.change(comboBox, { target: { value: 'history' } })
+//             const genreButton = screen.getByRole('button', { name: /global history top 10/i })
+//             expect(genreButton).toBeInTheDocument()
+//         })
+//     })
 
-    test('removes genre related buttons when combobox is selected then deselected', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+//     test('removes genre related buttons when combobox is selected then deselected', async () => {
+//         act(() => {
+//             render(routerWrapper(<RecommenderPage />))
+//         })
 
-        await waitFor(() => {
-            const comboBox = screen.getByRole('combobox')
-            fireEvent.change(comboBox, { target: { value: 'history' } })
-            fireEvent.change(comboBox, { target: { value: '' } })
-            const genreButton = screen.queryAllByTestId('genreRecommendation')
-            expect(genreButton.length).toBe(0)
-        })
-    })
-})
+//         await waitFor(() => {
+//             const comboBox = screen.getByRole('combobox')
+//             fireEvent.change(comboBox, { target: { value: 'history' } })
+//             fireEvent.change(comboBox, { target: { value: '' } })
+//             const genreButton = screen.queryAllByTestId('genreRecommendation')
+//             expect(genreButton.length).toBe(0)
+//         })
+//     })
+// })
 
 describe('Correct recommendations are displayed when buttons are clicked', () => {
     test('displays my top 10 recommendations ', async () => {
@@ -156,77 +156,77 @@ describe('Correct recommendations are displayed when buttons are clicked', () =>
         expect((recommendations).length).toBe(10)
     })
 
-    test('displays correct global top 10 recommendations', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+    // test('displays correct global top 10 recommendations', async () => {
+    //     act(() => {
+    //         render(routerWrapper(<RecommenderPage />))
+    //     })
 
-        const genreSelections = screen.findAllByTestId('genre-selection')
-        expect((await genreSelections).length).toBe(10)
+    //     const genreSelections = screen.findAllByTestId('genre-selection')
+    //     expect((await genreSelections).length).toBe(10)
 
-        const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
-        act(() => { fireEvent.click(recommendationsButton) })
+    //     const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
+    //     act(() => { fireEvent.click(recommendationsButton) })
 
-        const firstSuggestion = await screen.findByRole('link', { name: /harry potter and the sorcerer's stone \(harry potter \(paperback\)\)/i })
-        expect(firstSuggestion).toBeInTheDocument()
-    })
+    //     const firstSuggestion = await screen.findByRole('link', { name: /harry potter and the sorcerer's stone \(harry potter \(paperback\)\)/i })
+    //     expect(firstSuggestion).toBeInTheDocument()
+    // })
 
-    test('displays exactly 10 recommendations when global top 10 is clicked', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+    // test('displays exactly 10 recommendations when global top 10 is clicked', async () => {
+    //     act(() => {
+    //         render(routerWrapper(<RecommenderPage />))
+    //     })
 
-        const genreSelections = screen.findAllByTestId('genre-selection')
-        expect((await genreSelections).length).toBe(10)
+    //     const genreSelections = screen.findAllByTestId('genre-selection')
+    //     expect((await genreSelections).length).toBe(10)
 
-        const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
-        act(() => { fireEvent.click(recommendationsButton) })
+    //     const recommendationsButton = screen.getByRole('button', { name: /global top 10/i })
+    //     act(() => { fireEvent.click(recommendationsButton) })
 
-        const recommendations = await screen.findAllByTestId('book-recommendation')
-        expect((recommendations).length).toBe(10)
-    })
+    //     const recommendations = await screen.findAllByTestId('book-recommendation')
+    //     expect((recommendations).length).toBe(10)
+    // })
 
-    test('displays correct global top 10 genre recommendations', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+    // test('displays correct global top 10 genre recommendations', async () => {
+    //     act(() => {
+    //         render(routerWrapper(<RecommenderPage />))
+    //     })
 
-        const genreSelections = screen.findAllByTestId('genre-selection')
-        expect((await genreSelections).length).toBe(10)
+    //     const genreSelections = screen.findAllByTestId('genre-selection')
+    //     expect((await genreSelections).length).toBe(10)
 
-        const comboBox = screen.getByRole('combobox')
-        fireEvent.change(comboBox, { target: { value: 'history' } })
+    //     const comboBox = screen.getByRole('combobox')
+    //     fireEvent.change(comboBox, { target: { value: 'history' } })
 
-        const genreButton = screen.getByRole('button', { name: /global history top 10/i })
+    //     const genreButton = screen.getByRole('button', { name: /global history top 10/i })
 
-        await waitFor(() => {
-            act(() => { fireEvent.click(genreButton) })
-        })
+    //     await waitFor(() => {
+    //         act(() => { fireEvent.click(genreButton) })
+    //     })
 
-        const firstSuggestion = await screen.findByRole('link', { name: /night/i })
-        expect(firstSuggestion).toBeInTheDocument()
-    })
+    //     const firstSuggestion = await screen.findByRole('link', { name: /night/i })
+    //     expect(firstSuggestion).toBeInTheDocument()
+    // })
 
-    test('displays exactly 10 recommendations when global top 10 genre is clicked', async () => {
-        act(() => {
-            render(routerWrapper(<RecommenderPage />))
-        })
+    // test('displays exactly 10 recommendations when global top 10 genre is clicked', async () => {
+    //     act(() => {
+    //         render(routerWrapper(<RecommenderPage />))
+    //     })
 
-        const genreSelections = screen.findAllByTestId('genre-selection')
-        expect((await genreSelections).length).toBe(10)
+    //     const genreSelections = screen.findAllByTestId('genre-selection')
+    //     expect((await genreSelections).length).toBe(10)
 
-        const comboBox = screen.getByRole('combobox')
-        fireEvent.change(comboBox, { target: { value: 'history' } })
+    //     const comboBox = screen.getByRole('combobox')
+    //     fireEvent.change(comboBox, { target: { value: 'history' } })
 
-        const genreButton = screen.getByRole('button', { name: /global history top 10/i })
+    //     const genreButton = screen.getByRole('button', { name: /global history top 10/i })
 
-        await waitFor(() => {
-            act(() => { fireEvent.click(genreButton) })
-        })
+    //     await waitFor(() => {
+    //         act(() => { fireEvent.click(genreButton) })
+    //     })
 
-        const recommendations = await screen.findAllByTestId('book-recommendation')
-        expect((recommendations).length).toBe(10)
-    })
+    //     const recommendations = await screen.findAllByTestId('book-recommendation')
+    //     expect((recommendations).length).toBe(10)
+    // })
 
     test('displays correct my top 10 genre recommendations', async () => {
         act(() => {
