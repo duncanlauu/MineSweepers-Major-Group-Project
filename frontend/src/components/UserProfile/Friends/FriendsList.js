@@ -20,7 +20,8 @@ export default function FriendsList(props){
         axiosInstance
             .get(`friends/`)
             .then((res) => {
-                const allFriends = res.data.friends;
+                console.log(res.data)
+                const allFriends = res.data;
                 setFriends(allFriends)
             })
             .catch(error => console.error(error));
@@ -30,7 +31,8 @@ export default function FriendsList(props){
         axiosInstance
             .get(`friends/user/${props.requestedUser_id}`)
             .then((res) => {
-                const allFriends = res.data.friends;
+
+                const allFriends = res.data;
                 setFriends(allFriends)
             })
             .catch(error => console.error(error));
