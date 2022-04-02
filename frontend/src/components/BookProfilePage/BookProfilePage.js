@@ -4,8 +4,8 @@ import {useParams} from "react-router";
 import axiosInstance from "../../axios";
 import BookProfileCard from "./BookProfileCard";
 import MainNav from "../Nav/MainNav";
-import { Card, CardSubtitle, CardTitle } from "reactstrap";
-import { useNavigate } from "react-router";
+import {Card, CardSubtitle, CardTitle} from "reactstrap";
+import {useNavigate} from "react-router";
 
 const BookProfilePage = () => {
     const {book_id} = useParams();
