@@ -11,7 +11,8 @@ import { Container } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Chat = (props) => {
-    return (<ChatClass {...props} chats={props.chats} setChats={props.setChats} />)
+    const navigate = useNavigate();
+    return (<ChatClass {...props} navigate={navigate} chats={props.chats} setChats={props.setChats} />)
 }
 
 class ChatClass extends React.Component {
@@ -96,6 +97,7 @@ class ChatClass extends React.Component {
             .catch(error => console.error(error));
         const newChats = this.props.chats.filter(chat => chat.id !== Number(this.props.chatID));
         this.props.setChats(newChats);
+        this.props.navigate('/chat/');
     }
 
     // Returns a string based on a timestamp, displays the time that passed since the message was sent
