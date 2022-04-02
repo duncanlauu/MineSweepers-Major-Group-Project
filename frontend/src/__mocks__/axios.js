@@ -33,43 +33,44 @@ import post5 from '../mocksData/post5.json'
 import posts from '../mocksData/posts.json'
 import comments from '../mocksData/comments.json'
 import recommended_users from '../mocksData/getTopUserRecommendations.json'
+import userChats from '../mocksData/getUserChats.json'
 
 
 const generateGetResponse = (url) => {
     switch (url) {
-        case "genres?n=10":
+        case `genres?n=10`:
             return {data: tenGenres};
-        case "get_current_user":
+        case `get_current_user`:
             return {data: currentUser};
-        case "recommender/0/10/1/top_n/":
+        case `recommender/0/10/1/top_n/`:
             return {data: myTop10Recommendations}
-        case "recommender/0/10/top_n_global/":
+        case `recommender/0/10/top_n_global/`:
             return {data: top10GlobalRecommendations}
-        case "recommender/0/10/top_n_global_for_genre/history/":
+        case `recommender/0/10/top_n_global_for_genre/history/`:
             return {data: top10GlobalHistoryRecommendations}
-        case "recommender/0/10/1/top_n_for_genre/history/":
+        case `recommender/0/10/1/top_n_for_genre/history/`:
             return {data: myTop10HistoryRecommendations}
-        case "books/0195153448":
+        case `books/0195153448`:
             return {data: bookDetails1}
-        case "books/0380715899":
+        case `books/0380715899`:
             return {data: bookDetails2}
-        case "books/00000000001":
+        case `books/00000000001`:
             return {data: bookDetails3}
-        case "recommender/0/10/1/top_n_clubs_top_club_books/":
+        case `recommender/0/10/1/top_n_clubs_top_club_books/`:
             return {data: topClubs}
-        case "/user/get_update/1/":
+        case `/user/get_update/1/`:
             return {data: currentUser};
-        case "user/get_update/1/":
+        case `user/get_update/1/`:
             return {data: currentUser};
-        case "user/get_update/2/":
+        case `user/get_update/2/`:
             return {data: currentUser2};
-        case "user/get_update/3/":
+        case `user/get_update/3/`:
             return {data: currentUser3};
-        case "user/get_update/4/":
+        case `user/get_update/4/`:
             return {data: currentUser4};
-        case "user/get_update/5/":
+        case `user/get_update/5/`:
             return {data: currentUser5};
-        case "meetings/1":
+        case `meetings/1`:
             return {data: myMeetings};
         case `/recommender/0/12/top_n_global/`:
             return {data: top12Global};
@@ -163,6 +164,8 @@ const generateGetResponse = (url) => {
             return {data: posts};
         case `recommender/0/20/1/top_n_users_random_books/`:
             return {data: recommended_users};
+        case `chat/?username=test`:
+            return {data: userChats}
         default:
             console.log("no matching mock for url", url)
             return {data: {}};

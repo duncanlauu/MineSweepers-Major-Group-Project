@@ -1,53 +1,49 @@
-import React, {useState, useEffect} from "react";
-import {Row, Col} from "reactstrap";
-import {BookLine} from "../UserProfileElements";
+import React, { useState, useEffect } from "react";
+import { Row, Col } from "reactstrap";
+import { BookStarsContainer, BookLine, BookNameContainer, ParaText } from "../UserProfileElements";
 import ReactStars from "react-stars";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
+import QuestionMark from "@mui/icons-material/QuestionMark";
 
 export default function SingleBookRating(props) {
-    const [book, setBook] = useState("");
+  const [book, setBook] = useState("");
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const navigateToBook = (e) => {
-        navigate(`/book_profile/${props.book.book__ISBN}`);
-    };
+  const navigateToBook = (e) => {
+    navigate(`/book_profile/${props.book.book__ISBN}`);
+    console.log(props.book)
+  };
 
-    return (
-        <div>
-            <BookLine>
-                <Row style={{height: "5rem"}} onClick={navigateToBook}>
-                    <Col xs="2">
-                        <img
-                            src={props.book.book__image_links_small}
-                            alt="Book's cover"
-                            style={{height: "5rem", width: "5rem"}}
-                        />
-                    </Col>
-
-          <Col
-            xs="6"
-            style={{
-              height: "5rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: "15px",
-            }}
-          >
-            {props.book.book__title}
-          </Col>
-          <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }} data-testid={"rating"}>
+  return (
+    <BookLine>
+      <Row onClick={navigateToBook} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Col xs="2">
+          <img
+            src={props.book.book__image_links_small}
+            alt="Book's cover"
+            style={{ height: "7rem", width: "5rem" }}
+          />
+        </Col>
+        <Col xs="6" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <BookNameContainer>
+            <ParaText>
+              {props.book.book__title}
+            </ParaText>
+          </BookNameContainer>
+        </Col>
+        <Col xs="4" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }} data-testid={"rating"}>
+          <BookStarsContainer style={{ marginRight: "1rem" }}>
             <ReactStars
               count={5}
               edit={false}
               value={props.book.rating / 2}
-              size={21}
+              size={25}
               color2={"#ffd700"}
             />
-          </Col>
-        </Row>
-      </BookLine>
-    </div>
+          </BookStarsContainer>
+        </Col>
+      </Row>
+    </BookLine>
   );
 }

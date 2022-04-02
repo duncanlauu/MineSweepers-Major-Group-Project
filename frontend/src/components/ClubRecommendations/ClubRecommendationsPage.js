@@ -58,7 +58,7 @@ const ClubRecommendationPage = () => {
                 </Row>
                 <Row>
                     <Col />
-                    <Col xs={8}>
+                    <Col xs={6}>
                         <LoadingIndicator />
                         <ClubRecommenderContainer>
                             <RecommenderContainer data-testid="recommender_container">

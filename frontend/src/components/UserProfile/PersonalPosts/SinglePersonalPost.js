@@ -11,9 +11,9 @@ import {
     Button,
     UncontrolledCollapse,
     Modal,
-    ModalBody
+    ModalBody,
 } from "reactstrap";
-import PersonalPostEditor from "./PersonalPostEditor";
+import PersonalPostForm from "./PersonalPostForm";
 import PostCommentList from "../../Feed/PostCommentList";
 import Gravatar from "react-gravatar";
 import {PostHeadingText} from "../UserProfileElements";
@@ -63,12 +63,14 @@ export default function SinglePersonalPost(props) {
                 <CardHeader>
                     <Row>
                         <Col xs="1">
-                            <Gravatar email={posterEmail} size={30}
-                                      style={{
-                                          borderRadius: "50px",
-                                          marginTop: "0rem",
-                                          marginBottom: "0rem",
-                                      }}
+                            <Gravatar
+                                email={posterEmail}
+                                size={30}
+                                style={{
+                                    borderRadius: "50px",
+                                    marginTop: "0rem",
+                                    marginBottom: "0rem",
+                                }}
                             />
                         </Col>
                         {props.requestedUser_id === undefined && (
@@ -126,7 +128,7 @@ export default function SinglePersonalPost(props) {
                 }}
             >
                 <ModalBody style={{overflowY: "scroll"}}>
-                    <PersonalPostEditor personalPost={personalPost}/>
+                    <PersonalPostForm personalPost={personalPost}/>
                 </ModalBody>
             </Modal>
         </div>
