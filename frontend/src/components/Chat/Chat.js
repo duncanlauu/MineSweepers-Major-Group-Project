@@ -10,13 +10,13 @@ import {
 import { Container } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 
+// function component wrapper for passing hook funtionality into class based component
 const Chat = (props) => {
     const navigate = useNavigate();
     return (<ChatClass {...props} navigate={navigate} chats={props.chats} setChats={props.setChats} />)
 }
 
 class ChatClass extends React.Component {
-
 
     state = {
         messages: [],

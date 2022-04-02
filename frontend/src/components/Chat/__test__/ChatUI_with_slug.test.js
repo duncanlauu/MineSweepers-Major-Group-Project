@@ -182,8 +182,6 @@ describe('Components exist', () => {
                 expect(placeholder).toBeInTheDocument()
             })
         })
-
-
     })
 
     describe('Send button functionality', () => {

@@ -1,15 +1,9 @@
 // Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Contact from './Contact';
 import axiosInstance from '../../axios'
-import Gravatar from 'react-gravatar';
-import { ImageDiv, MessagingProfilePara } from './ChatElements';
 
 export default function Sidepanel(props) {
-
-    // const [chats, setChats] = useState([])
-    // const chats = props.chats
-    // const setChats = props.setChats
 
     useEffect(() => {
         getUserChats()
