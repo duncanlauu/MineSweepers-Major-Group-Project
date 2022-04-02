@@ -23,6 +23,8 @@ from django.db import connections
 from django.db import close_old_connections
 from django import db
 
+import os
+
 from selenium.webdriver.common.action_chains import ActionChains
 
 
@@ -31,24 +33,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     port = 8000
 
-    # fixtures = ['app/tests/fixtures/default_user.json',
-    #             'app/tests/fixtures/other_users.json',
-    #             'app/tests/fixtures/default_message.json',
-    #             'app/tests/fixtures/other_messages.json',
-    #             'app/tests/fixtures/default_chat.json',
-    #             'app/tests/fixtures/other_chats.json',
-    #             'app/tests/fixtures/default_post.json',
-    #             'app/tests/fixtures/other_posts.json',
-    #             'app/tests/fixtures/default_club.json',
-    #             'app/tests/fixtures/other_clubs.json',
-    #             'app/tests/fixtures/default_book.json',
-    #             'app/tests/fixtures/other_books.json',
-    #             'app/tests/fixtures/default_comment.json',
-    #             'app/tests/fixtures/other_comments.json',
-    #             'app/tests/fixtures/default_reply.json',
-    #             'app/tests/fixtures/other_replies.json'
-    #             ]
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -56,8 +40,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         call_command('collectstatic', verbosity=0, interactive=False)
         chrome_options = Options()
 
+        run_headless = eval(os.environ.get('RUN_HEADLESS', True))
+        print(run_headless)
+        if(run_headless):
+            chrome_options.headless = True
+
         #for headless testing
-        chrome_options.headless = True
+        # chrome_options.headless = True
         # chrome_options.add_argument("--headless")
         # chrome_options.add_argument("--window-size=1200,800")
         # if not cls.SHOW_BROWSER:
@@ -65,28 +54,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         #     chrome_options.add_argument("--window-size=1200,800")
 
         cls.browser = webdriver.Chrome(chrome_options=chrome_options)
-
-        # cls.browser = webdriver.Chrome(
-        #     executable_path="app/tests/selenium/chromedriver", options=chrome_options
-        # )
         cls.browser.set_page_load_timeout(120)
         cls.actions = ActionChains(cls.browser)
         cls.browser.delete_all_cookies()
-        
-
-        
-    # jeb = User.objects.create(
-    #     username="Jeb",
-    #     first_name="Jebediah",
-    #     last_name="Kerman",
-    #     email="jeb@example.org",
-    #     bio="I love chess! I mean books, I love books.",
-    #     location="Somewhere in space I guess",
-    #     birthday=datetime(year=2011, month=6, day=24),
-    #     password="pbkdf2_sha256$260000$VEDi9wsMYG6eNVeL8WSPqj$LHEiR2iUkusHCIeiQdWS+xQGC9/CjhhrjEOESMMp+c0="
-    # )
-
-        
 
     @classmethod
     def tearDownClass(cls):
@@ -152,6 +122,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # # Website title
         self.browser.get(f"{self.live_server_url}/")
         self.assertEquals(self.browser.title, "Bookgle")
+        # sleep(300)
 
         body_text = self.browser.find_element_by_tag_name("body").text
         print(body_text)
@@ -175,9 +146,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_sign_up_username_too_short()
         # self._test_sign_up_invalid_email()
         # # Sign Up Page and new user Book Rating Page
-        # # self._test_sign_up_and_book_rating() 
+        self._test_sign_up_and_book_rating() 
 
-        self._log_in()
+        # self._log_in()
         # Home Page
         # self._test_page_contains_functional_navbar("home")
         # self._test_reply_to_comment_on_post() #Due to weird time delay, this test is not stable
@@ -448,7 +419,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
         number_of_users_after = User.objects.count()
         self.assertEqual(number_of_users_after, number_of_users_before+1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating/")
+        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
         self.wait_until_element_found("//span[@data-index='3']", 20)
         self.browser.find_element_by_xpath("//span[@data-index='3']").click()
         self.browser.implicitly_wait(10)
