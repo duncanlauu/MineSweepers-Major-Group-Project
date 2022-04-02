@@ -25,6 +25,12 @@ import replies2 from '../mocksData/replies2.json'
 import replies3 from '../mocksData/replies3.json'
 import replies4 from '../mocksData/replies4.json'
 import replies5 from '../mocksData/replies5.json'
+import post from '../mocksData/post.json'
+import post2 from '../mocksData/post2.json'
+import post3 from '../mocksData/post3.json'
+import post4 from '../mocksData/post4.json'
+import post5 from '../mocksData/post5.json'
+import posts from '../mocksData/posts.json'
 import comments from '../mocksData/comments.json'
 
 
@@ -88,8 +94,68 @@ const generateGetResponse = (url) => {
             return {data: replies4};
         case `posts/1/comments/5/replies/`:
             return {data: replies5};
+        case `posts/2/comments/1/replies/`:
+            return {data: replies};
+        case `posts/2/comments/2/replies/`:
+            return {data: replies2};
+        case `posts/2/comments/3/replies/`:
+            return {data: replies3};
+        case `posts/2/comments/4/replies/`:
+            return {data: replies4};
+        case `posts/2/comments/5/replies/`:
+            return {data: replies5};
+        case `posts/3/comments/1/replies/`:
+            return {data: replies};
+        case `posts/3/comments/2/replies/`:
+            return {data: replies2};
+        case `posts/3/comments/3/replies/`:
+            return {data: replies3};
+        case `posts/3/comments/4/replies/`:
+            return {data: replies4};
+        case `posts/3/comments/5/replies/`:
+            return {data: replies5};
+        case `posts/4/comments/1/replies/`:
+            return {data: replies};
+        case `posts/4/comments/2/replies/`:
+            return {data: replies2};
+        case `posts/4/comments/3/replies/`:
+            return {data: replies3};
+        case `posts/4/comments/4/replies/`:
+            return {data: replies4};
+        case `posts/4/comments/5/replies/`:
+            return {data: replies5};
+        case `posts/5/comments/1/replies/`:
+            return {data: replies};
+        case `posts/5/comments/2/replies/`:
+            return {data: replies2};
+        case `posts/5/comments/3/replies/`:
+            return {data: replies3};
+        case `posts/5/comments/4/replies/`:
+            return {data: replies4};
+        case `posts/5/comments/5/replies/`:
+            return {data: replies5};
         case `posts/1/comments/`:
             return {data: comments};
+        case `posts/2/comments/`:
+            return {data: comments};
+        case `posts/3/comments/`:
+            return {data: comments};
+        case `posts/4/comments/`:
+            return {data: comments};
+        case `posts/5/comments/`:
+            return {data: comments};
+        case `posts/1`:
+            return {data: post};
+        case `posts/2`:
+            return {data: post2};
+        case `posts/3`:
+            return {data: post3};
+        case `posts/4`:
+            return {data: post4};
+        case `posts/5`:
+            return {data: post5};
+        case `feed/`:
+            return {data: posts};
         default:
             console.log("no matching mock for url", url)
             return {data: {}};
