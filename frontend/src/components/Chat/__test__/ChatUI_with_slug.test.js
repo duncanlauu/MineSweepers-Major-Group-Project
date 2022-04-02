@@ -33,7 +33,6 @@ jest.mock('react-router-dom', () => ({
     useParams: () => ({
         chatID: '21'
     }),
-    // useRouteMatch: () => ({ url: '/chat/' }),
 }));
 
 describe('Components exist', () => {
@@ -155,14 +154,6 @@ describe('Components exist', () => {
         })
 
     })
-
-
-
-
-    // test 
-    // 1. no chats and 
-    // club + one friend
-    // --> Need to specify option with which JSON to return
 })
 
 
