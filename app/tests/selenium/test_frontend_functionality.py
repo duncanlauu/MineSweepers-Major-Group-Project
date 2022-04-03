@@ -208,8 +208,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self._close_db_connections()
 
     def test_everything(self):
-        # self._log_in()
-        # sleep(200)
+        self._log_in()
+        sleep(400)
 
         # # Landing Page # DONE
         # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
@@ -282,24 +282,30 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # As Owner
-        self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
-        self.run_testcase(self._test_demote_admin_to_member_as_owner, True)
-        self.run_testcase(self._test_ban_member_as_owner, True)
-        self.run_testcase(self._test_ban_admin_as_owner, True)
-        self.run_testcase(self._test_unban_banned_user_as_owner, True)
-        self.run_testcase(self._test_remove_member_as_owner, True)
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
+        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
+        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True)
+        # self.run_testcase(self._test_ban_member_as_owner, True)
+        # self.run_testcase(self._test_ban_admin_as_owner, True)
+        # self.run_testcase(self._test_unban_banned_user_as_owner, True)
+        # self.run_testcase(self._test_remove_member_as_owner, True)
+        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
+        #accept applicant
+        #reject applicant
 
-        # As Admin
-        # Test that there are no make owner, promote, demote buttons
-        self.run_testcase(self._test_remove_member_as_admin, True)
-        self.run_testcase(self._test_ban_member_as_admin, True)
-        self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        # # As Admin
+        # # Test that there are no make owner, promote, demote buttons
+        # self.run_testcase(self._test_remove_member_as_admin, True)
+        # self.run_testcase(self._test_ban_member_as_admin, True)
+        # self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        #accept applicant
+        #reject applicant
         
         # As Member
-        # Test that there are no make owner, promote 
+
+        # Test that there are no make owner, promote, ban, unban, remove buttons, accept, reject buttons
 
         # As Non-Member
+        # Test that there are no buttons for members and so on
 
 
 
