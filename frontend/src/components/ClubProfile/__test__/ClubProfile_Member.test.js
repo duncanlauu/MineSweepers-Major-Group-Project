@@ -256,152 +256,301 @@ describe('User is member', () => {
 
 
 
-    // describe('Feed Tab shows correct contents', () => {
+    describe('Feed Tab shows correct contents', () => {
 
-    //     test('shows the correct number of posts', async () => {
+        test('shows the correct number of posts', async () => {
 
-    //         act(() => {
-    //             renderClubProfile(role);
-    //         })
+            act(() => {
+                renderClubProfile(role);
+            })
 
-    //         const feedTab = await screen.findByRole('tab', { name: /feed/i })
-    //         fireEvent.click(feedTab)
+            const feedTab = await screen.findByRole('tab', { name: /feed/i })
+            fireEvent.click(feedTab)
 
-    //         const posts = await screen.findAllByTestId('singleFeedPost')
-    //         expect(posts).toHaveLength(2)
-    //     })
-
-
-
-    //     describe('shows correct first post', () => {
-
-    //         test('correct author', async () => {
-
-    //             act(() => {
-    //                 renderClubProfile(role);
-    //             })
-
-    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
-    //             fireEvent.click(feedTab)
-
-    //             const author = await screen.findByText(/@declan89/i)
-    //             expect(author).toBeInTheDocument()
-    //         })
-
-    //         test('correct title', async () => {
-
-    //             act(() => {
-    //                 renderClubProfile(role);
-    //             })
-
-    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
-    //             fireEvent.click(feedTab)
-
-    //             const title = await screen.findByText(/blanditiis velit neque nulla perspiciatis\./i)
-    //             expect(title).toBeInTheDocument()
-    //         })
-
-
-    //         test('correct content', async () => {
-
-    //             act(() => {
-    //                 renderClubProfile(role);
-    //             })
-
-    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
-    //             fireEvent.click(feedTab)
-
-    //             const title = await screen.findByRole('heading', { name: /ratione quis tenetur officia eligendi\. ipsum praesentium eveniet quia perspiciatis in\.\ntenetur est vel sed consequuntur alias\. veniam non dignissimos\. beatae aspernatur eos esse facere nam\.\nlaboriosam sapiente quam consectetur\. numquam odit nostrum unde provident\. repudiandae iste excepturi odit quod modi nostrum\./i })
-    //             expect(title).toBeInTheDocument()
-    //         })
-
-    //         // wait for api endpoint to be fixed 
-
-    //         //     test('correct number of likes', async () => {
-
-    //         //         act(() => {
-    //         //             renderClubProfile(role);
-    //         //         })
-
-    //         //         await waitFor(() => {
-    //         //             const likes = screen.getByText(/likes: 6/i)
-    //         //             expect(likes).toBeInTheDocument()
-    //         //         })
-    //         //     })
-    //         // })
-
-    //     })
-    // })
+            const posts = await screen.findAllByTestId('singleFeedPost')
+            expect(posts).toHaveLength(2)
+        })
 
 
 
+        describe('shows correct first post', () => {
 
-    describe('Meetings tab shows correct contents', () => {
+            test('correct author', async () => {
 
-        // describe('contains correct components', () => {
-
-        //     test('shows Meeting History Heading', async () => {
-        //         act(() => {
-        //             renderClubProfile(role);
-        //         })
-
-        //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-        //         fireEvent.click(feedTab)
-
-        //         const heading = screen.getByText(/meeting history/i)
-        //         expect(heading).toBeInTheDocument()
-        //     })
-
-        //     test('shows schedule meeting button', async () => {
-        //         act(() => {
-        //             renderClubProfile(role);
-        //         })
-
-        //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-        //         fireEvent.click(feedTab)
-
-        //         const button = screen.getByRole('button', { name: /schedule a meeting/i })
-        //         expect(button).toBeInTheDocument()
-        //     })
-        // })
-
-        describe('displays correct contents of first meeting', () => {
-
-            test('shows correct meeting title', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
 
-                const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
                 fireEvent.click(feedTab)
 
-                const title = screen.getByText(/west guyview book club meeting #0/i)
+                const author = await screen.findByText(/@declan89/i)
+                expect(author).toBeInTheDocument()
+            })
+
+            test('correct title', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
+                fireEvent.click(feedTab)
+
+                const title = await screen.findByText(/blanditiis velit neque nulla perspiciatis\./i)
                 expect(title).toBeInTheDocument()
             })
 
-            //     test('shows correct meeting book', async () => {
-            //         act(() => {
-            //             renderClubProfile(role);
-            //         })
 
-            //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-            //         fireEvent.click(feedTab)
+            test('correct content', async () => {
 
-            //         const title = screen.getByText(/the john fante reader/i)
-            //         expect(title).toBeInTheDocument()
-            //     })
+                act(() => {
+                    renderClubProfile(role);
+                })
 
-            //     test('shows correct meeting description', async () => {
-            //         act(() => {
-            //             renderClubProfile(role);
-            //         })
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
+                fireEvent.click(feedTab)
 
-            //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-            //         fireEvent.click(feedTab)
+                const title = await screen.findByRole('heading', { name: /ratione quis tenetur officia eligendi\. ipsum praesentium eveniet quia perspiciatis in\.\ntenetur est vel sed consequuntur alias\. veniam non dignissimos\. beatae aspernatur eos esse facere nam\.\nlaboriosam sapiente quam consectetur\. numquam odit nostrum unde provident\. repudiandae iste excepturi odit quod modi nostrum\./i })
+                expect(title).toBeInTheDocument()
+            })
 
-            //         const description = screen.getByText(/laboriosam fugiat vel modi reprehenderit quisquam\. mollitia ipsa saepe adipisci iusto sapiente nulla aliquam\. laudantium eius nihil maxime\./i)
-            //         expect(description).toBeInTheDocument()
-            //     })
+
+            test('correct number of likes', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const likes = screen.getByText(/likes: 6/i)
+                    expect(likes).toBeInTheDocument()
+                })
+            })
         })
+
+        //     })
+        // })
+
+
+
+        // FEEEED
+
+
+        // describe('Meetings tab shows correct contents', () => {
+
+        //     describe('contains correct components', () => {
+
+        //         test('shows Meeting History Heading', async () => {
+        //             act(() => {
+        //                 renderClubProfile(role);
+        //             })
+
+        //             const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+        //             fireEvent.click(feedTab)
+
+        //             const heading = screen.getByText(/meeting history/i)
+        //             expect(heading).toBeInTheDocument()
+        //         })
+
+        //         test('shows schedule meeting button', async () => {
+        //             act(() => {
+        //                 renderClubProfile(role);
+        //             })
+
+        //             const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+        //             fireEvent.click(feedTab)
+
+        //             const button = screen.getByRole('button', { name: /schedule a meeting/i })
+        //             expect(button).toBeInTheDocument()
+        //         })
+        //     })
+
+        //     describe('displays correct contents of first meeting', () => {
+
+        //         test('shows correct meeting title', async () => {
+        //             act(() => {
+        //                 renderClubProfile(role);
+        //             })
+
+        //             await waitFor(() => {
+        //                 const feedTab = screen.getByRole('tab', { name: /meetings/i })
+        //                 fireEvent.click(feedTab)
+        //             })
+
+        //             const title = screen.getByText(/west guyview book club meeting #0/i)
+        //             expect(title).toBeInTheDocument()
+        //         })
+
+        //         test('shows correct meeting book', async () => {
+        //             act(() => {
+        //                 renderClubProfile(role);
+        //             })
+
+        //             await waitFor(() => {
+        //                 const feedTab = screen.getByRole('tab', { name: /meetings/i })
+        //                 fireEvent.click(feedTab)
+        //             })
+
+        //             const book = screen.getByText(/the john fante reader/i)
+        //             expect(book).toBeInTheDocument()
+        //         })
+
+        //         test('shows correct meeting description', async () => {
+        //             act(() => {
+        //                 renderClubProfile(role);
+        //             })
+
+        //             await waitFor(() => {
+        //                 const feedTab = screen.getByRole('tab', { name: /meetings/i })
+        //                 fireEvent.click(feedTab)
+        //             })
+
+        //             const description = screen.getByText(/laboriosam fugiat vel modi reprehenderit quisquam\. mollitia ipsa saepe adipisci iusto sapiente nulla aliquam\. laudantium eius nihil maxime\./i)
+        //             expect(description).toBeInTheDocument()
+        //         })
+        //     })
+
+        //     test('shows correct number of meetings', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /meetings/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const meetings = screen.queryAllByTestId('singleMeetingCard')
+        //         expect(meetings).toHaveLength(2)
+        //     })
+        // })
+
+        // describe('Members tab shows correct contents', () => {
+
+        // describe('contains correct components', () => {
+        //     test('shows owner title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/owner/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows admins title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/admins/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows members title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByTestId('membersTitle')
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows applicants title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/applicants/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('displays correct number of people', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const people = screen.queryAllByTestId('individualMemberCard')
+        //         expect(people).toHaveLength(17)
+        //     })
+        // })
+
+        // describe('displays first person correctly', () => {
+
+        //     test('displays name', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const name = screen.getByRole('link', { name: /bob/i });
+        //         expect(name).toBeInTheDocument()
+        //     })
+
+        //     test('displays email', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const email = screen.getByText(/bob@example\.org/i)
+        //         expect(email).toBeInTheDocument()
+        //     })
+
+        //     test('displays bio with max. 45 characters', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const bio = screen.getByText(/my weekend is fully booked\./i)
+        //         expect(bio).toBeInTheDocument()
+        //     })
+        // });
+
+        // describe('does not show admin/owner control', () => {
+        //     // transfer ownership
+        //     // demote
+        //     // ban
+        //     // accept
+        //     // reject
+        // })
     })
 })

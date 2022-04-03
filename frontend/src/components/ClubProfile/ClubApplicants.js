@@ -76,7 +76,7 @@ function ClubApplicants(props) {
         const memberStatus = props.memberStatus
 
         return (
-            <ClubProfile>
+            <ClubProfile data-testId="individualMemberCard">
                 <Col xs={3}>
                     <Gravatar email={props.email} size={70} style={{ borderRadius: "100%" }} />
                 </Col>
@@ -286,7 +286,7 @@ function ClubApplicants(props) {
                     </li>
                 ))}
             </ul>
-            {members.length > 0 ? <MemberListHeading>Members</MemberListHeading> : <></>}
+            {members.length > 0 ? <MemberListHeading data-testId="membersTitle" >Members</MemberListHeading> : <></>}
             <ul>
                 {members.map((member) => (
                     <li key={member}>
