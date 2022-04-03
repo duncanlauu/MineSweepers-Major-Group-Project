@@ -73,7 +73,7 @@ function ClubProfileTabs(props) {
 
       {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (
         <TabPanel value={value} index={1}>
-          <ClubApplicants memberStatus={memberStatus}/>
+          <ClubApplicants memberStatus={memberStatus} club ={props.club}/>
         </TabPanel>
       )}
 

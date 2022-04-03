@@ -65,6 +65,7 @@ const ClubProfile = () => {
                 <ClubProfileTabs
                   memberStatus={memberStatus}
                   setMemberStatus={setMemberStatus}
+                  club ={club}
                 />
               </ProfileHeader>
             </ProfileContainer>

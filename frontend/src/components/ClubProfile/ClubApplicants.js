@@ -38,7 +38,7 @@ const buttonStyle = {
 };
 
 function ClubApplicants(props) {
-  const [club, setClub] = useState(null);
+  const [club, setClub] = useState(props.club);
   const [owner, setOwner] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [members, setMembers] = useState([]);
@@ -53,7 +53,7 @@ function ClubApplicants(props) {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        setClub(res.data.club);
+        
 
         setOwner(res.data.owner);
 
@@ -68,7 +68,7 @@ function ClubApplicants(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [club]);
 
   function IndividualMemberCard(props) {
     const isApplicant = props.isApplicant;
@@ -199,6 +199,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/${action}/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -211,6 +212,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/${action}/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -223,6 +225,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/${action}/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -235,6 +238,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/${action}/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -247,6 +251,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/${action}/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -258,6 +263,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/promote/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -269,6 +275,7 @@ function ClubApplicants(props) {
       .put(`singleclub/${id}/demote/${user_id}`, {})
       .then((res) => {
         console.log(res);
+        setClub(res.data);
       })
       .catch((err) => {
         console.log(err);
