@@ -137,6 +137,7 @@ export default function SingleFeedPost(props) {
             </Button>
             &nbsp;
             <Button
+              name="like-button"
               style={{
                 height: "4rem",
                 background: likedByUser ? "#653FFD" : "#ffffff",

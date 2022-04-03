@@ -208,8 +208,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self._close_db_connections()
 
     def test_everything(self):
-        self._log_in()
-        sleep(400)
+        # self._log_in()
+        # sleep(400)
 
         # # Landing Page # DONE
         # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
@@ -282,23 +282,25 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # As Owner
-        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
-        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True)
-        # self.run_testcase(self._test_ban_member_as_owner, True)
-        # self.run_testcase(self._test_ban_admin_as_owner, True)
-        # self.run_testcase(self._test_unban_banned_user_as_owner, True)
-        # self.run_testcase(self._test_remove_member_as_owner, True)
-        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
-        #accept applicant
-        #reject applicant
+        self.run_testcase(self._test_accept_club_applicant_as_owner, True)
+        self.run_testcase(self._test_reject_club_applicant_as_owner, True)
+        self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
+        self.run_testcase(self._test_demote_admin_to_member_as_owner, True)
+        self.run_testcase(self._test_ban_member_as_owner, True)
+        self.run_testcase(self._test_ban_admin_as_owner, True)
+        self.run_testcase(self._test_unban_banned_user_as_owner, True)
+        self.run_testcase(self._test_remove_member_as_owner, True)
+        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
+        
 
         # # As Admin
-        # # Test that there are no make owner, promote, demote buttons
-        # self.run_testcase(self._test_remove_member_as_admin, True)
-        # self.run_testcase(self._test_ban_member_as_admin, True)
-        # self.run_testcase(self._test_unban_banned_user_as_admin, True)
-        self.run_testcase(self._test_accept_club_applications_as_admin, True)
-        self.run_testcase(self._test_reject_club_applications_as_admin, True)
+        # Test that there are no make owner, promote, demote buttons
+        self.run_testcase(self._test_accept_club_applicant_as_admin, True)
+        self.run_testcase(self._test_reject_club_applicant_as_admin, True)
+        self.run_testcase(self._test_remove_member_as_admin, True)
+        self.run_testcase(self._test_ban_member_as_admin, True)
+        self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        
         
         # As Member
 
@@ -350,53 +352,55 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_log_out_button(url)
 
     # Club Profile Page as Admin
-    def _test_accept_club_applications_as_admin(self):
+    def _test_accept_club_applicant_as_admin(self):
+        number_of_members_before = self.club_where_admin.members.count()
+        number_of_applicants_before = self.club_where_admin.applicants.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
         self.browser.implicitly_wait(10)
-        # Check that there is no leave button
+        self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Accept"]')
         club_user_cards = self.browser.find_elements_by_name("individual-user-card")
-        member_club_user_card = None
+        applicant_user_card = None
         for club_user_card in club_user_cards:
             club_user_card_text = club_user_card.text
-            print(club_user_card_text)
             if("Accept" in club_user_card_text):
-                member_club_user_card = club_user_card
+                applicant_user_card = club_user_card
                 break
-        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
-        print("member_club_user: ", new_admin_username)
-        member_club_user_card.find_element_by_xpath('.//button[.="Accept"]').click()
+        applicant_username = applicant_user_card.find_element_by_name("username-text").text
+        applicant_user_card.find_element_by_xpath('.//button[.="Accept"]').click()
         sleep(1)
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
-        # Check he is a member
-        sleep(1)
-        self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(2)
+        number_of_members_after = self.club_where_admin.members.count()
+        number_of_applicants_after = self.club_where_admin.applicants.count()
+        self.assertEqual(number_of_members_after, number_of_members_before + 1)
+        self.assertEqual(number_of_applicants_after, number_of_applicants_before - 1)
+        applicant= User.objects.get(username=applicant_username)
+        self.assertTrue(applicant in self.club_where_admin.members.all())
 
-    def _test_reject_club_applications_as_admin(self):
+    def _test_reject_club_applicant_as_admin(self):
+        number_of_members_before = self.club_where_admin.members.count()
+        number_of_applicants_before = self.club_where_admin.applicants.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
         self.browser.implicitly_wait(10)
-        # Check that there is no leave button
+        self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Accept"]')
         club_user_cards = self.browser.find_elements_by_name("individual-user-card")
-        member_club_user_card = None
+        applicant_user_card = None
         for club_user_card in club_user_cards:
             club_user_card_text = club_user_card.text
-            print(club_user_card_text)
             if("Reject" in club_user_card_text):
-                member_club_user_card = club_user_card
+                applicant_user_card = club_user_card
                 break
-        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
-        print("member_club_user: ", new_admin_username)
-        member_club_user_card.find_element_by_xpath('.//button[.="Reject"]').click()
+        applicant_username = applicant_user_card.find_element_by_name("username-text").text
+        applicant_user_card.find_element_by_xpath('.//button[.="Reject"]').click()
         sleep(1)
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
-        # Check he is a member
-        sleep(1)
-        self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(2)
+        number_of_members_after = self.club_where_admin.members.count()
+        number_of_applicants_after = self.club_where_admin.applicants.count()
+        self.assertEqual(number_of_members_after, number_of_members_before)
+        self.assertEqual(number_of_applicants_after, number_of_applicants_before - 1)
+        applicant= User.objects.get(username=applicant_username)
+        self.assertFalse(applicant in self.club_where_admin.members.all())
 
     def _test_unban_banned_user_as_admin(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
@@ -471,6 +475,56 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(2)
 
     # Club Profile Page as Owner
+
+    def _test_accept_club_applicant_as_owner(self):
+        number_of_members_before = self.club.members.count()
+        number_of_applicants_before = self.club.applicants.count()
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        self.wait_until_element_found('//button[.="Accept"]')
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        applicant_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            if("Accept" in club_user_card_text):
+                applicant_user_card = club_user_card
+                break
+        applicant_username = applicant_user_card.find_element_by_name("username-text").text
+        applicant_user_card.find_element_by_xpath('.//button[.="Accept"]').click()
+        sleep(1)
+        number_of_members_after = self.club.members.count()
+        number_of_applicants_after = self.club.applicants.count()
+        self.assertEqual(number_of_members_after, number_of_members_before + 1)
+        self.assertEqual(number_of_applicants_after, number_of_applicants_before - 1)
+        applicant= User.objects.get(username=applicant_username)
+        self.assertTrue(applicant in self.club.members.all())
+
+    def _test_reject_club_applicant_as_owner(self):
+        number_of_members_before = self.club.members.count()
+        number_of_applicants_before = self.club.applicants.count()
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        self.wait_until_element_found('//button[.="Accept"]')
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        applicant_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            if("Reject" in club_user_card_text):
+                applicant_user_card = club_user_card
+                break
+        applicant_username = applicant_user_card.find_element_by_name("username-text").text
+        applicant_user_card.find_element_by_xpath('.//button[.="Reject"]').click()
+        sleep(1)
+        number_of_members_after = self.club.members.count()
+        number_of_applicants_after = self.club.applicants.count()
+        self.assertEqual(number_of_members_after, number_of_members_before)
+        self.assertEqual(number_of_applicants_after, number_of_applicants_before - 1)
+        applicant= User.objects.get(username=applicant_username)
+        self.assertFalse(applicant in self.club.members.all())
 
     def _test_unban_banned_user_as_owner(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
