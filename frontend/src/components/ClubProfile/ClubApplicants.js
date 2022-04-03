@@ -283,7 +283,7 @@ function ClubApplicants(props) {
 
     return (
         <>
-            <MemberListHeading>Owner</MemberListHeading>
+            <MemberListHeading data-testId="ownerMemberCard">Owner</MemberListHeading>
             <IndividualMemberCard
                 username={owner.username}
                 email={owner.email}
@@ -298,7 +298,7 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {admins.map((admin) => (
-                    <li key={admin}>
+                    <li data-testId="adminMemberCard" key={admin}>
                         <IndividualMemberCard
                             username={admin.username}
                             email={admin.email}
@@ -311,13 +311,13 @@ function ClubApplicants(props) {
                 ))}
             </ul>
             {members.length > 0 ? (
-                <MemberListHeading>Members</MemberListHeading>
+                <MemberListHeading data-testId="membersTitle">Members</MemberListHeading>
             ) : (
                 <></>
             )}
             <ul>
                 {members.map((member) => (
-                    <li key={member}>
+                    <li data-testId="memberMemberCard" key={member}>
                         <IndividualMemberCard
                             username={member.username}
                             email={member.email}
@@ -336,7 +336,7 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {applicants.map((applicant, index) => (
-                    <li key={applicant}>
+                    <li data-testId="applicantMemberCard" key={applicant}>
                         <IndividualMemberCard
                             username={applicant.username}
                             email={applicant.email}
@@ -355,7 +355,7 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {bannedUsers.map((bannedUser) => (
-                    <li key={bannedUser}>
+                    <li data-testId="bannedMemberCard" key={bannedUser}>
                         <div style={{ opacity: "60%" }}>
                             <IndividualMemberCard
                                 username={bannedUser.username}

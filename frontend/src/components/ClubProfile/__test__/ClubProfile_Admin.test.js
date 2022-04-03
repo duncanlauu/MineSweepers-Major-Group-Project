@@ -254,8 +254,157 @@ describe('User is admin', () => {
 
     describe('Members tab shows correct contents', () => {
 
-        describe('contains correct components', () => {
-            test('shows owner title', async () => {
+        // describe('contains correct components', () => {
+        //     test('shows owner title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/owner/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows admins title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/admins/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows members title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByTestId('membersTitle')
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('shows applicants title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/applicants/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
+        //     test('displays correct number of people', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const people = screen.queryAllByTestId('individualMemberCard')
+        //         expect(people).toHaveLength(11)
+        //     })
+        // })
+
+        // describe('displays first person correctly', () => {
+
+        //     test('displays name', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const name = screen.getByRole('link', { name: /pearcedamian/i });
+        //         expect(name).toBeInTheDocument()
+        //     })
+
+        //     test('displays email', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const email = screen.getByText(/stephenwatson@example\.org/i)
+        //         expect(email).toBeInTheDocument()
+        //     })
+
+        //     test('displays bio with max. 45 characters', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const bio = screen.getByText(/temporibus in dolore suscipit cupiditate moll\.\.\./i)
+        //         expect(bio).toBeInTheDocument()
+        //     })
+        // });
+
+        describe('manage members functionality', () => {
+
+            // test('ban member moves member into banned members list', async () => {
+            //     act(() => {
+            //         renderClubProfile(role);
+            //     })
+
+            //     await waitFor(() => {
+            //         const feedTab = screen.getByRole('tab', { name: /members/i })
+            //         fireEvent.click(feedTab)
+            //     })
+
+            //     const membersBefore = screen.queryAllByTestId('memberMemberCard')
+            //     const bannedBefore = screen.queryAllByTestId('bannedMemberCard')
+
+            //     await waitFor(() => {
+            //         const banButtons = screen.queryAllByRole('button', { name: /ban/i })
+            //         fireEvent.click(banButtons[0])
+            //     })
+
+            //     // const banButtons = await screen.findAllByRole('button', { name: /ban/i })
+
+            //     // act(() => { fireEvent.click(banButtons[0]) })
+
+            //     await waitFor(() => {
+            //         const membersAfter = screen.queryAllByTestId('memberMemberCard')
+            //         // const bannedAfter = await screen.findAllByTestId('bannedMemberCard')
+
+            //         expect(membersBefore.length).toBe(membersAfter.length + 1)
+            //     })
+            //     // expect(bannedBefore.length).toBe(bannedAfter.length - 1)
+            // })
+
+            test('contains the same number of ban buttons as members', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
@@ -265,11 +414,13 @@ describe('User is admin', () => {
                     fireEvent.click(feedTab)
                 })
 
-                const title = screen.getByText(/owner/i)
-                expect(title).toBeInTheDocument()
+                const members = screen.queryAllByTestId('memberMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /ban/i })
+
+                expect(members.length).toBe(banButtons.length)
             })
 
-            test('shows admins title', async () => {
+            test('contains the same number of accept buttons as applicants', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
@@ -279,11 +430,13 @@ describe('User is admin', () => {
                     fireEvent.click(feedTab)
                 })
 
-                const title = screen.getByText(/admins/i)
-                expect(title).toBeInTheDocument()
+                const applicants = screen.queryAllByTestId('applicantMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /accept/i })
+
+                expect(applicants.length).toBe(banButtons.length)
             })
 
-            test('shows members title', async () => {
+            test('contains the same number of reject buttons as applicants', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
@@ -293,11 +446,13 @@ describe('User is admin', () => {
                     fireEvent.click(feedTab)
                 })
 
-                const title = screen.getByTestId('membersTitle')
-                expect(title).toBeInTheDocument()
+                const applicants = screen.queryAllByTestId('applicantMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /reject/i })
+
+                expect(applicants.length).toBe(banButtons.length)
             })
 
-            test('shows applicants title', async () => {
+            test('contains the same number of unban buttons as banned users', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
@@ -307,76 +462,17 @@ describe('User is admin', () => {
                     fireEvent.click(feedTab)
                 })
 
-                const title = screen.getByText(/applicants/i)
-                expect(title).toBeInTheDocument()
-            })
+                const bannedUsers = screen.queryAllByTestId('bannedMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /unban/i })
 
-            test('displays correct number of people', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const people = screen.queryAllByTestId('individualMemberCard')
-                expect(people).toHaveLength(11)
-            })
-        })
-
-        describe('displays first person correctly', () => {
-
-            test('displays name', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const name = screen.getByRole('link', { name: /pearcedamian/i });
-                expect(name).toBeInTheDocument()
-            })
-
-            test('displays email', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const email = screen.getByText(/stephenwatson@example\.org/i)
-                expect(email).toBeInTheDocument()
-            })
-
-            test('displays bio with max. 45 characters', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const bio = screen.getByText(/temporibus in dolore suscipit cupiditate moll\.\.\./i)
-                expect(bio).toBeInTheDocument()
+                expect(bannedUsers.length).toBe(banButtons.length)
             })
         });
 
-        describe('does not show admin/owner control', () => {
+
+        describe('does not show owner control', () => {
             // transfer ownership
             // demote
-            // ban
-            // accept
-            // reject
         })
     })
 })
