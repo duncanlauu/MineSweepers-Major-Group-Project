@@ -6,20 +6,18 @@ import { ReplyLine } from "../UserProfile/UserProfileElements";
 
 export default function CommentReplyList(props){
 
-    const [currentPost, setCurrentPost] = useState([]);
     const [currentComment, setCurrentComment] = useState([]);
     const [repliesUnderComment, setRepliesUnderComment] = useState([]);
-    const [writtenReply, updateWrittenReply] = useState("dummy")
+    const [writtenReply, updateWrittenReply] = useState("")
 
     useEffect(() => {
-        setCurrentPost(props.currentPost)
         setCurrentComment(props.currentComment)
         getRepliesUnderComments()
     }, []);
 
     const getRepliesUnderComments = () => {
         axiosInstance
-            .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
+            .get(`posts/${props.post.id}/comments/${props.currentComment.id}/replies/`)
             .then((res) => {
                 const allRepliesUnderComment = res.data.replies;
                 setRepliesUnderComment(allRepliesUnderComment);
@@ -34,9 +32,9 @@ export default function CommentReplyList(props){
         console.log(writtenReply)
     }
 
-    const uploadReply = (e, index) => {
+    const uploadReply = () => {
         axiosInstance
-            .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
+            .post(`posts/${props.post.id}/comments/${currentComment.id}/replies/`, {
                 content: writtenReply.myReply,
             })
             .then((res) => {
@@ -44,7 +42,7 @@ export default function CommentReplyList(props){
             })
     }
 
-    const updatePageAfterReplyDeletion = (e) => {
+    const updatePageAfterReplyDeletion = () => {
         getRepliesUnderComments()
     }
 
@@ -57,7 +55,6 @@ export default function CommentReplyList(props){
 
     const displayCommentsUnderPost = (e) => {
         if (repliesUnderComment.length > 0) {
-            // console.log(repliesUnderComment);
             return (
                 <div>
 
@@ -87,8 +84,11 @@ export default function CommentReplyList(props){
                         return (
                             <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}> 
                                 <ReplyLine>
-                                    <SingleCommentReply currentPost={currentPost} currentComment={currentComment} 
-                                        reply={reply} updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
+                                    <SingleCommentReply 
+                                    currentComment={currentComment}
+                                        reply={reply} 
+                                        post={props.post}
+                                        updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
                                     />
                                 </ReplyLine>
                             </div>

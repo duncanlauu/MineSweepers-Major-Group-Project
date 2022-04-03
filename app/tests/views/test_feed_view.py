@@ -56,10 +56,20 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertIn(3, post_ids)
         # Check posts by non friends who are in a club user is not a member of is not visible to user
         self.assertNotIn(4, post_ids)
+        # Check additional liked flag if current logged in user liked the post
+        for post in posts:
+            post_object = Post.objects.get(id=post['id'])
+            if self.user in post_object.upvotes.all():
+                self.assertEqual(post['liked'], True)
+            else:
+                self.assertEqual(post['liked'], False)
+            # Check likes count
+            self.assertEqual(post_object.upvotes.count(), post['likesCount'])
 
     def test_get_other_user_feed_as_friend(self):
         self._log_in_helper(self.user.username, "Password123")
-        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 2}))
+        response = self.client.get(
+            reverse('app:other_user_posts', kwargs={'other_user_id': 2}))
         self.assertEqual(response.status_code, 200)
         posts = response.data['posts']
         for post in posts:
@@ -69,7 +79,8 @@ class FeedAPIViewTestCase(APITestCase):
 
     def test_get_other_user_feed_as_non_friend(self):
         self._log_in_helper(self.user.username, "Password123")
-        response = self.client.get(reverse('app:other_user_posts', kwargs={'other_user_id': 5}))
+        response = self.client.get(
+            reverse('app:other_user_posts', kwargs={'other_user_id': 5}))
         self.assertEqual(response.status_code, 400)
         self.assertIsNone(response.data)
 
@@ -82,6 +93,15 @@ class FeedAPIViewTestCase(APITestCase):
         for post in posts:
             self.assertEqual(post['author'], self.user.id)
         self.assertEqual(len(posts), self.user.posts.count())
+        # Check additional liked flag if current logged in user liked the post
+        for post in posts:
+            post_object = Post.objects.get(id=post['id'])
+            if self.user in post_object.upvotes.all():
+                self.assertEqual(post['liked'], True)
+            else:
+                self.assertEqual(post['liked'], False)
+            # Check likes count
+            self.assertEqual(post_object.upvotes.count(), post['likesCount'])
 
     def test_create_post_without_optional_fields(self):
         """Test user can create basic post without the optional fields"""
@@ -148,16 +168,33 @@ class FeedAPIViewTestCase(APITestCase):
         response = self.client.get(reverse('app:post', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 200)
         post = Post.objects.get(id=1)
-        post_values = model_to_dict(post, fields=([field.name for field in post._meta.fields]))
+        post_values = model_to_dict(post, fields=(
+            [field.name for field in post._meta.fields]))
         for k, v in post_values.items():
             self.assertEqual(response.data['post'][k], v)
+        if self.user in post.upvotes.all():
+            self.assertTrue(response.data['post']['liked'])
+        else:
+            self.assertFalse(response.data['post']['liked'])
+        actual_modified_upvotes = []
+        for user in post.upvotes.all():
+            actual_modified_upvotes.append(
+                {"id": user.pk,
+                 "username": user.username,
+                 "email": user.email
+                 }
+            )
+        self.assertListEqual(actual_modified_upvotes,
+                            response.data['post']['upvotes'])
 
     def test_full_edit_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
         new_title = 'new post title'
         new_content = 'new post content'
-        new_post_data = {'title': new_title, 'content': new_content, 'action': 'edit'}
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), new_post_data)
         self.assertEqual(response.status_code, 200)
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
@@ -167,8 +204,10 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         new_title = 'new post title'
         new_content = 'new post content'
-        new_post_data = {'title': new_title, 'content': new_content, 'action': 'edit'}
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), new_post_data)
         self.assertEqual(response.status_code, 200)
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
@@ -181,8 +220,10 @@ class FeedAPIViewTestCase(APITestCase):
         original_content = original_post.content
         new_title = 'new post title'
         new_content = 'new post content'
-        new_post_data = {'title': new_title, 'content': new_content, 'action': 'edit'}
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), new_post_data)
         self.assertEqual(response.status_code, 400)
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, original_title)
@@ -191,7 +232,8 @@ class FeedAPIViewTestCase(APITestCase):
     def test_upvote_post_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
         upvote_before = Post.objects.get(id=2).upvotes.count()
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 2}), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 2}), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Post.objects.get(id=2).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -199,7 +241,8 @@ class FeedAPIViewTestCase(APITestCase):
     def test_cancel_upvote_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
         upvote_before = Post.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Post.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before - 1, upvote_after)
@@ -207,7 +250,8 @@ class FeedAPIViewTestCase(APITestCase):
     def test_upvote_post_by_authorized_user(self):
         self._log_in_helper(self.other_user.username, "Password123")
         upvote_before = Post.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Post.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -215,14 +259,16 @@ class FeedAPIViewTestCase(APITestCase):
     def test_upvote_post_by_unauthorized_user(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
         upvote_before = Post.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), {"action": "upvote"})
         self.assertEqual(response.status_code, 400)
         upvote_after = Post.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before, upvote_after)
 
     def test_delete_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
-        response = self.client.delete(reverse('app:post', kwargs={'post_id': 1}))
+        response = self.client.delete(
+            reverse('app:post', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 200)
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(pk=1)
@@ -230,7 +276,8 @@ class FeedAPIViewTestCase(APITestCase):
     def test_delete_post_not_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
         original_post = Post.objects.get(pk=1)
-        response = self.client.delete(reverse('app:post', kwargs={'post_id': 1}))
+        response = self.client.delete(
+            reverse('app:post', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 400)
         post = Post.objects.get(pk=1)
         self.assertEqual(original_post, post)
@@ -238,19 +285,22 @@ class FeedAPIViewTestCase(APITestCase):
     # ---------- COMMENT ---------- #
     def test_get_all_comment_from_visible_post(self):
         self._log_in_helper(self.user.username, "Password123")
-        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1}))
+        response = self.client.get(
+            reverse('app:all_comments', kwargs={'post_id': 1}))
         comments = response.data['comments']
         self.assertEqual(3, len(comments))
         self.assertEqual(response.status_code, 200)
 
     def test_get_comment_from_invisible_post(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
-        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1}))
+        response = self.client.get(
+            reverse('app:all_comments', kwargs={'post_id': 1}))
         self.assertEqual(response.status_code, 400)
 
     def test_get_comment_with_invalid_post_id(self):
         self._log_in_helper(self.user.username, "Password123")
-        response = self.client.get(reverse('app:all_comments', kwargs={'post_id': 1000}))
+        response = self.client.get(
+            reverse('app:all_comments', kwargs={'post_id': 1000}))
         self.assertEqual(response.status_code, 400)
 
     def test_add_comment(self):
@@ -258,12 +308,15 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(user.username, "Password123")
         post_data = {'content': 'test'}
         comment_count_before = self.post.comment_set.count()
-        self.assertFalse(Comment.objects.filter(post_id=1, author=user).exists())
-        response = self.client.post(reverse('app:all_comments', kwargs={'post_id': 1}), data=post_data)
+        self.assertFalse(Comment.objects.filter(
+            post_id=1, author=user).exists())
+        response = self.client.post(
+            reverse('app:all_comments', kwargs={'post_id': 1}), data=post_data)
         comment_count_after = Post.objects.get(pk=1).comment_set.count()
         self.assertEqual(response.status_code, 201)
         self.assertEqual(comment_count_before + 1, comment_count_after)
-        self.assertTrue(Comment.objects.filter(post_id=1, author=user).exists())
+        self.assertTrue(Comment.objects.filter(
+            post_id=1, author=user).exists())
 
     def test_get_single_comment_from_post(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -279,7 +332,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
         comment_data = {'content': 'new test content', 'action': 'edit'}
-        response = self.client.put(reverse('app:comment', kwargs=args), data=comment_data)
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), data=comment_data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['content'], 'new test content')
 
@@ -287,7 +341,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 2}
         upvote_before = Comment.objects.get(id=2).upvotes.count()
-        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Comment.objects.get(id=2).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -297,7 +352,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
         upvote_before = Comment.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Comment.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -306,7 +362,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
         upvote_before = Comment.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Comment.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before - 1, upvote_after)
@@ -316,7 +373,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
         upvote_before = Comment.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:comment', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 400)
         upvote_after = Comment.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before, upvote_after)
@@ -373,7 +431,8 @@ class FeedAPIViewTestCase(APITestCase):
         comment_data = {'content': 'test reply'}
         args = {'post_id': 1, 'comment_id': 1}
         reply_count_before = Comment.objects.get(pk=1).reply_set.count()
-        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
+        response = self.client.post(
+            reverse('app:all_replies', kwargs=args), comment_data)
         reply_count_after = Comment.objects.get(pk=1).reply_set.count()
         self.assertEqual(response.status_code, 201)
         self.assertEqual(reply_count_before + 1, reply_count_after)
@@ -396,7 +455,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 2}
         upvote_before = Reply.objects.get(id=2).upvotes.count()
-        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=2).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -405,7 +465,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before - 1, upvote_after)
@@ -414,7 +475,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes.count()
-        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -423,7 +485,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.non_friend_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes
-        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 400)
         upvote_after = Reply.objects.get(id=1).upvotes
         self.assertEqual(upvote_before, upvote_after)
@@ -432,7 +495,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         reply_data = {'content': 'new test reply content', 'action': 'edit'}
-        response = self.client.put(reverse('app:reply', kwargs=args), reply_data)
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), reply_data)
         self.assertEqual(response.status_code, 200)
         reply = Reply.objects.get(pk=1)
         self.assertEqual(reply.content, 'new test reply content')
@@ -441,7 +505,8 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         reply_data = {'content': 'new test reply content', 'action': 'edit'}
-        response = self.client.put(reverse('app:reply', kwargs=args), reply_data)
+        response = self.client.put(
+            reverse('app:reply', kwargs=args), reply_data)
         self.assertEqual(response.status_code, 400)
         reply = Reply.objects.get(pk=1)
         self.assertNotEqual(reply.content, 'new test reply content')
@@ -472,7 +537,8 @@ class FeedAPIViewTestCase(APITestCase):
 
     def test_get_club_feed(self):
         self._log_in_helper(self.other_user.username, "Password123")
-        response = self.client.get(reverse('app:club_feed', kwargs={'club_id': 1}))
+        response = self.client.get(
+            reverse('app:club_feed', kwargs={'club_id': 1}))
         club = Club.objects.get(id=1)
         posts = Post.objects.filter(club=club)
         actual_post_ids = [post.id for post in posts]

@@ -25,10 +25,10 @@ const ClubFeed = () => {
 
   const displayClubFeedPost = (e) => {
     if (clubFeedPosts.length > 0) {
-      return clubFeedPosts.map((feedPost, index) => {
+      return clubFeedPosts.map((post) => {
         return (
-          <div className="SingleClubPost" key={feedPost.id}>
-            <SingleFeedPost feedPost={feedPost} />
+          <div className="SingleClubPost" key={post.id}>
+            <SingleFeedPost post={post} />
           </div>
         );
       });

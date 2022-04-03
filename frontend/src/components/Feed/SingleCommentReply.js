@@ -9,22 +9,20 @@ export default function SingleCommentReply(props) {
 
     const [singleReply, setSingleReply] = useState("");
     const [singleComment, setSingleComment] = useState("");
-    const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        setCurrentPost(props.currentPost)
         setSingleComment(props.currentComment)
         setSingleReply(props.reply)
         setPosterEmail(props.reply.author__email)
     }, []);
 
-    const deleteComment = (comment_id, e) => {
+    const deleteComment = () => {
         axiosInstance
-            .delete(`posts/${currentPost.id}/comments/${singleComment.id}/replies/${singleReply.id}`)
+            .delete(`posts/${props.post.id}/comments/${singleComment.id}/replies/${singleReply.id}`)
             .then((res) => {
                 console.log(res)
                 props.updatePageAfterReplyDeletion()
