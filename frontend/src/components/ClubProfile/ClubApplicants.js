@@ -217,18 +217,6 @@ function ClubApplicants(props) {
       });
   }
 
-  function removeClubMember(id, user_id, e) {
-    const action = "remove";
-    axiosInstance
-      .put(`singleclub/${id}/${action}/${user_id}`, {})
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   function banUser(id, user_id, e) {
     const action = "ban";
     axiosInstance
