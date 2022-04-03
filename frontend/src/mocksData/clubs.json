@@ -7,7 +7,8 @@
       "name": "Owner 1",
       "email": "owner1@example.com"
     },
-    "members": [1, 2, 3]
+    "members": [1, 2, 3],
+    "admins": [4, 5]
   },
   {
     "id": 2,
@@ -17,7 +18,8 @@
       "name": "Owner 2",
       "email": "owner2@example.com"
     },
-    "members": [1, 2, 3]
+    "members": [1, 2, 3],
+    "admins": [4, 5]
   },
   {
     "id": 3,
@@ -27,7 +29,8 @@
       "name": "Owner 3",
       "email": "owner3@example.com"
     },
-    "members": [1, 2, 3]
+    "members": [1, 2, 3],
+    "admins": [4, 5]
   },
   {
     "id": 4,
@@ -37,7 +40,8 @@
       "name": "Owner 4",
       "email": "owner4@example.com"
     },
-    "members": [1, 2, 3]
+    "members": [1, 2, 3],
+    "admins": [4, 5]
   },
   {
     "id": 5,
@@ -47,6 +51,7 @@
       "name": "Owner 5",
       "email": "owner5@example.com"
     },
-    "members": [1, 2, 3]
+    "members": [1, 2, 3],
+    "admins": [4, 5]
   }
 ]
