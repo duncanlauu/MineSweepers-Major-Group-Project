@@ -1,0 +1,43 @@
+[
+    {
+        "id": 19,
+        "participants": [
+            {
+                "id": 1,
+                "username": "Jeb",
+                "email": "jeb@example.org"
+            }
+        ],
+        "name": "testClub2",
+        "group_chat": true,
+        "created_at": "2022-03-31T12:02:49.716362Z",
+        "messages": [
+            4
+        ],
+        "last_message": "hi",
+        "last_update": "2022-03-31T12:03:49.479209Z",
+        "owner_gravatar": "jeb@example.org"
+    },
+    {
+        "id": 21,
+        "participants": [
+            {
+                "id": 1,
+                "username": "Jeb",
+                "email": "jeb@example.org"
+            },
+            {
+                "id": 2,
+                "username": "Billie",
+                "email": "billie@example.org"
+            }
+        ],
+        "name": "",
+        "group_chat": false,
+        "created_at": "2022-04-01T22:43:07.485034Z",
+        "messages": [],
+        "last_message": "",
+        "last_update": "2022-04-01T22:43:07.485034Z",
+        "owner_gravatar": ""
+    }
+]

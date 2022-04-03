@@ -148,15 +148,17 @@ export default function SingleFeedPost(props) {
               <ThumbUp />
             </Button>
             &nbsp;
-            <Button 
-            style={{
+            <Button
+              style={{
                 height: "4rem",
                 background: "#653FFD",
                 color: "#ffffff",
                 borderColor: "#653FFD",
               }}
-            onClick={changeModalVisibility}
-            >Likes: {likesCount}</Button>
+              onClick={changeModalVisibility}
+            >
+              Likes: {likesCount}
+            </Button>
           </div>
         </CardBody>
 

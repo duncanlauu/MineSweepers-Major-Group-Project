@@ -23,25 +23,23 @@ export default function BookRatingList(props) {
             .catch((error) => console.error(error));
     };
 
-  const getAllRatingsOfOtherUser = () => {
-    axiosInstance
-      .get(`ratings/other_user/${props.requestedUser_id}`)
-      .then((res) => {
-        const allRatings = res.data;
-        setRatings(allRatings);
-      })
-      .catch((error) => console.error(error));
-  };
-
+    const getAllRatingsOfOtherUser = () => {
+        axiosInstance
+            .get(`ratings/other_user/${props.requestedUser_id}`)
+            .then((res) => {
+                const allRatings = res.data;
+                setRatings(allRatings);
+            })
+            .catch((error) => console.error(error));
+    };
 
     const displayRatings = (e) => {
-        console.log("Ratings", ratings);
         if (ratings) {
+            console.log("Ratings", ratings);
             return ratings.map((ratedBook) => {
                 return (
                     <SingleBookRating
-                        book_id={ratedBook.book}
-                        rating={ratedBook.rating}
+                        book={ratedBook}
                     />
                 );
             });

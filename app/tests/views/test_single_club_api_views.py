@@ -2,15 +2,19 @@ import json
 from rest_framework import status
 from django.test import TestCase
 from django.urls import reverse
-from app.models import Club, User
+from app.models import Club, User, Book
 from app.serializers import ClubSerializer
 
 
 class SingleClubAPITestCase(TestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
-                'app/tests/fixtures/default_book.json',
-                'app/tests/fixtures/other_users.json',
-                'app/tests/fixtures/default_club.json']
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/other_books.json',
+        'app/tests/fixtures/default_chat.json',
+        'app/tests/fixtures/default_message.json']
 
     def setUp(self):
         self.valid_data = {
@@ -22,6 +26,7 @@ class SingleClubAPITestCase(TestCase):
             "admins": [2],
             "applicants": [5],
             "banned_users": [4],
+            "clubs": [1],
             "books": ["0195153448"],
             "visibility": False,
             "public": False
@@ -36,20 +41,26 @@ class SingleClubAPITestCase(TestCase):
             "admins": [2],
             "applicants": [5],
             "banned_users": [4],
+            "clubs":[1],
             "books": ["0195153448"],
             "visibility": False,
             "public": False
         }
-        self.club = Club.objects.get(pk=1)
-        self.applicant = User.objects.get(pk=4)
-        self.member = User.objects.get(pk=2)
+        self.club = Club.objects.get(name="Joe's Club")
+        self.owner = User.objects.get(username ="johndoe")
+        self.new_user = User.objects.get(username = "jakedoe")
+        self.applicant = User.objects.get(username = "jamesdoe")
+        self.admin =  User.objects.get(username = "jonathandoe")
+        self.member = User.objects.get(username= "janedoe")
+        self.banned_user = User.objects.get(username ="juliadoe")
+        self.book = Book.objects.get(pk="0380715899")
 
     def test_get_valid_single_club(self):
         response = self.client.get(
             reverse('app:retrieve_single_club', kwargs={'id': 1}))
         club = Club.objects.get(pk=1)
         serializer = ClubSerializer(club)
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['club'], serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_invalid_single_club(self):
@@ -104,7 +115,7 @@ class SingleClubAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         after_member_count = self.club.members.count()
         self.assertEqual(after_member_count, before_member_count - 1)
-        self.assertFalse(self.club.members.filter(pk=4).exists())
+        self.assertFalse(self.club.members.filter(pk=2).exists())
 
     def test_put_ban_member(self):
         before_member_count = self.club.members.count()
@@ -116,10 +127,24 @@ class SingleClubAPITestCase(TestCase):
         after_ban_count = self.club.banned_users.count()
         self.assertEqual(after_member_count, before_member_count - 1)
         self.assertEqual(after_ban_count, before_ban_count + 1)
-        self.assertFalse(self.club.members.filter(pk=4).exists())
+        self.assertFalse(self.club.members.filter(pk=2).exists())
         self.assertTrue(self.member in self.club.banned_users.all())
 
-    def test_put_unban_member(self):
+
+    def test_put_ban_admin(self):
+        before_admin_count = self.club.admins.count()
+        before_ban_count = self.club.banned_users.count()
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 3, 'action': 'ban'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        after_admin_count = self.club.admins.count()
+        after_ban_count = self.club.banned_users.count()
+        self.assertEqual(after_admin_count, before_admin_count - 1)
+        self.assertEqual(after_ban_count, before_ban_count + 1)
+        self.assertFalse(self.club.admins.filter(pk=3).exists())
+        self.assertTrue(self.admin in self.club.banned_users.all())
+
+    def test_put_unban_user(self):
         before_member_count = self.club.members.count()
         before_unban_count = self.club.banned_users.count()
         response = self.client.put(
@@ -129,7 +154,7 @@ class SingleClubAPITestCase(TestCase):
         after_unban_count = self.club.banned_users.count()
         self.assertEqual(after_member_count, before_member_count)
         self.assertEqual(after_unban_count, before_unban_count - 1)
-        self.assertFalse(self.club.banned_users.filter(pk=4).exists())
+        self.assertFalse(self.club.banned_users.filter(pk=5).exists())
         self.assertTrue(self.member in self.club.members.all())
 
     def test_put_apply_to_club(self):
@@ -149,6 +174,25 @@ class SingleClubAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(previous_owner in self.club.admins.all())
         self.assertEqual(Club.objects.get(pk=1).owner, new_owner)
+
+    def test_put_leave_club_with_member(self):
+        before_member_count = self.club.members.count()
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 2, 'action': 'leave'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(self.member in self.club.members.all())
+        after_member_count = self.club.members.count()
+        self.assertEqual(after_member_count, before_member_count - 1)
+
+
+    def test_put_leave_club_with_member(self):
+        before_admin_count = self.club.admins.count()
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 3, 'action': 'leave'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(self.admin in self.club.admins.all())
+        after_admin_count = self.club.admins.count()
+        self.assertEqual(after_admin_count, before_admin_count - 1)
 
     def test_invalid_put_request(self):
         response = self.client.put(

@@ -21,7 +21,9 @@ class SchedulingTestCase(APITestCase):
                 'app/tests/fixtures/other_time_periods.json',
                 'app/tests/fixtures/other_book_votes.json',
                 'app/tests/fixtures/other_time_votes.json',
-                'app/tests/fixtures/default_meeting.json']
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_clubs.json',
+                ]
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
@@ -352,9 +354,11 @@ class CalendarTestCase(APITestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_book.json',
+                'app/tests/fixtures/other_books.json',
                 'app/tests/fixtures/default_club.json',
                 'app/tests/fixtures/default_time_period.json',
-                'app/tests/fixtures/default_meeting.json']
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_clubs.json']
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
@@ -388,9 +392,13 @@ class MeetingsTestCase(APITestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_book.json',
+                'app/tests/fixtures/other_books.json',
                 'app/tests/fixtures/default_club.json',
+                'app/tests/fixtures/other_clubs.json',
                 'app/tests/fixtures/default_time_period.json',
-                'app/tests/fixtures/default_meeting.json']
+                'app/tests/fixtures/other_time_periods.json',
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_meetings.json']
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
@@ -401,7 +409,8 @@ class MeetingsTestCase(APITestCase):
         response = self.client.get(reverse('app:meetings_with_id', kwargs={'id': 1}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = MeetingSerializer(list(Meeting.objects.filter(id__in=[1, 2, 3, 4])), many=True)
-        self.assertEqual(serializer.data, response.data)
+        sorted_meetings = sorted(response.data, key=lambda k: k['id'])
+        self.assertEqual(serializer.data, sorted_meetings)
 
     def test_get_meetings_with_invalid_id(self):
         response = self.client.get(reverse('app:meetings_with_id', kwargs={'id': 2}))
@@ -413,21 +422,24 @@ class MeetingsTestCase(APITestCase):
         response = self.client.get(reverse('app:meetings_with_id', kwargs={'id': 2}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = MeetingSerializer(list(Meeting.objects.filter(id__in=[1, 2, 3, 4])), many=True)
-        self.assertEqual(serializer.data, response.data)
+        sorted_meetings = sorted(response.data, key=lambda k: k['id'])
+        self.assertEqual(serializer.data, sorted_meetings)
 
     def test_get_meetings_for_attendee(self):
         self.client.force_authenticate(user=User.objects.get(pk=3))
         response = self.client.get(reverse('app:meetings_with_id', kwargs={'id': 3}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = MeetingSerializer(list(Meeting.objects.filter(id__in=[1, 2, 3])), many=True)
-        self.assertEqual(serializer.data, response.data)
+        sorted_meetings = sorted(response.data, key=lambda k: k['id'])
+        self.assertEqual(serializer.data, sorted_meetings)
 
     def test_get_meetings_for_sporadic_attendee(self):
         self.client.force_authenticate(user=User.objects.get(pk=4))
         response = self.client.get(reverse('app:meetings_with_id', kwargs={'id': 4}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = MeetingSerializer(list(Meeting.objects.filter(id__in=[1, 3])), many=True)
-        self.assertEqual(serializer.data, response.data)
+        sorted_meetings = sorted(response.data, key=lambda k: k['id'])
+        self.assertEqual(serializer.data, sorted_meetings)
 
     def test_get_meetings_with_user_that_has_no_meetings(self):
         self.client.force_authenticate(user=User.objects.get(pk=5))
@@ -439,3 +451,44 @@ class MeetingsTestCase(APITestCase):
         response = self.client.get(reverse('app:meetings'))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, 'You need to provide the user id')
+
+
+class ClubMeetingsTestCase(APITestCase):
+    """Tests of the club meetings API"""
+
+    fixtures = ['app/tests/fixtures/default_user.json',
+                'app/tests/fixtures/other_users.json',
+                'app/tests/fixtures/default_book.json',
+                'app/tests/fixtures/other_books.json',
+                'app/tests/fixtures/default_club.json',
+                'app/tests/fixtures/other_clubs.json',
+                'app/tests/fixtures/default_time_period.json',
+                'app/tests/fixtures/other_time_periods.json',
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_meetings.json']
+
+    def setUp(self):
+        self.meeting = Meeting.objects.get(pk=1)
+        self.user = User.objects.get(id=1)
+        self.client.force_authenticate(user=self.user)
+
+    def test_get_meetings_for_the_default_club(self):
+        response = self.client.get(reverse('app:club_meetings_with_id', kwargs={'id': 1}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = MeetingSerializer(list(Meeting.objects.filter(id__in=[1, 2, 3, 4])), many=True)
+        self.assertEqual(serializer.data, response.data)
+
+    def test_get_meetings_for_the_other_club(self):
+        response = self.client.get(reverse('app:club_meetings_with_id', kwargs={'id': 2}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
+
+    def test_get_meetings_with_invalid_id(self):
+        response = self.client.get(reverse('app:club_meetings_with_id', kwargs={'id': 20}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, 'A club with this id does not exist')
+
+    def test_get_meetings_with_no_id(self):
+        response = self.client.get(reverse('app:club_meetings'))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, 'You need to provide the club id')

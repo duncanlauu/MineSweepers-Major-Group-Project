@@ -5,6 +5,7 @@ import { BookProfile } from "./ClubProfileElements";
 import axiosInstance from "../../axios";
 import { useParams } from "react-router-dom";
 import { ParaText } from "../Login/LoginElements";
+import { BookHeading, YearAuthorInfo } from "../RecommenderPage/RecommenderPageElements";
 
 const LandingProfile = (props) => {
   const { club_id } = useParams();
@@ -12,25 +13,25 @@ const LandingProfile = (props) => {
   const [club, setClub] = useState(null);
   const [readingHistory, setReadingHistory] = useState([]);
   const [ownerDetails, setOwnerDetails] = useState(null);
-  let history = [];
 
   const memberStatus = props.memberStatus;
 
   const [modalVisible, setModalVisible] = useState(false);
-
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-    const user_id = currentUser.id;
-    console.log("User ID: " + user_id);
 
 
   function IndividualBookCard(props) {
     return (
       <Row>
         <BookProfile>
-          <Col xs={4}>
-            <Gravatar email="blah@blah.com" size={70}></Gravatar>
+          <Col xs={2}>
+            <img src={props.imageURL} alt="Book Cover" />
           </Col>
-          <Col xs={8}>{book}</Col>
+          <Col xs={10}>
+            <a href={`/book_profile/${props.isbn}`}>
+              <BookHeading>{props.title}</BookHeading><br />
+              <YearAuthorInfo>{props.author}, {props.year}</YearAuthorInfo><br />
+            </a>
+          </Col>
         </BookProfile>
       </Row>
     );
@@ -42,23 +43,7 @@ const LandingProfile = (props) => {
       .then((res) => {
         console.log(res);
         setClub(res.data);
-        console.log("Club Data: " + JSON.stringify(res.data));
-        res.data.books.forEach((book_id) =>
-          readingHistory.push(
-            axiosInstance.get(`books/${book_id}`).then((bookRes) => {
-              console.log("Book Response: " + JSON.stringify(bookRes.data));
-            })
-          )
-        );
-        console.log("Reading History: " + JSON.stringify(readingHistory));
-        // res.data.books.map(book_id => {
-        //     axiosInstance
-        //         .get(`/books/${book_id}`)
-        //         .then(bookRes => {
-        //             console.log("Book Res: " + JSON.stringify(bookRes.data))
-
-        //         })
-        // })
+        console.log(res.data.books);
       })
       .catch((err) => {
         console.log(err);
@@ -84,6 +69,16 @@ const LandingProfile = (props) => {
     backgroundColor: "#fff",
     border: "2px solid #653DDF",
     color: "#653FFD",
+  };
+
+  const leaveStyle = {
+    width: "17rem",
+    margin: "1rem",
+    fontFamily: "Source Sans Pro",
+    borderRadius: "5px",
+    backgroundColor: "#ff6666",
+    border: "2px solid #000000",
+    color: "#fff",
   };
 
   let buttonState =
@@ -113,17 +108,29 @@ const LandingProfile = (props) => {
       });
   }
 
+  function leaveClub(id, user_id, e) {
+    axiosInstance
+      .put(`singleclub/${id}/leave/${user_id}`, {})
+      .then((res) => {
+        console.log(res);
+        props.setMemberStatus("notApplied");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <Container fluid>
       <Row style={{ display: "flex" }}>
         <Col xs={8}>
           <span style={{ fontFamily: "Source Sans Pro", fontSize: "15px" }}>
-            {club.description}
+            {club.club.description}
           </span>
         </Col>
         <Col>
           <Gravatar
-            email="blah@blah.com"
+            email={club.owner.email}
             size={100}
             style={{ borderRadius: "100px" }}
           />
@@ -141,9 +148,17 @@ const LandingProfile = (props) => {
           >
             {buttonState}
           </Button>
+        )}  
+        {(memberStatus === "admin" || memberStatus === "member" ) && (
+          <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
+            Leave Club
+          </Button>
         )}
         {memberStatus === "banned" && (
           <ParaText>You are banned from this club</ParaText> // TODO: Add styling
+        )}
+        {memberStatus === "owner" && (
+          <ParaText>If you would like to leave the club, please transfer the ownership</ParaText> // TODO: Add styling
         )}
       </Row>
       <Row>
@@ -157,20 +172,14 @@ const LandingProfile = (props) => {
           Reading History
         </h3>
       </Row>
-
-      {/* Something wrong with the history array
-             {history.map(book =>
-                <Row>
-                    <BookProfile>
-                        <Col xs={4}>
-                            <Gravatar email='blah@blah.com' size={70}></Gravatar>
-                        </Col>
-                        <Col xs={8}>
-                            {book}
-                        </Col>
-                    </BookProfile>
-                </Row>
-            )} */}
+      {club.books.map(book =>
+        <IndividualBookCard 
+          imageURL={book.image_links_small} 
+          isbn={book.ISBN} 
+          title={book.title} 
+          author={book.author} 
+          year={book.publication_date} />
+      )}
     </Container>
   );
 };

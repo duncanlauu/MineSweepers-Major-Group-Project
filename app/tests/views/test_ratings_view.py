@@ -71,13 +71,17 @@ class RatingsAPIViewTestCase(APITestCase):
         self.assertEqual(book_ratings_before, book_ratings_after)
 
     def test_get_rating_by_id(self):
-        self._log_in_helper(self.user.username, "Password123")
+        self._log_in_helper(self.user.username, 'Password123')
+        rating = BookRating.objects.get(pk=1)
+        book = Book.objects.get(ISBN=rating.book_id)
         response = self.client.get(reverse('app:rating', kwargs={'rating_id': 1}))
         self.assertEqual(response.status_code, 200)
-        rating = BookRating.objects.get(id=1)
-        post_values = model_to_dict(rating, fields=([field.name for field in rating._meta.fields]))
-        for k, v in post_values.items():
-            self.assertEqual(response.data['rating'][k], v)
+        rating_response = response.data['rating']
+        book_response = response.data['book_data']
+        self.assertEqual(rating_response['id'], rating.id)
+        self.assertEqual(rating_response['rating'], rating.rating)
+        self.assertEqual(book_response['ISBN'], book.ISBN)
+        self.assertEqual(book_response['title'], book.title)
 
     def test_get_rating_with_invalid_id(self):
         self._log_in_helper(self.user.username, "Password123")

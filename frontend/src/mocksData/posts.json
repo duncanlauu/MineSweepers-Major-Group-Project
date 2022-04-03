@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "author": 1,
+      "author__email": "author1@example.com",
+      "title": "Post title 1",
+      "content": "Post content 1",
+      "upvotes": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "author": 2,
+      "author__email": "author2@example.com",
+      "title": "Post title 2",
+      "content": "Post content 2",
+      "upvotes": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "author": 3,
+      "author__email": "author3@example.com",
+      "title": "Post title 3",
+      "content": "Post content 3",
+      "upvotes": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}
