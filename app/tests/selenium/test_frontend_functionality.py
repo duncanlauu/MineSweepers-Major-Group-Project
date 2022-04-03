@@ -139,53 +139,53 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def test_everything(self):
 
-        # Landing Page
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        self.run_testcase(self._test_landing_page_log_in_button, False)
-        self.run_testcase(self._test_landing_page_sign_up_button, False)
+        # Landing Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
+        # self.run_testcase(self._test_landing_page_log_in_button, False)
+        # self.run_testcase(self._test_landing_page_sign_up_button, False)
 
-        # Log In Page
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
-        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        self.run_testcase(self._test_log_in_with_wrong_password, False)
-        self.run_testcase(self._test_log_in, False)
+        # Log In Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
+        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
+        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
+        # self.run_testcase(self._test_log_in_with_wrong_password, False)
+        # self.run_testcase(self._test_log_in, False)
 
-        # Sign Up Page
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        self.run_testcase(self._test_sign_up_with_blank_fields, False)
-        self.run_testcase(self._test_sign_up_username_too_short, False)
-        self.run_testcase(self._test_sign_up_invalid_email, False)
+        # Sign Up Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
+        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
+        # self.run_testcase(self._test_sign_up_with_blank_fields, False)
+        # self.run_testcase(self._test_sign_up_username_too_short, False)
+        # self.run_testcase(self._test_sign_up_invalid_email, False)
 
-        # Sign Up Page and new user Book Rating Page
-        self.run_testcase(self._test_sign_up_and_book_rating, False)
+        # Sign Up Page and new user Book Rating Page # DONE
+        # self.run_testcase(self._test_sign_up_and_book_rating, False)
 
         # Home Page
         self.page_contains_functional_navbar("home")
         self.run_testcase(self._test_reply_to_comment_on_post, True)
-        self.run_testcase(self._test_comment_on_post, True)
-        self.run_testcase(self._test_like_post, True)
-        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        # self.run_testcase(self._test_comment_on_post, True)
+        # self.run_testcase(self._test_like_post, True)
+        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
 
         # Search Bar
         self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
         self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
-        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
+        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
         self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken
         self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken
 
         # User Page
         self.page_contains_functional_navbar("user_profile")
-        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
+        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
         #self.run_testcase()# EDIT BUTON TEST HERE
-        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
+        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
         self.run_testcase(self._test_edit_post, True)
-        self.run_testcase(self._test_delete_post, True)
+        # self.run_testcase(self._test_delete_post, True)
         self.run_testcase(self._test_accept_friend_request, True)
         self.run_testcase(self._test_reject_friend_request, True)
-        self.run_testcase(self._test_delete_friend, True)
-        self.run_testcase(self._test_user_profile_suggested_friends, True)
+        # self.run_testcase(self._test_delete_friend, True)
+        # self.run_testcase(self._test_user_profile_suggested_friends, True)
 
         # Club Profile Page
         # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}/")
@@ -207,15 +207,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # # All Clubs Page
         self.page_contains_functional_navbar("all_clubs")
-        self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
-        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
+        # self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
+        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
         
         # # Book Profile Page
         self.page_contains_functional_navbar(f"book_profile/{self.book.pk}")
-        self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
-        self.run_testcase(self._test_book_profile_rate_book, True)
+        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
+        # self.run_testcase(self._test_book_profile_rate_book, True)
         self.run_testcase(self._test_book_profile_update_book_rating, True)
-        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
+        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
 
         # # Password Reset
         self.run_testcase(self._test_password_reset, False)
