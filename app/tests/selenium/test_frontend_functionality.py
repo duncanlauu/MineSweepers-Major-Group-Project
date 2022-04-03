@@ -233,7 +233,14 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         else:
             print(f"All ({len(self.succesful_test_cases)}) tests passed!")
 
-    
+    # Page Contains Functional Navbar
+    def page_contains_functional_navbar(self, url):
+        self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, url)
+        self.run_testcase(self._test_open_and_close_search_bar, True, url)
+        self.run_testcase(self._test_navbar_create_new_post, True, url)
+        self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, url)
+        self.run_testcase(self._test_open_chat_button, True, url)
+        # self._test_log_out_button(url)
 
     # Landing Page
     def _test_boogkle_logo_redirects_to_landing_page(self, url):
@@ -446,24 +453,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
-    # Page Contains Functional Navbar
-    def page_contains_functional_navbar(self, url):
-        self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, url)
-        self.run_testcase(self._test_open_and_close_search_bar, True, url)
-        self.run_testcase(self._test_new_post_button, True, url)
-        self.run_testcase(self._test_new_club_button, True, url)
-        self.run_testcase(self._test_open_chat_button, True, url)
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, url)
-        # self._test_boogkle_logo_redirects_to_home_when_logged_in(url)
-        # self._test_open_and_close_search_bar(url)
-        # self._test_new_post_button(url)
-        # self._test_new_club_button(url)
-        # self._test_open_chat_button(url)
-        # self._test_open_user_profile_button(url)
-        # self._test_log_out_button(url)
+
 
     def _test_boogkle_logo_redirects_to_home_when_logged_in(self, url):
-        
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.browser.find_element_by_xpath('//a[.="bookgle"]').click()
@@ -472,7 +464,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _test_open_and_close_search_bar(self, url):
-        
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[@name='search-bar']")
@@ -485,22 +476,26 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_xpath("//button[@aria-label='Close']").click()
         self.browser.implicitly_wait(10)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+        self.browser.implicitly_wait(10)
 
-    def _test_new_post_button(self, url):
-        
+    def _test_navbar_create_new_post(self, url):
+        number_of_posts_before = Post.objects.count()
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
+        self.wait_until_element_found("//img[@alt='New Post Button']")
         self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click()
-        self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[.='Post!']")
-        self.browser.find_element_by_name("content").send_keys("New Post Content")
-        self.actions.move_to_element_with_offset(self.browser.find_element_by_tag_name('body'), 0,0)
-        self.actions.move_by_offset(10, 10).click().perform()
-        self.browser.implicitly_wait(10)
+        self.browser.find_element_by_name("title").send_keys("New Post Title From " + url)
+        self.browser.find_element_by_name("content").send_keys("New Post Content From " + url)
+        self.browser.find_element_by_xpath("//button[.='Post!']").click()
+        sleep(2)
+        number_of_posts_after = Post.objects.count()
+        self.assertEqual(number_of_posts_after, number_of_posts_before + 1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
-    def _test_new_club_button(self, url):
-        
+    # Make a test where select club for post
+
+    def _test_new_club_button_redirects_to_create_club(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click()
@@ -509,19 +504,22 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_id("description").send_keys("New Club Description!!")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
 
+    # Create club page tests
+
     def _test_open_chat_button(self, url):
-        
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
+        self.wait_until_element_found("//img[@alt='Open Chat Button']")
         self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click()
         self.browser.implicitly_wait(10)
-        self.wait_until_element_found("//img[@alt='Send Icon']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
+        # self.wait_until_element_found("//img[@alt='Send Icon']")
+        sleep(2) #maybe wait for send messages text or something
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat/")
 
     def _test_open_user_profile_button(self, url):
-        
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
+        self.wait_until_element_found("//a[@href='/user_profile/']")
         self.browser.find_element_by_xpath("//a[@href='/user_profile/']").click()
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[.='Edit Profile']")
@@ -533,7 +531,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     # Home Feed
     def _test_reply_to_comment_on_post(self): #Due to weird time delay, this test is not stable
-        
         number_of_replies_before = Reply.objects.all().count()
         self.browser.get(f"{self.live_server_url}/home")
         self.browser.implicitly_wait(10)
@@ -616,17 +613,17 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         connections.close_all()
 
 
-    def _test_navbar_new_post(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
-        self.browser.find_element_by_name("title").send_keys("New Post Title")
-        self.browser.find_element_by_name("content").send_keys("New Post Content")
-        # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
-        self.browser.find_element_by_xpath("//button[.='Post!']").click()
-        sleep(2)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-        # check database that number of posts went up
-        # check on home page that it contains info about this post
+    # def _test_navbar_new_post(self, url):
+    #     self.browser.get(f"{self.live_server_url}/{url}")
+    #     self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
+    #     self.browser.find_element_by_name("title").send_keys("New Post Title")
+    #     self.browser.find_element_by_name("content").send_keys("New Post Content")
+    #     # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
+    #     self.browser.find_element_by_xpath("//button[.='Post!']").click()
+    #     sleep(2)
+    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+    #     # check database that number of posts went up
+    #     # check on home page that it contains info about this post
 
     def _test_navbar_create_club(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
