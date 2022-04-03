@@ -20,10 +20,10 @@ const renderClubProfile = (role) => {
             club_id = '3'
             break
         case 'applied':
-            club_id = ''
+            club_id = '4'
             break
         case 'member':
-            club_id = ''
+            club_id = '2'
             break
         case 'admin':
             club_id = ''
@@ -62,88 +62,24 @@ beforeEach(() => {
     window.localStorage.setItem("user", JSON.stringify(user));
 });
 
-describe('Components exist', () => {
 
-    describe('Owner components', () => {
+describe('User has not applied', () => {
 
-        const role = 'owner'
+    const role = 'not_applied'
 
-        test('contains heading', async () => {
+    test('contains name of club', async () => {
 
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const headingText = screen.getByText(/kerbal book club/i)
-                expect(headingText).toBeInTheDocument()
-            })
+        act(() => {
+            renderClubProfile(role);
         })
 
-        test('contains profile tab', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const profileTab = screen.getByRole('tab', { name: /profile/i })
-                expect(profileTab).toBeInTheDocument()
-            })
-        })
-
-        test('contains members tab', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const membersTab = screen.getByRole('tab', { name: /members/i })
-                expect(membersTab).toBeInTheDocument()
-            })
-        })
-
-        test('contains feed tab', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const feedTab = screen.getByRole('tab', { name: /feed/i })
-                expect(feedTab).toBeInTheDocument()
-            })
-        })
-
-        test('contains meetings tab', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const meetingsTab = screen.getByRole('tab', { name: /meetings/i })
-                expect(meetingsTab).toBeInTheDocument()
-            })
+        await waitFor(() => {
+            const headingText = screen.getByText(/South Nathan Book Club/i)
+            expect(headingText).toBeInTheDocument()
         })
     })
 
-    describe('Not applied components', () => {
-
-        const role = 'not_applied'
-
-        test('contains heading', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const headingText = screen.getByText(/South Nathan Book Club/i)
-                expect(headingText).toBeInTheDocument()
-            })
-        })
+    describe('Correct tabs are shown', () => {
 
         test('contains profile tab', async () => {
 
@@ -194,3 +130,276 @@ describe('Components exist', () => {
         })
     })
 })
+
+describe('User has applied', () => {
+
+    const role = 'applied'
+
+    test('contains name of club', async () => {
+
+        act(() => {
+            renderClubProfile(role);
+        })
+
+        await waitFor(() => {
+            const headingText = screen.getByText(/Flemingfort Book Club/i)
+            expect(headingText).toBeInTheDocument()
+        })
+    })
+
+    describe('Correct tabs are shown', () => {
+
+        test('contains profile tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const profileTab = screen.getByRole('tab', { name: /profile/i })
+                expect(profileTab).toBeInTheDocument()
+            })
+        })
+
+        test('does not contain members tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const membersTab = screen.queryAllByRole('tab', { name: /members/i })
+                expect(membersTab).toHaveLength(0)
+            })
+        })
+
+        test('does not contain feed tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.queryAllByRole('tab', { name: /feed/i })
+                expect(feedTab).toHaveLength(0)
+            })
+        })
+
+        test('does not contain meetings tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const meetingsTab = screen.queryAllByRole('tab', { name: /meetings/i })
+                expect(meetingsTab).toHaveLength(0)
+            })
+        })
+    })
+})
+
+describe('User is member', () => {
+
+    const role = 'member'
+
+    test('contains name of club', async () => {
+
+        act(() => {
+            renderClubProfile(role);
+        })
+
+        await waitFor(() => {
+            const headingText = screen.getByText(/West Guyview Book Club/i)
+            expect(headingText).toBeInTheDocument()
+        })
+    })
+
+    describe('Correct tabs are shown', () => {
+
+        test('contains profile tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const profileTab = screen.getByRole('tab', { name: /profile/i })
+                expect(profileTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains members tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const membersTab = screen.getByRole('tab', { name: /members/i })
+                expect(membersTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains feed tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.getByRole('tab', { name: /feed/i })
+                expect(feedTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains meetings tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const meetingsTab = screen.getByRole('tab', { name: /meetings/i })
+                expect(meetingsTab).toBeInTheDocument()
+            })
+        })
+    })
+})
+
+describe('User is admin', () => {
+
+    const role = 'member'
+
+    test('contains name of club', async () => {
+
+        act(() => {
+            renderClubProfile(role);
+        })
+
+        await waitFor(() => {
+            const headingText = screen.getByText(/West Guyview Book Club/i)
+            expect(headingText).toBeInTheDocument()
+        })
+    })
+
+    describe('Correct tabs are shown', () => {
+
+        test('contains profile tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const profileTab = screen.getByRole('tab', { name: /profile/i })
+                expect(profileTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains members tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const membersTab = screen.getByRole('tab', { name: /members/i })
+                expect(membersTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains feed tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.getByRole('tab', { name: /feed/i })
+                expect(feedTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains meetings tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const meetingsTab = screen.getByRole('tab', { name: /meetings/i })
+                expect(meetingsTab).toBeInTheDocument()
+            })
+        })
+    })
+})
+
+describe('User is owner', () => {
+
+    const role = 'owner'
+
+    test('contains name of club', async () => {
+
+        act(() => {
+            renderClubProfile(role);
+        })
+
+        await waitFor(() => {
+            const headingText = screen.getByText(/kerbal book club/i)
+            expect(headingText).toBeInTheDocument()
+        })
+    })
+
+    describe('Correct tabs are shown', () => {
+
+        test('contains profile tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const profileTab = screen.getByRole('tab', { name: /profile/i })
+                expect(profileTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains members tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const membersTab = screen.getByRole('tab', { name: /members/i })
+                expect(membersTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains feed tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.getByRole('tab', { name: /feed/i })
+                expect(feedTab).toBeInTheDocument()
+            })
+        })
+
+        test('contains meetings tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const meetingsTab = screen.getByRole('tab', { name: /meetings/i })
+                expect(meetingsTab).toBeInTheDocument()
+            })
+        })
+    })
+})
+
