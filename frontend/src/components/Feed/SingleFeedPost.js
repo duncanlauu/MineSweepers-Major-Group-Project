@@ -132,7 +132,7 @@ export default function SingleFeedPost(props) {
                             </div>
                         </Col>
                     </Row>
-                    <br></br>
+                    <br/>
                 </div>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
