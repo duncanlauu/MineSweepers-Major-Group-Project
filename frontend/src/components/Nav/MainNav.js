@@ -1,9 +1,10 @@
 import React from 'react'
-import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input } from 'reactstrap'
+import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Person from '@mui/icons-material/Person';
 import { NavMenu, SearchBarHeading, SearchContainer, SearchText } from './NavElements';
 import { Link } from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
@@ -20,6 +21,10 @@ class MainNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dropdownOpens: false,
+        }
+        this.changeDropdownVisibility = this.changeDropdownVisibility.bind(this);
+        this.state = {
             modal: false,
             search: '',
         };
@@ -35,6 +40,13 @@ class MainNav extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.isAuthenticated = this.props.isAuthenticated;
+    }
+
+    changeDropdownVisibility() {
+        this.setState({
+            dropdownOpens: !this.state.dropdownOpens
+        })
+        console.log(this.state.dropdownOpens)
     }
 
     toggle() {
@@ -138,8 +150,19 @@ class MainNav extends React.Component {
                                         style={{ marginLeft: "1rem" }} />
                                 </Link>
                                 <Link to="/user_profile/" data-testid={"user-profile"} style={{ color: "#000" }}>
-                                    <AccountCircleIcon fontSize='large' />
+                                    <AccountCircleIcon fontSize='large' style={{ marginRight: "3rem" }} />
                                 </Link>
+
+                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility}>
+                                    <DropdownToggle caret style={{ borderRadius: "10px", backgroundColor: "#653FFD" }}>
+                                        <Person fontSize='large' />
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <Link to="/log_out/" style={{ color: "#000" }}>
+                                            <DropdownItem> Log out </DropdownItem>
+                                        </Link>
+                                    </DropdownMenu>
+                                </Dropdown>
                             </NavMenu>
                         </>
                         : <></>

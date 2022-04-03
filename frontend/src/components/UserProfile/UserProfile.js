@@ -37,7 +37,7 @@ import ClubList from "./Clubs/ClubList";
 const UserProfile = () => {
   const [currentActiveTab, setCurrentActiveTab] = useState("1");
   const navigate = useNavigate();
-  const currrentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   const toggle = (tab) => {
     if (currentActiveTab !== tab) {
@@ -145,7 +145,7 @@ const UserProfile = () => {
                     </TabPane>
 
                     <TabPane tabId="3">
-                      <ClubList requestedUser_id={currrentUser.id} />
+                      <ClubList requestedUser_id={currentUser.id} />
                     </TabPane>
 
                     <TabPane tabId="4">
