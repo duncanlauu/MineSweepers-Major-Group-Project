@@ -49,8 +49,9 @@ export const ClubListItem = styled.li`
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 
 export const BookProfile = styled.div`
@@ -64,3 +65,17 @@ export const BookProfile = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const RecommendedClubsText = styled.text`
+  font-family: "Source Sans Pro";
+  color: #000;
+  opacity: 85%;
+  font-size: 10px;
+`
+
+export const RecommendedClubMembersText = styled.text`
+  font-family: "Source Sans Pro";
+  color: #653ffd;
+  font-weight: 600;
+  font-size: 10px;
+`

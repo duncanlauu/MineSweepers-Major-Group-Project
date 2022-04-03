@@ -173,7 +173,7 @@ const RecommenderPage = () => {
                         {bookRecommendations.map(
                             (bookRecommendation, index) =>
                                 <li data-testId="book-recommendation" key={index}>
-                                    <IndividualBookCard 
+                                    <IndividualBookCard
                                         imageURL={bookRecommendation['book']['image_links_small']}
                                         isbn={bookRecommendation['book']['ISBN']}
                                         title={bookRecommendation['book']['title']}
@@ -182,7 +182,7 @@ const RecommenderPage = () => {
                                         numberOfRatings={bookRecommendation['number_of_ratings']}
                                         year={bookRecommendation['book']['publication_date']} />
                                 </li>
-                            )
+                        )
                         }
                     </ul>
                 </Col>

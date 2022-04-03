@@ -75,6 +75,16 @@ const LandingProfile = (props) => {
     color: "#653FFD",
   };
 
+  const leaveStyle = {
+    width: "17rem",
+    margin: "1rem",
+    fontFamily: "Source Sans Pro",
+    borderRadius: "5px",
+    backgroundColor: "#ff6666",
+    border: "2px solid #000000",
+    color: "#fff",
+  };
+
   let buttonState =
     memberStatus === "notApplied" ? "Apply" : "Withdraw Application";
 
@@ -93,6 +103,18 @@ const LandingProfile = (props) => {
   function withdrawApplication(id, user_id, e) {
     axiosInstance
       .put(`singleclub/${id}/reject/${user_id}`, {})
+      .then((res) => {
+        console.log(res);
+        props.setMemberStatus("notApplied");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function leaveClub(id, user_id, e) {
+    axiosInstance
+      .put(`singleclub/${id}/leave/${user_id}`, {})
       .then((res) => {
         console.log(res);
         props.setMemberStatus("notApplied");
@@ -130,9 +152,17 @@ const LandingProfile = (props) => {
           >
             {buttonState}
           </Button>
+        )}  
+        {(memberStatus === "admin" || memberStatus === "member" ) && (
+          <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
+            Leave Club
+          </Button>
         )}
         {memberStatus === "banned" && (
           <ParaText>You are banned from this club</ParaText> // TODO: Add styling
+        )}
+        {memberStatus === "owner" && (
+          <ParaText>If you would like to leave the club, please transfer the ownership</ParaText> // TODO: Add styling
         )}
       </Row>
       <Row>
@@ -159,17 +189,3 @@ const LandingProfile = (props) => {
 };
 
 export default LandingProfile;
-
-// <Row>
-// <BookProfile>
-//   <Col xs={2}>
-//     <img src={props.imageURL} alt="Book Cover" />
-//   </Col>
-//   <Col xs={10}>
-//     <a href={`/book_profile/${props.isbn}`}>
-//       <BookHeading>{props.title}</BookHeading><br />
-//       <YearAuthorInfo>{props.author}, {props.year}</YearAuthorInfo><br />
-//     </a>
-//   </Col>
-// </BookProfile>
-// </Row>

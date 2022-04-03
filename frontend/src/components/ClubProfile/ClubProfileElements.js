@@ -76,3 +76,10 @@ export const BioText = styled.text`
     line-height: 15px;
     opacity: 70%;
 `
+
+export const MemberListHeading = styled.text`
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    color: #4F30CC;
+    font-size: 20px;
+`
