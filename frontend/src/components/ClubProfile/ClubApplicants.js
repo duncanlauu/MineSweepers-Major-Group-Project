@@ -78,13 +78,13 @@ function ClubApplicants(props) {
     const memberStatus = props.memberStatus
 
     return (
-      <ClubProfile>
+      <ClubProfile name="individual-user-card">
         <Col xs={3}>
           <Gravatar email={props.email} size={70} style={{ borderRadius:"100%" }} />
         </Col>
         <Col xs={6}>
           <a href={`/user_profile/${props.userId}`}>
-            <UsernameText>{props.username}</UsernameText>
+            <UsernameText name="username-text">{props.username}</UsernameText>
           </a><br />
           <NameText>{props.email}</NameText><br />
           <BioText>{props.bio}</BioText>
