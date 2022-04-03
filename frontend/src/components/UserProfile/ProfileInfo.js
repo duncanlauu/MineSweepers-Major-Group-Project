@@ -7,14 +7,13 @@ import {
   ProfileInfoDetails,
 } from "./UserProfileElements";
 import UserProfileEditor from "./UserProfileEditor";
-import useGetUser from "../../helpers";
 import axiosInstance from "../../axios";
 import { useNavigate } from "react-router";
 import LocationCity from "@mui/icons-material/LocationCity";
 import AssignmentInd from "@mui/icons-material/AssignmentInd";
 
 export default function ProfileInfo(props) {
-  const retrievedCurrentUser = useGetUser(); // To do
+  const retrievedCurrentUser = JSON.parse(localStorage.getItem('user'));
   const [currentUser, setCurrentUser] = useState("");
   const [isModalVisible, setModalVisibility] = useState();
   const [isLoggedInUser, setIsLoggedInUser] = useState();
@@ -25,10 +24,8 @@ export default function ProfileInfo(props) {
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
-        if (props.otherUserID == retrievedCurrentUser.id) {
+        if (props.otherUserID === retrievedCurrentUser.id) {
           navigate("/user_profile");
-          // setCurrentUser(retrievedCurrentUser)
-          // setIsLoggedInUser(true)
         } else {
           getCurrentUser(props.otherUserID);
           setIsLoggedInUser(false);
@@ -38,7 +35,7 @@ export default function ProfileInfo(props) {
         setIsLoggedInUser(true);
       }
     }
-  }, [retrievedCurrentUser]);
+  }, []);
 
   const getCurrentUser = (id) => {
     axiosInstance
@@ -247,7 +244,6 @@ export default function ProfileInfo(props) {
           }}
         >
           <ModalBody style={{ overflowY: "scroll" }}>
-            {/* <PersonalPostForm/> */}
             <UserProfileEditor currentUser={currentUser} />
           </ModalBody>
         </Modal>

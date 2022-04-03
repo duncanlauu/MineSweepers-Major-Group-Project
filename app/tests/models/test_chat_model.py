@@ -22,7 +22,7 @@ class ChatModelTestCase(TestCase):
 
     def setUp(self):
         self.chat = Chat.objects.get(pk=1)
-        self.new_user = User.objects.get(pk=6)
+        self.new_user = User.objects.get(pk=5)
         self.new_message = Message.objects.get(pk=2)
 
     def test_valid_chat(self):

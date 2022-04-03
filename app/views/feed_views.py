@@ -11,12 +11,13 @@ from app.helpers import is_post_visible_to_user
 class FeedView(APIView):
     """API View of feed of user"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         """Get list of posts of friends and clubs"""
         user = request.user
         users = list(user.friends.all()) + [user]
-        clubs = list(Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).all())
+        clubs = list(Club.objects.filter(Q(owner=user) |
+                     Q(admins=user) | Q(members=user)).all())
         posts = Post.objects.filter(Q(club__in=clubs) | Q(author__in=users))\
             .values('id',
                     'author',
@@ -27,12 +28,20 @@ class FeedView(APIView):
                     'title',
                     'content',
                     'created_at')
+        for post in posts:
+            post_object = Post.objects.get(id=post['id'])
+            post['likesCount'] = post_object.upvotes.count()
+            if user in post_object.upvotes.all():
+                post['liked'] = True
+            else:
+                post['liked'] = False
         return Response({'posts': posts}, status=status.HTTP_200_OK)
+
 
 class AllPostsView(APIView):
     """API View of all posts of user"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         """Get list of posts of user"""
         user = request.user
@@ -46,6 +55,13 @@ class AllPostsView(APIView):
                     'title',
                     'content',
                     'created_at')
+        for post in posts:
+            post_object = Post.objects.get(id=post['id'])
+            post['likesCount'] = post_object.upvotes.count()
+            if user in post_object.upvotes.all():
+                post['liked'] = True
+            else:
+                post['liked'] = False
         return Response({'posts': posts}, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -69,21 +85,37 @@ class PostView(APIView):
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
-            serializer = PostSerializer(post)
             if is_post_visible_to_user(user, post):
-                return Response({'post': serializer.data}, status=status.HTTP_200_OK)
+                serializer = PostSerializer(post)
+                response_data = serializer.data.copy()
+                modified_upvotes_list = []
+                for upvote_user_pk in response_data['upvotes']:
+                    upvote_user = User.objects.get(pk=upvote_user_pk)
+                    upvote_user_username = upvote_user.username
+                    upvote_user_email = upvote_user.email
+                    modified_upvotes_list.append(
+                        {"id": upvote_user_pk,
+                         "username": upvote_user_username,
+                         "email": upvote_user_email}
+                    )
+                response_data['upvotes'] = modified_upvotes_list
+                liked = False
+                if user in post.upvotes.all():
+                    liked = True
+                return Response({'post': {**response_data, 'liked': liked}}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+
     def put(self, request, post_id):
         """Update post"""
         try:
             user = request.user
             post = Post.objects.get(id=post_id)
             if request.data['action'] == 'edit' and post.author == user:
-                serializer = PostSerializer(post, data=request.data, partial=True)
+                serializer = PostSerializer(
+                    post, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -112,7 +144,8 @@ class OtherUserPostsView(APIView):
         try:
             user = request.user
             other_user = User.objects.get(pk=other_user_id)
-            is_friends = other_user.friends.filter(username=user.username).exists()
+            is_friends = other_user.friends.filter(
+                username=user.username).exists()
             if is_friends:
                 posts = Post.objects.filter(author=other_user, club__isnull=True) \
                     .values('id',
@@ -174,6 +207,7 @@ class AllCommentsView(APIView):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class CommentView(APIView):
     """API View of a comment of a user"""
     permission_classes = [IsAuthenticated]
@@ -192,7 +226,6 @@ class CommentView(APIView):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
     def put(self, request, post_id, comment_id):
         """Update comment"""
         try:
@@ -200,7 +233,8 @@ class CommentView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             if request.data['action'] == 'edit' and comment.author == request.user:
-                serializer = CommentSerializer(comment, data=request.data, partial=True)
+                serializer = CommentSerializer(
+                    comment, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -266,6 +300,7 @@ class AllRepliesView(APIView):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class ReplyView(APIView):
     """API View to a reply to a comment from a post"""
     permission_classes = [IsAuthenticated]
@@ -293,7 +328,8 @@ class ReplyView(APIView):
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
             if request.data['action'] == 'edit' and reply.author == request.user:
-                reply_serializer = ReplySerializer(reply, data=request.data, partial=True)
+                reply_serializer = ReplySerializer(
+                    reply, data=request.data, partial=True)
                 if reply_serializer.is_valid():
                     reply_serializer.save()
                     return Response(reply_serializer.data, status=status.HTTP_200_OK)
@@ -316,6 +352,7 @@ class ReplyView(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class ClubFeedView(APIView):
     """API View to get club feed"""
     permission_classes = [IsAuthenticated]
@@ -325,15 +362,14 @@ class ClubFeedView(APIView):
             club = Club.objects.get(id=club_id)
             posts = Post.objects.filter(club=club)\
                 .values('id',
-                    'author',
-                    'author__username',
-                    'author__email',
-                    'club',
-                    'club__name',
-                    'title',
-                    'content',
-                    'created_at')
+                        'author',
+                        'author__username',
+                        'author__email',
+                        'club',
+                        'club__name',
+                        'title',
+                        'content',
+                        'created_at')
             return Response({'posts': posts}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-

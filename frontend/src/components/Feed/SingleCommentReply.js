@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, {useState, useEffect} from "react"
 import axiosInstance from '../../axios'
-import {Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
+import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar"
 import {ReplyLineBox} from "../UserProfile/UserProfileElements";
 import {useNavigate} from "react-router";
@@ -9,24 +9,21 @@ export default function SingleCommentReply(props) {
 
     const [singleReply, setSingleReply] = useState("");
     const [singleComment, setSingleComment] = useState("");
-    const [currentPost, setCurrentPost] = useState("");
     const [posterEmail, setPosterEmail] = useState("");
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        setCurrentPost(props.currentPost)
-        setSingleComment(props.currentComment)
+        setSingleComment(props.comment)
         setSingleReply(props.reply)
         setPosterEmail(props.reply.author__email)
     }, []);
 
-    const deleteComment = (comment_id, e) => {
+    const deleteComment = () => {
         axiosInstance
-            .delete(`posts/${currentPost.id}/comments/${singleComment.id}/replies/${singleReply.id}`)
-            .then((res) => {
-                console.log(res)
+            .delete(`posts/${props.post.id}/comments/${props.comment.id}/replies/${props.reply.id}`)
+            .then(() => {
                 props.updatePageAfterReplyDeletion()
             })
             .catch(error => console.error(error));
@@ -54,14 +51,14 @@ export default function SingleCommentReply(props) {
                             }}
                             />
                         </Col>
-                        <Col xs="8"
+                        <Col xs="9"
                              style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <ReplyLineBox>
                                 <h6> {singleReply.content} </h6>
                             </ReplyLineBox>
                         </Col>
                         {singleReply.author === currentUser.id  &&
-                            <Col xs="2" style={{display: "flex", justifyContent: "flex-end"}}>
+                            <Col xs="1" style={{display: "flex", justifyContent: "flex-end"}}>
                                 <Button color="danger" name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} 
                                     style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
                                 >
