@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -52,6 +52,7 @@ function ClubProfileTabs(props) {
   };
 
   return (
+    
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
@@ -67,6 +68,7 @@ function ClubProfileTabs(props) {
           )}
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
         <LandingProfile memberStatus={memberStatus} setMemberStatus={props.setMemberStatus}/>
       </TabPanel>
