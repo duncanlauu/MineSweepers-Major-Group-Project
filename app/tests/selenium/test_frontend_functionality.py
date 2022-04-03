@@ -297,8 +297,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.run_testcase(self._test_remove_member_as_admin, True)
         # self.run_testcase(self._test_ban_member_as_admin, True)
         # self.run_testcase(self._test_unban_banned_user_as_admin, True)
-        #accept applicant
-        #reject applicant
+        self.run_testcase(self._test_accept_club_applications_as_admin, True)
+        self.run_testcase(self._test_reject_club_applications_as_admin, True)
         
         # As Member
 
@@ -350,9 +350,56 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_log_out_button(url)
 
     # Club Profile Page as Admin
+    def _test_accept_club_applications_as_admin(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        self.browser.implicitly_wait(10)
+        # Check that there is no leave button
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(1)
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        member_club_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            print(club_user_card_text)
+            if("Accept" in club_user_card_text):
+                member_club_user_card = club_user_card
+                break
+        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
+        print("member_club_user: ", new_admin_username)
+        member_club_user_card.find_element_by_xpath('.//button[.="Accept"]').click()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        # Check he is a member
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(2)
+
+    def _test_reject_club_applications_as_admin(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        self.browser.implicitly_wait(10)
+        # Check that there is no leave button
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(1)
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        member_club_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            print(club_user_card_text)
+            if("Reject" in club_user_card_text):
+                member_club_user_card = club_user_card
+                break
+        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
+        print("member_club_user: ", new_admin_username)
+        member_club_user_card.find_element_by_xpath('.//button[.="Reject"]').click()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        # Check he is a member
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(2)
 
     def _test_unban_banned_user_as_admin(self):
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
         self.browser.implicitly_wait(10)
         # Check that there is no leave button
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
@@ -369,7 +416,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         print("member_club_user: ", new_admin_username)
         member_club_user_card.find_element_by_xpath('.//button[.="Unban"]').click()
         sleep(1)
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
         # Check he is removed
         sleep(1)
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
