@@ -76,3 +76,35 @@ export const BioText = styled.text`
     line-height: 15px;
     opacity: 70%;
 `
+
+export const MeetingContainer = styled.div`
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    width: 90%;
+    font-family: "Source Sans Pro";
+    color: #000;
+    padding: 1rem 2rem 1rem 2rem;
+    height: 10rem;
+    margin-top: 1rem;
+`
+
+export const MeetingHeading = styled.text`
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 15px;
+`
+
+export const MeetingPara = styled.text`
+    font-family: "Source Sans Pro";
+    opacity: 75%;
+    font-size: 12px;
+    line-height: 12px;
+`
+
+export const BookText = styled.text`
+    color: #653ffd;
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    font-size: 12px;
+`

@@ -1,13 +1,26 @@
-import React from "react";
+import React,{ useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { Button, Row } from "reactstrap";
+import { Button, Container, Row } from "reactstrap";
+import axiosInstance from "../../axios";
 import { HeadingText } from "../Login/LoginElements";
-import { ScheduleButton } from "./ClubProfileElements";
+import { MeetingContainer } from "./ClubProfileElements";
+import IndividualMeetingCard from "./IndividualMeetingCard";
 
 const ClubScheduling = () => {
   const { club_id } = useParams();
   console.log("Club ID on scheduling: " + club_id);
+  const [meetings, setMeetings] = useState([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`meetings/${club_id}`)
+      .then(res => {
+        console.log(res);
+        setMeetings(res.data);
+      })
+  }, [])
 
   const buttonStyle = {
     float: "right",
@@ -31,6 +44,15 @@ const ClubScheduling = () => {
           </Button>
         </Link>
       </Row>
+      <Container>
+        {meetings.map(meeting =>
+          <IndividualMeetingCard 
+            name={meeting.name}
+            book_id={meeting.book.ISBN}
+            book={meeting.book.title}
+            description={meeting.description} />
+        )}
+      </Container>
     </>
   );
 };
