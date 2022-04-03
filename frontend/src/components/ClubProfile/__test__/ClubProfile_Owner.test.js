@@ -157,8 +157,8 @@ describe('User is owner', () => {
                 })
 
                 await waitFor(() => {
-                    const apply = screen.queryAllByRole('button', { name: /leave club/i })
-                    expect(apply).toHaveLength(0)
+                    const leave = screen.queryAllByRole('button', { name: /leave club/i })
+                    expect(leave).toHaveLength(0)
                 })
             })
 
@@ -171,6 +171,30 @@ describe('User is owner', () => {
                 await waitFor(() => {
                     const bannedText = screen.queryAllByText(/you are banned from this club/i)
                     expect(bannedText).toHaveLength(0)
+                })
+            })
+
+            test('does not show transfer ownership text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const transferOwnership = screen.queryAllByText(/if you would like to leave the club, please transfer the ownership/i)
+                    expect(transferOwnership).toHaveLength(0)
+                })
+            })
+
+            test('does not show withdraw application text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const withdrawApplication = screen.queryAllByRole('button', { name: /withdraw application/i })
+                    expect(withdrawApplication).toHaveLength(0)
                 })
             })
         })

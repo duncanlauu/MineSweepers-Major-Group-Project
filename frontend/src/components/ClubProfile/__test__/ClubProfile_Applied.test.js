@@ -146,29 +146,57 @@ describe('User has applied', () => {
 
         })
 
-        test('does not show leave club button', async () => {
+        describe('does not show content for users with different relationship to club', () => {
 
-            act(() => {
-                renderClubProfile(role);
+            test('does not show apply button', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const apply = screen.queryAllByRole('button', { name: /apply/i })
+                    expect(apply).toHaveLength(0)
+                })
             })
 
-            await waitFor(() => {
-                const leaveClub = screen.queryAllByRole('button', { name: /leave club/i })
-                expect(leaveClub).toHaveLength(0)
+            test('does not show leave club button', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const leave = screen.queryAllByRole('button', { name: /leave club/i })
+                    expect(leave).toHaveLength(0)
+                })
+            })
+
+            test('does not show you are banned text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bannedText = screen.queryAllByText(/you are banned from this club/i)
+                    expect(bannedText).toHaveLength(0)
+                })
+            })
+
+            test('does not show transfer ownership text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const transferOwnership = screen.queryAllByText(/if you would like to leave the club, please transfer the ownership/i)
+                    expect(transferOwnership).toHaveLength(0)
+                })
             })
         })
 
-        test('does not show you are banned text', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const bannedText = screen.queryAllByText(/you are banned from this club/i)
-                expect(bannedText).toHaveLength(0)
-            })
-        })
 
         describe('Reading history', () => {
             test('shows reading history heading', async () => {

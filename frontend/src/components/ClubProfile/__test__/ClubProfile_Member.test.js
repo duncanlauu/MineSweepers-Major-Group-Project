@@ -174,7 +174,29 @@ describe('User is member', () => {
                 })
             })
 
-            // does not show transfer ownership text
+            test('does not show transfer ownership text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const transferOwnership = screen.queryAllByText(/if you would like to leave the club, please transfer the ownership/i)
+                    expect(transferOwnership).toHaveLength(0)
+                })
+            })
+
+            test('does not show withdraw application text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const withdrawApplication = screen.queryAllByRole('button', { name: /withdraw application/i })
+                    expect(withdrawApplication).toHaveLength(0)
+                })
+            })
         })
 
 

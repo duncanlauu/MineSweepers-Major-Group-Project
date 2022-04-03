@@ -132,30 +132,6 @@ describe('User has not applied', () => {
             })
         })
 
-        test('does not show leave club button', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const leaveClub = screen.queryAllByRole('button', { name: /leave club/i })
-                expect(leaveClub).toHaveLength(0)
-            })
-        })
-
-        test('does not show you are banned text', async () => {
-
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            await waitFor(() => {
-                const bannedText = screen.queryAllByText(/you are banned from this club/i)
-                expect(bannedText).toHaveLength(0)
-            })
-        })
-
         test('clicking apply button toggles it to show  withdraw application', async () => {
 
             act(() => {
@@ -170,9 +146,56 @@ describe('User has not applied', () => {
 
         })
 
-        // TODO does not show apply button
+        describe('does not show content for users with different relationship to club', () => {
 
-        // TODO does not show leave button
+            test('does not show leave club button', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const leave = screen.queryAllByRole('button', { name: /leave club/i })
+                    expect(leave).toHaveLength(0)
+                })
+            })
+
+            test('does not show you are banned text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bannedText = screen.queryAllByText(/you are banned from this club/i)
+                    expect(bannedText).toHaveLength(0)
+                })
+            })
+
+            test('does not show transfer ownership text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const transferOwnership = screen.queryAllByText(/if you would like to leave the club, please transfer the ownership/i)
+                    expect(transferOwnership).toHaveLength(0)
+                })
+            })
+
+            test('does not show withdraw application text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const withdrawApplication = screen.queryAllByRole('button', { name: /withdraw application/i })
+                    expect(withdrawApplication).toHaveLength(0)
+                })
+            })
+        })
 
         describe('Reading history', () => {
             test('shows reading history heading', async () => {
