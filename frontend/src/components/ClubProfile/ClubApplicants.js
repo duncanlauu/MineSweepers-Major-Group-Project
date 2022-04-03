@@ -53,8 +53,6 @@ function ClubApplicants(props) {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        
-
         setOwner(res.data.owner);
 
         setAdmins(res.data.admins);
@@ -239,10 +237,12 @@ function ClubApplicants(props) {
       .then((res) => {
         console.log(res);
         setClub(res.data);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
       });
+     
   }
 
   function unbanUser(id, user_id, e) {

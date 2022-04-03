@@ -16,10 +16,10 @@ const ClubProfile = () => {
   const [club, setClub] = useState(null);
   
   const [memberStatus, setMemberStatus] = useState("notApplied");
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    console.log("currentUser", currentUser);
+    
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
@@ -66,6 +66,7 @@ const ClubProfile = () => {
                   memberStatus={memberStatus}
                   setMemberStatus={setMemberStatus}
                   club ={club}
+                  user_id ={currentUser.id}
                 />
               </ProfileHeader>
             </ProfileContainer>

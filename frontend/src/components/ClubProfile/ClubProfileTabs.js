@@ -68,7 +68,7 @@ function ClubProfileTabs(props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <LandingProfile memberStatus={memberStatus} setMemberStatus={props.setMemberStatus}/>
+        <LandingProfile memberStatus={memberStatus} setMemberStatus={props.setMemberStatus} user_id={props.user_id}/>
       </TabPanel>
 
       {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned" ) && (

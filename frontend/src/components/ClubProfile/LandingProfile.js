@@ -13,6 +13,7 @@ const LandingProfile = (props) => {
   const [club, setClub] = useState(null);
   const [readingHistory, setReadingHistory] = useState([]);
   const [ownerDetails, setOwnerDetails] = useState(null);
+  const user_id = props.user_id;
 
   const memberStatus = props.memberStatus;
 
@@ -84,7 +85,7 @@ const LandingProfile = (props) => {
   let buttonState =
     memberStatus === "notApplied" ? "Apply" : "Withdraw Application";
 
-  function applyToClub(id, user_id, e) {
+  function applyToClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/apply/${user_id}`, {})
       .then((res) => {
@@ -96,7 +97,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function withdrawApplication(id, user_id, e) {
+  function withdrawApplication(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/reject/${user_id}`, {})
       .then((res) => {
@@ -108,7 +109,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function leaveClub(id, user_id, e) {
+  function leaveClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/leave/${user_id}`, {})
       .then((res) => {
@@ -142,7 +143,7 @@ const LandingProfile = (props) => {
             onClick={(e) =>
               memberStatus === "notApplied"
                 ? applyToClub(club_id, user_id)
-                : withdrawApplication(club_id, user_id)
+                : withdrawApplication(club_id, user_id )
             }
             style={memberStatus === "notApplied" ? applyStyle : appliedStyle}
           >
@@ -150,7 +151,7 @@ const LandingProfile = (props) => {
           </Button>
         )}  
         {(memberStatus === "admin" || memberStatus === "member" ) && (
-          <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
+          <Button onClick={(e) => leaveClub(club_id, user_id)} style={leaveStyle}>
             Leave Club
           </Button>
         )}
