@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {BioText, ClubProfile, MemberListHeading, NameText, UsernameText} from "./ClubProfileElements";
-import {Button, Col} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { BioText, ClubProfile, MemberListHeading, NameText, UsernameText } from "./ClubProfileElements";
+import { Button, Col } from "reactstrap";
 import Gravatar from "react-gravatar";
-import {HeadingText} from "../Login/LoginElements";
-import {useParams} from "react-router-dom";
+import { HeadingText } from "../Login/LoginElements";
+import { useParams } from "react-router-dom";
 import axiosInstance from "../../axios";
 
 const managementButtonStyle = {
@@ -40,7 +40,7 @@ function ClubApplicants(props) {
     const [bannedUsers, setBannedUsers] = useState([]);
     const memberStatus = props.memberStatus;
 
-    const {club_id} = useParams();
+    const { club_id } = useParams();
     console.log("Club ID on Members Page: " + club_id);
 
     useEffect(() => {
@@ -78,13 +78,13 @@ function ClubApplicants(props) {
         return (
             <ClubProfile>
                 <Col xs={3}>
-                    <Gravatar email={props.email} size={70} style={{borderRadius: "100%"}}/>
+                    <Gravatar email={props.email} size={70} style={{ borderRadius: "100%" }} />
                 </Col>
                 <Col xs={6}>
                     <a href={`/user_profile/${props.userId}`}>
                         <UsernameText>{props.username}</UsernameText>
-                    </a><br/>
-                    <NameText>{props.email}</NameText><br/>
+                    </a><br />
+                    <NameText>{props.email}</NameText><br />
                     <BioText>{props.bio === undefined ? props.bio : (props.bio.substring(0, 45) + (props.bio.length > 45 ? '...' : ""))}</BioText>
                 </Col>
                 <Col xs={3} style={{
@@ -111,7 +111,7 @@ function ClubApplicants(props) {
                                 Remove
                             </Button>
                             {memberStatus === "owner" && <Button style={buttonStyle}
-                                                                 onClick={(e) => promoteMember(club_id, user_id)}>Promote</Button>}
+                                onClick={(e) => promoteMember(club_id, user_id)}>Promote</Button>}
                             <Button style={buttonStyle} onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
 
                         </>
@@ -121,7 +121,7 @@ function ClubApplicants(props) {
                     {isAdmin && memberStatus === "owner" ? (
                         <>
                             <Button style={buttonStyle}
-                                    onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}
+                                onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}
                             >
                                 Make Owner
                             </Button>
@@ -271,7 +271,7 @@ function ClubApplicants(props) {
                 email={owner.email}
                 userId={owner.id}
                 bio={owner.bio}
-                isOwner={true}/>
+                isOwner={true} />
             {admins.length > 0 ? <MemberListHeading>Admins</MemberListHeading> : <></>}
             <ul>
                 {admins.map((admin) => (
@@ -282,7 +282,7 @@ function ClubApplicants(props) {
                             bio={admin.bio}
                             isAdmin={true}
                             userId={admin.id}
-                            memberStatus={memberStatus}/>
+                            memberStatus={memberStatus} />
                     </li>
                 ))}
             </ul>
@@ -320,7 +320,7 @@ function ClubApplicants(props) {
             <ul>
                 {bannedUsers.map((bannedUser) => (
                     <li key={bannedUser}>
-                        <div style={{opacity: "60%"}}>
+                        <div style={{ opacity: "60%" }}>
                             <IndividualMemberCard
                                 username={bannedUser.username}
                                 isBanned={true}

@@ -338,30 +338,70 @@ describe('User is member', () => {
 
     describe('Meetings tab shows correct contents', () => {
 
-        test('shows Meeting History Heading', async () => {
-            act(() => {
-                renderClubProfile(role);
+        // describe('contains correct components', () => {
+
+        //     test('shows Meeting History Heading', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+        //         fireEvent.click(feedTab)
+
+        //         const heading = screen.getByText(/meeting history/i)
+        //         expect(heading).toBeInTheDocument()
+        //     })
+
+        //     test('shows schedule meeting button', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+        //         fireEvent.click(feedTab)
+
+        //         const button = screen.getByRole('button', { name: /schedule a meeting/i })
+        //         expect(button).toBeInTheDocument()
+        //     })
+        // })
+
+        describe('displays correct contents of first meeting', () => {
+
+            test('shows correct meeting title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+                fireEvent.click(feedTab)
+
+                const title = screen.getByText(/west guyview book club meeting #0/i)
+                expect(title).toBeInTheDocument()
             })
 
-            const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-            fireEvent.click(feedTab)
+            //     test('shows correct meeting book', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
 
-            const heading = screen.getByText(/meeting history/i)
-            expect(heading).toBeInTheDocument()
+            //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+            //         fireEvent.click(feedTab)
+
+            //         const title = screen.getByText(/the john fante reader/i)
+            //         expect(title).toBeInTheDocument()
+            //     })
+
+            //     test('shows correct meeting description', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
+
+            //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+            //         fireEvent.click(feedTab)
+
+            //         const description = screen.getByText(/laboriosam fugiat vel modi reprehenderit quisquam\. mollitia ipsa saepe adipisci iusto sapiente nulla aliquam\. laudantium eius nihil maxime\./i)
+            //         expect(description).toBeInTheDocument()
+            //     })
         })
-
-        test('shows schedule meeting button', async () => {
-            act(() => {
-                renderClubProfile(role);
-            })
-
-            const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-            fireEvent.click(feedTab)
-
-            const button = screen.getByRole('button', { name: /schedule a meeting/i })
-            expect(button).toBeInTheDocument()
-        })
-
-        describe('displays correct contents of first meeting')
     })
 })

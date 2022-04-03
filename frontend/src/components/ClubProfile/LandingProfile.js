@@ -41,9 +41,7 @@ const LandingProfile = (props) => {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        console.log(res);
         setClub(res.data);
-        console.log(res.data.books);
       })
       .catch((err) => {
         console.log(err);

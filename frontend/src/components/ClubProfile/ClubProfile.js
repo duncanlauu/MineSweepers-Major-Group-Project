@@ -17,14 +17,10 @@ const ClubProfile = () => {
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("user"));
-    console.log("currentUser", currentUser);
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        console.log(res);
         setClub(res.data.club);
-        console.log("Club Data: ", res.data.club);
-        console.log("Current user is: ", currentUser);
         const currentUserId = currentUser.id;
         if (res.data.club.members.includes(currentUserId)) {
           setMemberStatus("member");
