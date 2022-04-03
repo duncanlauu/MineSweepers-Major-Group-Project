@@ -253,6 +253,360 @@ describe('User is owner', () => {
         })
     })
 
+    describe('Members tab shows correct contents', () => {
 
+        describe('contains correct components', () => {
+            test('shows owner title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const title = screen.getByTestId('ownerMemberCard')
+                expect(title).toBeInTheDocument()
+            })
+
+            test('shows admins title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const title = screen.getByText(/admins/i)
+                expect(title).toBeInTheDocument()
+            })
+
+            test('shows members title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const title = screen.getByTestId('membersTitle')
+                expect(title).toBeInTheDocument()
+            })
+
+            test('shows applicants title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const title = screen.getByText(/applicants/i)
+                expect(title).toBeInTheDocument()
+            })
+
+            test('displays correct number of people', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const people = screen.queryAllByTestId('individualMemberCard')
+                expect(people).toHaveLength(6)
+            })
+        })
+
+        describe('displays first person correctly', () => {
+
+            test('displays name', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const name = screen.getByRole('link', { name: /jeb/i });
+                expect(name).toBeInTheDocument()
+            })
+
+            test('displays email', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const email = screen.getByText(/jeb@example\.org/i)
+                expect(email).toBeInTheDocument()
+            })
+
+            test('displays bio with max. 45 characters', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const bio = screen.getByText(/i love chess! i mean books, i love books\./i)
+                expect(bio).toBeInTheDocument()
+            })
+        });
+
+        describe('manage members functionality', () => {
+
+            test('contains the same number of ban buttons as members + admins', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const members = screen.queryAllByTestId('memberMemberCard')
+                const admins = screen.queryAllByTestId('adminMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: "Ban" })
+
+                expect(members.length + admins.length).toBe(banButtons.length)
+            })
+
+            test('contains the same number of accept buttons as applicants', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const applicants = screen.queryAllByTestId('applicantMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /accept/i })
+
+                expect(applicants.length).toBe(banButtons.length)
+            })
+
+            test('contains the same number of reject buttons as applicants', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const applicants = screen.queryAllByTestId('applicantMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /reject/i })
+
+                expect(applicants.length).toBe(banButtons.length)
+            })
+
+            test('contains the same number of unban buttons as banned users', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const bannedUsers = screen.queryAllByTestId('bannedMemberCard')
+                const banButtons = screen.queryAllByRole('button', { name: /unban/i })
+
+                expect(bannedUsers.length).toBe(banButtons.length)
+            })
+
+            test('contains the same number of make owner buttons as admins', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /members/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const adminUsers = screen.queryAllByTestId('adminMemberCard')
+                const makeOwnerButtons = screen.queryAllByRole('button', { name: /make owner/i })
+
+                expect(adminUsers.length).toBe(makeOwnerButtons.length)
+            })
+        });
+    })
+
+    describe('Feed Tab shows correct contents', () => {
+
+        test('shows the correct number of posts', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            const feedTab = await screen.findByRole('tab', { name: /feed/i })
+            fireEvent.click(feedTab)
+
+            const posts = await screen.findAllByTestId('singleFeedPost')
+            expect(posts).toHaveLength(1)
+        })
+
+
+        describe('shows correct first post', () => {
+
+            test('correct author', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
+                fireEvent.click(feedTab)
+
+                const author = await screen.findByText(/@jeb/i)
+                expect(author).toBeInTheDocument()
+            })
+
+            test('correct title', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
+                fireEvent.click(feedTab)
+
+                const title = await screen.findByText(/aspernatur cumque voluptatibus asperiores\./i)
+                expect(title).toBeInTheDocument()
+            })
+
+
+            test('correct content', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /feed/i })
+                fireEvent.click(feedTab)
+
+                const title = await screen.findByRole('heading', { name: /libero cupiditate temporibus optio delectus\. similique illum deserunt adipisci occaecati earum\./i })
+                expect(title).toBeInTheDocument()
+            })
+        })
+    })
+
+
+
+
+    describe('Meetings tab shows correct contents', () => {
+
+        describe('contains correct components', () => {
+
+            test('shows Meeting History Heading', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+                fireEvent.click(feedTab)
+
+                const heading = screen.getByText(/meeting history/i)
+                expect(heading).toBeInTheDocument()
+            })
+
+            test('shows schedule meeting button', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+                fireEvent.click(feedTab)
+
+                const button = screen.getByRole('button', { name: /schedule a meeting/i })
+                expect(button).toBeInTheDocument()
+            })
+        })
+
+        describe('displays correct contents of first meeting', () => {
+
+            test('shows correct meeting title', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /meetings/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const title = screen.getByText(/Kerbal book meeting number 1/i)
+                expect(title).toBeInTheDocument()
+            })
+
+            test('shows correct meeting book', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /meetings/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const book = screen.getByText(/Happy Birthday, Moon/i)
+                expect(book).toBeInTheDocument()
+            })
+
+            test('shows correct meeting description', async () => {
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const feedTab = screen.getByRole('tab', { name: /meetings/i })
+                    fireEvent.click(feedTab)
+                })
+
+                const description = screen.getByText(/Reading books but also space, what else could you possibly need\?/i)
+                expect(description).toBeInTheDocument()
+            })
+        })
+
+        test('shows correct number of meetings', async () => {
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.getByRole('tab', { name: /meetings/i })
+                fireEvent.click(feedTab)
+            })
+
+            const meetings = screen.queryAllByTestId('singleMeetingCard')
+            expect(meetings).toHaveLength(7)
+        })
+    })
 })
 
