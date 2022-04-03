@@ -10,7 +10,10 @@ class GenresViewTestCase(APITestCase):
     """Tests of the genres API"""
 
     fixtures = ['app/tests/fixtures/default_user.json',
-                'app/tests/fixtures/other_users.json']
+                'app/tests/fixtures/other_users.json',
+                'app/tests/fixtures/default_club.json',
+                'app/tests/fixtures/other_clubs.json'
+                ]
 
     def setUp(self):
         seed_books()

@@ -16,6 +16,7 @@ class MeetingModelTest(TestCase):
         'app/tests/fixtures/other_time_periods.json',
         'app/tests/fixtures/other_books.json',
         'app/tests/fixtures/default_meeting.json',
+        'app/tests/fixtures/other_clubs.json',
     ]
 
     def setUp(self):
