@@ -9,7 +9,7 @@ import { act } from 'react-dom/test-utils';
 import ClubProfile from '../ClubProfile';
 import fakeLocalStorage from "../../../fakeLocalStorage";
 import user from "../../../mocksData/getCurrentUser.json"
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
 beforeAll(() => {
@@ -31,11 +31,19 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+
 describe('Components exist', () => {
 
     test('contains heading', async () => {
         act(() => {
-            render(<ClubProfile />, { wrapper: MemoryRouter });
+            // render(<ClubProfile />, { wrapper: MemoryRouter });
+            render(
+                <MemoryRouter initialEntries={["/club_profile/1"]}>
+                    <Routes>
+                        <Route path='club_profile/:club_id' element={<ClubProfile />} />
+                    </Routes>
+                </MemoryRouter>
+            );
         })
 
         await waitFor(() => {
