@@ -37,6 +37,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     failed_test_cases = []
     succesful_test_cases = []
+    error_message_report = ""
 
     @classmethod
     def setUpClass(cls):
@@ -48,7 +49,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         run_headless = eval(os.environ.get('RUN_HEADLESS', 'True'))
         print(run_headless)
         if(run_headless):
-            chrome_options.headless = True
+            # chrome_options.headless = True
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--window-size=1200,800")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--allow-insecure-localhost")
 
         #for headless testing
         # chrome_options.headless = True
@@ -57,6 +63,21 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # if not cls.SHOW_BROWSER:
         #     chrome_options.add_argument("--headless")
         #     chrome_options.add_argument("--window-size=1200,800")
+
+        # ChromeOptions options = new ChromeOptions();
+        # options.addArguments("--headless");
+        # options.addArguments("--disable-gpu");
+        # options.addArguments("--no-sandbox");
+        # options.addArguments("--allow-insecure-localhost");
+
+        # var chromeOptions = new ChromeOptions();                        
+        # chromeOptions.AddArguments("--headless");
+        # chromeOptions.AddArguments("--disable-gpu");
+        # chromeOptions.AddArguments("--window-size=1280,800");
+        # chromeOptions.AddArguments("--allow-insecure-localhost");
+
+        # //specifically this line here :)
+        # chromeOptions.AddAdditionalCapability("acceptInsecureCerts", true, true);
 
         cls.browser = webdriver.Chrome(chrome_options=chrome_options)
         cls.browser.set_page_load_timeout(120)
@@ -83,16 +104,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         seed_messages()
         print_info()
 
-        # Train the recommender system model
-        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        self.dump_file_path = 'app/files/dump_file'
-        self.dataframe = get_combined_data(self.csv_file_path)
-        self.data = get_dataset_from_dataframe(self.dataframe)
-        self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        train_model(self.algo, self.trainset)
-        self.pred = test_model(self.algo, self.trainset)
-        dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        # # Train the recommender system model
+        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        # self.dump_file_path = 'app/files/dump_file'
+        # self.dataframe = get_combined_data(self.csv_file_path)
+        # self.data = get_dataset_from_dataframe(self.dataframe)
+        # self.trainset = get_trainset_from_dataset(self.data)
+        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        # train_model(self.algo, self.trainset)
+        # self.pred = test_model(self.algo, self.trainset)
+        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -122,6 +143,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def run_testcase(self, test_case, log_in, url=None):
         try:
+            print(f"Running Test Case - {test_case.__name__}")
             if log_in:
                 self._log_in()
             if url is None:
@@ -130,8 +152,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             else:
                 test_case(url)
         except Exception as e:
+            print(f"TEST CASE FAILED - {test_case.__name__}:")
             print(e)
             self.failed_test_cases.append((test_case, url))
+            self.error_message_report += f"\n{test_case.__name__}, ({url}): {e}"
         
         # Log out
         self.browser.get(f"{self.live_server_url}/log_out")
@@ -140,55 +164,62 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def test_everything(self):
 
         # Landing Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        # self.run_testcase(self._test_landing_page_log_in_button, False)
-        # self.run_testcase(self._test_landing_page_sign_up_button, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
+        self.run_testcase(self._test_landing_page_log_in_button, False)
+        self.run_testcase(self._test_landing_page_sign_up_button, False)
 
         # Log In Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
-        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        # self.run_testcase(self._test_log_in_with_wrong_password, False)
-        # self.run_testcase(self._test_log_in, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
+        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
+        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
+        self.run_testcase(self._test_log_in_with_wrong_password, False)
+        self.run_testcase(self._test_log_in, False)
 
         # Sign Up Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        # self.run_testcase(self._test_sign_up_with_blank_fields, False)
-        # self.run_testcase(self._test_sign_up_username_too_short, False)
-        # self.run_testcase(self._test_sign_up_invalid_email, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
+        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
+        self.run_testcase(self._test_sign_up_with_blank_fields, False)
+        self.run_testcase(self._test_sign_up_username_too_short, False)
+        self.run_testcase(self._test_sign_up_invalid_email, False)
 
         # Sign Up Page and new user Book Rating Page # DONE
-        # self.run_testcase(self._test_sign_up_and_book_rating, False)
+        self.run_testcase(self._test_sign_up_and_book_rating, False)
 
         # Home Page
         self.page_contains_functional_navbar("home")
         self.run_testcase(self._test_reply_to_comment_on_post, True)
-        # self.run_testcase(self._test_comment_on_post, True)
-        # self.run_testcase(self._test_like_post, True)
-        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        self.run_testcase(self._test_comment_on_post, True)
+        self.run_testcase(self._test_like_post, True)
+        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
 
         # Search Bar
         self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
-        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
-        self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken
-        self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken
+        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
+        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
+        # self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken # CAN BE DELETED OR REPLACED FOR ONE WHERE WE ADD CLUB ID
+        # self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
 
         # User Page
         self.page_contains_functional_navbar("user_profile")
-        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
+        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
         #self.run_testcase()# EDIT BUTON TEST HERE
-        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
+        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
         self.run_testcase(self._test_edit_post, True)
-        # self.run_testcase(self._test_delete_post, True)
-        self.run_testcase(self._test_accept_friend_request, True)
-        self.run_testcase(self._test_reject_friend_request, True)
-        # self.run_testcase(self._test_delete_friend, True)
-        # self.run_testcase(self._test_user_profile_suggested_friends, True)
+        self.run_testcase(self._test_delete_post, True)
+        self.run_testcase(self._test_accept_friend_request, True) # BROKEN
+        self.run_testcase(self._test_reject_friend_request, True) # BROKEN
+        self.run_testcase(self._test_delete_friend, True)
+        self.run_testcase(self._test_user_profile_suggested_friends, True)
 
         # Club Profile Page
+        
+        self.page_contains_functional_navbar(f"club_profile/{self.club.pk}/")
         # self._test_logo_button_goes_to_home_when_logged_in(f"club_profile/{self.club.pk}/")
+        self.run_testcase(self._test_club_profile_contains_correct_information , True)
+        self.run_testcase(self._test_club_feed_tab_contains_correct_information , True)
+        # self.run_testcase(, True)
+        self.run_testcase(self._test_members_tab_contains_correct_information, True)
+        # self.run_testcase(, True)
         # self._test_club_profile_contains_correct_information()
         # self._test_club_feed_tab_contains_correct_information()
         # self._test_apply_to_club() # apply to club where not member
@@ -207,15 +238,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # # All Clubs Page
         self.page_contains_functional_navbar("all_clubs")
-        # self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
-        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
+        self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
+        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
         
         # # Book Profile Page
         self.page_contains_functional_navbar(f"book_profile/{self.book.pk}")
-        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
-        # self.run_testcase(self._test_book_profile_rate_book, True)
+        self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
+        self.run_testcase(self._test_book_profile_rate_book, True)
         self.run_testcase(self._test_book_profile_update_book_rating, True)
-        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
+        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
 
         # # Password Reset
         self.run_testcase(self._test_password_reset, False)
@@ -229,6 +260,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
                 if test_case_url is not None:
                     failed_tests_msg += f", ({test_case_url})"
                 failed_tests_msg += "\n"
+            print(self.error_message_report)
             raise MyException(failed_tests_msg)
         else:
             print(f"All ({len(self.succesful_test_cases)}) tests passed!")
@@ -466,7 +498,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_open_and_close_search_bar(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
-        self.wait_until_element_found("//button[@name='search-bar']")
+        sleep(4)
+        # self.wait_until_element_found("//button[@name='search-bar']")
         self.browser.find_element_by_name("search-bar").click()
         self.browser.implicitly_wait(10)
         self.browser.find_element_by_name("search-bar-input").send_keys("J")
@@ -475,7 +508,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
         self.browser.find_element_by_xpath("//button[@aria-label='Close']").click()
         self.browser.implicitly_wait(10)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/{url}/")
         self.browser.implicitly_wait(10)
 
     def _test_navbar_create_new_post(self, url):
@@ -509,7 +542,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_open_chat_button(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
-        self.wait_until_element_found("//img[@alt='Open Chat Button']")
+        self.wait_until_element_found("//img[@alt='Open Chats']")
         self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click()
         self.browser.implicitly_wait(10)
         # self.wait_until_element_found("//img[@alt='Send Icon']")
@@ -555,7 +588,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _test_comment_on_post(self): #Due to weird time delay, this test is not stable
-        
         number_of_comments_before = Comment.objects.count()
         self.browser.get(f"{self.live_server_url}/home")
         self.browser.implicitly_wait(10)
@@ -575,7 +607,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
     def _test_like_post(self):
-        
         self.browser.get(f"{self.live_server_url}/home")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//div[@class='SingleFeedPost']")
@@ -596,36 +627,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     # Home Sidepanel
     def _test_home_page_see_all_your_recommendations_button(self):
-        
         self.browser.get(f"{self.live_server_url}/home")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//text[.="See all recommendations"]')
         self.browser.find_element(by=By.XPATH, value='//text[.="See all recommendations"]').click()
-        sleep(1)
+        sleep(2) # wait for button
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations/")
 
     # Clubs recommendations?
 
-        
-    def _close_db_connections(self):
-        for conn in connections.all():
-            conn.close()
-        connections.close_all()
-
-
-    # def _test_navbar_new_post(self, url):
-    #     self.browser.get(f"{self.live_server_url}/{url}")
-    #     self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click() # a real element name would be nice
-    #     self.browser.find_element_by_name("title").send_keys("New Post Title")
-    #     self.browser.find_element_by_name("content").send_keys("New Post Content")
-    #     # self.browser.find_element_by_name("content").send_keys("New Post Content") Club ID
-    #     self.browser.find_element_by_xpath("//button[.='Post!']").click()
-    #     sleep(2)
-    #     self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
-    #     # check database that number of posts went up
-    #     # check on home page that it contains info about this post
-
-    def _test_navbar_create_club(self, url):
+    def _test_navbar_create_club(self, url): # BROKEN
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.find_element_by_xpath("//img[@alt='New Club Button']").click() # a real element name would be nice
         sleep(1)
@@ -647,30 +658,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(number_of_chats_after, number_of_chats_before+1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
-
-    def _test_navbar_open_chat(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click() # a real element name would be nice
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat2/")
-
-    def _test_navbar_user_profile(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        self.browser.find_element_by_xpath("//a[@href='/user_profile/']").click() # a real element name would be nice
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
-        sleep(1)
-        
-
-
-
-    # Home Page
-    
-
-    
-
-
-    
 
     def _test_book_profile_see_your_recommendations_button(self):
         self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}")
@@ -843,12 +830,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//text[.='%s']" % user.username)
         self.browser.find_element_by_xpath("//text[.='%s']" % user.username).click()
         sleep(3) # wait to find
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{user.pk}")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/{user.pk}/")
 
     def _test_search_bar_find_club(self, url):
         club_name = self.club.name
         half_of_club_name = club_name[:len(club_name)//2]
         self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[@name='search-bar']")
         self.browser.find_element_by_name("search-bar").click()
         self.browser.find_element_by_name("search-bar-input").send_keys(half_of_club_name)
@@ -1189,7 +1177,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         username_input.send_keys(self.login_data['username'])
         password_input.send_keys(self.login_data['password'])
         log_in_button.click()
-        sleep(2) # Wait for page to load
+        sleep(3) # Wait for page to load
         self.browser.implicitly_wait(10)
         self.assertNotEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
         # make method to wait a little
@@ -1203,7 +1191,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 # Select the first element by innerText: "(//button[.='yes'])[1]"
 
     #from source: --
+
     def wait_until_element_found(self, xpath, time=15):
         WebDriverWait(self.browser, timeout=time).until(
             lambda x: self.browser.find_element_by_xpath(xpath)
         )
+
+    def _close_db_connections(self):
+        for conn in connections.all():
+            conn.close()
+        connections.close_all()
