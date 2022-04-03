@@ -371,7 +371,12 @@ class ClubFeedView(APIView):
                         'content',
                         'created_at')
             for post in posts:
-                post['likesCount'] = Post.objects.get(id=post['id']).upvotes.count()
+                post_object = Post.objects.get(id=post['id'])
+                post['likesCount'] = post_object.upvotes.count()
+                if request.user in post_object.upvotes.all():
+                    post['liked'] = True
+                else:
+                    post['liked'] = False
             return Response({'posts': posts}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
