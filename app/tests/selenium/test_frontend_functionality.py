@@ -45,7 +45,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         call_command('collectstatic', verbosity=0, interactive=False)
         chrome_options = Options()
 
-        run_headless = eval(os.environ.get('RUN_HEADLESS', True))
+        run_headless = eval(os.environ.get('RUN_HEADLESS', 'True'))
         print(run_headless)
         if(run_headless):
             chrome_options.headless = True
