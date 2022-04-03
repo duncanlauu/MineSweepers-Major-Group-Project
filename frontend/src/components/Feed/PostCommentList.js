@@ -57,100 +57,60 @@ export default function PostCommentList(props) {
     }
 
     const displayCommentsUnderPost = (e) => {
-        if (commentsUnderPost.length > 0) {
-            // console.log(commentsUnderPost);
-            return (
-                <div>
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <CommentSectionContainer>
-                            {commentsUnderPost.map((comment, index) => {
-                                // console.log(comment);
-                                return (
-                                    <div key={comment.id} style={{marginBottom: "1rem"}}>
-                                        <CommentLine>
-                                            <SinglePostComment currentPost={currentPost} comment={comment}
-                                                               updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
-                                            />
-                                        </CommentLine>
-                                    </div>
-                                )
-                            })}
-                        </CommentSectionContainer>
-                    </div>
+        return (
+            <div>
+                {commentsUnderPost.length > 0 &&
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <CommentSectionContainer>
+                        {commentsUnderPost.map((comment, index) => {
+                            // console.log(comment);
+                            return (
+                                <div key={comment.id} style={{marginBottom: "1rem"}}>
+                                    <CommentLine>
+                                        <SinglePostComment currentPost={currentPost} comment={comment}
+                                                           updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
+                                        />
+                                    </CommentLine>
+                                </div>
+                            )
+                        })}
+                    </CommentSectionContainer>
+                </div>
+                }
 
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <Row style={{marginTop: "1rem"}}>
-                            <Col xs="9">
-                                <Input type="textarea" rows="1"
-                                       data-testid="comment-input"
-                                       id={inputAreaID}
-                                       name="myComment"
-                                       placeholder="Leave a comment here..."
-                                       onChange={handleCommentChange}
-                                       style={{
-                                           border: "0",
-                                           backgroundColor: "#F3F3F3",
-                                           borderBottomLeftRadius: "100px",
-                                           borderTopLeftRadius: "100px",
-                                           height: "3rem"
-                                       }}
-                                />
-                            </Col>
-                            <Col xs="3">
-                                <Button onClick={(e) => {
-                                    uploadComment(e, 0);
-                                    clearInputField()
-                                }}
-                                        style={{
-                                            borderBottomRightRadius: "100px",
-                                            borderTopRightRadius: "100px",
-                                            height: "3rem"
-                                        }}
-                                >
-                                    <p> Send </p>
-                                </Button>
-                            </Col>
-                        </Row>
-                    </div>
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <Row style={{marginTop: "1rem"}}>
+                        <Col xs="9">
+                            <Input type="textarea" rows="1"
+                                   data-testid="comment-input"
+                                   id={inputAreaID}
+                                   name="myComment"
+                                   placeholder="Leave a comment here..."
+                                   onChange={handleCommentChange}
+                                   style={{
+                                       border: "0",
+                                       backgroundColor: "#F3F3F3",
+                                       height: "3rem"
+                                   }}
+                            />
+                        </Col>
+                        <Col xs="3">
+                            <Button onClick={(e) => {
+                                uploadComment(e, 0);
+                                clearInputField()
+                            }}
+                                    style={{
+                                        borderRadius: "100px",
+                                        height: "3rem"
+                                    }}
+                            >
+                                <p> Send </p>
+                            </Button>
+                        </Col>
+                    </Row>
                 </div>
-            )
-        } else {
-            return (
-                <div>
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <Row style={{marginTop: "1rem"}}>
-                            <Col xs="9">
-                                <Input type="textarea" rows="1"
-                                       id="myComment"
-                                       name="myComment"
-                                       placeholder="Leave a comment here..."
-                                       onChange={handleCommentChange}
-                                    // value={""}
-                                       style={{
-                                           border: "0",
-                                           backgroundColor: "#F3F3F3",
-                                           borderBottomLeftRadius: "100px",
-                                           borderTopLeftRadius: "100px",
-                                           height: "3rem"
-                                       }}
-                                />
-                            </Col>
-                            <Col xs="3">
-                                <Button onClick={(e) => uploadComment(e, 0)}
-                                        style={{
-                                            borderBottomRightRadius: "100px",
-                                            borderTopRightRadius: "100px",
-                                            height: "3rem"
-                                        }}
-                                >
-                                    <p> Send </p>
-                                </Button>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-            )
-        }
+            </div>
+        )
     }
 
     return (
