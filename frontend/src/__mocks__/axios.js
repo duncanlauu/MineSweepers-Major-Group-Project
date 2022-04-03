@@ -22,6 +22,9 @@ import singleClub1_Owner from '../mocksData/getSingleClub1_Owner.json'
 import singleClub3_NotApplied from '../mocksData/getSingleClub3_NotApplied.json'
 import singleClub4_Applied from '../mocksData/getSingleClub4_Applied.json'
 import singleClub2_Member from '../mocksData/getSingleClub2_Member.json'
+import singleClub15_Admin from '../mocksData/getSingleClub15_Admin.json'
+import singleClub10_Banned from '../mocksData/getSingleClub10_Banned.json'
+
 
 const generateGetResponse = (url) => {
     switch (url) {
@@ -77,6 +80,10 @@ const generateGetResponse = (url) => {
             return { data: singleClub4_Applied }
         case `singleclub/2`:
             return { data: singleClub2_Member }
+        case `singleclub/15`:
+            return { data: singleClub15_Admin }
+        case `singleclub/10`:
+            return { data: singleClub10_Banned }
 
         default:
             console.log("no matching mock for url", url)

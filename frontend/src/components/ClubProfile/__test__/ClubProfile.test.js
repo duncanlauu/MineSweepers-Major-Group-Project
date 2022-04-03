@@ -26,13 +26,13 @@ const renderClubProfile = (role) => {
             club_id = '2'
             break
         case 'admin':
-            club_id = ''
+            club_id = '15'
             break
         case 'owner':
             club_id = '1'
             break
         case 'banned':
-            club_id = ''
+            club_id = '10'
     }
 
     return render(
@@ -62,6 +62,74 @@ beforeEach(() => {
     window.localStorage.setItem("user", JSON.stringify(user));
 });
 
+
+describe('User is banned', () => {
+
+    const role = 'banned'
+
+    test('contains name of club', async () => {
+
+        act(() => {
+            renderClubProfile(role);
+        })
+
+        await waitFor(() => {
+            const headingText = screen.getByText(/Margaretmouth Book Club/i)
+            expect(headingText).toBeInTheDocument()
+        })
+    })
+
+    describe('Correct tabs are shown', () => {
+
+        test('contains profile tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const profileTab = screen.getByRole('tab', { name: /profile/i })
+                expect(profileTab).toBeInTheDocument()
+            })
+        })
+
+        test('does not contain members tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const membersTab = screen.queryAllByRole('tab', { name: /members/i })
+                expect(membersTab).toHaveLength(0)
+            })
+        })
+
+        test('does not contain feed tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const feedTab = screen.queryAllByRole('tab', { name: /feed/i })
+                expect(feedTab).toHaveLength(0)
+            })
+        })
+
+        test('does not contain meetings tab', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const meetingsTab = screen.queryAllByRole('tab', { name: /meetings/i })
+                expect(meetingsTab).toHaveLength(0)
+            })
+        })
+    })
+})
 
 describe('User has not applied', () => {
 
@@ -269,7 +337,7 @@ describe('User is member', () => {
 
 describe('User is admin', () => {
 
-    const role = 'member'
+    const role = 'admin'
 
     test('contains name of club', async () => {
 
@@ -278,7 +346,7 @@ describe('User is admin', () => {
         })
 
         await waitFor(() => {
-            const headingText = screen.getByText(/West Guyview Book Club/i)
+            const headingText = screen.getByText(/Hayesberg Book Club/i)
             expect(headingText).toBeInTheDocument()
         })
     })
