@@ -1,4 +1,3 @@
-# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
@@ -31,19 +30,22 @@ class ChatListView(ListAPIView):
         response_list = serializer.data
         for response in response_list:
             last_message = get_last_message(response["id"])
+            response["last_message"] = ""
             if last_message is None:
                 chat = Chat.objects.get(pk=response["id"])
-                response["last_message"] = ""
                 response["last_update"] = chat.created_at
             else:
                 response["last_message"] = last_message.content
                 response["last_update"] = last_message.timestamp
 
+            response["owner_gravatar"] = ""
             if response["group_chat"]:
-                club = Club.objects.get(name=response["name"])
-                response["owner_gravatar"] = club.owner.email
-            else:
-                response["owner_gravatar"] = ""
+                try:
+                    club = Club.objects.get(club_chat=response["id"])
+                    if club is not None:
+                        response["owner_gravatar"] = club.owner.email
+                except:
+                    pass          
 
         return Response(serializer.data)
             

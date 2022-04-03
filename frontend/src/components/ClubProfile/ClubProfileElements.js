@@ -76,7 +76,6 @@ export const BioText = styled.text`
     line-height: 15px;
     opacity: 70%;
 `
-
 export const MeetingContainer = styled.div`
     background-color: #f2f2f2;
     border-radius: 10px;
@@ -108,3 +107,11 @@ export const BookText = styled.text`
     font-weight: 600;
     font-size: 12px;
 `
+
+export const MemberListHeading = styled.text`
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    color: #4F30CC;
+    font-size: 20px;
+`
+
