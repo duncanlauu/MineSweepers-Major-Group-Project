@@ -19,6 +19,10 @@ class WebsocketConsumerTest(TransactionTestCase):
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/other_chats.json',
         'app/tests/fixtures/other_messages.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_books.json',
     ]
 
     default_chat_url = "ws/chat/1/"

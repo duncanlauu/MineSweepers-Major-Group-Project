@@ -21,7 +21,9 @@ class SchedulingTestCase(APITestCase):
                 'app/tests/fixtures/other_time_periods.json',
                 'app/tests/fixtures/other_book_votes.json',
                 'app/tests/fixtures/other_time_votes.json',
-                'app/tests/fixtures/default_meeting.json']
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_clubs.json',
+                ]
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
@@ -352,9 +354,11 @@ class CalendarTestCase(APITestCase):
     fixtures = ['app/tests/fixtures/default_user.json',
                 'app/tests/fixtures/other_users.json',
                 'app/tests/fixtures/default_book.json',
+                'app/tests/fixtures/other_books.json',
                 'app/tests/fixtures/default_club.json',
                 'app/tests/fixtures/default_time_period.json',
-                'app/tests/fixtures/default_meeting.json']
+                'app/tests/fixtures/default_meeting.json',
+                'app/tests/fixtures/other_clubs.json']
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
