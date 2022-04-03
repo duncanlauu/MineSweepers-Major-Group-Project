@@ -34,6 +34,7 @@ import posts from '../mocksData/posts.json'
 import comments from '../mocksData/comments.json'
 import recommended_users from '../mocksData/getTopUserRecommendations.json'
 import userChats from '../mocksData/getUserChats.json'
+import books from '../mocksData/books.json'
 
 
 const generateGetResponse = (url) => {
@@ -60,6 +61,8 @@ const generateGetResponse = (url) => {
             return {data: bookDetails3}
         case `recommender/0/10/1/top_n_clubs_top_club_books/`:
             return {data: topClubs}
+        case `recommender/0/10/1/top_n_for_club/`:
+            return {data: books}
         case `/user/get_update/1/`:
             return {data: currentUser};
         case `user/get_update/1`:
