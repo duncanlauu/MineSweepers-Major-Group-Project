@@ -10,7 +10,6 @@ export default function CommentReplyList(props) {
   const [writtenReply, updateWrittenReply] = useState("");
 
   useEffect(() => {
-      console.log('comment reply list props', props)
     setCurrentComment(props.comment);
     getRepliesUnderComments();
   }, []);
