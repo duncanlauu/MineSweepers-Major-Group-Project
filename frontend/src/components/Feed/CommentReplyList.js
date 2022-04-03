@@ -1,56 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
-import { Row, Col, Button, Input } from "reactstrap";
+import {Row, Col, Button, Input} from "reactstrap";
 import SingleCommentReply from "./SingleCommentReply";
-import { ReplyLine } from "../UserProfile/UserProfileElements";
+import {ReplyLine} from "../UserProfile/UserProfileElements";
 
 export default function CommentReplyList(props) {
-  const [currentComment, setCurrentComment] = useState([]);
-  const [repliesUnderComment, setRepliesUnderComment] = useState([]);
-  const [writtenReply, updateWrittenReply] = useState("");
+    const [currentComment, setCurrentComment] = useState([]);
+    const [repliesUnderComment, setRepliesUnderComment] = useState([]);
+    const [writtenReply, updateWrittenReply] = useState("");
 
-  useEffect(() => {
-    setCurrentComment(props.comment);
-    getRepliesUnderComments();
-  }, []);
-
-  const getRepliesUnderComments = () => {
-    axiosInstance
-      .get(
-        `posts/${props.post.id}/comments/${props.comment.id}/replies/`
-      )
-      .then((res) => {
-        const allRepliesUnderComment = res.data.replies;
-        setRepliesUnderComment(allRepliesUnderComment);
-      });
-  };
-
-  const handleReplyChange = (e) => {
-    updateWrittenReply({
-      writtenReply,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const uploadReply = () => {
-    axiosInstance
-      .post(`posts/${props.post.id}/comments/${currentComment.id}/replies/`, {
-        content: writtenReply.myReply,
-      })
-      .then((res) => {
+    useEffect(() => {
+        setCurrentComment(props.comment);
         getRepliesUnderComments();
-      });
-  };
+    }, []);
 
-  const updatePageAfterReplyDeletion = () => {
-    getRepliesUnderComments();
-  };
+    const getRepliesUnderComments = () => {
+        axiosInstance
+            .get(
+                `posts/${props.post.id}/comments/${props.comment.id}/replies/`
+            )
+            .then((res) => {
+                const allRepliesUnderComment = res.data.replies;
+                setRepliesUnderComment(allRepliesUnderComment);
+            });
+    };
 
-  const inputAreaID = "myReply" + currentComment.id;
+    const handleReplyChange = (e) => {
+        updateWrittenReply({
+            writtenReply,
+            [e.target.name]: e.target.value,
+        });
+    };
 
-  const clearInputField = () => {
-    document.getElementById(inputAreaID).value = "";
-  };
+    const uploadReply = () => {
+        axiosInstance
+            .post(`posts/${props.post.id}/comments/${currentComment.id}/replies/`, {
+                content: writtenReply.myReply,
+            })
+            .then((res) => {
+                getRepliesUnderComments();
+            });
+    };
+
+    const updatePageAfterReplyDeletion = () => {
+        getRepliesUnderComments();
+    };
+
+    const inputAreaID = "myReply" + currentComment.id;
+
+    const clearInputField = () => {
+        document.getElementById(inputAreaID).value = "";
+    };
 
     const displayCommentsUnderPost = (e) => {
         return (
@@ -89,18 +89,18 @@ export default function CommentReplyList(props) {
                 </div>
 
                 {repliesUnderComment.length > 0 &&
-                    repliesUnderComment.map((reply, index) => {
-                        return (
-                            <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}>
-                                <ReplyLine>
-                                    <SingleCommentReply post={props.post} comment={currentComment}
-                                                        reply={reply}
-                                                        updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
-                                    />
-                                </ReplyLine>
-                            </div>
-                        )
-                    })
+                repliesUnderComment.map((reply, index) => {
+                    return (
+                        <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}>
+                            <ReplyLine>
+                                <SingleCommentReply post={props.post} comment={currentComment}
+                                                    reply={reply}
+                                                    updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
+                                />
+                            </ReplyLine>
+                        </div>
+                    )
+                })
                 }
             </div>
         )

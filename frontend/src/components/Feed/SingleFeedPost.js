@@ -165,9 +165,9 @@ export default function SingleFeedPost(props) {
                     </div>
                 </CardBody>
 
-                <UncontrolledCollapse toggler={HashtagTogglerId}>
+                <UncontrolledCollapse toggler={HashtagTogglerId} data-testid="all-comments-button">
                     {commentsVisibility === true &&
-                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}} data-testid="all-comments-button">
+                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
                         <PostCommentList post={props.post}/>
                     </div>
                     }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Row, Col, Button, UncontrolledCollapse} from "reactstrap";
 import Gravatar from "react-gravatar";
@@ -18,11 +18,10 @@ export default function SinglePostComment(props) {
         setPosterEmail(props.comment.author__email);
     }, []);
 
-    const deleteComment = (comment_id, e) => {
+    const deleteComment = (comment_id) => {
         axiosInstance
             .delete(`posts/${props.post.id}/comments/${comment_id}`)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 props.updatePageAfterCommentDeletion();
             })
             .catch((error) => console.error(error));
@@ -32,7 +31,6 @@ export default function SinglePostComment(props) {
         navigate(`/user_profile/${singleComment.author}/`);
     };
 
-    const commentsRef = useRef([]);
     const togglerID = "toggler" + singleComment.id;
     const HashtagTogglerId = "#toggler" + singleComment.id;
 
@@ -106,85 +104,14 @@ export default function SinglePostComment(props) {
                     <div>
                         <hr style={{marginTop: "0rem"}}/>
                         <Row>
-                            <Col
-                                xs="2"
-                                style={{
-                                    height: "3rem",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "flex-start",
-                                }}
-                            >
-                                <Gravatar
-                                    email={posterEmail}
-                                    size={30}
-                                    onClick={navigateToProfile}
-                                    style={{
-                                        borderRadius: "50px",
-                                        marginTop: "0rem",
-                                        marginBottom: "0rem",
-                                    }}
+                            <Col xs="2"> </Col>
+                            <Col xs="8">
+                                <CommentReplyList
+                                    comment={singleComment}
+                                    post={props.post}
                                 />
                             </Col>
-                            <Col
-                                xs="7"
-                                style={{
-                                    height: "3rem",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <CommentLineBox>
-                                    <h6> {singleComment.content} </h6>
-                                </CommentLineBox>
-                            </Col>
-                            <Col
-                                xs="3"
-                                style={{display: "flex", justifyContent: "flex-end"}}
-                            >
-                                {singleComment.author === currentUser.id && (
-                                    <Button
-                                        color="danger"
-                                        name={singleComment.id}
-                                        onClick={(e) => deleteComment(singleComment.id, e)}
-                                        style={{
-                                            height: "3rem",
-                                            borderTopLeftRadius: "100px",
-                                            borderBottomLeftRadius: "100px",
-                                        }}
-                                    >
-                                        <p> x </p>
-                                    </Button>
-                                )}
-                                <Button
-                                    id={togglerID}
-                                    style={{
-                                        height: "3rem",
-                                        borderTopRightRadius: "100px",
-                                        borderBottomRightRadius: "100px",
-                                    }}
-                                >
-                                    Reply
-                                </Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <UncontrolledCollapse toggler={HashtagTogglerId}>
-                                <div>
-                                    <hr style={{marginTop: "0rem"}}/>
-                                    <Row>
-                                        <Col xs="2"> </Col>
-                                        <Col xs="8">
-                                            <CommentReplyList
-                                                comment={singleComment}
-                                                post={props.post}
-                                            />
-                                        </Col>
-                                        <Col xs="2"> </Col>
-                                    </Row>
-                                </div>
-                            </UncontrolledCollapse>
+                            <Col xs="2"> </Col>
                         </Row>
                     </div>
                 </UncontrolledCollapse>

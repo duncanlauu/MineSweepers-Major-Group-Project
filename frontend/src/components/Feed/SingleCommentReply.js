@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, {useState, useEffect} from "react"
 import axiosInstance from '../../axios'
-import {Row, Col, Button, Input, UncontrolledCollapse} from "reactstrap"
+import {Row, Col, Button} from "reactstrap"
 import Gravatar from "react-gravatar"
 import {ReplyLineBox} from "../UserProfile/UserProfileElements";
 import {useNavigate} from "react-router";
@@ -15,7 +15,6 @@ export default function SingleCommentReply(props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log('single comment reply', props)
         setSingleComment(props.comment)
         setSingleReply(props.reply)
         setPosterEmail(props.reply.author__email)
@@ -24,8 +23,7 @@ export default function SingleCommentReply(props) {
     const deleteComment = () => {
         axiosInstance
             .delete(`posts/${props.post.id}/comments/${props.comment.id}/replies/${props.reply.id}`)
-            .then((res) => {
-                console.log(res)
+            .then(() => {
                 props.updatePageAfterReplyDeletion()
             })
             .catch(error => console.error(error));
