@@ -141,7 +141,7 @@ class RecommenderAPI(APIView):
 
         try:
             if action == 'retrain':
-                algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+                algo = SVD()
                 train_model(algo, trainset)
                 pred = test_model(algo, trainset)
                 dump_trained_model(dump_file_name, algo, pred)
