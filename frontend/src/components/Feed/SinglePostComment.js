@@ -56,7 +56,7 @@ export default function SinglePostComment(props) {
                         </CommentLineBox>
                     </Col>
                     <Col xs="3" style={{display: "flex", justifyContent: "flex-end"}}>
-                        {singleComment.author == currentUser.id  &&
+                        {singleComment.author === currentUser.id  &&
                             <Button color="danger" name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
                                 style={{height: "3rem", borderTopLeftRadius: "100px", borderBottomLeftRadius: "100px"}}
                             >
