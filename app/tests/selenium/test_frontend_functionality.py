@@ -16,7 +16,8 @@ from selenium.webdriver.common.by import By
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
 from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users, seed_default_objects, \
-    seed_friends, seed_friend_requests, seed_meetings, seed_feed, seed_messages, print_info, get_n_random_non_friends
+    seed_friends, seed_friend_requests, seed_meetings, seed_feed, seed_messages, print_info, get_n_random_non_friends, \
+        get_n_random_users
 from surprise import SVD
 
 from django.db import connections
@@ -253,10 +254,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # As Owner
+
+
         
         self.run_testcase(self._test_promote_member_to_admin, True)
         self.run_testcase(self._test_demote_admin_to_member, True)
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
+        self.run_testcase(self._test_ban_member, True)
+        self.run_testcase(self._test_ban_admin, True)
+        self.run_testcase(self._test_remove_member, True)
+        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
 
         # As Admin
         
@@ -308,13 +314,77 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     # Club Page as Owner
     def _test_remove_member(self):
-        pass
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        # Check that there is no leave button
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(1)
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        member_club_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            print(club_user_card_text)
+            if("Promote" in club_user_card_text):
+                member_club_user_card = club_user_card
+                break
+        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
+        print("member_club_user: ", new_admin_username)
+        member_club_user_card.find_element_by_xpath('.//button[.="Remove"]').click()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        # Check he is removed
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(10)
 
     def _test_ban_admin(self):
-        pass
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        # Check that there is no leave button
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(1)
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        admin_club_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            print(club_user_card_text)
+            if("Demote" in club_user_card_text):
+                admin_club_user_card = club_user_card
+                break
+        new_demoted_user = admin_club_user_card.find_element_by_name("username-text").text
+        print("admin_club_user: ", new_demoted_user)
+        admin_club_user_card.find_element_by_xpath('.//button[.="Ban"]').click()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        sleep(1)
+        # Check he is banned
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(15)
+        
 
     def _test_ban_member(self):
-        pass
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        # Check that there is no leave button
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(1)
+        club_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        member_club_user_card = None
+        for club_user_card in club_user_cards:
+            club_user_card_text = club_user_card.text
+            print(club_user_card_text)
+            if("Promote" in club_user_card_text):
+                member_club_user_card = club_user_card
+                break
+        new_admin_username = member_club_user_card.find_element_by_name("username-text").text
+        print("member_club_user: ", new_admin_username)
+        member_club_user_card.find_element_by_xpath('.//button[.="Ban"]').click()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        # Check he is banned
+        sleep(1)
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(10)
 
     def _test_promote_member_to_admin(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
