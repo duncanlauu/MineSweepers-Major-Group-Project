@@ -10,14 +10,15 @@ export default function CommentReplyList(props) {
   const [writtenReply, updateWrittenReply] = useState("");
 
   useEffect(() => {
-    setCurrentComment(props.currentComment);
+      console.log('comment reply list props', props)
+    setCurrentComment(props.comment);
     getRepliesUnderComments();
   }, []);
 
   const getRepliesUnderComments = () => {
     axiosInstance
       .get(
-        `posts/${props.post.id}/comments/${props.currentComment.id}/replies/`
+        `posts/${props.post.id}/comments/${props.comment.id}/replies/`
       )
       .then((res) => {
         const allRepliesUnderComment = res.data.replies;
@@ -30,7 +31,6 @@ export default function CommentReplyList(props) {
       writtenReply,
       [e.target.name]: e.target.value,
     });
-    console.log(writtenReply);
   };
 
   const uploadReply = () => {
@@ -94,7 +94,7 @@ export default function CommentReplyList(props) {
                         return (
                             <div key={reply.id} style={{height: "3rem", marginBottom: "1rem"}}>
                                 <ReplyLine>
-                                    <SingleCommentReply currentPost={currentPost} currentComment={currentComment}
+                                    <SingleCommentReply post={props.post} comment={currentComment}
                                                         reply={reply}
                                                         updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
                                     />

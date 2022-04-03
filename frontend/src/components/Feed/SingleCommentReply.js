@@ -15,14 +15,15 @@ export default function SingleCommentReply(props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        setSingleComment(props.currentComment)
+        console.log('single comment reply', props)
+        setSingleComment(props.comment)
         setSingleReply(props.reply)
         setPosterEmail(props.reply.author__email)
     }, []);
 
     const deleteComment = () => {
         axiosInstance
-            .delete(`posts/${props.post.id}/comments/${singleComment.id}/replies/${singleReply.id}`)
+            .delete(`posts/${props.post.id}/comments/${props.comment.id}/replies/${props.reply.id}`)
             .then((res) => {
                 console.log(res)
                 props.updatePageAfterReplyDeletion()

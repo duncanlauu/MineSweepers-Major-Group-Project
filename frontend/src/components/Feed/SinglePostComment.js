@@ -16,6 +16,8 @@ export default function SinglePostComment(props) {
   useEffect(() => {
     setSingleComment(props.comment);
     setPosterEmail(props.comment.author__email);
+    console.log('single post comment props', props)
+    console.log('single post comment', props.comment)
   }, []);
 
   const deleteComment = (comment_id, e) => {
@@ -175,7 +177,7 @@ export default function SinglePostComment(props) {
                     <Col xs="2"> </Col>
                     <Col xs="8">
                       <CommentReplyList
-                        currentComment={singleComment}
+                        comment={singleComment}
                         post={props.post}
                       />
                     </Col>

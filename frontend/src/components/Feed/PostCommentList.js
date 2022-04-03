@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
-import { Row, Col, Button, Input } from "reactstrap";
+import {Row, Col, Button, Input} from "reactstrap";
 import SinglePostComment from "./SinglePostComment";
 import {
-  CommentLine,
-  CommentSectionContainer,
+    CommentLine,
+    CommentSectionContainer,
 } from "../UserProfile/UserProfileElements";
 
 export default function PostCommentList(props) {
-  const [commentsUnderPost, setCommentsUnderPost] = useState([]);
-  const [writtenComment, updateWrittenComment] = useState("");
+    const [commentsUnderPost, setCommentsUnderPost] = useState([]);
+    const [writtenComment, updateWrittenComment] = useState("");
 
-  useEffect(() => {
-    getCommentsUnderPost();
-  }, []);
-
-  const getCommentsUnderPost = () => {
-    axiosInstance.get(`posts/${props.post.id}/comments/`).then((res) => {
-      setCommentsUnderPost(res.data.comments);
-    });
-  };
-
-  const handleCommentChange = (e) => {
-    updateWrittenComment({
-      writtenComment,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const uploadComment = () => {
-    axiosInstance
-      .post(`posts/${props.post.id}/comments/`, {
-        content: writtenComment.myComment,
-      })
-      .then(() => {
+    useEffect(() => {
         getCommentsUnderPost();
-      });
-  };
+    }, []);
 
-  const updatePageAfterCommentDeletion = () => {
-    getCommentsUnderPost();
-  };
+    const getCommentsUnderPost = () => {
+        axiosInstance.get(`posts/${props.post.id}/comments/`).then((res) => {
+            setCommentsUnderPost(res.data.comments);
+        });
+    };
 
-  const inputAreaID = "myComment" + props.post.id;
+    const handleCommentChange = (e) => {
+        updateWrittenComment({
+            writtenComment,
+            [e.target.name]: e.target.value,
+        });
+    };
 
-  const clearInputField = () => {
-    document.getElementById(inputAreaID).value = "";
-  };
+    const uploadComment = () => {
+        axiosInstance
+            .post(`posts/${props.post.id}/comments/`, {
+                content: writtenComment.myComment,
+            })
+            .then(() => {
+                getCommentsUnderPost();
+            });
+    };
+
+    const updatePageAfterCommentDeletion = () => {
+        getCommentsUnderPost();
+    };
+
+    const inputAreaID = "myComment" + props.post.id;
+
+    const clearInputField = () => {
+        document.getElementById(inputAreaID).value = "";
+    };
 
     const displayCommentsUnderPost = (e) => {
         return (
@@ -58,7 +58,7 @@ export default function PostCommentList(props) {
                             return (
                                 <div key={comment.id} style={{marginBottom: "1rem"}}>
                                     <CommentLine>
-                                        <SinglePostComment currentPost={props.post} comment={comment}
+                                        <SinglePostComment post={props.post} comment={comment}
                                                            updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
                                         />
                                     </CommentLine>
