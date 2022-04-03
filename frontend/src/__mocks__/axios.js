@@ -40,6 +40,14 @@ import singleClub4_Applied from '../mocksData/getSingleClub4_Applied.json'
 import singleClub2_Member from '../mocksData/getSingleClub2_Member.json'
 import singleClub15_Admin from '../mocksData/getSingleClub15_Admin.json'
 import singleClub10_Banned from '../mocksData/getSingleClub10_Banned.json'
+import clubFeed1_Owner from '../mocksData/getClubFeed1_Owner.json'
+import clubFeed2_Member from '../mocksData/getClubFeed2_Member.json'
+import clubFeed15_Admin from '../mocksData/getClubFeed15_Admin.json'
+import clubMeetings1_Owner from '../mocksData/getClubMeetings1_Owner.json'
+import clubMeetings2_Member from '../mocksData/getClubMeetings2_Member.json'
+import clubMeetings15_Admin from '../mocksData/getClubMeetings15_Admin.json'
+
+
 import books from '../mocksData/books.json'
 
 
@@ -123,6 +131,18 @@ const generateGetResponse = (url) => {
             return { data: singleClub15_Admin }
         case `singleclub/10`:
             return { data: singleClub10_Banned }
+        case `feed/clubs/1`:
+            return { data: clubFeed1_Owner }
+        case `feed/clubs/2`:
+            return { data: clubFeed2_Member }
+        case `feed/clubs/15`:
+            return { data: clubFeed15_Admin }
+        case `club_meetings/1`:
+            return { data: clubMeetings1_Owner }
+        case `club_meetings/2`:
+            return { data: clubMeetings2_Member }
+        case `club_meetings/15`:
+            return { data: clubMeetings15_Admin }
         case `posts/1/comments/1/replies/`:
             return { data: replies };
         case `posts/1/comments/2/replies/`:

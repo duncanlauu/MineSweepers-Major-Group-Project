@@ -1,0 +1,59 @@
+[
+    {
+        "id": 8,
+        "book": {
+            "ISBN": "0060184965",
+            "title": "The John Fante Reader",
+            "author": "John Fante",
+            "publication_date": 2002,
+            "publisher": "William Morrow & Company",
+            "image_links_large": "http://images.amazon.com/images/P/0060184965.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0060184965.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0060184965.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "name": "West Guyview Book Club meeting #0",
+        "description": "Laboriosam fugiat vel modi reprehenderit quisquam. Mollitia ipsa saepe adipisci iusto sapiente nulla aliquam. Laudantium eius nihil maxime.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 2,
+        "time": 8,
+        "organiser": 150,
+        "attendees": [
+            1,
+            3,
+            10,
+            81,
+            89,
+            98,
+            125,
+            127,
+            132,
+            136
+        ]
+    },
+    {
+        "id": 9,
+        "book": {
+            "ISBN": "0671469541",
+            "title": "Jenny N' Dad: The Love Story of a Very Young Daughter and a Very Old Dad",
+            "author": "Gordon Baxter",
+            "publication_date": 1985,
+            "publisher": "Simon & Schuster",
+            "image_links_large": "http://images.amazon.com/images/P/0671469541.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0671469541.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0671469541.01.THUMBZZZ.jpg",
+            "genre": "Social Science"
+        },
+        "name": "West Guyview Book Club meeting #1",
+        "description": "Harum doloremque aliquam voluptates necessitatibus. Id officia adipisci.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 2,
+        "time": 9,
+        "organiser": 71,
+        "attendees": [
+            1,
+            81,
+            127
+        ]
+    }
+]

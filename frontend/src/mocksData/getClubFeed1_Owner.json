@@ -1,0 +1,15 @@
+{
+    "posts": [
+        {
+            "id": 2,
+            "author": 1,
+            "author__username": "Jeb",
+            "author__email": "jeb@example.org",
+            "club": 1,
+            "club__name": "Kerbal book club",
+            "title": "Aspernatur cumque voluptatibus asperiores.",
+            "content": "Libero cupiditate temporibus optio delectus. Similique illum deserunt adipisci occaecati earum.",
+            "created_at": "2022-03-31T10:56:47.630046Z"
+        }
+    ]
+}
