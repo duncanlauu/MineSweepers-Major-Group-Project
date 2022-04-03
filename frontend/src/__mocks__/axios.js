@@ -42,6 +42,8 @@ const generateGetResponse = (url) => {
             return {data: tenGenres};
         case `get_current_user`:
             return {data: currentUser};
+        case `/get_current_user/`:
+            return {data: currentUser};
         case `recommender/0/10/1/top_n/`:
             return {data: myTop10Recommendations}
         case `recommender/0/10/top_n_global/`:
@@ -60,9 +62,13 @@ const generateGetResponse = (url) => {
             return {data: topClubs}
         case `/user/get_update/1/`:
             return {data: currentUser};
+        case `user/get_update/1`:
+            return {data: currentUser};
         case `user/get_update/1/`:
             return {data: currentUser};
         case `user/get_update/2/`:
+            return {data: currentUser2};
+        case `user/get_update/2`:
             return {data: currentUser2};
         case `user/get_update/3/`:
             return {data: currentUser3};
@@ -78,14 +84,20 @@ const generateGetResponse = (url) => {
             return {data: clubs};
         case `clubs/user/1`:
             return {data: clubs};
+        case `clubs/user/2`:
+            return {data: clubs};
         case `friend_requests/`:
             return {data: friend_requests};
         case `friends/`:
+            return {data: friends};
+        case `friends/user/1`:
             return {data: friends};
         case `friends/user/2`:
             return {data: friends2};
         case `ratings/`:
             return {data: ratings};
+        case `ratings/other_user/1`:
+            return {data: ratings2};
         case `ratings/other_user/2`:
             return {data: ratings2};
         case `posts/1/comments/1/replies/`:
@@ -161,6 +173,8 @@ const generateGetResponse = (url) => {
         case `feed/`:
             return {data: posts};
         case `posts/`:
+            return {data: posts};
+        case `posts/user/1`:
             return {data: posts};
         case `posts/user/2`:
             return {data: posts};

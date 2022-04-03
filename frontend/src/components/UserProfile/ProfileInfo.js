@@ -14,7 +14,7 @@ import LocationCity from "@mui/icons-material/LocationCity";
 import AssignmentInd from "@mui/icons-material/AssignmentInd";
 
 export default function ProfileInfo(props) {
-  const retrievedCurrentUser = useGetUser(); // To do
+  const retrievedCurrentUser = JSON.parse(localStorage.getItem('user'));
   const [currentUser, setCurrentUser] = useState("");
   const [isModalVisible, setModalVisibility] = useState();
   const [isLoggedInUser, setIsLoggedInUser] = useState();
@@ -25,7 +25,7 @@ export default function ProfileInfo(props) {
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
-        if (props.otherUserID == retrievedCurrentUser.id) {
+        if (props.otherUserID === retrievedCurrentUser.id) {
           navigate("/user_profile");
           // setCurrentUser(retrievedCurrentUser)
           // setIsLoggedInUser(true)
@@ -38,7 +38,7 @@ export default function ProfileInfo(props) {
         setIsLoggedInUser(true);
       }
     }
-  }, [retrievedCurrentUser]);
+  }, []);
 
   const getCurrentUser = (id) => {
     axiosInstance

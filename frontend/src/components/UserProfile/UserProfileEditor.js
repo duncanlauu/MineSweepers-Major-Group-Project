@@ -86,7 +86,7 @@ export default function UserProfileEditor(props) {
                     }}
                     value={formData.bio}
                   />
-                  <p></p>
+                  <p/>
                 </FormGroup>
                 {/* <div>{titleErr}</div> */}
 
