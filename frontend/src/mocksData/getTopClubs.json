@@ -3,35 +3,60 @@
     "club": {
       "id": 1,
       "name": "Club 1",
-      "owner": 1
+      "owner": 1,
+      "members": [
+        1,
+        2,
+        3
+      ]
     }
   },
   {
     "club": {
       "id": 2,
       "name": "Club 2",
-      "owner": 2
+      "owner": 2,
+      "members": [
+        1,
+        2,
+        3
+      ]
     }
   },
   {
     "club": {
       "id": 3,
       "name": "Club 3",
-      "owner": 3
+      "owner": 3,
+      "members": [
+        1,
+        2,
+        3
+      ]
     }
   },
   {
     "club": {
       "id": 4,
       "name": "Club 4",
-      "owner": 4
+      "owner": 4,
+      "members": [
+        1,
+        2,
+        3
+      ]
     }
   },
   {
     "club": {
       "id": 5,
       "name": "Club 5",
-      "owner": 5
+      "owner": 5,
+      "members": [
+        1,
+        2,
+        3
+      ]
     }
   }
 ]
