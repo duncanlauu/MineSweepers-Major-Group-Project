@@ -1,11 +1,9 @@
-import React,{ useEffect } from "react";
-import { useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Button, Container, Row } from "reactstrap";
 import axiosInstance from "../../axios";
 import { HeadingText } from "../Login/LoginElements";
-import { MeetingContainer } from "./ClubProfileElements";
 import IndividualMeetingCard from "./IndividualMeetingCard";
 
 const ClubScheduling = () => {

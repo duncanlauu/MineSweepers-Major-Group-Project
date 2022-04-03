@@ -159,17 +159,3 @@ const LandingProfile = (props) => {
 };
 
 export default LandingProfile;
-
-// <Row>
-// <BookProfile>
-//   <Col xs={2}>
-//     <img src={props.imageURL} alt="Book Cover" />
-//   </Col>
-//   <Col xs={10}>
-//     <a href={`/book_profile/${props.isbn}`}>
-//       <BookHeading>{props.title}</BookHeading><br />
-//       <YearAuthorInfo>{props.author}, {props.year}</YearAuthorInfo><br />
-//     </a>
-//   </Col>
-// </BookProfile>
-// </Row>
