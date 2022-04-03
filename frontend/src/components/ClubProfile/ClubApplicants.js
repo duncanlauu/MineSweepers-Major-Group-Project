@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BioText, ClubProfile, NameText, UsernameText } from "./ClubProfileElements";
+import { BioText, ClubProfile, MemberListHeading, NameText, UsernameText } from "./ClubProfileElements";
 import { Button, Col } from "reactstrap";
 import Gravatar from "react-gravatar";
 import { HeadingText } from "../Login/LoginElements";
@@ -261,13 +261,14 @@ function ClubApplicants(props) {
   return (
     
     <>
+      <MemberListHeading>Owner</MemberListHeading>
       <IndividualMemberCard 
         username={owner.username} 
         email={owner.email}
         userId={owner.id}
         bio={owner.bio}
         isOwner={true} />
-      <hr />
+      {admins.length > 0 ? <MemberListHeading>Admins</MemberListHeading> : <></>}
       <ul>
         {admins.map((admin) => (
           <li key={admin}>
@@ -281,7 +282,7 @@ function ClubApplicants(props) {
           </li>
         ))}
       </ul>
-      <hr />
+      {members.length > 0 ? <MemberListHeading>Members</MemberListHeading> : <></>}
       <ul>
         {members.map((member) => (
           <li key={member}>
@@ -296,7 +297,7 @@ function ClubApplicants(props) {
           </li>
         ))}
       </ul>
-      <hr />
+      {applicants.length > 0 ? <MemberListHeading>Applicants</MemberListHeading> : <></>}
       <ul>
         {applicants.map((applicant, index) => (
           <li key={applicant}>
@@ -311,16 +312,20 @@ function ClubApplicants(props) {
           </li>
         ))}
       </ul>
-      <hr />
+      {bannedUsers.length > 0 ? <MemberListHeading>Banned Users</MemberListHeading> : <></>}
       <ul>
         {bannedUsers.map((bannedUser) => (
           <li key={bannedUser}>
-            <IndividualMemberCard
-              username={bannedUser.username}
-              isBanned={true}
-              userId={bannedUser.id}
-              memberStatus={memberStatus}
-            />
+            <div style={{ opacity:"60%" }}>
+              <IndividualMemberCard
+                username={bannedUser.username}
+                isBanned={true}
+                email={bannedUser.email}
+                bio={bannedUser.bio}
+                userId={bannedUser.id}
+                memberStatus={memberStatus}
+              />
+            </div>
           </li>
         ))}
       </ul>
