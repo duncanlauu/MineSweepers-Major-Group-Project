@@ -117,51 +117,48 @@ export default function SingleFeedPost(props) {
           <CardText>
             <h5> {props.post.content} </h5>
           </CardText>
-        </CardBody>
 
-        <div
-          style={{
-            textAlign: "right",
-          }}
-        >
-          <Button
-            id={togglerID}
+          <div
             style={{
-              height: "4rem",
-              background: isCommentOpen ? "#653FFD" : "#ffffff",
-              color: isCommentOpen ? "#ffffff" : "#653FFD",
-              borderColor: "#653FFD",
+              textAlign: "right",
             }}
-            onClick={toggleCommentOpen}
           >
-            <CommentIcon />
-          </Button>
-          &nbsp;
-          <Button
+            <Button
+              id={togglerID}
+              style={{
+                height: "4rem",
+                background: isCommentOpen ? "#653FFD" : "#ffffff",
+                color: isCommentOpen ? "#ffffff" : "#653FFD",
+                borderColor: "#653FFD",
+              }}
+              onClick={toggleCommentOpen}
+            >
+              <CommentIcon />
+            </Button>
+            &nbsp;
+            <Button
+              style={{
+                height: "4rem",
+                background: likedByUser ? "#653FFD" : "#ffffff",
+                color: likedByUser ? "#ffffff" : "#653FFD",
+                borderColor: "#653FFD",
+              }}
+              onClick={likePost}
+            >
+              <ThumbUp />
+            </Button>
+            &nbsp;
+            <Button 
             style={{
-              height: "4rem",
-              background: likedByUser ? "#653FFD" : "#ffffff",
-              color: likedByUser ? "#ffffff" : "#653FFD",
-              borderColor: "#653FFD",
-            }}
-            onClick={likePost}
-          >
-            <ThumbUp />
-          </Button>
-        </div>
-        <p
-          style={{
-            textAlign: "right",
-          }}
-        >
-          <b> Likes: {likesCount} </b>
-        </p>
-        <br></br>
-        <Button
-          onClick={changeModalVisibility}
-        >
-          View Likes
-        </Button>
+                height: "4rem",
+                background: "#653FFD",
+                color: "#ffffff",
+                borderColor: "#653FFD",
+              }}
+            onClick={changeModalVisibility}
+            >Likes: {likesCount}</Button>
+          </div>
+        </CardBody>
 
         <UncontrolledCollapse toggler={HashtagTogglerId}>
           <div style={{ maxHeight: "25rem", marginBottom: "2rem" }}>
