@@ -73,7 +73,6 @@ class SingleClub(APIView):
             user = User.objects.get(pk=kwargs['user_id'])
 
             if user:
-                club.remove_user_from_club(user)
                 if action == 'accept':
                     club.add_member(user) 
                     return self.update(request, club)

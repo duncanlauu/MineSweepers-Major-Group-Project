@@ -13,7 +13,9 @@ class ClubModelTestCase(TestCase):
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/other_clubs.json',
-        'app/tests/fixtures/other_books.json'
+        'app/tests/fixtures/other_books.json',
+        'app/tests/fixtures/default_chat.json',
+        'app/tests/fixtures/default_message.json'
     ]
 
     def setUp(self):
@@ -78,40 +80,43 @@ class ClubModelTestCase(TestCase):
         self.club.public = False
         self.assertFalse(self.club.public)
         self.club.switch_public()
-        self.assertTrue(self.club.public)
+        self.assertTrue(self.club.public)    
 
-    ################ ––––– Methods –––––
-
-    ##### ––––– Members –––––
-    
-
-    def test_add_member_from_applicants(self): ## add chat test
+    def test_add_member_from_applicants(self): 
         self.assertEqual(self.club.members.count(), 1)
         self.assertEqual(self.club.applicants.count(), 1)
+        self.assertFalse(self.club in self.applicant.clubs.all())
+        self.assertFalse(self.applicant in self.club.club_chat.participants.all())
         self.club.add_member(self.applicant)
         self.assertEqual(self.club.members.count(), 2)
         self.assertEqual(self.club.applicants.count(), 0)
+        self.assertTrue(self.club in self.applicant.clubs.all())
+        self.assertTrue(self.applicant in self.club.club_chat.participants.all())
 
-    def test_add_member_from_admins(self): ## add chat test
+    def test_add_member_from_admins(self): 
         self.assertEqual(self.club.members.count(), 1)
         self.assertEqual(self.club.admins.count(), 1)
+        self.assertTrue(self.club in self.admin.clubs.all())
+        self.assertTrue(self.admin in self.club.club_chat.participants.all())
         self.club.add_member(self.admin)
         self.assertEqual(self.club.members.count(), 2)
         self.assertEqual(self.club.admins.count(), 0)
+        self.assertTrue(self.club in self.admin.clubs.all())
+        self.assertTrue(self.admin in self.club.club_chat.participants.all())
         
-    def test_remove_member(self): ## add chat test
+    def test_remove_member(self):
         self.assertEqual(self.club.members.count(), 1)
+        self.assertTrue(self.club in self.member.clubs.all())
+        self.assertTrue(self.member in self.club.club_chat.participants.all())
         self.club.remove_member(self.member)
         self.assertEqual(self.club.members.count(), 0)
-
+        self.assertFalse(self.club in self.member.clubs.all())
+        self.assertFalse(self.member in self.club.club_chat.participants.all())
 
     def test_member_count(self):
         self.assertEqual(self.club.member_count(), self.club.members.count())
         self.club.add_member(self.new_user)
         self.assertEqual(self.club.member_count(), self.club.members.count())
-
-
-     ##### ––––– Admins –––––
 
     def test_promote(self):
         self.assertEqual(self.club.admins.count(), 1)
@@ -132,8 +137,6 @@ class ClubModelTestCase(TestCase):
         self.club.add_member(self.new_user)
         self.club.promote(self.new_user)
         self.assertEqual(self.club.admin_count(), self.club.admins.count())
-
-     ##### ––––– Applicants –––––
 
     def test_add_applicant(self):
         self.assertEqual(self.club.applicants.count(), 1)
@@ -157,21 +160,27 @@ class ClubModelTestCase(TestCase):
         self.club.add_member(self.new_user)
         self.assertEqual(self.club.total_people_count(), self.club.members.count() + self.club.admins.count() + 1)
 
-     ##### ––––– Banned users –––––
-
     def test_add_banned_user_from_members(self): 
         self.assertEqual(self.club.banned_users.count(), 1)
         self.assertEqual(self.club.members.count(),1)
+        self.assertTrue(self.club in self.member.clubs.all())
+        self.assertTrue(self.member in self.club.club_chat.participants.all())
         self.club.add_banned_user(self.member)
         self.assertEqual(self.club.banned_users.count(), 2)
         self.assertEqual(self.club.members.count(), 0)
+        self.assertFalse(self.club in self.member.clubs.all())
+        self.assertFalse(self.member in self.club.club_chat.participants.all())
 
-    def test_add_banned_user_from_members(self): 
+    def test_add_banned_user_from_admins(self): 
         self.assertEqual(self.club.banned_users.count(), 1)
         self.assertEqual(self.club.admins.count(),1)
+        self.assertTrue(self.club in self.admin.clubs.all())
+        self.assertTrue(self.admin in self.club.club_chat.participants.all())
         self.club.add_banned_user(self.admin)
         self.assertEqual(self.club.banned_users.count(), 2)
         self.assertEqual(self.club.admins.count(), 0) 
+        self.assertFalse(self.club in self.admin.clubs.all())
+        self.assertFalse(self.admin in self.club.club_chat.participants.all())
 
     def test_remove_banned_user(self):
         self.assertEqual(self.club.banned_users.count(),1)
@@ -183,29 +192,29 @@ class ClubModelTestCase(TestCase):
         self.club.add_banned_user(self.new_user)
         self.assertEqual(self.club.banned_user_count(), self.club.banned_users.count())
 
-    
-
-    ##### ––––– Miscellaneous –––––
-
     def test_leave_club_with_member(self):
         self.assertEqual(self.club.members.count(), 1)
+        self.assertTrue(self.club in self.member.clubs.all())
+        self.assertTrue(self.member in self.club.club_chat.participants.all())
         self.club.leave_club(self.member)
         self.assertEqual(self.club.members.count(), 0)
-        
+        self.assertFalse(self.club in self.member.clubs.all())
+        self.assertFalse(self.member in self.club.club_chat.participants.all())     
 
     def test_leave_club_with_admin(self):
         self.assertEqual(self.club.admins.count(), 1)
+        self.assertTrue(self.club in self.admin.clubs.all())
+        self.assertTrue(self.admin in self.club.club_chat.participants.all())
         self.club.leave_club(self.admin)
         self.assertEqual(self.club.admins.count(), 0)
+        self.assertFalse(self.club in self.admin.clubs.all())
+        self.assertFalse(self.admin in self.club.club_chat.participants.all())
 
     def test_transfer_ownership(self):
         self.assertEqual(self.club.owner, self.owner)
         self.club.transfer_ownership(self.admin)
         self.assertEqual(self.club.owner, self.admin)
         self.assertTrue(self.owner in self.club.admins.all())
-        
-     ##### ––––– Book –––––
-
 
     def test_add_book(self):
         self.assertEqual(self.club.books.count(), 1)
