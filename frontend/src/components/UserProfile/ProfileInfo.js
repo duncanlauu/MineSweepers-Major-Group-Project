@@ -26,8 +26,6 @@ export default function ProfileInfo(props) {
         // edge case when user clicks on oneself.
         if (props.otherUserID === retrievedCurrentUser.id) {
           navigate("/user_profile");
-          // setCurrentUser(retrievedCurrentUser)
-          // setIsLoggedInUser(true)
         } else {
           getCurrentUser(props.otherUserID);
           setIsLoggedInUser(false);

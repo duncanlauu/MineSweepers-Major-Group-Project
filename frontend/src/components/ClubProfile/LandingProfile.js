@@ -13,6 +13,7 @@ const LandingProfile = (props) => {
   const [club, setClub] = useState(null);
   const [readingHistory, setReadingHistory] = useState([]);
   const [ownerDetails, setOwnerDetails] = useState(null);
+  const user_id = props.user_id;
 
   const memberStatus = props.memberStatus;
 
@@ -82,7 +83,7 @@ const LandingProfile = (props) => {
   let buttonState =
     memberStatus === "notApplied" ? "Apply" : "Withdraw Application";
 
-  function applyToClub(id, user_id, e) {
+  function applyToClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/apply/${user_id}`, {})
       .then((res) => {
@@ -94,7 +95,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function withdrawApplication(id, user_id, e) {
+  function withdrawApplication(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/reject/${user_id}`, {})
       .then((res) => {
@@ -106,7 +107,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function leaveClub(id, user_id, e) {
+  function leaveClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/leave/${user_id}`, {})
       .then((res) => {

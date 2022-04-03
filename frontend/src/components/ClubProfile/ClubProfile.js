@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import {
   ProfileContainer,
   ProfileHeader,
@@ -14,13 +14,17 @@ const ClubProfile = () => {
   const [club, setClub] = useState(null);
 
   const [memberStatus, setMemberStatus] = useState("notApplied");
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
+        console.log(res);
         setClub(res.data.club);
+        console.log("Club Data: ", res.data.club);
+        console.log("Current user is: ", currentUser);
         const currentUserId = currentUser.id;
         if (res.data.club.members.includes(currentUserId)) {
           setMemberStatus("member");
@@ -59,6 +63,8 @@ const ClubProfile = () => {
                 <ClubProfileTabs
                   memberStatus={memberStatus}
                   setMemberStatus={setMemberStatus}
+                  club={club}
+                  user_id={currentUser.id}
                 />
               </ProfileHeader>
             </ProfileContainer>

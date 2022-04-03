@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BioText, ClubProfile, MemberListHeading, NameText, UsernameText } from "./ClubProfileElements";
+import {
+    BioText,
+    ClubProfile,
+    MemberListHeading,
+    NameText,
+    UsernameText,
+} from "./ClubProfileElements";
 import { Button, Col } from "reactstrap";
 import Gravatar from "react-gravatar";
 import { HeadingText } from "../Login/LoginElements";
@@ -18,8 +24,8 @@ const managementButtonStyle = {
     marginRight: "5px",
     alignItems: "center",
     justifyContent: "center",
-    display: "flex"
-}
+    display: "flex",
+};
 
 const buttonStyle = {
     backgroundColor: "#fff",
@@ -28,11 +34,11 @@ const buttonStyle = {
     fontWeight: "600",
     borderRadius: "100px",
     padding: "0px",
-    marginBottom: "5px"
-}
+    marginBottom: "5px",
+};
 
 function ClubApplicants(props) {
-    const [club, setClub] = useState(null);
+    const [club, setClub] = useState(props.club);
     const [owner, setOwner] = useState([]);
     const [admins, setAdmins] = useState([]);
     const [members, setMembers] = useState([]);
@@ -47,8 +53,6 @@ function ClubApplicants(props) {
         axiosInstance
             .get(`singleclub/${club_id}`)
             .then((res) => {
-                setClub(res.data.club);
-
                 setOwner(res.data.owner);
 
                 setAdmins(res.data.admins);
@@ -58,13 +62,11 @@ function ClubApplicants(props) {
                 setApplicants(res.data.applicants);
 
                 setBannedUsers(res.data.banned_users);
-
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
-
+    }, [club]);
 
     function IndividualMemberCard(props) {
         const isApplicant = props.isApplicant;
@@ -73,32 +75,46 @@ function ClubApplicants(props) {
         const isOwner = props.isOwner;
         const isBanned = props.isBanned;
         const user_id = props.userId;
-        const memberStatus = props.memberStatus
+        const memberStatus = props.memberStatus;
 
         return (
             <ClubProfile data-testId="individualMemberCard">
                 <Col xs={3}>
-                    <Gravatar email={props.email} size={70} style={{ borderRadius: "100%" }} />
+                    <Gravatar
+                        email={props.email}
+                        size={70}
+                        style={{ borderRadius: "100%" }}
+                    />
                 </Col>
                 <Col xs={6}>
                     <a href={`/user_profile/${props.userId}`}>
                         <UsernameText>{props.username}</UsernameText>
-                    </a><br />
+                    </a>
+                    <br />
                     <NameText>{props.email}</NameText><br />
                     <BioText>{props.bio === undefined ? props.bio : (props.bio.substring(0, 45) + (props.bio.length > 45 ? '...' : ""))}</BioText>
                 </Col>
-                <Col xs={3} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignContent: "center",
-                    justifyContent: "space-between"
-                }}>
+                <Col
+                    xs={3}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignContent: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
                     {isApplicant && memberStatus !== "member" ? (
                         <>
-                            <Button style={buttonStyle} onClick={(e) => acceptClubApplicant(club_id, user_id)}>
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => acceptClubApplicant(club_id, user_id)}
+                            >
                                 Accept
                             </Button>
-                            <Button style={buttonStyle} onClick={(e) => rejectClubApplicant(club_id, user_id)}>
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => rejectClubApplicant(club_id, user_id)}
+                            >
                                 Reject
                             </Button>
                         </>
@@ -107,33 +123,54 @@ function ClubApplicants(props) {
                     )}
                     {isMember && memberStatus !== "member" ? (
                         <>
-                            <Button style={buttonStyle} onClick={(e) => removeClubMember(club_id, user_id)}>
-                                Remove
+                            {memberStatus === "owner" && (
+                                <Button
+                                    style={buttonStyle}
+                                    onClick={(e) => promoteMember(club_id, user_id)}
+                                >
+                                    Promote
+                                </Button>
+                            )}
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => banUser(club_id, user_id)}
+                            >
+                                Ban
                             </Button>
-                            {memberStatus === "owner" && <Button style={buttonStyle}
-                                onClick={(e) => promoteMember(club_id, user_id)}>Promote</Button>}
-                            <Button style={buttonStyle} onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
-
                         </>
                     ) : (
                         <></>
                     )}
                     {isAdmin && memberStatus === "owner" ? (
                         <>
-                            <Button style={buttonStyle}
+                            <Button
+                                style={buttonStyle}
                                 onClick={(e) => transferOwnershipToAdmin(club_id, user_id)}
                             >
                                 Make Owner
                             </Button>
-                            <Button style={buttonStyle} onClick={(e) => demoteAdmin(club_id, user_id)}>Demote</Button>
-                            <Button style={buttonStyle} onClick={(e) => banUser(club_id, user_id)}>Ban</Button>
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => demoteAdmin(club_id, user_id)}
+                            >
+                                Demote
+                            </Button>
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => banUser(club_id, user_id)}
+                            >
+                                Ban
+                            </Button>
                         </>
                     ) : (
                         <></>
                     )}
                     {isBanned && memberStatus !== "member" ? (
                         <>
-                            <Button style={buttonStyle} onClick={(e) => unbanUser(club_id, user_id)}>
+                            <Button
+                                style={buttonStyle}
+                                onClick={(e) => unbanUser(club_id, user_id)}
+                            >
                                 Unban
                             </Button>
                         </>
@@ -159,8 +196,7 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setApplicants(applicants.filter((applicant) => applicant !== user_id))
-                // setMembers(members.concat(user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -173,20 +209,7 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                //setApplicants(applicants.filter((applicant) => applicant !== user_id))
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
-    function removeClubMember(id, user_id, e) {
-        const action = "remove";
-        axiosInstance
-            .put(`singleclub/${id}/${action}/${user_id}`, {})
-            .then((res) => {
-                console.log(res);
-                //setMembers(members.filter((member) => member !== user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -199,8 +222,7 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setBannedUsers(bannedUsers.concat(user_id))
-                // setMembers(members.filter((member) => member !== user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -213,12 +235,13 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setAdmins(admins.concat(owner))
-                // setOwner(user_id)
+                setClub(res.data);
+                window.location.reload();
             })
             .catch((err) => {
                 console.log(err);
             });
+
     }
 
     function unbanUser(id, user_id, e) {
@@ -227,21 +250,19 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setBannedUsers(bannedUsers.filter((bannedUser) => bannedUser !== user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
     }
 
-
     function promoteMember(id, user_id, e) {
         axiosInstance
             .put(`singleclub/${id}/promote/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setMembers(members.filter((member) => member !== user_id))
-                // setAdmins(admins.concat(user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -253,17 +274,14 @@ function ClubApplicants(props) {
             .put(`singleclub/${id}/demote/${user_id}`, {})
             .then((res) => {
                 console.log(res);
-                // setAdmins(admins.filter((admin) => admin !== user_id))
-                // setMembers(members.concat(user_id))
+                setClub(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
     }
 
-
     return (
-
         <>
             <MemberListHeading>Owner</MemberListHeading>
             <IndividualMemberCard
@@ -271,8 +289,13 @@ function ClubApplicants(props) {
                 email={owner.email}
                 userId={owner.id}
                 bio={owner.bio}
-                isOwner={true} />
-            {admins.length > 0 ? <MemberListHeading>Admins</MemberListHeading> : <></>}
+                isOwner={true}
+            />
+            {admins.length > 0 ? (
+                <MemberListHeading>Admins</MemberListHeading>
+            ) : (
+                <></>
+            )}
             <ul>
                 {admins.map((admin) => (
                     <li key={admin}>
@@ -282,11 +305,16 @@ function ClubApplicants(props) {
                             bio={admin.bio}
                             isAdmin={true}
                             userId={admin.id}
-                            memberStatus={memberStatus} />
+                            memberStatus={memberStatus}
+                        />
                     </li>
                 ))}
             </ul>
-            {members.length > 0 ? <MemberListHeading data-testId="membersTitle" >Members</MemberListHeading> : <></>}
+            {members.length > 0 ? (
+                <MemberListHeading>Members</MemberListHeading>
+            ) : (
+                <></>
+            )}
             <ul>
                 {members.map((member) => (
                     <li key={member}>
@@ -301,7 +329,11 @@ function ClubApplicants(props) {
                     </li>
                 ))}
             </ul>
-            {applicants.length > 0 ? <MemberListHeading>Applicants</MemberListHeading> : <></>}
+            {applicants.length > 0 ? (
+                <MemberListHeading>Applicants</MemberListHeading>
+            ) : (
+                <></>
+            )}
             <ul>
                 {applicants.map((applicant, index) => (
                     <li key={applicant}>
@@ -316,7 +348,11 @@ function ClubApplicants(props) {
                     </li>
                 ))}
             </ul>
-            {bannedUsers.length > 0 ? <MemberListHeading>Banned Users</MemberListHeading> : <></>}
+            {bannedUsers.length > 0 ? (
+                <MemberListHeading>Banned Users</MemberListHeading>
+            ) : (
+                <></>
+            )}
             <ul>
                 {bannedUsers.map((bannedUser) => (
                     <li key={bannedUser}>
