@@ -1,59 +1,57 @@
-import React, {useState, useEffect} from "react"
-import axiosInstance from '../../axios'
-import {Row, Col, Button, Input} from "reactstrap"
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../axios";
+import { Row, Col, Button, Input } from "reactstrap";
 import SingleCommentReply from "./SingleCommentReply";
-import {ReplyLine} from "../UserProfile/UserProfileElements";
+import { ReplyLine } from "../UserProfile/UserProfileElements";
 
 export default function CommentReplyList(props) {
+  const [currentComment, setCurrentComment] = useState([]);
+  const [repliesUnderComment, setRepliesUnderComment] = useState([]);
+  const [writtenReply, updateWrittenReply] = useState("");
 
-    const [currentPost, setCurrentPost] = useState([]);
-    const [currentComment, setCurrentComment] = useState([]);
-    const [repliesUnderComment, setRepliesUnderComment] = useState([]);
-    const [writtenReply, updateWrittenReply] = useState("dummy")
+  useEffect(() => {
+    setCurrentComment(props.currentComment);
+    getRepliesUnderComments();
+  }, []);
 
-    useEffect(() => {
-        setCurrentPost(props.currentPost)
-        setCurrentComment(props.currentComment)
-        getRepliesUnderComments()
-    }, []);
+  const getRepliesUnderComments = () => {
+    axiosInstance
+      .get(
+        `posts/${props.post.id}/comments/${props.currentComment.id}/replies/`
+      )
+      .then((res) => {
+        const allRepliesUnderComment = res.data.replies;
+        setRepliesUnderComment(allRepliesUnderComment);
+      });
+  };
 
-    const getRepliesUnderComments = () => {
-        axiosInstance
-            .get(`posts/${props.currentPost.id}/comments/${props.currentComment.id}/replies/`)
-            .then((res) => {
-                const allRepliesUnderComment = res.data.replies;
-                setRepliesUnderComment(allRepliesUnderComment);
-            })
-    }
+  const handleReplyChange = (e) => {
+    updateWrittenReply({
+      writtenReply,
+      [e.target.name]: e.target.value,
+    });
+    console.log(writtenReply);
+  };
 
-    const handleReplyChange = (e) => {
-        updateWrittenReply({
-            writtenReply,
-            [e.target.name]: e.target.value,
-        })
-        console.log(writtenReply)
-    }
+  const uploadReply = () => {
+    axiosInstance
+      .post(`posts/${props.post.id}/comments/${currentComment.id}/replies/`, {
+        content: writtenReply.myReply,
+      })
+      .then((res) => {
+        getRepliesUnderComments();
+      });
+  };
 
-    const uploadReply = (e, index) => {
-        axiosInstance
-            .post(`posts/${currentPost.id}/comments/${currentComment.id}/replies/`, {
-                content: writtenReply.myReply,
-            })
-            .then((res) => {
-                getRepliesUnderComments()
-            })
-    }
+  const updatePageAfterReplyDeletion = () => {
+    getRepliesUnderComments();
+  };
 
-    const updatePageAfterReplyDeletion = (e) => {
-        getRepliesUnderComments()
-    }
+  const inputAreaID = "myReply" + currentComment.id;
 
-
-    const inputAreaID = "myReply" + currentComment.id
-
-    const clearInputField = () => {
-        document.getElementById(inputAreaID).value = ''
-    }
+  const clearInputField = () => {
+    document.getElementById(inputAreaID).value = "";
+  };
 
     const displayCommentsUnderPost = (e) => {
         return (

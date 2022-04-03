@@ -9,7 +9,6 @@ import {
   Col,
   Button,
 } from "reactstrap";
-import useGetUser from "../../helpers";
 import axiosInstance from "../../axios";
 
 import { useNavigate } from "react-router";
