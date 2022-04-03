@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import axiosInstance from "../../axios";
 import {Container, Col, Row} from "reactstrap";
 import {
@@ -7,7 +7,9 @@ import {
     Heading2Text,
     HeadingText,
     RecommendationContainer,
-    RecommendationInfo
+    RecommendationInfo,
+    RecommendedClubMembersText,
+    RecommendedClubsText
 } from "./HomePageElements";
 import Gravatar from "react-gravatar";
 import MainNav from "../Nav/MainNav";
@@ -16,9 +18,41 @@ import {ParaText} from "./HomePageElements";
 import {IoIosArrowForward} from "react-icons/io";
 
 import FeedPostList from "../Feed/FeedPostList";
+import IndividualBookCard from "../RecommenderPage/IndividualBookCard"
+
+function IndividualClubCard(props) {
+    return(
+        <a href={`/club_profile/${props.id}`}>
+            <ClubListItem>
+                <Gravatar email={props.email}/>
+                <RecommendedClubsText>{props.name}</RecommendedClubsText>
+                <RecommendedClubMembersText>{props.size} Members</RecommendedClubMembersText>
+            </ClubListItem>
+        </a>
+    );
+}
+
+function SelectRandomClubs(arr) {
+    const displayClubs = arr.sort(() => 0.5 - Math.random()).slice(0,3);
+    return displayClubs;
+}
+
+function SelectRandomBooks(arr) {
+    const displayBooks = arr.sort(() => 0.5 - Math.random()).slice(0,2)
+    return displayBooks;
+}
+
+async function getOwnerEmail(id) {
+    const clubOwner = await axiosInstance
+        .get(`user/get_update/${id}`)
+    return clubOwner.data.email;
+}
 
 const HomePage = () => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
+
+    const [recommendedBooks, setRecommendedBooks] = useState([]);
+    const [recommendedClubs, setRecommendedClubs] = useState([]);
 
     let calculatedRecommendations = false;
     useEffect(() => {
@@ -32,6 +66,7 @@ const HomePage = () => {
                         console.log("Calculated all recommendations");
                         precomputeRecommenderResults();
                     }
+                    setRecommendedClubs(SelectRandomClubs(res.data));
                 })
                 .catch((error) => {
                     console.log(error);
@@ -43,6 +78,8 @@ const HomePage = () => {
                         console.log("Calculated global recommendations");
                         precomputeGlobalTop();
                     }
+                    console.log(SelectRandomBooks(res.data));
+                    setRecommendedBooks(SelectRandomBooks(res.data));
                 })
                 .catch((error) => {
                     console.log(error);
@@ -102,30 +139,38 @@ const HomePage = () => {
                             See all recommendations
                         </ParaText>
                     </Link>
-                    <RecommendationContainer>
-                        <Gravatar email="blah@blah.com" size={65}/>
-                        <RecommendationInfo/>
-                    </RecommendationContainer>
-                    <RecommendationContainer>
-                        <Gravatar email="blah@blah.com" size={65}/>
-                        <RecommendationInfo/>
-                    </RecommendationContainer>
+                    <ul style={{display: "flex", flexDirection: "column"}}>
+                        {
+                            recommendedBooks.map(book =>
+                                <li>
+                                    <IndividualBookCard
+                                        imageURL={book.book.image_links_small}
+                                        isbn={book.book.ISBN}
+                                        title={book.book.title}
+                                        author={book.book.author}
+                                        rating={book.weighted_rating}
+                                        numberOfRatings={book.number_of_ratings}
+                                        year={book.book.publication_date}
+                                    />
+                                </li>
+                            )
+                        }
+                    </ul>
                     <br/>
                     <Heading2Text>Clubs</Heading2Text>
                     <br/>
                     <ul style={{display: "flex", flexDirection: "row"}}>
-                        <ClubListItem>
-                            <Gravatar email="blah@blah.com"/>
-                            <span>Club 1</span>
-                        </ClubListItem>
-                        <ClubListItem>
-                            <Gravatar email="blah@blah.com"/>
-                            <span>Club 2</span>
-                        </ClubListItem>
-                        <ClubListItem>
-                            <Gravatar email="blah@blah.com"/>
-                            <span>Club 3</span>
-                        </ClubListItem>
+                        {
+                            recommendedClubs.map(club =>
+                                <li>
+                                    <IndividualClubCard 
+                                        id={club.id}
+                                        email={getOwnerEmail(club.club.owner)}
+                                        name={club.club.name} 
+                                        size={club.club.admins.length + club.club.members.length + 1} />
+                                </li>
+                            )
+                        }
                     </ul>
                 </Col>
                 <Col/>

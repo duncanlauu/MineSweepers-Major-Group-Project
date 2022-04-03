@@ -3,9 +3,10 @@ import { Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
 import { HeadingText } from '../Login/LoginElements'
 import MainNav from '../Nav/MainNav'
-import { BookProfile, FilterButton } from './RecommenderPageElements'
+import { FilterButton } from './RecommenderPageElements'
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import { Oval } from 'react-loader-spinner';
+import IndividualBookCard from './IndividualBookCard'
 
 
 const RecommenderPage = () => {
@@ -18,6 +19,16 @@ const RecommenderPage = () => {
 
     const [bookRecommendations, setBookRecommendations] = useState([]);
     const [genres, setGenres] = useState([]);
+
+    const selectStyle = {
+        backgroundColor: "#fff",
+        fontFamily: "Source Sans Pro",
+        height: "3rem",
+        width: "fit-content",
+        borderRadius: "100px",
+        border: "3px solid #653ffd",
+        paddingLeft: "1rem"
+    }
 
     function getGenres() {
         axiosInstance
@@ -145,9 +156,10 @@ const RecommenderPage = () => {
                 <Col xs={6}>
                     <HeadingText>Books For You</HeadingText><br />
                     <select
+                        style={selectStyle}
                         value={value}
                         onChange={(e) => setValue(e.target.value)}>
-                        <option />
+                        <option>Select genre</option>
                         {genres.map(genre =>
                             <option data-testId="genre-selection" key={genre} value={genre}>{genre}</option>
                         )}
@@ -161,19 +173,17 @@ const RecommenderPage = () => {
                         {bookRecommendations.map(
                             (bookRecommendation, index) =>
                                 <li data-testId="book-recommendation" key={index}>
-                                    <BookProfile>
-                                        <Col xs={3}>
-                                            <img src={bookRecommendation['book']['image_links_small']}
-                                                alt={"The book's cover"} />
-                                        </Col>
-                                        <Col xs={9}>
-                                            <a href={`/book_profile/${bookRecommendation['book']['ISBN']}`}>
-                                                {bookRecommendation['book']['title']}
-                                            </a>
-                                        </Col>
-                                    </BookProfile>
+                                    <IndividualBookCard
+                                        imageURL={bookRecommendation['book']['image_links_small']}
+                                        isbn={bookRecommendation['book']['ISBN']}
+                                        title={bookRecommendation['book']['title']}
+                                        author={bookRecommendation['book']['author']}
+                                        rating={bookRecommendation['weighted_rating']}
+                                        numberOfRatings={bookRecommendation['number_of_ratings']}
+                                        year={bookRecommendation['book']['publication_date']} />
                                 </li>
-                        )}
+                        )
+                        }
                     </ul>
                 </Col>
                 <Col />

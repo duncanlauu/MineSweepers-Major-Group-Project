@@ -4,7 +4,7 @@ from app.models import Club, User
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-from app.serializers import ClubSerializer
+from app.serializers import ClubSerializer, BookSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
 
@@ -30,6 +30,7 @@ class Clubs(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserClubView(APIView):
     """API view of all clubs a user is in"""
     permission_classes = [IsAuthenticated]
@@ -37,10 +38,12 @@ class UserClubView(APIView):
     def get(self, request, user_id):
         try:
             user = User.objects.get(pk=user_id)
-            clubs = Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).distinct().values()
-            return Response({'clubs': clubs}, status=status.HTTP_200_OK)
+            clubs = Club.objects.filter(Q(owner=user) | Q(admins=user) | Q(members=user)).distinct()
+            serializer = ClubSerializer(clubs, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(data='User is invalid', status=status.HTTP_400_BAD_REQUEST)
+
 
 class SingleClub(APIView):
     permission_classes = [AllowAny]
@@ -49,7 +52,16 @@ class SingleClub(APIView):
         try:
             club = Club.objects.get(pk=kwargs['id'])
             serializer = ClubSerializer(club)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            books = BookSerializer(club.books.all(), many=True)
+            members = UserSerializer(club.members.all(), many=True)
+            admins = UserSerializer(club.admins.all(), many=True)
+            applicants = UserSerializer(club.applicants.all(), many=True)
+            banned_users = UserSerializer(club.banned_users.all(), many=True)
+            owner = UserSerializer(club.owner)
+            return Response(
+                {'club': serializer.data, 'books': books.data, 'members': members.data, 'admins': admins.data,
+                 'owner': owner.data, 'applicants': applicants.data, 'banned_users': banned_users.data},
+                status=status.HTTP_200_OK)
         except Club.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -100,7 +112,7 @@ class SingleClub(APIView):
                 elif action == 'promote':
                     club.promote(user)
                     return self.update(request, club)
-                
+
                 elif action == 'demote':
                     club.demote(user)
                     return self.update(request, club)

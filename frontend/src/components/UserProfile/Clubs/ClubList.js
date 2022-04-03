@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../axios";
-import SingleClub from "./SingleClub";
+
+import SingleClubRecommendation from "../../ClubRecommendations/SingleClubRecommendation";
 
 export default function ClubList(props) {
   const [clubs, setClubs] = useState([]);
@@ -13,8 +14,7 @@ export default function ClubList(props) {
     axiosInstance
       .get(`clubs/user/${props.requestedUser_id}`)
       .then((res) => {
-        console.log("Club data:", res);
-        const allClubs = res.data.clubs;
+        const allClubs = res.data;
         setClubs(allClubs);
       })
       .catch((error) => console.error(error));
@@ -23,7 +23,7 @@ export default function ClubList(props) {
   const displayRatings = (e) => {
     if (clubs) {
       return clubs.map((club) => {
-        return <SingleClub club={club} />;
+        return <SingleClubRecommendation club={club} />;
       });
     } else {
       if (props.requestedUser_id == undefined) {

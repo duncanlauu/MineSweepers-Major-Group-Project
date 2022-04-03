@@ -60,7 +60,7 @@ class SingleClubAPITestCase(TestCase):
             reverse('app:retrieve_single_club', kwargs={'id': 1}))
         club = Club.objects.get(pk=1)
         serializer = ClubSerializer(club)
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['club'], serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_invalid_single_club(self):
