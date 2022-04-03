@@ -339,7 +339,6 @@ class Club(models.Model):
         self.owner = user
 
 
-# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
     content = models.CharField(max_length=1000)
