@@ -58,7 +58,7 @@ def recommender_system_tests():
     # If you've trained the model, keep the lines below commented out
     # You can load instead of rerunning the training.
     # If not, you need to uncomment the following 3 lines and the line calling dump_trained_model
-    algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+    algo = SVD()
     train_model(algo, trainset)
     predictions = test_model(algo, trainset)
 
