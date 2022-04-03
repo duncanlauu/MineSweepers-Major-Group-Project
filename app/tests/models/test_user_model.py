@@ -2,7 +2,7 @@
 import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from app.models import User, Book, FriendRequest
+from app.models import User, Book, FriendRequest, Club
 
 
 class UserModelTest(TestCase):
@@ -10,8 +10,11 @@ class UserModelTest(TestCase):
 
     fixtures = [
         'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/default_club.json',
         'app/tests/fixtures/other_users.json',
-        'app/tests/fixtures/default_book.json'
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/other_books.json'
     ]
 
     def setUp(self):
@@ -187,6 +190,19 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
         self.user.add_read_book(self.book)
         self.assertEqual(self.user.read_books_count(), self.user.read_books.count())
+
+    def test_add_club(self):
+        club = Club.objects.get(name="Jake's Club")
+        self.assertEqual(self.user.clubs.count(), 2)
+        self.user.add_club(club)
+        self.assertEqual(self.user.clubs.count(), 3)
+
+    def test_remove_club(self):
+        club = Club.objects.get(name="Joe's Club")
+        self.assertEqual(self.user.clubs.count(), 2)
+        self.user.remove_club(club)
+        self.assertEqual(self.user.clubs.count(), 1)
+
 
     def test_valid_add_friend(self):
         self.assertFalse(self.user.friends.filter(username=self.friend.username).exists())
