@@ -51,5 +51,15 @@ $ python3 manage.py test
 command. The real number of tests is higher, as described above (about 500).
 
 ### Frontend
-Frontend testing proved challenging for us. We utilise jest and react testing framework, but we struggle to mock
-our API calls to test whether they display the correct data in the frontend.
+Frontend testing proved challenging for us. We utilise jest and react testing framework for unit testing of the react
+components and selenium for integration testing.
+
+#### Jest and react-testing-library
+We used react-testing-library in conjunction with jest to test the components of the frontend. 
+At the time of writing we have 46 test suites with 284 tests (all passing).
+
+You can run the tests by running the following commands:
+```
+$ cd frontend
+$ npm run test
+```
