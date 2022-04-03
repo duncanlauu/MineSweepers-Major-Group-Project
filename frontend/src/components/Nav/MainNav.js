@@ -1,16 +1,16 @@
 import React from 'react'
-import {Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input} from 'reactstrap'
-import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
+import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input } from 'reactstrap'
+import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import Box from '@mui/material/Box';
-import {IconButton} from '@mui/material';
+import { IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from './NavElements';
-import {Link} from 'react-router-dom'
+import { NavMenu, SearchBarHeading, SearchContainer, SearchText } from './NavElements';
+import { Link } from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
 import axiosInstance from '../../axios';
-import {usePromiseTracker} from "react-promise-tracker";
-import {trackPromise} from 'react-promise-tracker';
-import {Oval} from 'react-loader-spinner';
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import { Oval } from 'react-loader-spinner';
 import SearchBookCard from "./SearchBookCard";
 import SearchUserCard from "./SearchUserCard";
 import SearchClubCard from "./SearchClubCard";
@@ -64,7 +64,7 @@ class MainNav extends React.Component {
         trackPromise(
             axiosInstance
                 .get(`search/`, {
-                    params: {search_query: this.state.search}
+                    params: { search_query: this.state.search }
 
                 })
                 .then((res) => {
@@ -89,13 +89,13 @@ class MainNav extends React.Component {
                     justifyContent: "space-between"
                 }}>
                     {this.isAuthenticated
-                        ? <Link to="/home/" style={{color: "#000"}}>
+                        ? <Link to="/home/" style={{ color: "#000" }}>
                             <NavbarBrand
-                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                                style={{ fontFamily: "Source Sans Pro", fontWeight: "600" }}>bookgle</NavbarBrand>
                         </Link>
-                        : <Link to="/" style={{color: "#000"}}>
+                        : <Link to="/" style={{ color: "#000" }}>
                             <NavbarBrand
-                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                                style={{ fontFamily: "Source Sans Pro", fontWeight: "600" }}>bookgle</NavbarBrand>
                         </Link>
                     }
                     {this.isAuthenticated ?
@@ -123,23 +123,23 @@ class MainNav extends React.Component {
                                         ? <SearchText> </SearchText>
                                         : <SearchText>{this.state.search}</SearchText>}
                                     <IconButton type='submit'>
-                                        <BiSearch/>
+                                        <BiSearch />
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <div onClick={this.changeModalVisibility} style={{cursor: 'pointer'}}>
-                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button'/>
+                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
                                 </div>
-                                <Link to="/create_club/" style={{color: "#000"}}>
-                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button'/>
+                                <Link to="/create_club/" style={{ color: "#000" }}>
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
                                 </Link>
-                                <Link to="/chat2/" style={{color: "#000"}}>
+                                <Link to="/chat/" style={{ color: "#000" }}>
                                     <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
-                                         style={{marginLeft: "1rem"}}/>
+                                        style={{ marginLeft: "1rem" }} />
                                 </Link>
-                                <Link to="/user_profile/" data-testid={"user-profile"} style={{color: "#000"}}>
-                                    <AccountCircleIcon fontSize='large'/>
+                                <Link to="/user_profile/" data-testid={"user-profile"} style={{ color: "#000" }}>
+                                    <AccountCircleIcon fontSize='large' />
                                 </Link>
                             </NavMenu>
                         </>
@@ -176,27 +176,27 @@ class MainNav extends React.Component {
                                 onChange={this.handleChange}
                                 value={this.state.search}
                             />
-                            <LoadingIndicator/>
+                            <LoadingIndicator />
                         </SearchContainer>
                     </ModalHeader>
-                    <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
+                    <ModalBody style={{ overflowY: "scroll", height: "30rem" }}>
                         {/* User Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
                                     <Link to={`/user_profile/${user.id}/`}>
-                                        <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
+                                        <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
                                     </Link>
                                 </li>
                             )}
                         </ul>
                         {/* Club Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
                         <ul>
@@ -204,14 +204,14 @@ class MainNav extends React.Component {
                                 <li key={index}>
                                     <Link to={`/club_profile/${club.id}/`} onClick={window.location.reload()}>
                                         <SearchClubCard name={club.name} ownerEmail={club.owner.email}
-                                                        description={club.description}/>
+                                            description={club.description} />
                                     </Link>
                                 </li>
                             )}
                         </ul>
                         {/* Book Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
                         <ul>
@@ -219,7 +219,7 @@ class MainNav extends React.Component {
                                 <li key={index}>
                                     <Link to={`/book_profile/${book.ISBN}`}>
                                         <SearchBookCard name={book.title} author={book.author}
-                                                        image={book.image_links_small}/>
+                                            image={book.image_links_small} />
                                     </Link>
                                 </li>
                             )}
@@ -237,8 +237,8 @@ class MainNav extends React.Component {
                     }}
                 >
 
-                    <ModalBody style={{overflowY: "scroll"}}>
-                        <PersonalPostForm/>
+                    <ModalBody style={{ overflowY: "scroll" }}>
+                        <PersonalPostForm />
                     </ModalBody>
                 </Modal>
             </div>
@@ -259,7 +259,7 @@ const SearchButtonStyle = {
 }
 
 const LoadingIndicator = (props) => {
-    const {promiseInProgress} = usePromiseTracker();
+    const { promiseInProgress } = usePromiseTracker();
 
     return (
         promiseInProgress &&
@@ -272,7 +272,7 @@ const LoadingIndicator = (props) => {
                 justifyContent: 'center',
                 zIndex: '10'
             }}>
-                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25"/>
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25" />
             </div>
         </Container>
     );

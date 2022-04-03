@@ -69,7 +69,7 @@ const UserProfile = () => {
                     borderRadius: "100px",
                   }}
                 >
-                  <NavItem style={{ width: "20%" }}>
+                  <NavItem style={{ width: "25%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "1",
@@ -84,7 +84,7 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "20%" }}>
+                  <NavItem style={{ width: "25%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "2",
@@ -99,7 +99,7 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "20%" }}>
+                  <NavItem style={{ width: "25%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "3",
@@ -114,7 +114,7 @@ const UserProfile = () => {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem style={{ width: "40%" }}>
+                  <NavItem style={{ width: "25%" }}>
                     <NavLink
                       className={classnames({
                         active: currentActiveTab === "4",
@@ -124,7 +124,7 @@ const UserProfile = () => {
                       }}
                     >
                       <div style={{ textAlign: "center" }}>
-                        <TabsText>Book ratings</TabsText>
+                        <TabsText>Ratings</TabsText>
                       </div>
                     </NavLink>
                   </NavItem>

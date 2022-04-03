@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Chat from './Chat';
 import Profile from './Profile';
@@ -12,14 +12,11 @@ export default function ChatWrapper() {
 
     return (
         <div id="frame">
-            <Sidepanel/>
+            <Sidepanel />
             <div className="content">
-                <Profile/>
-                <Chat chatID={params.chatID}/>
+                <Profile />
+                <Chat chatID={params.chatID} />
             </div>
         </div>
     );
-}
-
-{/* <Chat chatID={params.chatID} /> */
 }
