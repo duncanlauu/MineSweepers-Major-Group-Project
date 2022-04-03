@@ -5,6 +5,7 @@ import Gravatar from "react-gravatar"
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
 import { CommentLineBox } from "../UserProfile/UserProfileElements";
+import { CommentContainer, CommentContent } from "./FeedElements";
 
 export default function SinglePostComment(props) {
 
@@ -42,33 +43,56 @@ export default function SinglePostComment(props) {
     return(
         <div className="singleComment" key={singleComment.id}>
             <Row>
-                    <Col xs="2" style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "flex-start"}}>
+                <CommentContainer>
+                    {/* <Col xs="2" style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "flex-start"}}>
                         <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{ 
                                 borderRadius: "50px",
                                 marginTop: "0rem",
                                 marginBottom: "0rem"
                             }} 
                         />
-                    </Col>
-                    <Col xs="7" style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                        <CommentLineBox>
-                            <h6> {singleComment.content} </h6>
-                        </CommentLineBox>
+                    </Col> */}
+                    <Gravatar 
+                        email={posterEmail} 
+                        size={30} 
+                        onClick={navigateToProfile} 
+                        style={{ 
+                            borderRadius: "50px",
+                            marginLeft: "2rem",
+                            marginTop: "0rem",
+                            marginBottom: "0rem"}} />
+                    <Col xs="7" style={{ display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+                        <CommentContent>
+                            {singleComment.content}
+                        </CommentContent>
                     </Col>
                     <Col xs="3" style={{display: "flex", justifyContent: "flex-end"}}>
-                        {singleComment.author == currentUser.id  &&
-                            <Button color="danger" name={singleComment.id} onClick={(e) => deleteComment(singleComment.id, e)} 
-                                style={{height: "3rem", borderTopLeftRadius: "100px", borderBottomLeftRadius: "100px"}}
-                            >
-                                <p> x </p>
-                            </Button>
-                        }
-                        <Button id={togglerID} 
-                            style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
-                        >
-                            Reply
-                        </Button>
+                        <div style={{ display:"flex", flexDirection:"row", alignItems:"center" }}>
+                            {singleComment.author == currentUser.id  &&
+                                <img 
+                                    src="../../../static/images/DeleteChatIcon.svg" 
+                                    className={singleComment.id}
+                                    style={{
+                                        height: "1.85rem",
+                                        marginRight:"1rem",
+                                        cursor: "pointer",
+                                        filter: "invert(54%) sepia(45%) saturate(4028%) hue-rotate(328deg) brightness(76%) contrast(90%)"
+                                    }}
+                                    onClick={(e) => deleteComment(singleComment.id)}
+                                    alt="Delete" />
+                            }
+                            <img 
+                                src="../../../static/images/CommentsReplyIcon.svg" 
+                                alt="Reply"
+                                id={togglerID}
+                                style={{ 
+                                    height: "1.75rem",
+                                    cursor: "pointer",
+                                    alignSelf: "center"
+                                }} />
+                        </div>
                     </Col>
+                    </CommentContainer>
                 </Row>
                 <Row>
                     <UncontrolledCollapse toggler={HashtagTogglerId}>

@@ -66,7 +66,7 @@ export default function PostCommentList(props){
                             {commentsUnderPost.map((comment, index) => {
                                 // console.log(comment);
                                 return (
-                                    <div key={comment.id} style={{marginBottom: "1rem"}}>
+                                    <div key={comment.id} style={{marginBottom: "1rem", overflowX:"hidden"}}>
                                         <CommentLine>
                                             <SinglePostComment currentPost={currentPost} comment={comment} 
                                                 updatePageAfterCommentDeletion={updatePageAfterCommentDeletion}
@@ -78,23 +78,25 @@ export default function PostCommentList(props){
                         </CommentSectionContainer>
                     </div>
                 
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <Row style={{marginTop: "1rem"}}>
+                    <div>
+                        <Row style={{marginTop: "1rem", marginLeft:"4rem", display:"flex", alignSelf:"center", alignItems:"center", justifyContent:"center"}}>
                             <Col xs="9">
-                                <Input type="textarea" rows="1"
+                                <Input 
+                                    type="textarea" 
+                                    rows="1"
                                     id={inputAreaID}
                                     name="myComment"
                                     placeholder="Leave a comment here..."
                                     onChange={handleCommentChange}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
+                                    style={{ border: "0", backgroundColor: "#F2F2F2", fontFamily:"Source Sans Pro" }}
                                 />     
                             </Col>
-                            <Col xs="3">
-                                <Button onClick={(e) => { uploadComment(e, 0) ; clearInputField() }}
-                                    style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
-                                >
-                                    <p> Send </p>
-                                </Button> 
+                            <Col xs="3" style={{ padding:"0px" }}>
+                                <img
+                                    src="../../../static/images/SendMessageIcon.svg"
+                                    alt="Post Comment"
+                                    style={{ cursor:"pointer", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
+                                    onClick={(e) => { uploadComment(e, 0) ; clearInputField() }} />
                             </Col>
                         </Row>
                     </div>
@@ -103,27 +105,26 @@ export default function PostCommentList(props){
         } else {
             return (
                 <div>
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <Row style={{marginTop: "1rem"}}>
-                            <Col xs="9">
-                                <Input type="textarea" rows="1"
-                                    id="myComment"
-                                    name="myComment"
-                                    placeholder="Leave a comment here..."
-                                    onChange={handleCommentChange}
-                                    // value={""}
-                                    style={{ border: "0", backgroundColor: "#F3F3F3", borderBottomLeftRadius: "100px", borderTopLeftRadius: "100px", height: "3rem" }}
-                                />     
-                            </Col>
-                            <Col xs="3">
-                                <Button  onClick={(e) => uploadComment(e, 0)}
-                                    style={{borderBottomRightRadius: "100px", borderTopRightRadius: "100px", height: "3rem"}}    
-                                >
-                                    <p> Send </p>
-                                </Button> 
-                            </Col>
-                        </Row>
-                    </div>
+                    <Row style={{marginTop: "1rem", marginLeft:"4rem", display:"flex", alignSelf:"center", alignItems:"center", justifyContent:"center"}}>
+                        <Col xs="9">
+                            <Input 
+                                type="textarea" 
+                                rows="1"
+                                id={inputAreaID}
+                                name="myComment"
+                                placeholder="Leave a comment here..."
+                                onChange={handleCommentChange}
+                                style={{ border: "0", backgroundColor: "#F2F2F2", fontFamily:"Source Sans Pro" }}
+                            />     
+                        </Col>
+                        <Col xs="3" style={{ padding:"0px" }}>
+                            <img
+                                src="../../../static/images/SendMessageIcon.svg"
+                                alt="Post Comment"
+                                style={{ cursor:"pointer", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
+                                onClick={(e) => { uploadComment(e, 0) ; clearInputField() }} />
+                        </Col>
+                    </Row>
                 </div>
             )
         }

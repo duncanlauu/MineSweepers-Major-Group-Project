@@ -3,9 +3,9 @@ import axiosInstance from '../../axios'
 import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, UncontrolledCollapse} from "reactstrap"
 import PostCommentList from "./PostCommentList"
 import Gravatar from "react-gravatar"
-import { PostHeadingText } from "../UserProfile/UserProfileElements"
+import { ParaText, PostHeadingText } from "../UserProfile/UserProfileElements"
 import { useNavigate } from "react-router";
-import ThumbUp from '@mui/icons-material/ThumbUp';
+import { ClubPill, LikesText, PostText, ReactionContainer } from "./FeedElements"
 
 export default function SingleFeedPost(props) {
 
@@ -78,16 +78,17 @@ export default function SingleFeedPost(props) {
                             <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{
                                     borderRadius: "50px",
                                     marginTop: "0rem",
-                                    marginBottom: "0rem"
+                                    marginBottom: "0rem",
+                                    cursor: "pointer"
                                 }} 
                             />
                         </Col>
-                        <Col xs="4">
-                            <h5><b> @{posterName} </b></h5>
+                        <Col xs="4" style={{ paddingRight:"0px" }}>
+                            <h5 style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginTop:"0.65rem" }}>{posterName}</h5>
                         </Col>
-                        <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
+                        <Col xs="6" style={{display: "flex", justifyContent: "flex-end", padding:"0px"}}>
                             {feedPost.club != null &&
-                                <h5> <b> {feedPost.club__name} </b></h5>
+                                <ClubPill>{feedPost.club__name}</ClubPill>
                             }
                         </Col>
                     </Row>
@@ -105,28 +106,24 @@ export default function SingleFeedPost(props) {
 
 
                     <CardText>    
-                        <h5> {feedPost.content} </h5> 
+                        <PostText>{feedPost.content}</PostText>
                     </CardText>
                 </CardBody>
                 
                 <div>
-                    <Row>
-                        <Col/>
-                        <Col>
-                            <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
-                                view all comments
-                            </Button>
-                        </Col>
-                        <Col>
-                            <div style={{
-                                textAlign: "center"}
-                                }>
-                            <Button style={{ height: "4rem", background: "#653FFD", color:"#ffffff"}} onClick={likePost}>
-                                <ThumbUp/>
-                            </Button> &nbsp;&nbsp;
-                            <h5 style={{display : 'inline-block'}}><b> Likes: {likesCount} </b></h5> {/* need style */}
-                            </div>
-                        </Col>
+                    <Row style={{ display:"flex", float:"right", marginRight:"1rem", marginBottom:"0.5rem" }}>
+                        <ReactionContainer>
+                            <img 
+                                src="../../../static/images/CommentsIcon.svg" 
+                                style={{ height:"2rem", opacity:"60%", marginRight:"1rem", cursor:"pointer" }}
+                                id={togglerID} />
+                            <img 
+                                src="../../../static/images/UnlikedIcon.svg" 
+                                alt="Like Button" 
+                                style={{ height:"2rem", opacity:"60%", cursor:"pointer" }}
+                                onClick={likePost} />
+                            <LikesText>{likesCount}</LikesText>
+                        </ReactionContainer>
                     </Row>
                     <br></br>
                 </div>
