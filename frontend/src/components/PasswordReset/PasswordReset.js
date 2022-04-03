@@ -36,7 +36,7 @@ export default function SignIn() {
             })
             .then((response) => {
                 console.log(response)
-                navigate("/instructions_sent/") // should go to a webiste that says password reset email sent
+                navigate("instructions_sent")
             })
             .catch((e) => {
                 setEmailErr(e.response.data.email)
