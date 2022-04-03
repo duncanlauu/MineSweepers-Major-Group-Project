@@ -91,9 +91,8 @@ function ClubApplicants(props) {
                         <UsernameText>{props.username}</UsernameText>
                     </a>
                     <br/>
-                    <NameText>{props.email}</NameText>
-                    <br/>
-                    <BioText>{props.bio}</BioText>
+                    <NameText>{props.email}</NameText><br/>
+                    <BioText>{props.bio === undefined ? props.bio : (props.bio.substring(0, 45) + (props.bio.length > 45 ? '...' : ""))}</BioText>
                 </Col>
                 <Col
                     xs={3}
