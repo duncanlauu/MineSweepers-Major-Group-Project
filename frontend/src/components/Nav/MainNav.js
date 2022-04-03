@@ -162,13 +162,13 @@ class MainNav extends React.Component {
                                          style={{marginLeft: "1rem"}}/>
                                 </Link>
 
-                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility}>
-                                    <DropdownToggle caret style={{marginLeft:"2rem", borderRadius: "10px", backgroundColor: "#653FFD"}}>
+                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility} style={{marginLeft:"2rem"}}>
+                                    <DropdownToggle caret style={{borderRadius: "10px", backgroundColor: "#653FFD"}}>
                                         <Person fontSize='large'/>
                                     </DropdownToggle>
-                                    <DropdownMenu left>
+                                    <DropdownMenu right>
                                         <Link to="/user_profile/" data-testid={"user-profile"} style={{color: "#000"}}>
-                                            <DropdownItem> View Profile </DropdownItem>
+                                            <DropdownItem> <h5>View Profile</h5> </DropdownItem>
                                         </Link>
 
                                         <DropdownItem divider/>
