@@ -256,102 +256,112 @@ describe('User is member', () => {
 
 
 
-    describe('Feed Tab shows correct contents', () => {
+    // describe('Feed Tab shows correct contents', () => {
 
-        describe('shows correct first post', () => {
+    //     test('shows the correct number of posts', async () => {
 
-            test('correct author', async () => {
+    //         act(() => {
+    //             renderClubProfile(role);
+    //         })
 
-                act(() => {
-                    renderClubProfile(role);
-                })
+    //         const feedTab = await screen.findByRole('tab', { name: /feed/i })
+    //         fireEvent.click(feedTab)
 
-                const feedTab = await screen.findByRole('tab', { name: /feed/i })
-                fireEvent.click(feedTab)
+    //         const posts = await screen.findAllByTestId('singleFeedPost')
+    //         expect(posts).toHaveLength(2)
+    //     })
 
-                const author = await screen.findByText(/@declan89/i)
-                expect(author).toBeInTheDocument()
+
+
+    //     describe('shows correct first post', () => {
+
+    //         test('correct author', async () => {
+
+    //             act(() => {
+    //                 renderClubProfile(role);
+    //             })
+
+    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
+    //             fireEvent.click(feedTab)
+
+    //             const author = await screen.findByText(/@declan89/i)
+    //             expect(author).toBeInTheDocument()
+    //         })
+
+    //         test('correct title', async () => {
+
+    //             act(() => {
+    //                 renderClubProfile(role);
+    //             })
+
+    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
+    //             fireEvent.click(feedTab)
+
+    //             const title = await screen.findByText(/blanditiis velit neque nulla perspiciatis\./i)
+    //             expect(title).toBeInTheDocument()
+    //         })
+
+
+    //         test('correct content', async () => {
+
+    //             act(() => {
+    //                 renderClubProfile(role);
+    //             })
+
+    //             const feedTab = await screen.findByRole('tab', { name: /feed/i })
+    //             fireEvent.click(feedTab)
+
+    //             const title = await screen.findByRole('heading', { name: /ratione quis tenetur officia eligendi\. ipsum praesentium eveniet quia perspiciatis in\.\ntenetur est vel sed consequuntur alias\. veniam non dignissimos\. beatae aspernatur eos esse facere nam\.\nlaboriosam sapiente quam consectetur\. numquam odit nostrum unde provident\. repudiandae iste excepturi odit quod modi nostrum\./i })
+    //             expect(title).toBeInTheDocument()
+    //         })
+
+    //         // wait for api endpoint to be fixed 
+
+    //         //     test('correct number of likes', async () => {
+
+    //         //         act(() => {
+    //         //             renderClubProfile(role);
+    //         //         })
+
+    //         //         await waitFor(() => {
+    //         //             const likes = screen.getByText(/likes: 6/i)
+    //         //             expect(likes).toBeInTheDocument()
+    //         //         })
+    //         //     })
+    //         // })
+
+    //     })
+    // })
+
+
+
+
+    describe('Meetings tab shows correct contents', () => {
+
+        test('shows Meeting History Heading', async () => {
+            act(() => {
+                renderClubProfile(role);
             })
 
-            test('correct title', async () => {
+            const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+            fireEvent.click(feedTab)
 
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                const feedTab = await screen.findByRole('tab', { name: /feed/i })
-                fireEvent.click(feedTab)
-
-                const title = await screen.findByText(/blanditiis velit neque nulla perspiciatis\./i)
-                expect(title).toBeInTheDocument()
-            })
-
-
-            test('correct content', async () => {
-
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                const feedTab = await screen.findByRole('tab', { name: /feed/i })
-                fireEvent.click(feedTab)
-
-                const title = await screen.findByRole('heading', { name: /ratione quis tenetur officia eligendi\. ipsum praesentium eveniet quia perspiciatis in\.\ntenetur est vel sed consequuntur alias\. veniam non dignissimos\. beatae aspernatur eos esse facere nam\.\nlaboriosam sapiente quam consectetur\. numquam odit nostrum unde provident\. repudiandae iste excepturi odit quod modi nostrum\./i })
-                expect(title).toBeInTheDocument()
-            })
-
-            //     test('correct number of likes', async () => {
-
-            //         act(() => {
-            //             renderClubProfile(role);
-            //         })
-
-            //         await waitFor(() => {
-            //             const likes = screen.getByText(/likes: 6/i)
-            //             expect(likes).toBeInTheDocument()
-            //         })
-            //     })
-            // })
-
-            // test('shows the correct number of posts', async () => {
-
-            //     act(() => {
-            //         renderClubProfile(role);
-            //     })
-
-            //     await waitFor(() => {
-            //         const posts = screen.getAllByTestId('singleFeedPost')
-            //         expect(posts).toHaveLength(2)
-            //     })
-            // })
+            const heading = screen.getByText(/meeting history/i)
+            expect(heading).toBeInTheDocument()
         })
 
+        test('shows schedule meeting button', async () => {
+            act(() => {
+                renderClubProfile(role);
+            })
 
-        // describe('Meetings tab shows correct contents', () => {
-        // test('shows Meeting History Heading', async () => {
-        //     act(() => {
-        //         renderClubProfile(role);
-        //     })
+            const feedTab = await screen.findByRole('tab', { name: /meetings/i })
+            fireEvent.click(feedTab)
 
-        //     const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-        //     fireEvent.click(feedTab)
+            const button = screen.getByRole('button', { name: /schedule a meeting/i })
+            expect(button).toBeInTheDocument()
+        })
 
-        //     const heading = screen.getByText(/meeting history/i)
-        //     expect(heading).toBeInTheDocument()
-        // })
-
-        //     test('shows schedule meeting button', async () => {
-        //         act(() => {
-        //             renderClubProfile(role);
-        //         })
-
-        //         const feedTab = await screen.findByRole('tab', { name: /meetings/i })
-        //         fireEvent.click(feedTab)
-
-        //         const button = screen.getByRole('button', { name: /schedule a meeting/i })
-        //         expect(button).toBeInTheDocument()
-        //     })
-        // })
-
+        describe('displays correct contents of first meeting')
     })
 })
