@@ -29,7 +29,7 @@ describe("Components exist", () => {
     test("contains reply input field", async () => {
         act(() => {
             render(routerWrapper(<CommentReplyList
-                currentPost={{
+                post={{
                     id: 1,
                 }}
                 currentComment={{
@@ -49,7 +49,7 @@ describe("Components exist", () => {
     test("contains send button", async () => {
         act(() => {
             render(routerWrapper(<CommentReplyList
-                currentPost={{
+                post={{
                     id: 1,
                 }}
                 currentComment={{
@@ -69,7 +69,7 @@ describe("Components exist", () => {
     test("contains all gravatars", async () => {
         act(() => {
             render(routerWrapper(<CommentReplyList
-                currentPost={{
+                post={{
                     id: 1,
                 }}
                 currentComment={{
@@ -91,7 +91,7 @@ describe("Components exist", () => {
     test("contains all reply contents", async () => {
         act(() => {
             render(routerWrapper(<CommentReplyList
-                currentPost={{
+                post={{
                     id: 1,
                 }}
                 currentComment={{
@@ -113,7 +113,7 @@ describe("Components exist", () => {
     test("contains delete button", async () => {
         act(() => {
             render(routerWrapper(<CommentReplyList
-                currentPost={{
+                post={{
                     id: 1,
                 }}
                 currentComment={{

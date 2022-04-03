@@ -167,7 +167,7 @@ export default function SingleFeedPost(props) {
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
                     {commentsVisibility === true &&
-                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
+                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}} data-testid="all-comments-button">
                         <PostCommentList post={props.post}/>
                     </div>
                     }
@@ -183,7 +183,7 @@ export default function SingleFeedPost(props) {
                 }}
             >
                 <ModalBody style={{overflowY: "scroll"}}>
-                    <LikesUsersList post={props.post}></LikesUsersList>
+                    <LikesUsersList post={props.post}/>
                 </ModalBody>
             </Modal>
         </div>

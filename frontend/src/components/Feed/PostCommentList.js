@@ -72,17 +72,19 @@ export default function PostCommentList(props) {
                 <div style={{display: "flex", justifyContent: "center"}}>
                     <Row style={{marginTop: "1rem"}}>
                         <Col xs="9">
-                            <Input type="textarea" rows="1"
-                                   data-testid="comment-input"
-                                   id={inputAreaID}
-                                   name="myComment"
-                                   placeholder="Leave a comment here..."
-                                   onChange={handleCommentChange}
-                                   style={{
-                                       border: "0",
-                                       backgroundColor: "#F3F3F3",
-                                       height: "3rem"
-                                   }}
+                            <Input
+                                type="textarea"
+                                rows="1"
+                                id={inputAreaID}
+                                name="myComment"
+                                placeholder="Leave a comment here..."
+                                data-testid={"comment-input"}
+                                onChange={handleCommentChange}
+                                style={{
+                                    border: "0",
+                                    backgroundColor: "#F3F3F3",
+                                    height: "3rem"
+                                }}
                             />
                         </Col>
                         <Col xs="3">
