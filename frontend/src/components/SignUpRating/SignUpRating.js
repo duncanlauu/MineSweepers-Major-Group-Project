@@ -1,5 +1,3 @@
-import { Card, CardBody, CardImg } from "reactstrap";
-import Rater from "react-rater";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axiosInstance from "../../axios";
@@ -8,9 +6,6 @@ import {
   Container,
   Row,
   Col,
-  FormGroup,
-  Label,
-  Input,
   Button,
   Navbar,
   NavbarBrand,
@@ -68,14 +63,7 @@ export default function SignUpRating(props) {
         })
         .then((res) => {
           console.log(res);
-          axiosInstance
-            .post("recommender/retrain/")
-            .then(() => {
-              console.log("Retrained");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          navigate("/waiting")
         })
         .catch((err) => {
           console.log(err);
@@ -208,7 +196,7 @@ export default function SignUpRating(props) {
   } else {
     return (
       <div id="ParentDiv">
-        <Row></Row>
+        <Row/>
         <Container fluid>
           <Row style={{ marginTop: "6rem" }}>
             <Col />

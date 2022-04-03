@@ -101,12 +101,14 @@ class RecommenderAPI(APIView):
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='top_user_books').order_by('diff'))[
                           m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_random_books':
                 m = kwargs['m']
                 n = kwargs['n']
                 uid = kwargs['id']
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='random_books').order_by('diff'))[m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_genre_books':
                 m = kwargs['m']
                 n = kwargs['n']
@@ -115,6 +117,7 @@ class RecommenderAPI(APIView):
                 ratings = list(
                     ClubRecommendation.objects.filter(user=uid, method='genre_books ' + genre).order_by('diff'))[m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_top_club_books':
                 m = kwargs['m']
                 n = kwargs['n']
@@ -122,6 +125,7 @@ class RecommenderAPI(APIView):
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='top_club_books').order_by('diff'))[
                           m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             else:
                 return Response(data='You need to provide a correct action', status=status.HTTP_404_NOT_FOUND)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -141,7 +145,7 @@ class RecommenderAPI(APIView):
 
         try:
             if action == 'retrain':
-                algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+                algo = SVD()
                 train_model(algo, trainset)
                 pred = test_model(algo, trainset)
                 dump_trained_model(dump_file_name, algo, pred)
@@ -272,6 +276,14 @@ class RecommenderAPI(APIView):
             return Response(data=top_n, status=status.HTTP_200_OK)
         except KeyError:
             return Response(data='You need to provide correct parameters', status=status.HTTP_404_NOT_FOUND)
+
+
+def add_owner_email(serializer):
+    serializer_with_email = serializer.data
+    for recommendation in serializer_with_email:
+        recommendation['email'] = User.objects.get(pk=recommendation['club']['owner']).email
+
+    return serializer_with_email
 
 
 def save_book_recommendations(top_n, uid, genre='Unspecified'):
