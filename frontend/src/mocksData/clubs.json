@@ -4,54 +4,89 @@
     "name": "Club 1",
     "owner": {
       "id": 1,
-      "name": "Owner 1",
-      "email": "owner1@example.com"
+      "name": "Owner 1"
     },
-    "members": [1, 2, 3],
-    "admins": [4, 5]
+    "owner_email": "owner1@example.com",
+    "members": [
+      1,
+      2,
+      3
+    ],
+    "admins": [
+      4,
+      5
+    ]
   },
   {
     "id": 2,
     "name": "Club 2",
     "owner": {
       "id": 2,
-      "name": "Owner 2",
-      "email": "owner2@example.com"
+      "name": "Owner 2"
     },
-    "members": [1, 2, 3],
-    "admins": [4, 5]
+    "owner_email": "owner2@example.com",
+    "members": [
+      1,
+      2,
+      3
+    ],
+    "admins": [
+      4,
+      5
+    ]
   },
   {
     "id": 3,
     "name": "Club 3",
     "owner": {
       "id": 3,
-      "name": "Owner 3",
-      "email": "owner3@example.com"
+      "name": "Owner 3"
     },
-    "members": [1, 2, 3],
-    "admins": [4, 5]
+    "owner_email": "owner3@example.com",
+    "members": [
+      1,
+      2,
+      3
+    ],
+    "admins": [
+      4,
+      5
+    ]
   },
   {
     "id": 4,
     "name": "Club 4",
     "owner": {
       "id": 4,
-      "name": "Owner 4",
-      "email": "owner4@example.com"
+      "name": "Owner 4"
     },
-    "members": [1, 2, 3],
-    "admins": [4, 5]
+    "owner_email": "owner4@example.com",
+    "members": [
+      1,
+      2,
+      3
+    ],
+    "admins": [
+      4,
+      5
+    ]
   },
   {
     "id": 5,
     "name": "Club 5",
     "owner": {
       "id": 5,
-      "name": "Owner 5",
-      "email": "owner5@example.com"
+      "name": "Owner 5"
     },
-    "members": [1, 2, 3],
-    "admins": [4, 5]
+    "owner_email": "owner5@example.com",
+    "members": [
+      1,
+      2,
+      3
+    ],
+    "admins": [
+      4,
+      5
+    ]
   }
 ]

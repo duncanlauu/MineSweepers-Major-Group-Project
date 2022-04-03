@@ -15,6 +15,11 @@ class Clubs(APIView):
     def get(self, request):
         clubs = Club.objects.filter(visibility=True)
         serializer = ClubSerializer(clubs, many=True)
+
+        serializer_with_email = serializer.data
+        for club in serializer_with_email:
+            club['owner_email'] = User.objects.get(pk=club['owner']).email
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
