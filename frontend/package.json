@@ -8,6 +8,9 @@
     "build": "webpack --mode production",
     "test": "jest --env=jsdom"
   },
+  "jest": {
+    "testTimeout": 100000
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

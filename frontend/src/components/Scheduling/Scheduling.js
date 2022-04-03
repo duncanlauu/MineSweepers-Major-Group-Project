@@ -5,12 +5,12 @@ import {FormLayout, HeadingText, ParaText, SchedulingContainer} from "./Scheduli
 import {useNavigate, useParams} from "react-router";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
+import {findDOMNode} from "react-dom";
 
 
 export default function Scheduling() {
     const navigate = useNavigate()
     const {club_id} = useParams();
-    console.log("Club ID: " + club_id);
 
     const user = JSON.parse(localStorage.getItem('user'));
     const [books, setBooks] = useState([]);
@@ -23,8 +23,13 @@ export default function Scheduling() {
     const [endTimeErr, setEndTimeErr] = useState('')
     const [linkErr, setLinkErr] = useState('')
 
+    let gotRecommendation = false;
+
     useEffect(() => {
-        getRecommendedBooks();
+        if (!gotRecommendation) {
+            gotRecommendation = true;
+            getRecommendedBooks();
+        }
     }, []);
 
     const getRecommendedBooks = () => {
@@ -35,13 +40,11 @@ export default function Scheduling() {
                         axiosInstance
                             .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
                             .then((res) => {
-                                    console.log(res)
                                     let book_list = []
                                     for (let i = 0; i < res.data.length; ++i) {
                                         book_list.push({id: res.data[i]['book']['ISBN'], name: res.data[i]['book']['title']})
                                     }
                                     setBooks(book_list)
-                                    console.log(book_list)
                                 }
                             )
                     }
@@ -89,8 +92,6 @@ export default function Scheduling() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", formData)
-
 
         axiosInstance
             .post(`scheduling/`, {
@@ -104,7 +105,6 @@ export default function Scheduling() {
                 link: formData.link
             })
             .then((res) => {
-                console.log(res.data)
                 navigate(`/club_profile/${club_id}`)
             })
             .catch((e) => {
@@ -138,7 +138,7 @@ export default function Scheduling() {
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                            <HeadingText>Create a meeting</HeadingText>
+                            <HeadingText id={"header"}>Create a meeting</HeadingText>
                             <ParaText/>
                             <SchedulingContainer>
                                 <FormLayout>

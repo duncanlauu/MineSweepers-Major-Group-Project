@@ -22,7 +22,7 @@ class ChatModelTestCase(TestCase):
 
     def setUp(self):
         self.chat = Chat.objects.get(pk=1)
-        self.new_user = User.objects.get(pk=2)
+        self.new_user = User.objects.get(pk=5)
         self.new_message = Message.objects.get(pk=2)
 
     def test_valid_chat(self):
@@ -55,15 +55,15 @@ class ChatModelTestCase(TestCase):
         self.assertEqual(self.chat.messages.count(), 2)
 
     def test_add_participant(self):
-        self.assertEqual(self.chat.participants.count(), 1)
+        self.assertEqual(self.chat.participants.count(), 3)
         self.chat.participants.add(self.new_user)
-        self.assertEqual(self.chat.participants.count(), 2)
+        self.assertEqual(self.chat.participants.count(), 4)
 
     def test_remove_participant(self):
         self.chat.participants.add(self.new_user)
-        self.assertEqual(self.chat.participants.count(), 2)
+        self.assertEqual(self.chat.participants.count(), 4)
         self.chat.participants.remove(self.new_user)
-        self.assertEqual(self.chat.participants.count(), 1)
+        self.assertEqual(self.chat.participants.count(), 3)
 
     def _assert_chat_is_valid(self):
         try:
