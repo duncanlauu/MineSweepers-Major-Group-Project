@@ -146,9 +146,29 @@ describe('User has applied', () => {
 
         })
 
-        // TODO does not show apply button
+        test('does not show leave club button', async () => {
 
-        // TODO does not show leave button
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const leaveClub = screen.queryAllByRole('button', { name: /leave club/i })
+                expect(leaveClub).toHaveLength(0)
+            })
+        })
+
+        test('does not show you are banned text', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const bannedText = screen.queryAllByText(/you are banned from this club/i)
+                expect(bannedText).toHaveLength(0)
+            })
+        })
 
         describe('Reading history', () => {
             test('shows reading history heading', async () => {
@@ -182,8 +202,8 @@ describe('User has applied', () => {
                 })
 
                 await waitFor(() => {
-                    const bookTitle = screen.getByText(/john francome, 1996/i)
-                    expect(bookTitle).toBeInTheDocument()
+                    const authorRelease = screen.getByText(/john francome, 1996/i)
+                    expect(authorRelease).toBeInTheDocument()
                 })
             })
 

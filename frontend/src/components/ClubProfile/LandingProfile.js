@@ -154,7 +154,7 @@ const LandingProfile = (props) => {
           </Button>
         )}
         {(memberStatus === "admin" || memberStatus === "member") && (
-          <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
+          <Button onClick={(e) => leaveClub(club_id, user_id)} style={leaveStyle}>
             Leave Club
           </Button>
         )}

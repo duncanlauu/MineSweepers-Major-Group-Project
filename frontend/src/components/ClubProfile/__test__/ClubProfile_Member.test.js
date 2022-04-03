@@ -93,4 +93,141 @@ describe('User is member', () => {
             })
         })
     })
+
+    describe('Profile tab shows correct contents', () => {
+
+        test('shows club description', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const description = screen.getByText(/rerum saepe blanditiis eum voluptatibus\. culpa ut deserunt aspernatur officiis aperiam\. voluptatem nesciunt saepe totam voluptatibus at\. autem laudantium officia praesentium aspernatur\. itaque voluptates cum quo\. optio natus voluptate modi\. possimus veniam vero\. quod reiciendis quis ut\. neque reprehenderit ducimus optio aliquam mollitia praesentium\./i)
+                expect(description).toBeInTheDocument()
+            })
+        })
+
+        test('shows owners Gravatar', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const ownerGravatar = screen.getByRole('img', { name: /gravatar for bob@example\.org/i })
+                expect(ownerGravatar).toBeInTheDocument()
+            })
+        })
+
+        test('shows leave club button', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const leaveClub = screen.getByRole('button', { name: /leave club/i })
+                expect(leaveClub).toBeInTheDocument()
+            })
+        })
+
+        test('clicking leave club button toggles it to show apply', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            const leaveClub = await screen.findByRole('button', { name: /leave club/i })
+            fireEvent.click(leaveClub)
+
+            const applyButton = await screen.findByRole('button', { name: /apply/i })
+            expect(applyButton).toBeInTheDocument()
+
+        })
+
+
+
+        describe('does not show content for users with different relationship to club', () => {
+
+            test('does not show apply button', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const apply = screen.queryAllByRole('button', { name: /apply/i })
+                    expect(apply).toHaveLength(0)
+                })
+            })
+
+            test('does not show you are banned text', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bannedText = screen.queryAllByText(/you are banned from this club/i)
+                    expect(bannedText).toHaveLength(0)
+                })
+            })
+
+            // does not show transfer ownership text
+        })
+
+
+
+        describe('Reading history', () => {
+            test('shows reading history heading', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const readingHistory = screen.getByRole('heading', { name: /reading history/i })
+                    expect(readingHistory).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first book', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bookTitle = screen.getByText(/working women don't have wives: professional success in the 1990s/i)
+                    expect(bookTitle).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first books author and year of release', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const authorRelease = screen.getByText(/terri apter, 1994/i)
+                    expect(authorRelease).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct amount of books in reading history', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const books = screen.getAllByTestId('IndividualBookCard')
+                    expect(books).toHaveLength(19)
+                })
+            })
+
+        })
+    })
 })

@@ -132,6 +132,30 @@ describe('User has not applied', () => {
             })
         })
 
+        test('does not show leave club button', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const leaveClub = screen.queryAllByRole('button', { name: /leave club/i })
+                expect(leaveClub).toHaveLength(0)
+            })
+        })
+
+        test('does not show you are banned text', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const bannedText = screen.queryAllByText(/you are banned from this club/i)
+                expect(bannedText).toHaveLength(0)
+            })
+        })
+
         test('clicking apply button toggles it to show  withdraw application', async () => {
 
             act(() => {
@@ -182,8 +206,8 @@ describe('User has not applied', () => {
                 })
 
                 await waitFor(() => {
-                    const bookTitle = screen.getByText(/len deighton, 1994/i)
-                    expect(bookTitle).toBeInTheDocument()
+                    const authorRelease = screen.getByText(/len deighton, 1994/i)
+                    expect(authorRelease).toBeInTheDocument()
                 })
             })
 

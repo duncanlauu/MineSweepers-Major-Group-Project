@@ -133,9 +133,29 @@ describe('User is banned', () => {
             })
         })
 
-        // TODO does not show apply button
+        test('does not show leave club button', async () => {
 
-        // TODO does not show leave button
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const leaveClub = screen.queryAllByRole('button', { name: /leave club/i })
+                expect(leaveClub).toHaveLength(0)
+            })
+        })
+
+        test('does not show apply button', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const apply = screen.queryAllByRole('button', { name: /apply/i })
+                expect(apply).toHaveLength(0)
+            })
+        })
 
         describe('Reading history', () => {
             test('shows reading history heading', async () => {
@@ -169,11 +189,11 @@ describe('User is banned', () => {
                 })
 
                 await waitFor(() => {
-                    const bookTitle = screen.getByText(/francine patterson, 1988/i)
-                    expect(bookTitle).toBeInTheDocument()
+                    const authorRelease = screen.getByText(/francine patterson, 1988/i)
+                    expect(authorRelease).toBeInTheDocument()
                 })
             })
-            // 15
+
             test('shows correct amount of books in reading history', async () => {
 
                 act(() => {
