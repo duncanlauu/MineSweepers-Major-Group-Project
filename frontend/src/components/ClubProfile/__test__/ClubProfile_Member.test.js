@@ -316,17 +316,20 @@ describe('User is member', () => {
             })
 
 
-            test('correct number of likes', async () => {
+            // test('correct number of likes', async () => {
 
-                act(() => {
-                    renderClubProfile(role);
-                })
+            //     act(() => {
+            //         renderClubProfile(role);
+            //     })
 
-                await waitFor(() => {
-                    const likes = screen.getByText(/likes: 6/i)
-                    expect(likes).toBeInTheDocument()
-                })
-            })
+            //     await waitFor(() => {
+            //         const likes = screen.getByText(/likes: 6/i)
+            //         expect(likes).toBeInTheDocument()
+            //     })
+            // })
+
+            // test clicking the like button increases the number of likes
+            // test clicking the like again button decreases the number of likes
         })
 
         //     })
@@ -334,7 +337,6 @@ describe('User is member', () => {
 
 
 
-        // FEEEED
 
 
         // describe('Meetings tab shows correct contents', () => {
@@ -425,6 +427,9 @@ describe('User is member', () => {
         //         expect(meetings).toHaveLength(2)
         //     })
         // })
+
+
+
 
         // describe('Members tab shows correct contents', () => {
 
