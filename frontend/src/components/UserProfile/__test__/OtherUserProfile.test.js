@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("Components exist", () => {
 
-    test("contains gravatar", async () => {
+    test("contains profile info", async () => {
         act(() => {
             render(
                 <MemoryRouter initialEntries={["/user_profile/1"]}>
@@ -37,7 +37,71 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByAltText(`Gravatar for test1@test.org`)).toBeInTheDocument();
+            expect(screen.getByTestId(`profile-info`)).toBeInTheDocument();
+        })
+    })
+
+    test("contains posts", async () => {
+        act(() => {
+            render(
+                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                    <Routes>
+                        <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
+                    </Routes>
+                </MemoryRouter>
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(`Posts`)).toBeInTheDocument();
+        })
+    })
+
+    test("contains friends", async () => {
+        act(() => {
+            render(
+                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                    <Routes>
+                        <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
+                    </Routes>
+                </MemoryRouter>
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(`Friends`)).toBeInTheDocument();
+        })
+    })
+
+    test("contains clubs", async () => {
+        act(() => {
+            render(
+                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                    <Routes>
+                        <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
+                    </Routes>
+                </MemoryRouter>
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(`Club`)).toBeInTheDocument();
+        })
+    })
+
+    test("contains book ratings", async () => {
+        act(() => {
+            render(
+                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                    <Routes>
+                        <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
+                    </Routes>
+                </MemoryRouter>
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(`Book ratings`)).toBeInTheDocument();
         })
     })
 })

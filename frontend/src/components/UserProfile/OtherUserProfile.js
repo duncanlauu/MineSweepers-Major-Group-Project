@@ -30,7 +30,6 @@ import ClubList from "./Clubs/ClubList";
 
 const OtherUserProfile = () => {
     const {user_id} = useParams();
-    console.log(user_id);
     const [currentActiveTab, setCurrentActiveTab] = useState("1");
 
     const toggle = (tab) => {
@@ -47,7 +46,7 @@ const OtherUserProfile = () => {
                 </Row>
 
                 <Row style={{marginTop: "6rem"}}>
-                    <Col xs="3">
+                    <Col xs="3" data-testid={"profile-info"}>
                         <ProfileInfo otherUserID={user_id}/>
                     </Col>
 
