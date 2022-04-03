@@ -301,12 +301,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_ban_member_as_admin, True)
         self.run_testcase(self._test_unban_banned_user_as_admin, True)
         
-        
         # As Member
-
         # Test that there are no make owner, promote, ban, unban, remove buttons, accept, reject buttons
 
         # As Non-Member
+        # Test apply to club
         # Test that there are no buttons for members and so on
 
 
