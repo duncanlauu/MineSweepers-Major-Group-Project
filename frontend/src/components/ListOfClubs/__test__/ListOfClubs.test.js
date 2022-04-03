@@ -40,7 +40,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            let members = screen.getAllByText(/3 Members/i)
+            let members = screen.getAllByText(/6 Members/i)
             expect(members.length).toBe(5)
             for (let i = 0; i < members.length; i++) {
                 expect(members[i]).toBeInTheDocument()

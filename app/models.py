@@ -359,6 +359,8 @@ class Club(models.Model):
     def transfer_ownership(self, user): 
         self.add_member(self.owner)
         self.promote(self.owner)
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.owner = user
 
 

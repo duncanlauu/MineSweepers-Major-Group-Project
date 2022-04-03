@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Container, Row, Col, Button} from "reactstrap";
+import {Container, Row, Col} from "reactstrap";
 import {
     BookProfile,
     ProfileContainer,
@@ -7,7 +7,6 @@ import {
 } from "./ClubProfileElements";
 import MainNav from "../Nav/MainNav";
 import ClubProfileTabs from "./ClubProfileTabs.js";
-import Gravatar from "react-gravatar";
 import {useParams} from "react-router";
 import axiosInstance from "../../axios";
 
@@ -16,10 +15,10 @@ const ClubProfile = () => {
     const [club, setClub] = useState(null);
 
     const [memberStatus, setMemberStatus] = useState("notApplied");
+    const currentUser = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem("user"));
-        console.log("currentUser", currentUser);
+
         axiosInstance
             .get(`singleclub/${club_id}`)
             .then((res) => {
@@ -65,6 +64,8 @@ const ClubProfile = () => {
                                 <ClubProfileTabs
                                     memberStatus={memberStatus}
                                     setMemberStatus={setMemberStatus}
+                                    club={club}
+                                    user_id={currentUser.id}
                                 />
                             </ProfileHeader>
                         </ProfileContainer>
