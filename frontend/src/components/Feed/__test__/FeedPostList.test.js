@@ -33,7 +33,7 @@ describe("Components exist", () => {
 
         await waitFor(() => {
             for (let i = 1; i <= 3; i++) {
-                expect(screen.getByAltText(`Gravatar for test${i}@test.org`)).toBeInTheDocument()
+                expect(screen.getByAltText(`Gravatar for author${i}@example.com`)).toBeInTheDocument()
             }
         })
     })
@@ -81,7 +81,7 @@ describe("Components exist", () => {
 
         await waitFor(() => {
             for (let i = 1; i <= 3; i++) {
-                const buttons = screen.getAllByText("view all comments")
+                const buttons = screen.getAllByTestId("all-comments-button")
                 expect(buttons).toHaveLength(3)
             }
         })
