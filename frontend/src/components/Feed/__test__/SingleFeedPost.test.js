@@ -29,11 +29,15 @@ describe("Components exist", () => {
     test("contains gravatar", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
@@ -46,11 +50,15 @@ describe("Components exist", () => {
     test("contains poster name", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
@@ -63,11 +71,15 @@ describe("Components exist", () => {
     test("contains post title", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
@@ -80,11 +92,15 @@ describe("Components exist", () => {
     test("contains post content", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
@@ -97,34 +113,65 @@ describe("Components exist", () => {
     test("contains view all comments button", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
 
         await waitFor(() => {
-            expect(screen.getByText("view all comments")).toBeInTheDocument()
+            expect(screen.getByTestId("all-comments-button")).toBeInTheDocument()
         })
     })
 
     test("contains like count", async () => {
         act(() => {
             render(routerWrapper(<SingleFeedPost
-                feedPost={{
+                post={{
                     id: 1,
                     author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
                     title: "Post title 1",
-                    content: "Post content 1"
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
                 }}
             />))
         })
 
         await waitFor(() => {
             expect(screen.getByText("Likes: 3")).toBeInTheDocument()
+        })
+    })
+
+    test("contains club name", async () => {
+        act(() => {
+            render(routerWrapper(<SingleFeedPost
+                post={{
+                    id: 1,
+                    author: 1,
+                    author__username: "test1",
+                    author__email: "test1@test.org",
+                    title: "Post title 1",
+                    content: "Post content 1",
+                    likesCount: 3,
+                    liked: false,
+                    club: 1,
+                    club__name: "club1",
+                }}
+            />))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText("club1")).toBeInTheDocument()
         })
     })
 })

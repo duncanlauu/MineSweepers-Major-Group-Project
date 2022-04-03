@@ -10,7 +10,6 @@ import PostCommentList from "../PostCommentList";
 import routerWrapper from "../../../test-helpers";
 import fakeLocalStorage from "../../../fakeLocalStorage";
 import user from "../../../mocksData/getCurrentUser.json";
-import SinglePostComment from "../SinglePostComment";
 
 
 beforeAll(() => {
