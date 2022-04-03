@@ -16,7 +16,6 @@ import app.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bookclub.settings')
 
-# Messaging implementation from: https://channels.readthedocs.io tutorial
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
@@ -24,5 +23,4 @@ application = ProtocolTypeRouter({
             app.routing.websocket_urlpatterns
         )
     ),
-    # Just HTTP for now. (We can add other protocols later.)
 })
