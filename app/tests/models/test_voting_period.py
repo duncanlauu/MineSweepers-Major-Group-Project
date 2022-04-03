@@ -12,6 +12,7 @@ class VotingPeriodModelTest(TestCase):
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_clubs.json',
         'app/tests/fixtures/default_time_period.json',
         'app/tests/fixtures/other_time_periods.json',
         'app/tests/fixtures/other_books.json',
