@@ -50,78 +50,78 @@ const OtherUserProfile = () => {
                         <ProfileInfo otherUserID={user_id}/>
                     </Col>
 
-          <Col xs="6">
-            <DataContainer>
-              <DataContainerCard>
-                <Nav
-                  tabs
-                  style={{
-                    marginBottom: "1rem",
-                    width: "100%",
-                    marginTop: "1rem",
-                    borderRadius: "100px",
-                  }}
-                >
-                  <NavItem style={{ width: "25%" }}>
-                    <NavLink
-                      className={classnames({
-                        active: currentActiveTab === "1",
-                      })}
-                      onClick={() => {
-                        toggle("1");
-                      }}
-                    >
-                      <div style={{ textAlign: "center" }}>
-                        <TabsText>Posts</TabsText>
-                      </div>
-                    </NavLink>
-                  </NavItem>
+                    <Col xs="6">
+                        <DataContainer>
+                            <DataContainerCard>
+                                <Nav
+                                    tabs
+                                    style={{
+                                        marginBottom: "1rem",
+                                        width: "100%",
+                                        marginTop: "1rem",
+                                        borderRadius: "100px",
+                                    }}
+                                >
+                                    <NavItem style={{width: "25%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "1",
+                                            })}
+                                            onClick={() => {
+                                                toggle("1");
+                                            }}
+                                        >
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>Posts</TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
 
-                  <NavItem style={{ width: "25%" }}>
-                    <NavLink
-                      className={classnames({
-                        active: currentActiveTab === "2",
-                      })}
-                      onClick={() => {
-                        toggle("2");
-                      }}
-                    >
-                      <div style={{ textAlign: "center" }}>
-                        <TabsText>Friends</TabsText>
-                      </div>
-                    </NavLink>
-                  </NavItem>
+                                    <NavItem style={{width: "25%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "2",
+                                            })}
+                                            onClick={() => {
+                                                toggle("2");
+                                            }}
+                                        >
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>Friends</TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
 
-                  <NavItem style={{ width: "25%" }}>
-                    <NavLink
-                      className={classnames({
-                        active: currentActiveTab === "3",
-                      })}
-                      onClick={() => {
-                        toggle("3");
-                      }}
-                    >
-                      <div style={{ textAlign: "center" }}>
-                        <TabsText>Club</TabsText>
-                      </div>
-                    </NavLink>
-                  </NavItem>
+                                    <NavItem style={{width: "25%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "3",
+                                            })}
+                                            onClick={() => {
+                                                toggle("3");
+                                            }}
+                                        >
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>Club</TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
 
-                  <NavItem style={{ width: "25%" }}>
-                    <NavLink
-                      className={classnames({
-                        active: currentActiveTab === "4",
-                      })}
-                      onClick={() => {
-                        toggle("4");
-                      }}
-                    >
-                      <div style={{ textAlign: "center" }}>
-                        <TabsText>Ratings</TabsText>
-                      </div>
-                    </NavLink>
-                  </NavItem>
-                </Nav>
+                                    <NavItem style={{width: "25%"}}>
+                                        <NavLink
+                                            className={classnames({
+                                                active: currentActiveTab === "4",
+                                            })}
+                                            onClick={() => {
+                                                toggle("4");
+                                            }}
+                                        >
+                                            <div style={{textAlign: "center"}}>
+                                                <TabsText>Ratings</TabsText>
+                                            </div>
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
 
                                 <DataContainerBelowTabs>
                                     <TabContent activeTab={currentActiveTab}>
