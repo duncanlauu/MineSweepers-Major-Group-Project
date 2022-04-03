@@ -200,7 +200,6 @@ export const BookStarsContainer = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  overflow-y: scroll;
 `;
 
 export const ParaText = styled.text`

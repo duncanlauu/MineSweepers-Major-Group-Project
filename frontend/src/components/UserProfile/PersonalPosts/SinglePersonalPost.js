@@ -23,6 +23,7 @@ export default function SinglePersonalPost(props) {
     const [posterEmail, setPosterEmail] = useState("");
     const [isModalVisible, setModalVisibility] = useState();
     const currentUser = JSON.parse(localStorage.getItem("user"));
+    const [commentsVisibility, setCommentsVisibility] = useState(false)
 
     useEffect(() => {
         setPersonalPost(props.personalPost);
@@ -73,7 +74,7 @@ export default function SinglePersonalPost(props) {
                                 }}
                             />
                         </Col>
-                        {props.requestedUser_id === undefined && (
+                        {props.requestedUser_id == undefined && (
                             <Col
                                 xs="11"
                                 style={{display: "flex", justifyContent: "flex-end"}}
@@ -109,14 +110,18 @@ export default function SinglePersonalPost(props) {
                     </CardText>
                 </CardBody>
 
-                <Button color="link" id={togglerID} style={{marginBottom: "1rem"}}>
+                <Button color="link" id={togglerID} style={{marginBottom: "1rem"}} onClick={() => {
+                    setCommentsVisibility(!commentsVisibility)
+                }}>
                     view all comments
                 </Button>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId}>
+                    {commentsVisibility === true &&
                     <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
                         <PostCommentList post={personalPost}/>
                     </div>
+                    }
                 </UncontrolledCollapse>
             </Card>
             <Modal

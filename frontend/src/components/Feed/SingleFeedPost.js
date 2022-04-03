@@ -26,6 +26,7 @@ export default function SingleFeedPost(props) {
     const [likedByUser, setLikedByUser] = useState(props.post.liked);
     const [isModalVisible, setModalVisibility] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
+    const [commentsVisibility, setCommentsVisibility] = useState(false)
 
     const navigate = useNavigate();
 
@@ -131,7 +132,9 @@ export default function SingleFeedPost(props) {
                                 color: isCommentOpen ? "#ffffff" : "#653FFD",
                                 borderColor: "#653FFD",
                             }}
-                            onClick={toggleCommentOpen}
+                            onClick={() => {
+                                setCommentsVisibility(!commentsVisibility)
+                            }}
                         >
                             <CommentIcon/>
                         </Button>
@@ -162,10 +165,12 @@ export default function SingleFeedPost(props) {
                     </div>
                 </CardBody>
 
-                <UncontrolledCollapse toggler={HashtagTogglerId}>
-                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}} data-testid="all-comments-button">
+                <UncontrolledCollapse toggler={HashtagTogglerId} data-testid="all-comments-button">
+                    {commentsVisibility === true &&
+                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
                         <PostCommentList post={props.post}/>
                     </div>
+                    }
                 </UncontrolledCollapse>
             </Card>
 

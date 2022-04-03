@@ -19,6 +19,7 @@ export default function Logout() {
         setHasRated({})
         axiosInstance.defaults.headers['Authorization'] = null; // remove the headers
         navigate('/')
+        window.location.reload()
     });
 
     return <div>Logout</div>;

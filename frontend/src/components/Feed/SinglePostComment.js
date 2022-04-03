@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Row, Col, Button, UncontrolledCollapse} from "reactstrap";
 import Gravatar from "react-gravatar";
@@ -18,11 +18,10 @@ export default function SinglePostComment(props) {
         setPosterEmail(props.comment.author__email);
     }, []);
 
-    const deleteComment = (comment_id, e) => {
+    const deleteComment = (comment_id) => {
         axiosInstance
             .delete(`posts/${props.post.id}/comments/${comment_id}`)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 props.updatePageAfterCommentDeletion();
             })
             .catch((error) => console.error(error));
@@ -32,7 +31,6 @@ export default function SinglePostComment(props) {
         navigate(`/user_profile/${singleComment.author}/`);
     };
 
-    const commentsRef = useRef([]);
     const togglerID = "toggler" + singleComment.id;
     const HashtagTogglerId = "#toggler" + singleComment.id;
 
@@ -102,23 +100,21 @@ export default function SinglePostComment(props) {
                 </Col>
             </Row>
             <Row>
-                <Row>
-                    <UncontrolledCollapse toggler={HashtagTogglerId}>
-                        <div>
-                            <hr style={{marginTop: "0rem"}}/>
-                            <Row>
-                                <Col xs="2"> </Col>
-                                <Col xs="8">
-                                    <CommentReplyList
-                                        currentComment={singleComment}
-                                        post={props.post}
-                                    />
-                                </Col>
-                                <Col xs="2"> </Col>
-                            </Row>
-                        </div>
-                    </UncontrolledCollapse>
-                </Row>
+                <UncontrolledCollapse toggler={HashtagTogglerId}>
+                    <div>
+                        <hr style={{marginTop: "0rem"}}/>
+                        <Row>
+                            <Col xs="2"> </Col>
+                            <Col xs="8">
+                                <CommentReplyList
+                                    comment={singleComment}
+                                    post={props.post}
+                                />
+                            </Col>
+                            <Col xs="2"> </Col>
+                        </Row>
+                    </div>
+                </UncontrolledCollapse>
             </Row>
         </div>
     );
