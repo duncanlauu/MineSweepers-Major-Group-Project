@@ -104,11 +104,6 @@ describe('User is banned', () => {
             })
 
             await waitFor(() => {
-                const profileTab = screen.getByRole('tab', { name: /profile/i })
-                fireEvent.click(profileTab)
-            })
-
-            await waitFor(() => {
                 const description = screen.getByText(/quo eaque optio assumenda reprehenderit\./i)
                 expect(description).toBeInTheDocument()
             })
@@ -136,6 +131,61 @@ describe('User is banned', () => {
                 const bannedText = screen.getByText(/you are banned from this club/i)
                 expect(bannedText).toBeInTheDocument()
             })
+        })
+
+        // TODO does not show apply button
+
+        // TODO does not show leave button
+
+        describe('Reading history', () => {
+            test('shows reading history heading', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const readingHistory = screen.getByRole('heading', { name: /reading history/i })
+                    expect(readingHistory).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first book', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bookTitle = screen.getByText(/the education of koko/i)
+                    expect(bookTitle).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first books author and year of release', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bookTitle = screen.getByText(/francine patterson, 1988/i)
+                    expect(bookTitle).toBeInTheDocument()
+                })
+            })
+            // 15
+            test('shows correct amount of books in reading history', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const books = screen.getAllByTestId('IndividualBookCard')
+                    expect(books).toHaveLength(15)
+                })
+            })
+
         })
     })
 })

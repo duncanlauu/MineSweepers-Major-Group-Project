@@ -18,15 +18,15 @@ const LandingProfile = (props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-    const user_id = currentUser.id;
-    console.log("User ID: " + user_id);
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const user_id = currentUser.id;
+  console.log("User ID: " + user_id);
 
 
   function IndividualBookCard(props) {
     return (
       <Row>
-        <BookProfile>
+        <BookProfile data-testId="IndividualBookCard">
           <Col xs={2}>
             <img src={props.imageURL} alt="Book Cover" />
           </Col>
@@ -152,8 +152,8 @@ const LandingProfile = (props) => {
           >
             {buttonState}
           </Button>
-        )}  
-        {(memberStatus === "admin" || memberStatus === "member" ) && (
+        )}
+        {(memberStatus === "admin" || memberStatus === "member") && (
           <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
             Leave Club
           </Button>
@@ -177,12 +177,13 @@ const LandingProfile = (props) => {
         </h3>
       </Row>
       {club.books.map(book =>
-        <IndividualBookCard 
-          imageURL={book.image_links_small} 
-          isbn={book.ISBN} 
-          title={book.title} 
-          author={book.author} 
-          year={book.publication_date} />
+        <IndividualBookCard
+          imageURL={book.image_links_small}
+          isbn={book.ISBN}
+          title={book.title}
+          author={book.author}
+          year={book.publication_date}
+        />
       )}
     </Container>
   );

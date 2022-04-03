@@ -93,4 +93,111 @@ describe('User has not applied', () => {
             })
         })
     })
+
+    describe('Profile tab shows correct contents', () => {
+
+        test('shows club description', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const description = screen.getByText(/reprehenderit excepturi corrupti recusandae\./i)
+                expect(description).toBeInTheDocument()
+            })
+        })
+
+        test('shows owners Gravatar', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const ownerGravatar = screen.getByRole('img', { name: /gravatar for julie73@example\.net/i })
+                expect(ownerGravatar).toBeInTheDocument()
+            })
+        })
+
+        test('shows apply button', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            await waitFor(() => {
+                const apply = screen.getByRole('button', { name: /apply/i })
+                expect(apply).toBeInTheDocument()
+            })
+        })
+
+        test('clicking apply button toggles it to show  withdraw application', async () => {
+
+            act(() => {
+                renderClubProfile(role);
+            })
+
+            const apply = await screen.findByRole('button', { name: /apply/i })
+            fireEvent.click(apply)
+
+            const withdrawApplication = await screen.findByRole('button', { name: /withdraw application/i })
+            expect(withdrawApplication).toBeInTheDocument()
+
+        })
+
+        // TODO does not show apply button
+
+        // TODO does not show leave button
+
+        describe('Reading history', () => {
+            test('shows reading history heading', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const readingHistory = screen.getByRole('heading', { name: /reading history/i })
+                    expect(readingHistory).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first book', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bookTitle = screen.getByText(/violent ward/i)
+                    expect(bookTitle).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct first books author and year of release', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const bookTitle = screen.getByText(/len deighton, 1994/i)
+                    expect(bookTitle).toBeInTheDocument()
+                })
+            })
+
+            test('shows correct amount of books in reading history', async () => {
+
+                act(() => {
+                    renderClubProfile(role);
+                })
+
+                await waitFor(() => {
+                    const books = screen.getAllByTestId('IndividualBookCard')
+                    expect(books).toHaveLength(10)
+                })
+            })
+        })
+    })
 })
