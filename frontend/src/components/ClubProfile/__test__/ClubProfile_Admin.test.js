@@ -311,6 +311,20 @@ describe('User is admin', () => {
         //         expect(title).toBeInTheDocument()
         //     })
 
+        //     test('shows banned users title', async () => {
+        //         act(() => {
+        //             renderClubProfile(role);
+        //         })
+
+        //         await waitFor(() => {
+        //             const feedTab = screen.getByRole('tab', { name: /members/i })
+        //             fireEvent.click(feedTab)
+        //         })
+
+        //         const title = screen.getByText(/banned users/i)
+        //         expect(title).toBeInTheDocument()
+        //     })
+
         //     test('displays correct number of people', async () => {
         //         act(() => {
         //             renderClubProfile(role);
@@ -322,7 +336,7 @@ describe('User is admin', () => {
         //         })
 
         //         const people = screen.queryAllByTestId('individualMemberCard')
-        //         expect(people).toHaveLength(11)
+        //         expect(people).toHaveLength(9)
         //     })
         // })
 
@@ -373,106 +387,157 @@ describe('User is admin', () => {
 
         describe('manage members functionality', () => {
 
-            // test('ban member moves member into banned members list', async () => {
-            //     act(() => {
-            //         renderClubProfile(role);
+            //     // test('ban member moves member into banned members list', async () => {
+            //     //     act(() => {
+            //     //         renderClubProfile(role);
+            //     //     })
+
+            //     //     await waitFor(() => {
+            //     //         const feedTab = screen.getByRole('tab', { name: /members/i })
+            //     //         fireEvent.click(feedTab)
+            //     //     })
+
+            //     //     const membersBefore = screen.queryAllByTestId('memberMemberCard')
+            //     //     const bannedBefore = screen.queryAllByTestId('bannedMemberCard')
+
+            //     //     await waitFor(() => {
+            //     //         const banButtons = screen.queryAllByRole('button', { name: "Ban" })
+            //     //         fireEvent.click(banButtons[0])
+            //     //     })
+
+            //     //     // const banButtons = await screen.findAllByRole('button', { name: /ban/i })
+
+            //     //     // act(() => { fireEvent.click(banButtons[0]) })
+
+            //     //     await waitFor(() => {
+            //     //         const membersAfter = screen.queryAllByTestId('memberMemberCard')
+            //     //         // const bannedAfter = await screen.findAllByTestId('bannedMemberCard')
+
+            //     //         expect(membersBefore.length).toBe(membersAfter.length + 1)
+            //     //     })
+            //     //     // expect(bannedBefore.length).toBe(bannedAfter.length - 1)
+            //     // })
+
+            //     test('contains the same number of ban buttons as members', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
+
+            //         await waitFor(() => {
+            //             const feedTab = screen.getByRole('tab', { name: /members/i })
+            //             fireEvent.click(feedTab)
+            //         })
+
+            //         const members = screen.queryAllByTestId('memberMemberCard')
+            //         const banButtons = screen.queryAllByRole('button', { name: "Ban" })
+
+            //         expect(members.length).toBe(banButtons.length)
             //     })
 
-            //     await waitFor(() => {
-            //         const feedTab = screen.getByRole('tab', { name: /members/i })
-            //         fireEvent.click(feedTab)
+            //     test('contains the same number of accept buttons as applicants', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
+
+            //         await waitFor(() => {
+            //             const feedTab = screen.getByRole('tab', { name: /members/i })
+            //             fireEvent.click(feedTab)
+            //         })
+
+            //         const applicants = screen.queryAllByTestId('applicantMemberCard')
+            //         const banButtons = screen.queryAllByRole('button', { name: /accept/i })
+
+            //         expect(applicants.length).toBe(banButtons.length)
             //     })
 
-            //     const membersBefore = screen.queryAllByTestId('memberMemberCard')
-            //     const bannedBefore = screen.queryAllByTestId('bannedMemberCard')
+            //     test('contains the same number of reject buttons as applicants', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
 
-            //     await waitFor(() => {
-            //         const banButtons = screen.queryAllByRole('button', { name: /ban/i })
-            //         fireEvent.click(banButtons[0])
+            //         await waitFor(() => {
+            //             const feedTab = screen.getByRole('tab', { name: /members/i })
+            //             fireEvent.click(feedTab)
+            //         })
+
+            //         const applicants = screen.queryAllByTestId('applicantMemberCard')
+            //         const banButtons = screen.queryAllByRole('button', { name: /reject/i })
+
+            //         expect(applicants.length).toBe(banButtons.length)
             //     })
 
-            //     // const banButtons = await screen.findAllByRole('button', { name: /ban/i })
+            //     test('contains the same number of unban buttons as banned users', async () => {
+            //         act(() => {
+            //             renderClubProfile(role);
+            //         })
 
-            //     // act(() => { fireEvent.click(banButtons[0]) })
+            //         await waitFor(() => {
+            //             const feedTab = screen.getByRole('tab', { name: /members/i })
+            //             fireEvent.click(feedTab)
+            //         })
 
-            //     await waitFor(() => {
-            //         const membersAfter = screen.queryAllByTestId('memberMemberCard')
-            //         // const bannedAfter = await screen.findAllByTestId('bannedMemberCard')
+            //         const bannedUsers = screen.queryAllByTestId('bannedMemberCard')
+            //         const banButtons = screen.queryAllByRole('button', { name: /unban/i })
 
-            //         expect(membersBefore.length).toBe(membersAfter.length + 1)
+            //         expect(bannedUsers.length).toBe(banButtons.length)
             //     })
-            //     // expect(bannedBefore.length).toBe(bannedAfter.length - 1)
-            // })
 
-            test('contains the same number of ban buttons as members', async () => {
-                act(() => {
-                    renderClubProfile(role);
+            // for owner: contains additional ban buttons for admins
+            // });
+
+
+            describe('does not show owner control', () => {
+                test('contains no make owner buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const admins = screen.queryAllByTestId('adminMemberCard')
+                    const makeOwnerButtons = screen.queryAllByRole('button', { name: /make owner/i })
+
+                    expect(admins.length).not.toBe(0) // ensure that there are admins
+                    expect(makeOwnerButtons.length).toBe(0)
                 })
 
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
+                test('contains no demote buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const admins = screen.queryAllByTestId('adminMemberCard')
+                    const makeOwnerButtons = screen.queryAllByRole('button', { name: /demote/i })
+
+                    expect(admins.length).not.toBe(0) // ensure that there are admins
+                    expect(makeOwnerButtons.length).toBe(0)
                 })
 
-                const members = screen.queryAllByTestId('memberMemberCard')
-                const banButtons = screen.queryAllByRole('button', { name: /ban/i })
+                test('contains no promote buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
 
-                expect(members.length).toBe(banButtons.length)
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const members = screen.queryAllByTestId('memberMemberCard')
+                    const promoteButtons = screen.queryAllByRole('button', { name: /promote/i })
+
+                    expect(members.length).not.toBe(0) // ensure that there are admins
+                    expect(promoteButtons.length).toBe(0)
+                })
             })
-
-            test('contains the same number of accept buttons as applicants', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const applicants = screen.queryAllByTestId('applicantMemberCard')
-                const banButtons = screen.queryAllByRole('button', { name: /accept/i })
-
-                expect(applicants.length).toBe(banButtons.length)
-            })
-
-            test('contains the same number of reject buttons as applicants', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const applicants = screen.queryAllByTestId('applicantMemberCard')
-                const banButtons = screen.queryAllByRole('button', { name: /reject/i })
-
-                expect(applicants.length).toBe(banButtons.length)
-            })
-
-            test('contains the same number of unban buttons as banned users', async () => {
-                act(() => {
-                    renderClubProfile(role);
-                })
-
-                await waitFor(() => {
-                    const feedTab = screen.getByRole('tab', { name: /members/i })
-                    fireEvent.click(feedTab)
-                })
-
-                const bannedUsers = screen.queryAllByTestId('bannedMemberCard')
-                const banButtons = screen.queryAllByRole('button', { name: /unban/i })
-
-                expect(bannedUsers.length).toBe(banButtons.length)
-            })
-        });
-
-
-        describe('does not show owner control', () => {
-            // transfer ownership
-            // demote
         })
     })
 })

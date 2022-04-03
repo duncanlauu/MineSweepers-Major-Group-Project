@@ -550,12 +550,131 @@ describe('User is member', () => {
         //     })
         // });
 
-        // describe('does not show admin/owner control', () => {
-        //     // transfer ownership
-        //     // demote
-        //     // ban
-        //     // accept
-        //     // reject
-        // })
+        describe('does not show admin/owner control', () => {
+
+            describe('does not show owner control', () => {
+                test('contains no make owner buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const admins = screen.queryAllByTestId('adminMemberCard')
+                    const makeOwnerButtons = screen.queryAllByRole('button', { name: /make owner/i })
+
+                    expect(admins.length).not.toBe(0)
+                    expect(makeOwnerButtons.length).toBe(0)
+                })
+
+                test('contains no demote buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const admins = screen.queryAllByTestId('adminMemberCard')
+                    const makeOwnerButtons = screen.queryAllByRole('button', { name: /demote/i })
+
+                    expect(admins.length).not.toBe(0)
+                    expect(makeOwnerButtons.length).toBe(0)
+                })
+
+                test('contains no promote buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const members = screen.queryAllByTestId('memberMemberCard')
+                    const promoteButtons = screen.queryAllByRole('button', { name: /promote/i })
+
+                    expect(members.length).not.toBe(0)
+                    expect(promoteButtons.length).toBe(0)
+                })
+            })
+
+            describe('does not show admin control', () => {
+
+                test('contains no accept buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const applicants = screen.queryAllByTestId('applicantMemberCard')
+                    const acceptButtons = screen.queryAllByRole('button', { name: /accept/i })
+
+                    expect(applicants.length).not.toBe(0)
+                    expect(acceptButtons.length).toBe(0)
+                })
+
+                test('contains no reject buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const applicants = screen.queryAllByTestId('applicantMemberCard')
+                    const rejectButtons = screen.queryAllByRole('button', { name: /reject/i })
+
+                    expect(applicants.length).not.toBe(0)
+                    expect(rejectButtons.length).toBe(0)
+                })
+
+                test('contains no ban buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const applicants = screen.queryAllByTestId('applicantMemberCard')
+                    const banButtons = screen.queryAllByRole('button', { name: "Ban" })
+
+                    expect(applicants.length).not.toBe(0)
+                    expect(banButtons.length).toBe(0)
+                })
+
+                test('contains no unban buttons', async () => {
+                    act(() => {
+                        renderClubProfile(role);
+                    })
+
+                    await waitFor(() => {
+                        const feedTab = screen.getByRole('tab', { name: /members/i })
+                        fireEvent.click(feedTab)
+                    })
+
+                    const applicants = screen.queryAllByTestId('applicantMemberCard')
+                    const unbanButtons = screen.queryAllByRole('button', { name: "Unban" })
+
+                    expect(applicants.length).not.toBe(0)
+                    expect(unbanButtons.length).toBe(0)
+                })
+            })
+        })
     })
 })
