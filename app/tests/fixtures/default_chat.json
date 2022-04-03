@@ -5,7 +5,9 @@
     "fields": {
       "name": "Default Club Chat",
       "participants": [
-        1,2,3
+        1,
+        2,
+        3
       ],
       "messages": [
         1

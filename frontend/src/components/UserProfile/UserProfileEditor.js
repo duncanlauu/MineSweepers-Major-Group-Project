@@ -9,7 +9,6 @@ import {
   Col,
   Button,
 } from "reactstrap";
-import useGetUser from "../../helpers";
 import axiosInstance from "../../axios";
 
 import { useNavigate } from "react-router";
@@ -86,7 +85,7 @@ export default function UserProfileEditor(props) {
                     }}
                     value={formData.bio}
                   />
-                  <p></p>
+                  <p/>
                 </FormGroup>
                 {/* <div>{titleErr}</div> */}
 

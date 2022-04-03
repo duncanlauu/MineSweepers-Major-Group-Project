@@ -1,0 +1,14 @@
+{
+  "post": {
+    "id": 4,
+    "author": 4,
+    "author__email": "author4@example.com",
+    "title": "Post title 4",
+    "content": "Post content 4",
+    "upvotes": [
+      1,
+      2,
+      3
+    ]
+  }
+}

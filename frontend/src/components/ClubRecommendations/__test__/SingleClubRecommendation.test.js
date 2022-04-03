@@ -17,7 +17,8 @@ describe("Components exist", () => {
             render(routerWrapper(<SingleClubRecommendation club={{
                 "owner": {"email": "user2@example.org"},
                 "name": "Club 1",
-                "id": 1
+                "id": 1,
+                "members": [1,2,3]
             }}/>))
         })
 
@@ -32,12 +33,28 @@ describe("Components exist", () => {
             render(routerWrapper(<SingleClubRecommendation club={{
                 "owner": 1,
                 "name": "Club 1",
-                "id": 1
+                "id": 1,
+                "members": [1,2,3]
             }}/>))
         })
 
         await waitFor(() => {
-            expect(screen.getByAltText("Gravatar for test@test.org")).toBeInTheDocument()
+            expect(screen.getByAltText("Gravatar for test1@test.org")).toBeInTheDocument()
+        })
+    })
+
+    test("contains members", async () => {
+        act(() => {
+            render(routerWrapper(<SingleClubRecommendation club={{
+                "owner": 1,
+                "name": "Club 1",
+                "id": 1,
+                "members": [1,2,3]
+            }}/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(/Members: 3/i)).toBeInTheDocument()
         })
     })
 })

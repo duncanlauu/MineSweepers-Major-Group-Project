@@ -28,7 +28,7 @@ describe("Components exist", () => {
 
     test("contains gravatar", async () => {
         act(() => {
-            render(routerWrapper(<SingleCommentReply reply={{
+            render(routerWrapper(<SingleCommentReply currentPost={1} currentComment={1} reply={{
                 author: 1,
                 author__email: "author1@example.com",
                 content: "Reply 1"
@@ -42,7 +42,7 @@ describe("Components exist", () => {
 
     test("contains reply content", async () => {
         act(() => {
-            render(routerWrapper(<SingleCommentReply reply={{
+            render(routerWrapper(<SingleCommentReply currentPost={1} currentComment={1} reply={{
                 author: 1,
                 author__email: "author1@example.com",
                 content: "Reply 1"
@@ -56,7 +56,7 @@ describe("Components exist", () => {
 
     test("contains delete button if author is the same as current user", async () => {
         act(() => {
-            render(routerWrapper(<SingleCommentReply reply={{
+            render(routerWrapper(<SingleCommentReply currentPost={1} currentComment={1} reply={{
                 author: 1,
                 author__email: "author1@example.com",
                 content: "Reply 1"
@@ -70,7 +70,7 @@ describe("Components exist", () => {
 
     test("does not contain delete button if author is not the same as current user", async () => {
         act(() => {
-            render(routerWrapper(<SingleCommentReply reply={{
+            render(routerWrapper(<SingleCommentReply currentPost={1} currentComment={1} reply={{
                 author: 2,
                 author__email: "author1@example.com",
                 content: "Reply 1"

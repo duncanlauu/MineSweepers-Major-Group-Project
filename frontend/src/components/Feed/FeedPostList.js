@@ -1,41 +1,32 @@
-import React, { useState, useEffect, useRef } from "react"
-import axiosInstance from '../../axios'
+import React, {useState, useEffect} from "react";
+import axiosInstance from "../../axios";
 import SingleFeedPost from "./SingleFeedPost";
 
-export default function FeedPostList(props){
-    const [myFeedPosts, setFeedPosts] = useState("");
+export default function FeedPostList() {
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        getFeedPosts()
+        getPosts();
     }, []);
 
-    const getFeedPosts = () => {
+    const getPosts = () => {
         axiosInstance
             .get("feed/")
             .then((res) => {
-                const allFeedPosts = res.data.posts;
-                setFeedPosts(allFeedPosts)
+                setPosts(res.data.posts);
             })
-            .catch(error => console.error(error));
-    }
+            .catch((error) => console.error(error));
+    };
 
-    const displayFeedPosts = (e) => {
-        if (myFeedPosts.length > 0) {
+    if (posts.length > 0) {
+        return posts.map((post) => {
             return (
-                myFeedPosts.map((feedPost, index) => {
-                    return(
-                        <div className="SingleFeedPost" key={feedPost.id}>
-                            <SingleFeedPost feedPost={feedPost} />
-                        </div>
-                    )
-                })
-            )
-        } else {
-            return (<h5> No posts available. </h5>)
-        }
+                <div className="SingleFeedPost" key={post.id}>
+                    <SingleFeedPost post={post}/>
+                </div>
+            );
+        });
+    } else {
+        return <h4> Your feed is empty. Add friends to check out their posts! </h4>;
     }
-
-    return(
-        <> {displayFeedPosts()} </>
-    )
 }
