@@ -1,15 +1,30 @@
 [
     {
         "model": "app.Book",
-        "pk": "978-0-321-87758-1",
+        "pk": "0380715899",
         "fields": {
-            "title": "Ender's Game",
-            "author": "Orson Scott Card",
-            "publication_date": "1985-10-01",
-            "publisher": "Orbit",
-            "image_links_large": "image_link_large",
-            "image_links_medium": "image_link_medium",
-            "image_links_small": "Image_link"
+            "title": "A Soldier of the Great War",
+            "author": "Mark Helprin",
+            "publication_date": "1992",
+            "publisher": "Avon Books",
+            "image_links_large": "http://images.amazon.com/images/P/0380715899.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0380715899.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0380715899.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        }
+    },
+    {
+        "model": "app.Book",
+        "pk": "00000000001",
+        "fields": {
+            "title": "Test Book 1",
+            "author": "Test Author",
+            "publication_date": "2000",
+            "publisher": "Test Books",
+            "image_links_large": "http://www.example.com",
+            "image_links_medium": "http://www.example.com",
+            "image_links_small": "http://www.example.com",
+            "genre": "Test"
         }
     }
 ]

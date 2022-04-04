@@ -1,145 +1,61 @@
-"""Tests of the log in view."""
-from django.contrib import messages
-from django.test import TestCase
-from django.urls import reverse
-from app.forms import LogInForm
+from rest_framework import status
+from rest_framework.test import APITestCase
 from app.models import User
-from app.tests.helpers import LogInTester, reverse_with_next
 
-# Class modified from Clucker
-class LogInViewTestCase(TestCase, LogInTester):
-    """Tests of the log in view."""
 
-    fixtures = ['app/tests/fixtures/default_user.json']
+class LogInTest(APITestCase):
+    """Tests of the login API"""
+
+    fixtures = [
+        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_books.json',
+    ]
+
+    login_url = "/api/token/"
 
     def setUp(self):
-        self.url = reverse('log_in')
         self.user = User.objects.get(username='johndoe')
+        self.login_data = {
+            "username": self.user.username,
+            "password": 'Password123',
+        }
 
-    def test_log_in_url(self):
-        self.assertEqual(self.url,'/log_in/')
+    def test_log_in(self):
+        login_data = dict(self.login_data)
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_get_log_in(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'log_in.html')
-        form = response.context['form']
-        next = response.context['next']
-        self.assertTrue(isinstance(form, LogInForm))
-        self.assertFalse(form.is_bound)
-        self.assertFalse(next)
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 0)
+    def test_log_in_with_wrong_password(self):
+        login_data = dict(self.login_data)
+        login_data['password'] = "WrongPassword123"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    # Implement once there is somewhere to redirect
-    # def test_get_log_in_with_redirect(self):
-    #     destination_url = reverse('user_list')
-    #     self.url = reverse_with_next('log_in', destination_url)
-    #     response = self.client.get(self.url)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'log_in.html')
-    #     form = response.context['form']
-    #     next = response.context['next']
-    #     self.assertTrue(isinstance(form, LogInForm))
-    #     self.assertFalse(form.is_bound)
-    #     self.assertEqual(next, destination_url)
-    #     messages_list = list(response.context['messages'])
-    #     self.assertEqual(len(messages_list), 0)
+    def test_log_in_with_wrong_username(self):
+        login_data = dict(self.login_data)
+        login_data['username'] = "WrongUsername"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_get_log_in_redirects_when_logged_in(self):
-        self.client.login(username=self.user.username, password="Password123")
-        response = self.client.get(self.url, follow=True)
-        redirect_url = reverse('dummy')
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'dummy.html')
+    def test_log_in_nonexistentuser(self):
+        login_data = dict(self.login_data)
+        login_data['username'] = "WrongUsername"
+        login_data['password'] = "WrongPassword123"
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_unsuccesful_log_in(self):
-        form_input = { 'username': 'johndoe', 'password': 'WrongPassword123' }
-        response = self.client.post(self.url, form_input)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'log_in.html')
-        form = response.context['form']
-        self.assertTrue(isinstance(form, LogInForm))
-        self.assertFalse(form.is_bound)
-        self.assertFalse(self._is_logged_in())
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0].level, messages.ERROR)
+    def test_log_in_without_password(self):
+        login_data = dict(self.login_data)
+        del login_data['password']
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_log_in_with_blank_username(self):
-        form_input = { 'username': '', 'password': 'Password123' }
-        response = self.client.post(self.url, form_input)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'log_in.html')
-        form = response.context['form']
-        self.assertTrue(isinstance(form, LogInForm))
-        self.assertFalse(form.is_bound)
-        self.assertFalse(self._is_logged_in())
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0].level, messages.ERROR)
-
-    def test_log_in_with_blank_password(self):
-        form_input = { 'username': 'johndoe', 'password': '' }
-        response = self.client.post(self.url, form_input)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'log_in.html')
-        form = response.context['form']
-        self.assertTrue(isinstance(form, LogInForm))
-        self.assertFalse(form.is_bound)
-        self.assertFalse(self._is_logged_in())
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0].level, messages.ERROR)
-
-    def test_succesful_log_in(self):
-        form_input = { 'username': 'johndoe', 'password': 'Password123' }
-        response = self.client.post(self.url, form_input, follow=True)
-        self.assertTrue(self._is_logged_in())
-        response_url = reverse('dummy')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'dummy.html')
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 0)
-
-    # Implement once there is somewhere to redirect
-    # def test_succesful_log_in_with_redirect(self):
-    #     redirect_url = reverse('user_list')
-    #     form_input = { 'username': 'johndoe', 'password': 'Password123', 'next': redirect_url }
-    #     response = self.client.post(self.url, form_input, follow=True)
-    #     self.assertTrue(self._is_logged_in())
-    #     self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    #     self.assertTemplateUsed(response, 'user_list.html')
-    #     messages_list = list(response.context['messages'])
-    #     self.assertEqual(len(messages_list), 0)
-
-    def test_post_log_in_redirects_when_logged_in(self):
-        self.client.login(username=self.user.username, password="Password123")
-        form_input = { 'username': 'wronguser', 'password': 'WrongPassword123' }
-        response = self.client.post(self.url, form_input, follow=True)
-        redirect_url = reverse('dummy')
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'dummy.html')
-
-    # Implement once there is somewhere to redirect
-    # def test_post_log_in_with_incorrect_credentials_and_redirect(self):
-    #     redirect_url = reverse('user_list')
-    #     form_input = { 'username': 'johndoe', 'password': 'WrongPassword123', 'next': redirect_url }
-    #     response = self.client.post(self.url, form_input)
-    #     next = response.context['next']
-    #     self.assertEqual(next, redirect_url)
-
-    def test_valid_log_in_by_inactive_user(self):
-        self.user.is_active = False
-        self.user.save()
-        form_input = { 'username': 'johndoe', 'password': 'Password123' }
-        response = self.client.post(self.url, form_input, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'log_in.html')
-        form = response.context['form']
-        self.assertTrue(isinstance(form, LogInForm))
-        self.assertFalse(form.is_bound)
-        self.assertFalse(self._is_logged_in())
-        messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0].level, messages.ERROR)
+    def test_log_in_without_username(self):
+        login_data = dict(self.login_data)
+        del login_data['username']
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

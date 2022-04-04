@@ -2,3 +2,13 @@ from .account_views import *
 from .authentication_views import *
 from .static_views import *
 from .club_views import *
+from .search_view import *
+from .rating_views import *
+from .scheduling_views import *
+from .friend_views import *
+from .book_views import *
+from .genres_view import *
+from .recommender_views import *
+from .chat_views import *
+from .feed_views import *
+from .email import *

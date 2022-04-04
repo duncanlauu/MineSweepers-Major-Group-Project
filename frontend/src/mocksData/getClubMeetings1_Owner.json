@@ -1,0 +1,169 @@
+[
+    {
+        "id": 1,
+        "book": {
+            "ISBN": "0133836878",
+            "title": "Happy Birthday, Moon",
+            "author": "Frank Asch",
+            "publication_date": 1982,
+            "publisher": "Prentice Hall",
+            "image_links_large": "http://images.amazon.com/images/P/0133836878.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0133836878.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0133836878.01.THUMBZZZ.jpg",
+            "genre": "Animated films"
+        },
+        "name": "Kerbal book meeting number 1",
+        "description": "Reading books but also space, what else could you possibly need?",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 1,
+        "organiser": 1,
+        "attendees": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "id": 2,
+        "book": {
+            "ISBN": "0553293001",
+            "title": "Secret of the Dolphins (Choose Your Own Adventure, No 134)",
+            "author": "Edward Packard",
+            "publication_date": 1993,
+            "publisher": "Skylark Books",
+            "image_links_large": "http://images.amazon.com/images/P/0553293001.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0553293001.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0553293001.01.THUMBZZZ.jpg",
+            "genre": "Dolphins"
+        },
+        "name": "Kerbal book club meeting #0",
+        "description": "Reiciendis eos ab nostrum laborum officiis perspiciatis.\nLaboriosam quos similique vel.\nQuasi error pariatur doloremque iure. Voluptatibus consectetur nobis ipsam. Quae dicta molestias quis.\nRepellendus vero est veritatis minus porro. Doloribus consequatur veniam quisquam. Veniam ab optio iste exercitationem.\nVoluptatum magnam possimus quos hic dolorum porro. Nostrum placeat ea. Quisquam commodi amet.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 2,
+        "organiser": 1,
+        "attendees": [
+            3
+        ]
+    },
+    {
+        "id": 3,
+        "book": {
+            "ISBN": "1575667223",
+            "title": "Blueberry Muffin Murder (Hannah Swensen Mysteries (Paperback))",
+            "author": "Joanne Fluke",
+            "publication_date": 2003,
+            "publisher": "Kensington Publishing Corporation",
+            "image_links_large": "http://images.amazon.com/images/P/1575667223.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/1575667223.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/1575667223.01.THUMBZZZ.jpg",
+            "genre": "Fiction"
+        },
+        "name": "Kerbal book club meeting #1",
+        "description": "Dolor neque omnis accusamus quis eaque odit. Ipsam ipsum perspiciatis illum mollitia. Reprehenderit in sit ducimus cum sed.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 3,
+        "organiser": 1,
+        "attendees": [
+            2,
+            3
+        ]
+    },
+    {
+        "id": 4,
+        "book": {
+            "ISBN": "155874813X",
+            "title": "More Taste Berries for Teens, Inspirational Short Stories and Encouragement on Life, Love, Friendship and Tough Issues",
+            "author": "Bettie Youngs",
+            "publication_date": 2000,
+            "publisher": "Health Communications",
+            "image_links_large": "http://images.amazon.com/images/P/155874813X.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/155874813X.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/155874813X.01.THUMBZZZ.jpg",
+            "genre": "Juvenile Nonfiction"
+        },
+        "name": "Kerbal book club meeting #2",
+        "description": "Laboriosam aliquid harum illo nulla ab. Voluptatem illum adipisci commodi.\nNobis labore modi ipsam tempora. Totam earum voluptatibus reiciendis non dolorem similique.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 4,
+        "organiser": 2,
+        "attendees": [
+            4
+        ]
+    },
+    {
+        "id": 5,
+        "book": {
+            "ISBN": "0451160096",
+            "title": "Seeing Solutions: Brief Visualizations to Help You Control Your Anger, Anxiety, and Frustration and to Create a Better Reality",
+            "author": "Barbara Ardinger",
+            "publication_date": 1989,
+            "publisher": "New Amer Library (Mm)",
+            "image_links_large": "http://images.amazon.com/images/P/0451160096.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0451160096.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0451160096.01.THUMBZZZ.jpg",
+            "genre": "Anger"
+        },
+        "name": "Kerbal book club meeting #3",
+        "description": "Ipsam magnam voluptates quidem voluptatibus explicabo aspernatur. Quasi mollitia distinctio enim commodi officiis.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 5,
+        "organiser": 3,
+        "attendees": [
+            1,
+            4
+        ]
+    },
+    {
+        "id": 6,
+        "book": {
+            "ISBN": "1569310823",
+            "title": "Battle Angel Alita: Angel of Victory",
+            "author": "Yukito Kishiro",
+            "publication_date": 1995,
+            "publisher": "Viz Communications",
+            "image_links_large": "http://images.amazon.com/images/P/1569310823.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/1569310823.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/1569310823.01.THUMBZZZ.jpg",
+            "genre": "Comics & Graphic Novels"
+        },
+        "name": "Kerbal book club meeting #4",
+        "description": "Est nam porro asperiores rerum. Quam est quaerat ipsam possimus eaque. Nam dignissimos repellat id numquam provident temporibus.\nDoloremque quae harum iusto tempora beatae consequatur.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 6,
+        "organiser": 2,
+        "attendees": [
+            1,
+            3,
+            4
+        ]
+    },
+    {
+        "id": 7,
+        "book": {
+            "ISBN": "0689311443",
+            "title": "One Summer in Montana",
+            "author": "Dayton O. Hyde",
+            "publication_date": 1985,
+            "publisher": "Simon & Schuster",
+            "image_links_large": "http://images.amazon.com/images/P/0689311443.01.LZZZZZZZ.jpg",
+            "image_links_medium": "http://images.amazon.com/images/P/0689311443.01.MZZZZZZZ.jpg",
+            "image_links_small": "http://images.amazon.com/images/P/0689311443.01.THUMBZZZ.jpg",
+            "genre": "Montana"
+        },
+        "name": "Kerbal book club meeting #5",
+        "description": "Exercitationem libero recusandae vitae id reiciendis nemo.",
+        "link": "We found that using Zoom or Microsoft Teams is expensive. This link is a fake link (but for free)",
+        "club": 1,
+        "time": 7,
+        "organiser": 2,
+        "attendees": [
+            4
+        ]
+    }
+]

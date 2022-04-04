@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,pycharm,sublimetext,visualstudio,visualstudiocode,xcode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,venv,macos,linux,windows,pycharm,sublimetext,visualstudio,visualstudiocode,xcode
 
+dump_file
+frontend/coverage/*
+
 ### Django ###
 *.log
 *.pot
@@ -896,6 +899,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+coverage/
 htmlcov/
 .tox/
 .nox/
@@ -1732,3 +1736,10 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,pycharm,sublimetext,visualstudio,visualstudiocode,xcode
 staticfiles
+
+# Code coverage
+frontend/coverage/*
+
+# auto generated react files
+package-lock.json
+frontend/static/frontend/main.js

@@ -1,0 +1,103 @@
+import React, { useState } from 'react'
+import { Col, Container, FormGroup, Input, Label, Row, Button } from 'reactstrap'
+import { HeadingText, LoginContainer, ParaText } from './PasswordResetConfirmElements'
+
+import axiosInstance from '../../axios'
+import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+import MainNav from '../Nav/MainNav'
+
+export default function PasswordResetConfirm() {
+    let params = useParams()
+
+    const navigate = useNavigate();
+    const initialFormData = Object.freeze({
+        new_password: '',
+        re_new_password: ''
+    });
+
+    const [newPasswordErr, setNewPasswordErr] = useState('')
+    const [ReNewPasswordErr, setReNewPasswordErr] = useState('')
+
+    const [formData, updateFormData] = useState(initialFormData)
+
+    const handleChange = (e) => {
+        updateFormData({
+            ...formData,
+            [e.target.name]: e.target.value.trim(),
+        });
+    };
+
+    const handleSubmit = (e) => {
+
+        e.preventDefault()
+        axiosInstance
+            .post(`/auth/users/reset_password_confirm/`, {
+                uid: params["uid"],
+                token: params["token"],
+                new_password: formData.new_password,
+                re_new_password: formData.re_new_password,
+
+            })
+            .then((response) => {
+                navigate("/log_in/") // should go to a webiste that says password reset succesful and ask you to log in
+                //or maybe even log you out if you are logged in
+            })
+            .catch((e) => {
+                setNewPasswordErr(e.response.data.new_password)
+                setReNewPasswordErr(e.response.data.re_new_password)
+                if (e.response.data.non_field_errors) setReNewPasswordErr(e.response.data.non_field_errors)
+            })
+    }
+
+    return (
+        <div style={{ overflow: "hidden" }}>
+            <Row>
+                <MainNav isAuthenticated={false} />
+            </Row>
+            <Container fluid>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
+                    <Col>
+                        <HeadingText>Password Reset</HeadingText><br />
+                        <LoginContainer>
+                            <form style={{ width: "80%" }}>
+                                <FormGroup>
+                                    <Label><ParaText>New Password</ParaText></Label>
+                                    <Input
+                                        data-testid="new_password"
+                                        name="new_password"
+                                        onChange={handleChange}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3", fontFamily: "Source Sans Pro" }}
+                                    />
+                                </FormGroup>
+                                <div data-testid="new_password_errors">{newPasswordErr}</div>
+                                <FormGroup>
+                                    <Label><ParaText>Confirm New Password</ParaText></Label>
+                                    <Input
+                                        name="re_new_password"
+                                        data-testid="re_new_password"
+                                        onChange={handleChange}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3", fontFamily: "Source Sans Pro" }}
+                                    />
+                                </FormGroup>
+                                <div data-testid="re_new_password_errors">{ReNewPasswordErr}</div>
+                                <FormGroup>
+                                    <Col sm={{ size: 10, offset: 4 }}>
+                                        <Button
+                                            type="submit"
+                                            onClick={handleSubmit}
+                                            style={{ backgroundColor: "#653FFD", marginTop: "1rem" }}>
+                                            Reset
+                                        </Button>
+                                    </Col>
+                                </FormGroup>
+                            </form>
+                        </LoginContainer>
+                    </Col>
+                    <Col />
+                </Row>
+            </Container>
+        </div>
+    )
+}

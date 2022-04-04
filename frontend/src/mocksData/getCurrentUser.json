@@ -1,0 +1,23 @@
+{
+    "id": 1,
+    "password": "pbkdf2_sha256$260000$nghK9JWg2c7lKU5YE8ggTX$YTSrsurQe57gmH6582vjRdgHlHYLd2iUKBqnbedXPbw=",
+    "last_login": null,
+    "is_superuser": false,
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-03-24T13:36:10.145043Z",
+    "username": "test1",
+    "email": "test1@test.org",
+    "first_name": "first name 1",
+    "last_name": "last name 1",
+    "bio": "bio 1",
+    "location": "location 1",
+    "birthday": "2022-03-02",
+    "created_at": "2022-03-24T13:36:10.250617Z",
+    "groups": [],
+    "user_permissions": [],
+    "liked_books": [],
+    "read_books": [],
+    "clubs": [],
+    "friends": []
+}
