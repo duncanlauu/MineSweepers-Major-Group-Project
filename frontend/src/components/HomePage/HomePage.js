@@ -159,6 +159,10 @@ const HomePage = () => {
                     <br/>
                     <Heading2Text>Clubs</Heading2Text>
                     <br/>
+                    <Link to="/recommend_clubs">
+                        See all club recommendations 
+                    </Link>
+                    <br/>
                     <ul style={{display: "flex", flexDirection: "row"}}>
                         {
                             recommendedClubs.map(club =>
@@ -172,6 +176,9 @@ const HomePage = () => {
                             )
                         }
                     </ul>
+                    <Link to="/all_clubs">
+                        See all clubs 
+                    </Link>
                 </Col>
                 <Col/>
             </Row>

@@ -19,7 +19,7 @@ export const ParaText = styled.text`
 `;
 
 export const FeedContainer = styled.div`
-  height: 60rem;
+  height: 80rem;
   width: 100%;
   border-radius: 10px;
   overflow-y: scroll;
