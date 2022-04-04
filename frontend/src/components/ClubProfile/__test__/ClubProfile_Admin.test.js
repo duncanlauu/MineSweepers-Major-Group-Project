@@ -595,7 +595,7 @@ describe('User is admin', () => {
                 const feedTab = await screen.findByRole('tab', { name: /feed/i })
                 fireEvent.click(feedTab)
 
-                const title = await screen.findByRole('heading', { name: /enim illum perspiciatis aut\. maiores nostrum eaque\./i })
+                const title = await screen.findByText(/enim illum perspiciatis aut\. maiores nostrum eaque\./i)
                 expect(title).toBeInTheDocument()
             })
         })

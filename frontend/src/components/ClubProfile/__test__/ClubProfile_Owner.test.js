@@ -511,7 +511,7 @@ describe('User is owner', () => {
                 const feedTab = await screen.findByRole('tab', { name: /feed/i })
                 fireEvent.click(feedTab)
 
-                const title = await screen.findByRole('heading', { name: /libero cupiditate temporibus optio delectus\. similique illum deserunt adipisci occaecati earum\./i })
+                const title = await screen.findByText(/libero cupiditate temporibus optio delectus\. similique illum deserunt adipisci occaecati earum\./i)
                 expect(title).toBeInTheDocument()
             })
         })
