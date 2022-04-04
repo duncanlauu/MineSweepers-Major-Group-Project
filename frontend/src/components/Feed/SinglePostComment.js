@@ -16,7 +16,6 @@ import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
-// import { CommentLineBox } from "../UserProfile/UserProfileElements";
 import { CommentContainer, CommentContent } from "./FeedElements";
 
 export default function SinglePostComment(props) {
@@ -88,93 +87,6 @@ export default function SinglePostComment(props) {
 
   const togglerID = "toggler" + singleComment.id;
   const HashtagTogglerId = "#toggler" + singleComment.id;
-
-  // return (
-  //   <div className="singleComment" key={singleComment.id}>
-  //     <Row>
-  //       <Col
-  //         xs="2"
-  //         style={{
-  //           height: "3rem",
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "flex-start",
-  //         }}
-  //       >
-  //         <Gravatar
-  //           email={posterEmail}
-  //           size={30}
-  //           onClick={navigateToProfile}
-  //           style={{
-  //             borderRadius: "50px",
-  //             marginTop: "0rem",
-  //             marginBottom: "0rem",
-  //           }}
-  //         />
-  //       </Col>
-  //       <Col
-  //         xs="7"
-  //         style={{
-  //           height: "3rem",
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //         }}
-  //       >
-  //         <CommentLineBox>
-  //           <h6> {singleComment.content} </h6>
-  //         </CommentLineBox>
-  //       </Col>
-  //       <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }}>
-  //         <Button
-  //           data-testid={"comment-reply-button"}
-  //           id={togglerID}
-  //           style={{
-  //             background: commentsVisibility ? "#653FFD" : "#ffffff",
-  //             color: commentsVisibility ? "#ffffff" : "#653FFD",
-  //             borderColor: "#653FFD",
-  //           }}
-  //           onclick={changeCommentsVisibility}
-  //         >
-  //           <CommentIcon style={{ fontSize: "small" }} />
-  //         </Button>
-  // &nbsp;
-  // <Button
-  //   data-testid={"comment-like-button"}
-  //   style={{
-  //     background: likedByUser ? "#653FFD" : "#ffffff",
-  //     color: likedByUser ? "#ffffff" : "#653FFD",
-  //     borderColor: "#653FFD",
-  //   }}
-  //   onClick={likeComment}
-  // >
-  //   <ThumbUp style={{ fontSize: "small" }} />
-  // </Button>
-  //         &nbsp;
-  //         <Button
-  //           style={{
-  //             background: "#653FFD",
-  //             color: "#ffffff",
-  //             borderColor: "#653FFD",
-  //           }}
-  //           onClick={changeModalVisibility}
-  //         >
-  //           {likesCount}
-  //           <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
-  //         </Button>
-  //         &nbsp;
-  //         {singleComment.author === currentUser.id && (
-  //           <Button
-  //             color="danger"
-  //             name={singleComment.id}
-  //             data-testid="comment-remove-button"
-  //             onClick={(e) => deleteComment(singleComment.id, e)}
-  //           >
-  //             <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
-  //           </Button>
-  //         )}
-  //       </Col>
-  //     </Row>
 
   return (
     <div
@@ -288,7 +200,7 @@ export default function SinglePostComment(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
-        <h4>Users who liked {props.comment.author__username}'s comment</h4>
+          <h4>Users who liked {props.comment.author__username}'s comment</h4>
           <hr></hr>
           <LikesUsersList
             type="comment"

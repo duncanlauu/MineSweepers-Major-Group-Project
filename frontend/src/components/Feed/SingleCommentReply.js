@@ -123,7 +123,7 @@ export default function SingleCommentReply(props) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "right",
-                float: "right"
+                float: "right",
               }}
             >
               <Button
@@ -184,103 +184,3 @@ export default function SingleCommentReply(props) {
     </div>
   );
 }
-
-//   return (
-//     <div className="singleComment" key={singleReply.id}>
-//       <Row>
-//         <Col>
-//           <Row>
-//             <Col
-//               xs="2"
-//               style={{
-//                 height: "3rem",
-//                 display: "flex",
-//                 justifyContent: "center",
-//                 alignItems: "flex-start",
-//               }}
-//             >
-//               <Gravatar
-//                 email={posterEmail}
-//                 size={30}
-//                 onClick={navigateToProfile}
-//                 style={{
-//                   borderRadius: "50px",
-//                   marginTop: "0rem",
-//                   marginBottom: "0rem",
-//                 }}
-//               />
-//             </Col>
-//             <Col
-//               xs="7"
-//               style={{
-//                 height: "3rem",
-//                 display: "flex",
-//                 justifyContent: "center",
-//                 alignItems: "center",
-//               }}
-//             >
-//               <ReplyLineBox>
-//                 <h6> {singleReply.content} </h6>
-//               </ReplyLineBox>
-//             </Col>
-//             <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }}>
-//               <Button
-//                 data-testid={"reply-like-button"}
-//                 style={{
-//                   background: likedByUser ? "#653FFD" : "#ffffff",
-//                   color: likedByUser ? "#ffffff" : "#653FFD",
-//                   borderColor: "#653FFD",
-//                 }}
-//                 onClick={likeReply}
-//               >
-//                 <ThumbUp style={{ fontSize: "small" }} />
-//               </Button>
-//               &nbsp;
-//               <Button
-//                 style={{
-//                   background: "#653FFD",
-//                   color: "#ffffff",
-//                   borderColor: "#653FFD",
-//                 }}
-//                 onClick={changeModalVisibility}
-//               >
-//                 {likesCount}
-//                 <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
-//               </Button>
-//               {singleReply.author === currentUser.id && (
-//                 <Button
-//                   color="danger"
-//                   name={singleReply.id}
-//                   onClick={(e) => deleteComment(singleReply.id, e)}
-//                   style={{
-//                     background: "#653FFD",
-//                     color: "#ffffff",
-//                     borderColor: "#653FFD",
-//                   }}
-//                 >
-//                   <DeleteIcon></DeleteIcon>
-//                 </Button>
-//               )}
-//             </Col>
-//           </Row>
-//         </Col>
-//       </Row>
-
-//       {/* <Modal
-//         isOpen={isModalVisible}
-//         toggle={() => changeModalVisibility()}
-//         style={{
-//           left: 0,
-//           top: 100,
-//         }}
-//       >
-//         <ModalBody style={{ overflowY: "scroll" }}>
-//           <LikesUsersList
-//             type="reply"
-//             getLikesUsersList={getLikesUsersListReply}
-//           />
-//         </ModalBody>
-//       </Modal> */}
-//     </div>
-//   );
-// }

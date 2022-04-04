@@ -50,63 +50,6 @@ export default function CommentReplyList(props) {
     document.getElementById(inputAreaID).value = "";
   };
 
-  // const displayCommentsUnderPost = (e) => {
-  //   return (
-  //     <div>
-  //       <div style={{ display: "flex", justifyContent: "center" }}>
-  //         <Row style={{ marginBottom: "1rem" }}>
-  //             <Input
-  //               type="textarea"
-  //               rows="1"
-  //               data-testid={"reply-input"}
-  //               id={inputAreaID}
-  //               name="myReply"
-  //               placeholder="Leave a reply here..."
-  //               onChange={handleReplyChange}
-  //               style={{
-  //                 border: "0",
-  //                 backgroundColor: "#fff",
-  //                 height: "3rem",
-  //               }}
-  //             />
-  //           &nbsp;
-  //             <Button
-  //               onClick={(e) => {
-  //                 uploadReply(e, 0);
-  //                 clearInputField();
-  //               }}
-  //               style={{
-  //                 borderRadius: "100px",
-  //                 height: "3rem",
-  //               }}
-  //             >
-  //               <p> Send </p>
-  //             </Button>
-  //         </Row>
-  //       </div>
-
-  //       {repliesUnderComment.length > 0 &&
-  //         repliesUnderComment.map((reply, index) => {
-  //           return (
-  //             <div
-  //               key={reply.id}
-  //               style={{ height: "3rem", marginBottom: "1rem" }}
-  //             >
-  //               <ReplyLine>
-  //                 <SingleCommentReply
-  //                   post={props.post}
-  //                   comment={currentComment}
-  //                   reply={reply}
-  //                   updatePageAfterReplyDeletion={updatePageAfterReplyDeletion}
-  //                 />
-  //               </ReplyLine>
-  //             </div>
-  //           );
-  //         })}
-  //     </div>
-  //   );
-  // };
-
   return (
     <div>
       <Row style={{ marginBottom: "3rem" }}>
