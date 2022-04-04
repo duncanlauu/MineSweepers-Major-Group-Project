@@ -44,11 +44,11 @@ For example, the test_recommender_system_view only has 1 test, but it calls 44 f
 This approach was discussed during one of our advisory meetings and was deemed acceptable.
 
 
-At the time of writing, there are 384 tests (all passing) after running the 
+At the time of writing, there are 421 tests (all passing) after running the 
 ```
 $ python3 manage.py test
 ```
-command. The real number of tests is higher, as described above (about 500).
+command. The real number of tests is higher, as described above (about 550).
 
 ### Frontend
 Frontend testing proved challenging for us. We utilise jest and react testing framework for unit testing of the react
@@ -56,7 +56,7 @@ components and selenium for integration testing.
 
 #### Jest and react-testing-library
 We used react-testing-library in conjunction with jest to test the components of the frontend. 
-At the time of writing we have 46 test suites with 285 tests (all passing).
+At the time of writing we have 53 test suites with 465 tests (all passing).
 
 You can run the tests by running the following commands:
 ```
@@ -64,7 +64,8 @@ $ cd frontend
 $ npm run test
 ```
 
-To decouple frontend testing from the backend. we mock the backend API calls in the frontend tests by mocking the axios library. We created a mockData folder which contains fake data, returned as JSON. 
+To decouple frontend testing from the backend. we mock the backend API calls in the frontend tests by mocking the axios library. 
+We created a mockData folder which contains fake data, returned as JSON. 
 We test:
 + for existence and non-existence of that data in the React.
 + dynamic data such as the number of books in the search results.
