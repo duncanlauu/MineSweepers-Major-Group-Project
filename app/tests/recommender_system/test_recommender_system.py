@@ -72,7 +72,7 @@ class RecommenderSystemTestCase(TestCase):
         self._test_get_top_n_global()
         self._test_get_top_n_global_for_genre()
         self._test_get_top_n_for_club()
-        self._test_get_top_n_for_club()
+        self._test_get_top_n_for_club_for_genre()
         self._test_get_top_n_users_by_favourite_books()
         self._test_get_top_n_users_by_random_books()
         self._test_get_top_n_users_for_genre()
