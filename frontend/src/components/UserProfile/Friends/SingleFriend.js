@@ -60,8 +60,16 @@ export default function SingleFriend(props) {
                             alignItems: "center",
                         }}
                     >
-                        <UserNameContainer onClick={navigateToProfile}>
-                            <UserNameText>{currentFriend.username}</UserNameText>
+                        <UserNameContainer>
+                            <UserNameText>
+                                <a
+                                    href={`#`}
+                                    onClick={navigateToProfile}
+                                    style={{color: "#585858"}}
+                                >
+                                    {currentFriend.username}
+                                </a>
+                            </UserNameText>
                         </UserNameContainer>
                     </Col>
                     {props.requestedUser_id == undefined && (
