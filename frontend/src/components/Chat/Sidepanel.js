@@ -102,29 +102,6 @@ export default function Sidepanel(props) {
 
     return (
         <div id="sidepanel" style={{ height: "100%", overflowY: "scroll" }}>
-            <div id="profile">
-                {/* <div className="wrap">
-                    <ImageDiv>
-                        <img id="profile-img" style={{ height:"100%", width:"100%" }} src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="Profile Image"/>
-                    </ImageDiv>
-                    <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
-                    <p>Lorem Ipsum</p>
-                    <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                    <div id="status-options">
-                        <ul>
-                            <li id="status-online" className="active"><span className="status-circle"></span>
-                                <p>Online</p></li>
-                            <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
-                            <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
-                            <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
-                        </ul>
-                    </div>
-                </div> */}
-            </div>
-            {/* <div id="search">
-                <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..."/>
-            </div> */}
             <div id="contacts">
                 <ul>
                     {activeChats.length === 0 ? <>You have no active chats.</> : activeChats}

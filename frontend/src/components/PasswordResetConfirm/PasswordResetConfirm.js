@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
-import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
+import { Col, Container, FormGroup, Input, Label, Row, Button } from 'reactstrap'
 import { HeadingText, LoginContainer, ParaText } from './PasswordResetConfirmElements'
-import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import axiosInstance from '../../axios'
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import MainNav from '../Nav/MainNav'
 
-// https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
-export default function SignIn() {
+export default function PasswordResetConfirm() {
     let params = useParams()
 
     const navigate = useNavigate();
