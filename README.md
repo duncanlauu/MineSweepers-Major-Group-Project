@@ -136,7 +136,7 @@ $ pip3 install numpy
 
 ### Messaging
 + Backend Channels ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py` ): https://channels.readthedocs.io/en/stable/tutorial/index.html
-+ Frontend + Backend: ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py`, `frontend/src/components/Chat`, `frontend/src/components/Chat/Contact.js`, `frontend/src/components/Chat/Profile.js`, `frontend/src/components/Chat/Sidepanel.js`, `frontend/src/websocket.js` ): https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
++ Frontend + Backend: ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py`, `frontend/src/components/Chat`, `frontend/src/components/Chat/Contact.js`, `frontend/src/components/Chat/Sidepanel.js`, `frontend/src/websocket.js` ): https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 
 ### Authentication
 + Axios calls with JWT for receiving data from backend ( `frontend/src/axios.js` ): https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
@@ -152,4 +152,4 @@ $ pip3 install numpy
 
 ## Security
 We made the applications security realistic by utilising the industry standard stateless authentication system with JWT.
-When logging in, the user recieves an access and refresh token. Every request to the backend that requires a user to be authenticated checks the validity of the access token.****
+When logging in, the user recieves an access and refresh token. Every request to the backend that requires a user to be authenticated checks the validity of the access token. If it is invalid, the user is redirected to the login page.
