@@ -66,10 +66,10 @@ $ npm run test
 
 To decouple frontend testing from the backend. we mock the backend API calls in the frontend tests by mocking the axios library. We created a mockData folder which contains fake data, returned as JSON. 
 We test:
-- for existence and non-existence of that data in the React.
-- dynamic data such as the number of books in the search results.
-- the existence of components/functionality that have to exist within the component.
-- the non-existence of components/ functionality that certain users should have no access to. (e.g. in the club profile)
++ for existence and non-existence of that data in the React.
++ dynamic data such as the number of books in the search results.
++ the existence of components/functionality that have to exist within the component.
++ the non-existence of components/ functionality that certain users should have no access to. (e.g. in the club profile)
 
 We followed the best practices of the react testing library, designing atomic tests that are as close as possible to real user interactions.
 
