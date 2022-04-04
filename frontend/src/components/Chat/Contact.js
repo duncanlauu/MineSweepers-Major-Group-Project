@@ -6,7 +6,7 @@ import { MessageProfile, MessagingDisplay, MessagingProfileHeading, MessagingPro
 import { Col } from 'reactstrap'
 
 const Contact = (props) => (
-    <NavLink to={`${props.chatURL}`} style={{color: '#fff'}}>
+    <NavLink test-name="contact-card" to={`${props.chatURL}`} style={{color: '#fff'}}>
         <li className="contact">
             <div className='wrap'>
                 <MessageProfile>
