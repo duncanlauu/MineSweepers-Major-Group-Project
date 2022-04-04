@@ -54,180 +54,180 @@ import books from '../mocksData/books.json'
 const generateGetResponse = (url) => {
     switch (url) {
         case `genres?n=10`:
-            return {data: tenGenres};
+            return { data: tenGenres };
         case `get_current_user`:
-            return {data: currentUser};
+            return { data: currentUser };
         case `/get_current_user/`:
-            return {data: currentUser};
+            return { data: currentUser };
         case `recommender/0/10/1/top_n/`:
-            return {data: myTop10Recommendations}
+            return { data: myTop10Recommendations }
         case `recommender/0/10/top_n_global/`:
-            return {data: top10GlobalRecommendations}
+            return { data: top10GlobalRecommendations }
         case `recommender/0/10/top_n_global_for_genre/history/`:
-            return {data: top10GlobalHistoryRecommendations}
+            return { data: top10GlobalHistoryRecommendations }
         case `recommender/0/10/1/top_n_for_genre/history/`:
-            return {data: myTop10HistoryRecommendations}
+            return { data: myTop10HistoryRecommendations }
         case `books/0195153448`:
-            return {data: bookDetails1}
+            return { data: bookDetails1 }
         case `books/0380715899`:
-            return {data: bookDetails2}
+            return { data: bookDetails2 }
         case `books/00000000001`:
-            return {data: bookDetails3}
+            return { data: bookDetails3 }
         case `recommender/0/10/1/top_n_clubs_top_club_books/`:
-            return {data: topClubs}
+            return { data: topClubs }
         case `recommender/0/10/1/top_n_for_club/`:
-            return {data: books}
+            return { data: books }
         case `/user/get_update/1/`:
-            return {data: currentUser};
+            return { data: currentUser };
         case `user/get_update/1`:
-            return {data: currentUser};
+            return { data: currentUser };
         case `user/get_update/1/`:
-            return {data: currentUser};
+            return { data: currentUser };
         case `user/get_update/2/`:
-            return {data: currentUser2};
+            return { data: currentUser2 };
         case `user/get_update/2`:
-            return {data: currentUser2};
+            return { data: currentUser2 };
         case `user/get_update/3/`:
-            return {data: currentUser3};
+            return { data: currentUser3 };
         case `user/get_update/4/`:
-            return {data: currentUser4};
+            return { data: currentUser4 };
         case `user/get_update/5/`:
-            return {data: currentUser5};
+            return { data: currentUser5 };
         case `meetings/1`:
-            return {data: myMeetings};
+            return { data: myMeetings };
         case `/recommender/0/12/top_n_global/`:
-            return {data: top12Global};
+            return { data: top12Global };
         case `clubs/`:
-            return {data: clubs};
+            return { data: clubs };
         case `clubs/user/1`:
-            return {data: clubs};
+            return { data: clubs };
         case `clubs/user/2`:
-            return {data: clubs};
+            return { data: clubs };
         case `friend_requests/`:
-            return {data: friend_requests};
+            return { data: friend_requests };
         case `friends/`:
-            return {data: friends};
+            return { data: friends };
         case `friends/user/1`:
-            return {data: friends};
+            return { data: friends };
         case `friends/user/2`:
-            return {data: friends2};
+            return { data: friends2 };
         case `ratings/`:
-            return {data: ratings};
+            return { data: ratings };
         case `ratings/other_user/1`:
-            return {data: ratings2};
+            return { data: ratings2 };
         case `ratings/other_user/2`:
-            return {data: ratings2};
+            return { data: ratings2 };
         case `chat/?username=test`:
-            return {data: userChats}
+            return { data: userChats }
         case `singleclub/1`:
-            return {data: singleClub1_Owner}
+            return { data: singleClub1_Owner }
         case `singleclub/3`:
-            return {data: singleClub3_NotApplied}
+            return { data: singleClub3_NotApplied }
         case `singleclub/4`:
-            return {data: singleClub4_Applied}
+            return { data: singleClub4_Applied }
         case `singleclub/2`:
-            return {data: singleClub2_Member}
+            return { data: singleClub2_Member }
         case `singleclub/15`:
-            return {data: singleClub15_Admin}
+            return { data: singleClub15_Admin }
         case `singleclub/10`:
-            return {data: singleClub10_Banned}
+            return { data: singleClub10_Banned }
         case `feed/clubs/1`:
-            return {data: clubFeed1_Owner}
+            return { data: clubFeed1_Owner }
         case `feed/clubs/2`:
-            return {data: clubFeed2_Member}
+            return { data: clubFeed2_Member }
         case `feed/clubs/15`:
-            return {data: clubFeed15_Admin}
+            return { data: clubFeed15_Admin }
         case `club_meetings/1`:
-            return {data: clubMeetings1_Owner}
+            return { data: clubMeetings1_Owner }
         case `club_meetings/2`:
-            return {data: clubMeetings2_Member}
+            return { data: clubMeetings2_Member }
         case `club_meetings/15`:
-            return {data: clubMeetings15_Admin}
+            return { data: clubMeetings15_Admin }
         case `posts/1/comments/1/replies/`:
-            return {data: replies};
+            return { data: replies };
         case `posts/1/comments/2/replies/`:
-            return {data: replies2};
+            return { data: replies2 };
         case `posts/1/comments/3/replies/`:
-            return {data: replies3};
+            return { data: replies3 };
         case `posts/1/comments/4/replies/`:
-            return {data: replies4};
+            return { data: replies4 };
         case `posts/1/comments/5/replies/`:
-            return {data: replies5};
+            return { data: replies5 };
         case `posts/2/comments/1/replies/`:
-            return {data: replies};
+            return { data: replies };
         case `posts/2/comments/2/replies/`:
-            return {data: replies2};
+            return { data: replies2 };
         case `posts/2/comments/3/replies/`:
-            return {data: replies3};
+            return { data: replies3 };
         case `posts/2/comments/4/replies/`:
-            return {data: replies4};
+            return { data: replies4 };
         case `posts/2/comments/5/replies/`:
-            return {data: replies5};
+            return { data: replies5 };
         case `posts/3/comments/1/replies/`:
-            return {data: replies};
+            return { data: replies };
         case `posts/3/comments/2/replies/`:
-            return {data: replies2};
+            return { data: replies2 };
         case `posts/3/comments/3/replies/`:
-            return {data: replies3};
+            return { data: replies3 };
         case `posts/3/comments/4/replies/`:
-            return {data: replies4};
+            return { data: replies4 };
         case `posts/3/comments/5/replies/`:
-            return {data: replies5};
+            return { data: replies5 };
         case `posts/4/comments/1/replies/`:
-            return {data: replies};
+            return { data: replies };
         case `posts/4/comments/2/replies/`:
-            return {data: replies2};
+            return { data: replies2 };
         case `posts/4/comments/3/replies/`:
-            return {data: replies3};
+            return { data: replies3 };
         case `posts/4/comments/4/replies/`:
-            return {data: replies4};
+            return { data: replies4 };
         case `posts/4/comments/5/replies/`:
-            return {data: replies5};
+            return { data: replies5 };
         case `posts/5/comments/1/replies/`:
-            return {data: replies};
+            return { data: replies };
         case `posts/5/comments/2/replies/`:
-            return {data: replies2};
+            return { data: replies2 };
         case `posts/5/comments/3/replies/`:
-            return {data: replies3};
+            return { data: replies3 };
         case `posts/5/comments/4/replies/`:
-            return {data: replies4};
+            return { data: replies4 };
         case `posts/5/comments/5/replies/`:
-            return {data: replies5};
+            return { data: replies5 };
         case `posts/1/comments/`:
-            return {data: comments};
+            return { data: comments };
         case `posts/2/comments/`:
-            return {data: comments};
+            return { data: comments };
         case `posts/3/comments/`:
-            return {data: comments};
+            return { data: comments };
         case `posts/4/comments/`:
-            return {data: comments};
+            return { data: comments };
         case `posts/5/comments/`:
-            return {data: comments};
+            return { data: comments };
         case `posts/1`:
-            return {data: post};
+            return { data: post };
         case `posts/2`:
-            return {data: post2};
+            return { data: post2 };
         case `posts/3`:
-            return {data: post3};
+            return { data: post3 };
         case `posts/4`:
-            return {data: post4};
+            return { data: post4 };
         case `posts/5`:
-            return {data: post5};
+            return { data: post5 };
         case `feed/`:
-            return {data: posts};
+            return { data: posts };
         case `posts/`:
-            return {data: posts};
+            return { data: posts };
         case `posts/user/1`:
-            return {data: posts};
+            return { data: posts };
         case `posts/user/2`:
-            return {data: posts};
+            return { data: posts };
         case `recommender/0/20/1/top_n_users_random_books/`:
-            return {data: recommended_users};
+            return { data: recommended_users };
         case `chat/?username=test1`:
-            return {data: userChats}
+            return { data: userChats }
         default:
             console.log("no matching mock for url", url)
-            return {data: {}};
+            return { data: {} };
     }
 }
 
@@ -235,7 +235,7 @@ const generatePostResponse = (url, data) => {
     switch (url) {
         case "clubs/":
             if (data.name !== "") {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             } else {
                 return Promise.reject({
                     response: {
@@ -247,9 +247,9 @@ const generatePostResponse = (url, data) => {
             }
         case "token/":
             if (data.password === "Password123") {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             } else {
-                return Promise.reject({data: {}})
+                return Promise.reject({ data: {} })
             }
         case `user/sign_up/`:
             if (data.first_name === "") {
@@ -317,14 +317,15 @@ const generatePostResponse = (url, data) => {
                     }
                 })
             } else {
-                return Promise.resolve({data: {}})
+                return Promise.resolve({ data: {} })
             }
         default:
             console.log("no matching mock for url ", url)
-            return Promise.resolve({data: {}});
+            return Promise.resolve({ data: {} });
     }
 }
 
+// from https://stackoverflow.com/a/70590795/18134517
 const generatePutResponse = (url, data) => {
     switch (url) {
         case "user/get_update/1/":
@@ -343,7 +344,7 @@ const generatePutResponse = (url, data) => {
             }
         default:
             console.log("no matching mock for url ", url)
-            return Promise.resolve({data: {}});
+            return Promise.resolve({ data: {} });
     }
 }
 
@@ -356,18 +357,18 @@ export default {
             }
         }
     },
-    get: jest.fn(() => Promise.resolve({data: {}})),
-    post: jest.fn(() => Promise.resolve({data: {}})),
-    put: jest.fn(() => Promise.resolve({data: {}})),
-    delete: jest.fn(() => Promise.resolve({data: {}})),
+    get: jest.fn(() => Promise.resolve({ data: {} })),
+    post: jest.fn(() => Promise.resolve({ data: {} })),
+    put: jest.fn(() => Promise.resolve({ data: {} })),
+    delete: jest.fn(() => Promise.resolve({ data: {} })),
     create: jest.fn(function () {
         return {
             interceptors: {
                 request: {
-                    use: jest.fn(() => Promise.resolve({data: {}})),
+                    use: jest.fn(() => Promise.resolve({ data: {} })),
                 },
                 response: {
-                    use: jest.fn(() => Promise.resolve({data: {}})),
+                    use: jest.fn(() => Promise.resolve({ data: {} })),
                 }
             },
             defaults: {
@@ -381,7 +382,7 @@ export default {
             get: jest.fn((url) => Promise.resolve(generateGetResponse(url))),
             post: jest.fn((url, data) => generatePostResponse(url, data)),
             put: jest.fn((url, data) => generatePutResponse(url, data)),
-            delete: jest.fn(() => Promise.resolve({data: {}})),
+            delete: jest.fn(() => Promise.resolve({ data: {} })),
         }
     }),
 };

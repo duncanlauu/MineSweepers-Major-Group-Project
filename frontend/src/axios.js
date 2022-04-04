@@ -21,7 +21,6 @@ const axiosInstance = axios.create({
 
 
 // Documentation on interceptors: https://axios-http.com/docs/interceptors
-// From https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
 // when access token becomes invalid, send the refresh token to the api to receive a new access token.
 
 axiosInstance.interceptors.response.use(
