@@ -15,6 +15,8 @@ import { CommentLineBox } from "../UserProfile/UserProfileElements";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function SinglePostComment(props) {
   const [singleComment, setSingleComment] = useState("");
@@ -127,52 +129,47 @@ export default function SinglePostComment(props) {
             data-testid={"comment-reply-button"}
             id={togglerID}
             style={{
-              height: "3rem",
               background: commentsVisibility ? "#653FFD" : "#ffffff",
               color: commentsVisibility ? "#ffffff" : "#653FFD",
               borderColor: "#653FFD",
             }}
             onclick={changeCommentsVisibility}
           >
-            <CommentIcon />
+            <CommentIcon style={{ fontSize: "small" }} />
           </Button>
+          &nbsp;
           <Button
             data-testid={"comment-like-button"}
             style={{
-              height: "3rem",
               background: likedByUser ? "#653FFD" : "#ffffff",
               color: likedByUser ? "#ffffff" : "#653FFD",
               borderColor: "#653FFD",
             }}
             onClick={likeComment}
           >
-            <ThumbUp />
+            <ThumbUp style={{ fontSize: "small" }} />
           </Button>
           &nbsp;
           <Button
             style={{
-              height: "3rem",
               background: "#653FFD",
               color: "#ffffff",
               borderColor: "#653FFD",
             }}
             onClick={changeModalVisibility}
           >
-            Likes: {likesCount}
+            {likesCount}
+            <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
           </Button>
+          &nbsp;
           {singleComment.author === currentUser.id && (
             <Button
               color="danger"
               name={singleComment.id}
               data-testid="comment-remove-button"
               onClick={(e) => deleteComment(singleComment.id, e)}
-              style={{
-                height: "3rem",
-                borderTopLeftRadius: "100px",
-                borderBottomLeftRadius: "100px",
-              }}
             >
-              <p> x </p>
+              <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
             </Button>
           )}
         </Col>
@@ -182,11 +179,7 @@ export default function SinglePostComment(props) {
           <div>
             <hr style={{ marginTop: "0rem" }} />
             <Row>
-              <Col xs="2"> </Col>
-              <Col xs="8">
-                <CommentReplyList comment={singleComment} post={props.post} />
-              </Col>
-              <Col xs="2"> </Col>
+              <CommentReplyList comment={singleComment} post={props.post} />
             </Row>
           </div>
         </UncontrolledCollapse>

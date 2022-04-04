@@ -6,6 +6,8 @@ import { ReplyLineBox } from "../UserProfile/UserProfileElements";
 import { useNavigate } from "react-router";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import LikesUsersList from "./LikesUsersList";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function SingleCommentReply(props) {
   const [singleReply, setSingleReply] = useState("");
@@ -106,7 +108,7 @@ export default function SingleCommentReply(props) {
               />
             </Col>
             <Col
-              xs="9"
+              xs="7"
               style={{
                 height: "3rem",
                 display: "flex",
@@ -118,43 +120,38 @@ export default function SingleCommentReply(props) {
                 <h6> {singleReply.content} </h6>
               </ReplyLineBox>
             </Col>
-            <Col xs="1" style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Col xs="3" style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button
                 data-testid={"reply-like-button"}
                 style={{
-                  height: "2rem",
                   background: likedByUser ? "#653FFD" : "#ffffff",
                   color: likedByUser ? "#ffffff" : "#653FFD",
                   borderColor: "#653FFD",
                 }}
                 onClick={likeReply}
               >
-                <ThumbUp />
+                <ThumbUp style={{ fontSize: "small" }} />
               </Button>
               &nbsp;
               <Button
                 style={{
-                  height: "2rem",
                   background: "#653FFD",
                   color: "#ffffff",
                   borderColor: "#653FFD",
                 }}
                 onClick={changeModalVisibility}
               >
-                Likes: {likesCount}
+                {likesCount}
+                <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
               </Button>
+              &nbsp;
               {singleReply.author === currentUser.id && (
                 <Button
                   color="danger"
                   name={singleReply.id}
                   onClick={(e) => deleteComment(singleReply.id, e)}
-                  style={{
-                    height: "3rem",
-                    borderTopRightRadius: "100px",
-                    borderBottomRightRadius: "100px",
-                  }}
                 >
-                  <p> x </p>
+                  <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
                 </Button>
               )}
             </Col>
