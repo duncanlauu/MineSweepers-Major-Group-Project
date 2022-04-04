@@ -18,18 +18,13 @@ class WebSocketService {
         const path = `ws://127.0.0.1:8000/ws/chat/${chatUrl}/`;
         this.socketRef = new WebSocket(path);
         this.socketRef.onopen = () => {
-            console.log('WebSocket open');
         };
         this.socketRef.onmessage = e => {
             this.socketNewMessage(e.data);
         };
         this.socketRef.onerror = e => {
-            console.log(e.message);
+            console.error(e.message);
         };
-        // this.socketRef.onclose = () => {
-        //   console.log("WebSocket closed let's reopen");
-        //   this.connect();
-        // };
     }
 
     disconnect() {
@@ -48,7 +43,6 @@ class WebSocketService {
             this.callbacks[command](parsedData.messages);
         }
         if (command === 'new_message') {
-            // this.callbacks[command](parsedData.messages);
             this.callbacks[command](parsedData.message);
         }
     }
@@ -77,13 +71,9 @@ class WebSocketService {
 
     sendMessage(data) {
         try {
-            this.socketRef.send(JSON.stringify({...data}));
-            //remove
-            console.log(this.socketRef)
-            console.log(data)
-            console.log(JSON.stringify({...data}))
+            this.socketRef.send(JSON.stringify({ ...data }));
         } catch (err) {
-            console.log(err.message);
+            console.error(err.message);
         }
     }
 

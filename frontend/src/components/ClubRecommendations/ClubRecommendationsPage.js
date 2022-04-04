@@ -17,15 +17,14 @@ const ClubRecommendationPage = () => {
             axiosInstance
                 .get(`recommender/0/10/${user.id}/top_n_clubs_top_club_books/`)
                 .then(res => {
-                    console.log(res);
                     let recommendations = []
                     for (let i = 0; i < res.data.length; i++) {
                         recommendations.push(res.data[i].club);
                     }
                     setClubRecommendations(recommendations);
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.error(err);
                 })
         )
     }
@@ -62,7 +61,7 @@ const ClubRecommendationPage = () => {
                         <LoadingIndicator />
                         <ClubRecommenderContainer>
                             <RecommenderContainer data-testid="recommender_container">
-                                <div style={{ display: "flex", justifyContent: "center", paddingTop: "2rem", paddingBottom: "2rem"}}>
+                                <div style={{ display: "flex", justifyContent: "center", paddingTop: "2rem", paddingBottom: "2rem" }}>
                                     <HeadingText>Clubs For You</HeadingText>
                                 </div>
                                 {clubRecommendations.map(

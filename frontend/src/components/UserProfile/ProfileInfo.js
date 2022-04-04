@@ -21,8 +21,6 @@ export default function ProfileInfo(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(props)
-    console.log(retrievedCurrentUser.id)
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
@@ -51,10 +49,9 @@ export default function ProfileInfo(props) {
           navigate("/error/");
         }
         setCurrentUser(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
         navigate("/error/");
       });
   };
@@ -82,7 +79,6 @@ export default function ProfileInfo(props) {
     axiosInstance
       .delete(`friends/${id}`)
       .then((res) => {
-        console.log(res);
         props.updatePageAfterDeletion();
       })
       .catch((error) => console.error(error));

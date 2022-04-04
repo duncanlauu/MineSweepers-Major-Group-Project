@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../axios";
 import SingleSuggestedUser from "./SingleSuggestedUser";
 
@@ -14,7 +14,6 @@ export default function SuggestedUserList() {
         axiosInstance
             .get(`recommender/0/20/${currentUser.id}/top_n_users_random_books/`)
             .then((res) => {
-                console.log("suggested users", res.data);
                 const allSuggestedUsers = res.data;
                 setSuggestedUsers(allSuggestedUsers);
             })
@@ -25,7 +24,7 @@ export default function SuggestedUserList() {
         if (mySuggestedUsers.length > 0) {
             return (
                 <div>
-                    <div style={{display: "flex", justifyContent: "center"}}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <h3> Suggested Users</h3>
                     </div>
 

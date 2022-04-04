@@ -5,7 +5,6 @@ import React from "react";
 const RequireRatings = () => {
     const { hasRated } = useHasRated();
     const location = useLocation();
-    console.log("has rated: ", hasRated)
     return (
         hasRated?.hasRated == "true"
             ? <Outlet />
