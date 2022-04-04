@@ -12,7 +12,7 @@ function IndividualMeetingCard(props) {
                 </MeetingHeading><br />
                 <a href={`/book_profile/${props.book_id}`}>
                     <BookText>{props.book}</BookText>
-                </a><br />
+                </a><br /> 
                 <MeetingPara>
                     {props.description.length > 220
                         ? props.description.slice(0, 220) + "..."
