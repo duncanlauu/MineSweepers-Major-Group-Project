@@ -3,6 +3,7 @@ from django.test import LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 from django.test import override_settings
+from numpy import number
 from app.models import FriendRequest, User, Club, Chat, Book, Post, BookRating, Comment, Reply
 from django.core.management import call_command
 from django.core import mail
@@ -212,40 +213,40 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # sleep(400)
 
         # # Landing Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        # self.run_testcase(self._test_landing_page_log_in_button, False)
-        # self.run_testcase(self._test_landing_page_sign_up_button, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
+        self.run_testcase(self._test_landing_page_log_in_button, False)
+        self.run_testcase(self._test_landing_page_sign_up_button, False)
 
         # # Log In Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
-        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        # self.run_testcase(self._test_log_in_with_wrong_password, False)
-        # self.run_testcase(self._test_log_in, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
+        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
+        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
+        self.run_testcase(self._test_log_in_with_wrong_password, False)
+        self.run_testcase(self._test_log_in, False)
 
         # # Sign Up Page # DONE
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        # self.run_testcase(self._test_sign_up_with_blank_fields, False)
-        # self.run_testcase(self._test_sign_up_username_too_short, False)
-        # self.run_testcase(self._test_sign_up_invalid_email, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
+        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
+        self.run_testcase(self._test_sign_up_with_blank_fields, False)
+        self.run_testcase(self._test_sign_up_username_too_short, False)
+        self.run_testcase(self._test_sign_up_invalid_email, False)
 
         # # Sign Up Page and new user Book Rating Page # DONE
-        # self.run_testcase(self._test_sign_up_and_book_rating, False)
+        self.run_testcase(self._test_sign_up_and_book_rating, False)
 
         # # Home Page
-        # self.page_contains_functional_navbar("home")
-        # self.run_testcase(self._test_reply_to_comment_on_post, True)
-        # self.run_testcase(self._test_comment_on_post, True)
-        # self.run_testcase(self._test_like_post, True)
-        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        self.page_contains_functional_navbar("home")
+        self.run_testcase(self._test_reply_to_comment_on_post, True)
+        self.run_testcase(self._test_comment_on_post, True)
+        self.run_testcase(self._test_like_post, True)
+        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
 
         # # Search Bar
-        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
-        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
-        # # self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken # CAN BE DELETED OR REPLACED FOR ONE WHERE WE ADD CLUB ID
-        # # self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
+        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
+        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
+        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
+        self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken # CAN BE DELETED OR REPLACED FOR ONE WHERE WE ADD CLUB ID
+        self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
 
         # # User Page
         # self.page_contains_functional_navbar("user_profile")
@@ -282,25 +283,23 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # As Owner
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True)
-        self.run_testcase(self._test_accept_club_applicant_as_owner, True)
-        self.run_testcase(self._test_reject_club_applicant_as_owner, True)
-        self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
-        self.run_testcase(self._test_demote_admin_to_member_as_owner, True)
-        self.run_testcase(self._test_ban_member_as_owner, True)
-        self.run_testcase(self._test_ban_admin_as_owner, True)
-        self.run_testcase(self._test_unban_banned_user_as_owner, True)
-        self.run_testcase(self._test_remove_member_as_owner, True)
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True)
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
+        self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
+        self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
+        self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
+        self.run_testcase(self._test_demote_admin_to_member_as_owner, True) # Works
+        self.run_testcase(self._test_ban_member_as_owner, True) # Works
+        self.run_testcase(self._test_ban_admin_as_owner, True) # Works
+        self.run_testcase(self._test_unban_banned_user_as_owner, True) # Works
+        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
         
 
         # # As Admin
         # Test that there are no make owner, promote, demote buttons
-        self.run_testcase(self._test_accept_club_applicant_as_admin, True)
-        self.run_testcase(self._test_reject_club_applicant_as_admin, True)
-        self.run_testcase(self._test_remove_member_as_admin, True)
-        self.run_testcase(self._test_ban_member_as_admin, True)
-        self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        self.run_testcase(self._test_accept_club_applicant_as_admin, True) # Works
+        self.run_testcase(self._test_reject_club_applicant_as_admin, True) # Works
+        self.run_testcase(self._test_ban_member_as_admin, True) # Works
+        self.run_testcase(self._test_unban_banned_user_as_admin, True) # Works
         
         # As Member
         # Test that there are no make owner, promote, ban, unban, remove buttons, accept, reject buttons
@@ -451,28 +450,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue(new_banned_user in self.club_where_admin.banned_users.all())
         self.assertFalse(new_banned_user in self.club_where_admin.members.all())
 
-    def _test_remove_member_as_admin(self):
-        number_of_members_before = self.club_where_admin.members.count()
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
-        self.browser.implicitly_wait(10)
-        self.wait_until_element_found('//button[.="Members"]')
-        self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        self.wait_until_element_found('//button[.="Remove"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
-        member_individual_user_card = None
-        for individual_user_card in individual_user_cards:
-            individual_user_card_text = individual_user_card.text
-            if("Remove" in individual_user_card_text):
-                member_individual_user_card = individual_user_card
-                break
-        new_removed_user_username = member_individual_user_card.find_element_by_name("username-text").text
-        new_removed_user = User.objects.get(username=new_removed_user_username)
-        member_individual_user_card.find_element_by_xpath('.//button[.="Remove"]').click()
-        sleep(1)
-        number_of_members_after = self.club_where_admin.members.count()
-        self.assertEqual(number_of_members_after, number_of_members_before - 1)
-        self.assertFalse(new_removed_user in self.club_where_admin.members.all())
-
     # Club Profile Page as Owner
 
     def _test_accept_club_applicant_as_owner(self):
@@ -548,28 +525,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertFalse(new_unbanned_user in self.club.banned_users.all())
         
 
-    def _test_remove_member_as_owner(self):
-        number_of_members_before = self.club.members.count()
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
-        self.browser.implicitly_wait(10)
-        self.wait_until_element_found('//button[.="Members"]')
-        self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        self.wait_until_element_found('//button[.="Remove"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
-        member_individual_user_card = None
-        for individual_user_card in individual_user_cards:
-            individual_user_card_text = individual_user_card.text
-            if("Remove" in individual_user_card_text):
-                member_individual_user_card = individual_user_card
-                break
-        new_removed_user_username = member_individual_user_card.find_element_by_name("username-text").text
-        new_removed_user = User.objects.get(username=new_removed_user_username)
-        member_individual_user_card.find_element_by_xpath('.//button[.="Remove"]').click()
-        sleep(1)
-        number_of_members_after = self.club.members.count()
-        self.assertEqual(number_of_members_after, number_of_members_before - 1)
-        self.assertFalse(new_removed_user in self.club.members.all())
-
     def _test_ban_admin_as_owner(self):
         number_of_banned_users_before = self.club.banned_users.count()
         number_of_admins_before = self.club.admins.count()
@@ -577,12 +532,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        self.wait_until_element_found('//button[.="Ban"]')
+        self.wait_until_element_found('//button[.="Demote"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Ban" in individual_user_card_text):
+            if("Demote" in individual_user_card_text):
                 admin_individual_user_card = individual_user_card
                 break
         new_banned_user_username = admin_individual_user_card.find_element_by_name("username-text").text
@@ -599,27 +554,29 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         
 
     def _test_ban_member_as_owner(self):
+        print(self.club.members.all())
         number_of_banned_users_before = self.club.banned_users.count()
         number_of_members_before = self.club.members.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        self.wait_until_element_found('//button[.="Ban"]')
+        self.wait_until_element_found('//button[.="Promote"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Ban" in individual_user_card_text):
+            if("Promote" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
         new_banned_user_username = member_individual_user_card.find_element_by_name("username-text").text
         new_banned_user = User.objects.get(username=new_banned_user_username)
         member_individual_user_card.find_element_by_xpath('.//button[.="Ban"]').click()
-        sleep(1)
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        sleep(2)
         number_of_banned_users_after = self.club.banned_users.count()
         number_of_members_after = self.club.members.count()
+        print(self.club.members.all())
         self.assertEqual(number_of_banned_users_before + 1, number_of_banned_users_after)
         self.assertEqual(number_of_members_before - 1, number_of_members_after)
         self.assertTrue(new_banned_user in self.club.banned_users.all())
@@ -637,7 +594,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            print(individual_user_card_text)
             if("Promote" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
@@ -664,7 +620,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            print(individual_user_card_text)
             if("Demote" in individual_user_card_text):
                 admin_individual_user_card = individual_user_card
                 break
@@ -686,6 +641,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Make Owner"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         admin_individual_user_card = None
@@ -697,15 +653,19 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         new_owner_username = admin_individual_user_card.find_element_by_name("username-text").text
         new_owner = User.objects.get(username=new_owner_username)
         admin_individual_user_card.find_element_by_xpath('.//button[.="Make Owner"]').click()
-        sleep(1)
-        club_owner_after = self.club.owner
+        sleep(4)
+        club_owner_after = Club.objects.get(pk=self.club.pk).owner
         self.assertNotEqual(club_owner_before, club_owner_after)
         self.assertEqual(club_owner_after, new_owner)
         self.assertFalse(new_owner in self.club.admins.all())
         self.assertTrue(self.user in self.club.admins.all())
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.wait_until_element_found('//button[.="Leave Club"]')
+        number_of_admins_before = len(self.club.admins.all())
         self.browser.find_element_by_xpath('//button[.="Leave Club"]').click()
+        sleep(1)   
+        number_of_admins_after = len(self.club.admins.all())
+        self.assertEqual(number_of_admins_after, number_of_admins_before - 1)
         self.assertFalse(self.user in self.club.admins.all())
         self.assertFalse(self.user in self.club.members.all())
 
@@ -720,8 +680,19 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         print(body_text)
         self.assertTrue(self.club.name in body_text)
         self.assertTrue(self.club.description in body_text)
-
-
+        self.assertTrue("If you would like to leave the club, please transfer the ownership" in body_text)
+        self.assertFalse("Leave Club" in body_text)
+        # Tab Buttons
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        # Book History
+        club_book_history = self.club.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
     # Landing Page
     def _test_boogkle_logo_redirects_to_landing_page(self, url):
