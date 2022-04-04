@@ -83,7 +83,7 @@ class MainNav extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         console.log("submitting");
 
         trackPromise(
@@ -228,9 +228,9 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
-                                    <Link to={`/user_profile/${user.id}/`}>
+                                    <a href={`/user_profile/${user.id}/`}>
                                         <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>
@@ -242,10 +242,10 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
-                                    <Link to={`/club_profile/${club.id}/`} onClick={window.location.reload()}>
+                                    <a href={`/club_profile/${club.id}/`}>
                                         <SearchClubCard name={club.name} ownerEmail={club.owner.email}
                                                         description={club.description}/>
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>
@@ -257,10 +257,10 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchBooks.map((book, index) =>
                                 <li key={index}>
-                                    <Link to={`/book_profile/${book.ISBN}`}>
+                                    <a href={`/book_profile/${book.ISBN}`}>
                                         <SearchBookCard name={book.title} author={book.author}
                                                         image={book.image_links_small}/>
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>
