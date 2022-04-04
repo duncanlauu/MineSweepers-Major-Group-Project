@@ -9,21 +9,22 @@ from app.serializers import MeetingSerializer
 class SchedulingTestCase(APITestCase):
     """Tests of the scheduling API"""
 
-    fixtures = ['app/tests/fixtures/default_user.json',
-                'app/tests/fixtures/other_users.json',
-                'app/tests/fixtures/default_book.json',
-                'app/tests/fixtures/other_books.json',
-                'app/tests/fixtures/default_club.json',
-                'app/tests/fixtures/default_voting_period.json',
-                'app/tests/fixtures/default_book_vote.json',
-                'app/tests/fixtures/default_time_vote.json',
-                'app/tests/fixtures/default_time_period.json',
-                'app/tests/fixtures/other_time_periods.json',
-                'app/tests/fixtures/other_book_votes.json',
-                'app/tests/fixtures/other_time_votes.json',
-                'app/tests/fixtures/default_meeting.json',
-                'app/tests/fixtures/other_clubs.json',
-                ]
+    fixtures = [
+        'app/tests/fixtures/default_user.json',
+        'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_books.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/default_voting_period.json',
+        'app/tests/fixtures/default_book_vote.json',
+        'app/tests/fixtures/default_time_vote.json',
+        'app/tests/fixtures/default_time_period.json',
+        'app/tests/fixtures/other_time_periods.json',
+        'app/tests/fixtures/other_book_votes.json',
+        'app/tests/fixtures/other_time_votes.json',
+        'app/tests/fixtures/default_meeting.json',
+        'app/tests/fixtures/other_clubs.json',
+    ]
 
     def setUp(self):
         self.meeting = Meeting.objects.get(pk=1)
@@ -112,6 +113,41 @@ class SchedulingTestCase(APITestCase):
         number_of_meetings_after = Meeting.objects.count()
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, 'You need to provide all necessary arguments')
+        self.assertEqual(number_of_meetings_after, number_of_meetings_before)
+
+    def test_post_with_empty_name(self):
+        number_of_meetings_before = Meeting.objects.count()
+        response = self.client.post(reverse('app:scheduling'), data={
+            'name': '',
+            'description': 'We will establish the book reading practices',
+            'club': 1,
+            'organiser': 1,
+            'attendees': [2, 3, 4, 5],
+            'voting_period': 1,
+            'proposed_books': ["0195153448", "0380715899"],
+            'proposed_times': [2, 3, 4]
+        })
+        number_of_meetings_after = Meeting.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['name'][0], 'This field may not be blank.')
+        self.assertEqual(number_of_meetings_after, number_of_meetings_before)
+
+    def test_post_with_empty_name_with_book(self):
+        number_of_meetings_before = Meeting.objects.count()
+        response = self.client.post(reverse('app:scheduling'), data={
+            'name': '',
+            'description': 'We will establish the book reading practices',
+            'club': 1,
+            'organiser': 1,
+            'attendees': [2, 3, 4, 5],
+            'book': "0195153448",
+            'start_time': '2022-03-12T18:00:00+00:00',
+            'end_time': '2022-03-12T19:00:00+00:00',
+            'link': 'This is the meeting link'
+        })
+        number_of_meetings_after = Meeting.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['name'][0], 'This field may not be blank.')
         self.assertEqual(number_of_meetings_after, number_of_meetings_before)
 
     def test_put_to_make_a_book_vote(self):
@@ -384,6 +420,13 @@ class CalendarTestCase(APITestCase):
         response = self.client.get(reverse('app:calendar'))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, 'You need to provide the meeting id')
+
+    def test_get_calendar_with_invalid_user(self):
+        user = User.objects.get(id=5)
+        self.client.force_authenticate(user=user)
+        response = self.client.get(reverse('app:calendar_with_id', kwargs={'id': 1}))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.data, 'The user needs to be a member of the club')
 
 
 class MeetingsTestCase(APITestCase):

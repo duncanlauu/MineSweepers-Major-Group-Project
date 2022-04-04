@@ -3,9 +3,9 @@
  */
 
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import {act} from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils';
 import ClubRecommendationPage from "../ClubRecommendationsPage";
 import routerWrapper from "../../../test-helpers";
 import fakeLocalStorage from "../../../fakeLocalStorage";
@@ -27,7 +27,7 @@ describe("Components exist", () => {
 
     test("contains header", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(routerWrapper(<ClubRecommendationPage />))
         })
 
         await waitFor(() => {
@@ -38,7 +38,7 @@ describe("Components exist", () => {
 
     test("contains recommender container", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(routerWrapper(<ClubRecommendationPage />))
         })
 
         await waitFor(() => {
@@ -48,7 +48,7 @@ describe("Components exist", () => {
 
     test("contains all clubs", async () => {
         act(() => {
-            render(routerWrapper(<ClubRecommendationPage/>))
+            render(routerWrapper(<ClubRecommendationPage />))
         })
 
         await waitFor(() => {

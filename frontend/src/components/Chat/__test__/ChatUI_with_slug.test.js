@@ -9,8 +9,7 @@ import { act } from 'react-dom/test-utils';
 import ChatUI from '../ChatUI';
 import fakeLocalStorage from "../../../fakeLocalStorage";
 import user from "../../../mocksData/getCurrentUser.json";
-import { MemoryRouter } from 'react-router-dom'
-
+import routerWrapper from "../../../test-helpers";
 
 beforeAll(() => {
     Object.defineProperty(window, 'localStorage', {
@@ -41,7 +40,7 @@ describe('Components exist', () => {
 
         test('contains Sidepanel heading', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -52,7 +51,7 @@ describe('Components exist', () => {
 
         test('contains name for personal chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -63,7 +62,7 @@ describe('Components exist', () => {
 
         test('contains gravatar for personal chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -74,7 +73,7 @@ describe('Components exist', () => {
 
         test('contains name for group chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -85,7 +84,7 @@ describe('Components exist', () => {
 
         test('contains gravatar for group chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -96,7 +95,7 @@ describe('Components exist', () => {
 
         test('contains most recent message of group chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -111,7 +110,7 @@ describe('Components exist', () => {
 
         test('contains input field', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -122,7 +121,7 @@ describe('Components exist', () => {
 
         test('contains emtpy conversation placeholder', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -133,7 +132,7 @@ describe('Components exist', () => {
 
         test('contains send message button', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -144,7 +143,7 @@ describe('Components exist', () => {
 
         test('contains delete conversation button', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -159,7 +158,7 @@ describe('Components exist', () => {
 
         test('delete removes selected chat', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -172,7 +171,7 @@ describe('Components exist', () => {
 
         test('delete chat shows conversation placeholder', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {
@@ -190,7 +189,7 @@ describe('Components exist', () => {
 
         test('send message button clears input field', async () => {
             act(() => {
-                render(<ChatUI />, { wrapper: MemoryRouter });
+                render(routerWrapper(<ChatUI />));
             })
 
             await waitFor(() => {

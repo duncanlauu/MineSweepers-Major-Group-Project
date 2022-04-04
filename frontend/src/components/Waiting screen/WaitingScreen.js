@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {useNavigate} from "react-router";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 import axiosInstance from "../../axios";
 import {
     Container,
@@ -8,16 +8,16 @@ import {
     Navbar,
     NavbarBrand,
 } from "reactstrap";
-import {usePromiseTracker, trackPromise} from "react-promise-tracker";
-import {Oval} from "react-loader-spinner";
-import {HeadingText, ParaText} from "../Login/LoginElements";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import { Oval } from "react-loader-spinner";
+import { HeadingText, ParaText } from "../Login/LoginElements";
 
 export default function WaitingScreen() {
     let navigate = useNavigate();
     let retrained = false;
 
     const LoadingIndicator = () => {
-        const {promiseInProgress} = usePromiseTracker();
+        const { promiseInProgress } = usePromiseTracker();
 
         return (
             promiseInProgress && (
@@ -53,14 +53,14 @@ export default function WaitingScreen() {
                         navigate("/");
                     })
                     .catch((err) => {
-                        console.log(err);
+                        console.error(err)
                     })
             );
         }
     }, []);
 
     return (
-        <div style={{overflowX: "hidden"}}>
+        <div style={{ overflowX: "hidden" }}>
             <Row>
                 <Navbar color="light" expand="md" light>
                     <NavbarBrand href="/">
@@ -68,18 +68,18 @@ export default function WaitingScreen() {
                     </NavbarBrand>
                 </Navbar>
             </Row>
-            <Row style={{marginTop: "6rem"}}>
-                <Col/>
+            <Row style={{ marginTop: "6rem" }}>
+                <Col />
                 <Col>
                     <HeadingText>We're getting the account ready for you</HeadingText>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <ParaText>Don't worry, it's only necessary when you sign up for the first time!</ParaText>
-                    <br/>
-                    <br/>
-                    <LoadingIndicator/>
+                    <br />
+                    <br />
+                    <LoadingIndicator />
                 </Col>
-                <Col/>
+                <Col />
             </Row>
         </div>
     )

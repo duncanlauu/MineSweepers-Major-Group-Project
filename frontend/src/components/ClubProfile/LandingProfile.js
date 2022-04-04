@@ -9,15 +9,11 @@ import { BookHeading, YearAuthorInfo } from "../RecommenderPage/RecommenderPageE
 
 const LandingProfile = (props) => {
   const { club_id } = useParams();
-  console.log("Club ID: " + club_id);
   const [club, setClub] = useState(null);
-  const [readingHistory, setReadingHistory] = useState([]);
-  const [ownerDetails, setOwnerDetails] = useState(null);
   const user_id = props.user_id;
 
   const memberStatus = props.memberStatus;
 
-  const [modalVisible, setModalVisible] = useState(false);
 
 
   function IndividualBookCard(props) {
@@ -45,7 +41,7 @@ const LandingProfile = (props) => {
         setClub(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
       });
   }, []);
 
@@ -87,11 +83,10 @@ const LandingProfile = (props) => {
     axiosInstance
       .put(`singleclub/${id}/apply/${user_id}`, {})
       .then((res) => {
-        console.log(res);
         props.setMemberStatus("applied");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
       });
   }
 
@@ -99,11 +94,10 @@ const LandingProfile = (props) => {
     axiosInstance
       .put(`singleclub/${id}/reject/${user_id}`, {})
       .then((res) => {
-        console.log(res);
         props.setMemberStatus("notApplied");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
       });
   }
 
@@ -111,11 +105,10 @@ const LandingProfile = (props) => {
     axiosInstance
       .put(`singleclub/${id}/leave/${user_id}`, {})
       .then((res) => {
-        console.log(res);
         props.setMemberStatus("notApplied");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
       });
   }
 
@@ -154,10 +147,10 @@ const LandingProfile = (props) => {
           </Button>
         )}
         {memberStatus === "banned" && (
-          <ParaText>You are banned from this club</ParaText> // TODO: Add styling
+          <ParaText>You are banned from this club</ParaText>
         )}
         {memberStatus === "owner" && (
-          <ParaText>If you would like to leave the club, please transfer the ownership</ParaText> // TODO: Add styling
+          <ParaText>If you would like to leave the club, please transfer the ownership</ParaText>
         )}
       </Row>
       <Row>

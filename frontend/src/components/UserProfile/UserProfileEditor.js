@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import {Container, Form, FormGroup, Label, Input, Row, Col, Button} from "reactstrap";
+import React, { useState } from "react";
+import { Container, Form, FormGroup, Label, Input, Row, Col, Button } from "reactstrap";
 import axiosInstance from "../../axios";
 
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 export default function UserProfileEditor(props) {
     const [formData, updateFormData] = useState(props.currentUser);
@@ -19,9 +19,6 @@ export default function UserProfileEditor(props) {
     const handleEditRequest = (e) => {
         e.preventDefault();
 
-        console.log("User profile editor current user: " + props.currentUser.id)
-        console.log(props.currentUser)
-
         axiosInstance
             .put(`user/get_update/${props.currentUser.id}/`, {
                 action: "edit",
@@ -37,11 +34,9 @@ export default function UserProfileEditor(props) {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 navigate("/home/");
                 navigate("/user_profile/");
-                console.log("New profile content: ");
-                console.log(res);
             })
             .catch((e) => {
-                console.log(e.response.data);
+                console.error(err);
             });
     };
 
@@ -50,7 +45,7 @@ export default function UserProfileEditor(props) {
             <Container fluid>
                 <Row>
                     <Col>
-                        <div style={{display: "flex", justifyContent: "center"}}>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
                             <h1> Edit Profile </h1>
                         </div>
 
@@ -71,9 +66,8 @@ export default function UserProfileEditor(props) {
                                         }}
                                         value={formData.bio}
                                     />
-                                    <p/>
+                                    <p />
                                 </FormGroup>
-                                {/* <div>{titleErr}</div> */}
 
                                 <FormGroup>
                                     <Label for="location"> Location </Label>
@@ -89,15 +83,14 @@ export default function UserProfileEditor(props) {
                                         value={formData.location}
                                     />
                                 </FormGroup>
-                                {/* <div>{contentErr}</div> */}
 
                                 <FormGroup>
-                                    <div style={{display: "flex", justifyContent: "center"}}>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
                                         <Button
                                             type="submit"
                                             className="submit"
                                             onClick={handleEditRequest}
-                                            style={{borderRadius: "50px"}}
+                                            style={{ borderRadius: "50px" }}
                                         >
                                             Save changes
                                         </Button>

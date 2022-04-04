@@ -21,10 +21,11 @@ import FeedPostList from "../Feed/FeedPostList";
 import IndividualBookCard from "../RecommenderPage/IndividualBookCard"
 
 function IndividualClubCard(props) {
-    return(
+    return (
         <a href={`/club_profile/${props.id}`}>
             <ClubListItem>
-                <Gravatar email={props.email} style={{ borderRadius:"100px" }} />
+                <Gravatar email={props.email} size={65}
+                          style={{marginBottom: "1rem", marginTop: "1rem", borderRadius: "100px"}}/>
                 <RecommendedClubsText>{props.name}</RecommendedClubsText>
                 <RecommendedClubMembersText>{props.size} Members</RecommendedClubMembersText>
             </ClubListItem>
@@ -33,12 +34,12 @@ function IndividualClubCard(props) {
 }
 
 function SelectRandomClubs(arr) {
-    const displayClubs = arr.sort(() => 0.5 - Math.random()).slice(0,3);
+    const displayClubs = arr.sort(() => 0.5 - Math.random()).slice(0, 3);
     return displayClubs;
 }
 
 function SelectRandomBooks(arr) {
-    const displayBooks = arr.sort(() => 0.5 - Math.random()).slice(0,2)
+    const displayBooks = arr.sort(() => 0.5 - Math.random()).slice(0, 2)
     return displayBooks;
 }
 
@@ -63,26 +64,23 @@ const HomePage = () => {
                 .get(`recommender/0/10/${currentUser.id}/top_n_clubs_top_club_books/`)
                 .then((res) => {
                     if (res.data.length === 0) {
-                        console.log("Calculated all recommendations");
                         precomputeRecommenderResults();
                     }
                     setRecommendedClubs(SelectRandomClubs(res.data));
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((err) => {
+                    console.error(err);
                 });
             axiosInstance
                 .get(`recommender/0/10/top_n_global/`)
                 .then((res) => {
                     if (res.data.length === 0) {
-                        console.log("Calculated global recommendations");
                         precomputeGlobalTop();
                     }
-                    console.log(SelectRandomBooks(res.data));
                     setRecommendedBooks(SelectRandomBooks(res.data));
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((err) => {
+                    console.error(err);
                 });
         }
     }, []);
@@ -90,11 +88,8 @@ const HomePage = () => {
     const precomputeRecommenderResults = () => {
         axiosInstance
             .post(`recommender/0/20/${currentUser.id}/precompute_all/`, {})
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
+            .catch((err) => {
+                console.error(err);
             });
     };
 
@@ -162,29 +157,29 @@ const HomePage = () => {
                     <Row>
                         <Col xs="7">
                             <Link to="/recommend_clubs"
-                                style={{
-                                    color: "#653FFD",
-                                    textDecoration: "none",
-                                    fontSize: "15px",
-                                }}
+                                  style={{
+                                      color: "#653FFD",
+                                      textDecoration: "none",
+                                      fontSize: "15px",
+                                  }}
                             >
                                 <ParaText>
                                     <IoIosArrowForward/>
-                                    See all club recommendations 
+                                    See all club recommendations
                                 </ParaText>
                             </Link>
                         </Col>
                         <Col xs="5">
                             <Link to="/all_clubs"
-                                style={{
-                                    color: "#653FFD",
-                                    textDecoration: "none",
-                                    fontSize: "15px",
-                                }}
+                                  style={{
+                                      color: "#653FFD",
+                                      textDecoration: "none",
+                                      fontSize: "15px",
+                                  }}
                             >
                                 <ParaText>
                                     <IoIosArrowForward/>
-                                        See all clubs 
+                                    See all clubs
                                 </ParaText>
                             </Link>
                         </Col>
@@ -194,11 +189,11 @@ const HomePage = () => {
                         {
                             recommendedClubs.map(club =>
                                 <li>
-                                    <IndividualClubCard 
+                                    <IndividualClubCard
                                         id={club.club.id}
                                         email={club.email}
-                                        name={club.club.name} 
-                                        size={club.club.admins.length + club.club.members.length + 1} />
+                                        name={club.club.name}
+                                        size={club.club.admins.length + club.club.members.length + 1}/>
                                 </li>
                             )
                         }

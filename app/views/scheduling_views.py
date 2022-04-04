@@ -30,7 +30,6 @@ class SchedulingView(APIView):
             return Response(data='A meeting with this id does not exist', status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        print(request.data)
         try:
             data = {'name': request.data['name'], 'description': request.data['description'],
                     'club': int(request.data['club']), 'organiser': request.data['organiser']}
