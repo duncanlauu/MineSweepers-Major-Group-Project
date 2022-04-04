@@ -24,14 +24,6 @@ export default function Sidepanel(props) {
 
     const activeChats = props.chats.map(c => {
         return (
-            // <Contact
-            //     key={c.id}
-            //     name={getChatName(c)}
-            //     gravatar={getChatGravatar(c)}
-            //     chatURL={`/chat/${c.id}`}
-            //     lastMessage={c.last_message}
-            //     lastUpdated={c.last_updated}
-            // />
             <div key={c.id}>
                 {getChatName(c) == "Bookgle User (Left the chat)"
                     ?

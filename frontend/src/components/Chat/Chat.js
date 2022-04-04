@@ -1,3 +1,5 @@
+// Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
+
 import React from 'react';
 import WebSocketInstance from '../../websocket';
 import Hoc from './hoc/hoc';
