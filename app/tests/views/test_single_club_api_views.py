@@ -219,8 +219,18 @@ class SingleClubAPITestCase(TestCase):
         self.assertFalse(self.admin in self.club.admins.all())
         after_admin_count = self.club.admins.count()
         self.assertEqual(after_admin_count, before_admin_count - 1)
+    
+    def test_invalid_user_put_request(self):
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'action': 'invalid', 'user_id': 20000}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_invalid_put_request(self):
+    def test_invalid_club_put_request(self):
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 10000, 'action': 'invalid', 'user_id': 4}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_invalid_action_put_request(self):
         response = self.client.put(
             reverse('app:manage_club', kwargs={'id': 1, 'action': 'invalid', 'user_id': 4}))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

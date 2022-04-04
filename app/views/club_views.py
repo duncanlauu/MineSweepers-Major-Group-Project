@@ -135,7 +135,7 @@ class SingleClub(APIView):
 
             else:
                 return Response(data='Invalid action', status=status.HTTP_400_BAD_REQUEST)
-        except KeyError:
+        except (User.DoesNotExist, KeyError, Club.DoesNotExist):
             return Response(data='Invalid parameters', status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
