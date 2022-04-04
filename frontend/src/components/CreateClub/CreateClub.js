@@ -38,7 +38,7 @@ export default function CreateClub() {
         setVisibilityValue(!visibilityValue);
     }
 
-    const RadioButton = ({ card, value, onClick }) => {
+    const RadioButton = ({card, value, onClick}) => {
         return (
             <label>
                 <input type="radio" checked={value} onClick={onClick} />
@@ -70,6 +70,9 @@ export default function CreateClub() {
                 description: formData.description,
                 visibility: visibilityValue,
                 public: privacyValue
+            })
+            .then((res) => {
+                navigate('/club_profile/' + res.data.id)
             })
             .catch((e) => {
                 setNameErr(e.response.data.name)
