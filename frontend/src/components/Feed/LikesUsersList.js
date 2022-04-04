@@ -35,6 +35,6 @@ export default function LikesUsersList(props) {
             );
         });
     } else {
-        return <h3> {`This ${props.type} has no likes yet...`} </h3>;
+        return <h5> {`This ${props.type} has no likes yet...`} </h5>;
     }
 }

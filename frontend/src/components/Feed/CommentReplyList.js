@@ -109,8 +109,8 @@ export default function CommentReplyList(props) {
 
   return (
     <div>
-      <Row style={{ marginBottom: "1rem" }}>
-        <Col xs="9" style={{ padding: "0px" }}>
+      <Row style={{ marginBottom: "3rem" }}>
+        <Col xs="9" style={{ padding: "0px", marginLeft: "5rem" }}>
           <Input
             type="textarea"
             rows="1"
@@ -127,7 +127,7 @@ export default function CommentReplyList(props) {
           />
         </Col>
         <Col
-          xs="2"
+          xs="1"
           style={{
             padding: "0px",
             display: "flex",
@@ -158,7 +158,11 @@ export default function CommentReplyList(props) {
           return (
             <div
               key={reply.id}
-              style={{ marginBottom: "1rem", overflow: "hidden" }}
+              style={{
+                marginBottom: "1rem",
+                overflow: "hidden",
+                marginLeft: "5rem",
+              }}
             >
               <ReplyLine>
                 <SingleCommentReply

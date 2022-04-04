@@ -171,6 +171,7 @@ export default function SingleFeedPost(props) {
               >
                 <CommentIcon />
               </Button>
+              &nbsp;
               <Button
                 style={{
                   background: likedByUser ? "#653FFD" : "#ffffff",
@@ -182,6 +183,7 @@ export default function SingleFeedPost(props) {
                 {" "}
                 <ThumbUp />
               </Button>
+              &nbsp;
               <Button
                 style={{
                   background: "#653FFD",
@@ -215,6 +217,8 @@ export default function SingleFeedPost(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
+        <h4>Users who liked {props.post.author__username}'s post</h4>
+          <hr></hr>
           <LikesUsersList
             type="post"
             getLikesUsersList={getLikesUsersListPost}

@@ -89,78 +89,79 @@ export default function SingleCommentReply(props) {
       key={singleReply.id}
     >
       <Row>
-        <Col>
-          <Row>
-            <div style={{ display:"flex", flexDirection:"row" }}>
-            <Col
-              xs="2"
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <Col
+            xs="2"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+            }}
+          >
+            <Gravatar
+              email={posterEmail}
+              size={30}
+              onClick={navigateToProfile}
+              style={{
+                borderRadius: "50px",
+                marginTop: "0rem",
+                marginBottom: "0rem",
+              }}
+            />
+          </Col>
+          <Col xs="6">
+            <ReplyLineBox style={{ alignItems: "center" }}>
+              <h6 style={{ fontFamily: "Source Sans Pro" }}>
+                {" "}
+                {singleReply.content}{" "}
+              </h6>
+            </ReplyLineBox>
+          </Col>
+          <Col xs="4" style={{ alignItems: "right" }}>
+            <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
+                flexDirection: "row",
+                alignItems: "right",
+                float: "right"
               }}
             >
-              <Gravatar
-                email={posterEmail}
-                size={30}
-                onClick={navigateToProfile}
-                style={{
-                  borderRadius: "50px",
-                  marginTop: "0rem",
-                  marginBottom: "0rem",
-                }}
-              />
-            </Col>
-            <Col xs="8">
-              <ReplyLineBox style={{ alignItems:"center" }}>
-                <h6 style={{ fontFamily: "Source Sans Pro" }}>
-                  {" "}
-                  {singleReply.content}{" "}
-                </h6>
-              </ReplyLineBox>
-            </Col>
-            <div style={{ display:"flex", flexDirection:"row" }}>
-            <Button
-              data-testid={"reply-like-button"}
-              style={{
-                background: likedByUser ? "#653FFD" : "#ffffff",
-                color: likedByUser ? "#ffffff" : "#653FFD",
-                borderColor: "#653FFD",
-              }}
-              onClick={likeReply}
-            >
-              <ThumbUp style={{ fontSize: "small" }} />
-            </Button>
-            &nbsp;
-            <Button
-              style={{
-                background: "#653FFD",
-                color: "#ffffff",
-                borderColor: "#653FFD",
-              }}
-              onClick={changeModalVisibility}
-            >
-              {likesCount}
-              <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
-            </Button>
-            {singleReply.author === currentUser.id && (
               <Button
-                color="danger"
-                name={singleReply.id}
-                onClick={(e) => deleteComment(singleReply.id, e)}
+                data-testid={"reply-like-button"}
+                style={{
+                  background: likedByUser ? "#653FFD" : "#ffffff",
+                  color: likedByUser ? "#ffffff" : "#653FFD",
+                  borderColor: "#653FFD",
+                }}
+                onClick={likeReply}
+              >
+                <ThumbUp style={{ fontSize: "small" }} />
+              </Button>
+              &nbsp;
+              <Button
                 style={{
                   background: "#653FFD",
                   color: "#ffffff",
                   borderColor: "#653FFD",
                 }}
+                onClick={changeModalVisibility}
               >
-                <DeleteIcon></DeleteIcon>
+                {likesCount}
+                <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
               </Button>
-            )}
+              &nbsp;
+              {singleReply.author === currentUser.id && (
+                <Button
+                  color="danger"
+                  name={singleReply.id}
+                  onClick={(e) => deleteComment(singleReply.id, e)}
+                >
+                  <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
+                </Button>
+              )}
             </div>
-            </div>
-          </Row>
-        </Col>
+          </Col>
+        </div>
       </Row>
 
       <Modal
@@ -172,6 +173,8 @@ export default function SingleCommentReply(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
+          <h4>Users who liked {props.reply.author__username}'s reply</h4>
+          <hr></hr>
           <LikesUsersList
             type="reply"
             getLikesUsersList={getLikesUsersListReply}

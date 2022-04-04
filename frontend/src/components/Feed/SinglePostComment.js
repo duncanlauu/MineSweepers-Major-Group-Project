@@ -138,18 +138,18 @@ export default function SinglePostComment(props) {
   //         >
   //           <CommentIcon style={{ fontSize: "small" }} />
   //         </Button>
-  //         &nbsp;
-  //         <Button
-  //           data-testid={"comment-like-button"}
-  //           style={{
-  //             background: likedByUser ? "#653FFD" : "#ffffff",
-  //             color: likedByUser ? "#ffffff" : "#653FFD",
-  //             borderColor: "#653FFD",
-  //           }}
-  //           onClick={likeComment}
-  //         >
-  //           <ThumbUp style={{ fontSize: "small" }} />
-  //         </Button>
+  // &nbsp;
+  // <Button
+  //   data-testid={"comment-like-button"}
+  //   style={{
+  //     background: likedByUser ? "#653FFD" : "#ffffff",
+  //     color: likedByUser ? "#ffffff" : "#653FFD",
+  //     borderColor: "#653FFD",
+  //   }}
+  //   onClick={likeComment}
+  // >
+  //   <ThumbUp style={{ fontSize: "small" }} />
+  // </Button>
   //         &nbsp;
   //         <Button
   //           style={{
@@ -215,16 +215,7 @@ export default function SinglePostComment(props) {
                 alignItems: "center",
               }}
             >
-              {singleComment.author === currentUser.id && (
-                <Button
-                  color="danger"
-                  name={singleComment.id}
-                  data-testid="comment-remove-button"
-                  onClick={(e) => deleteComment(singleComment.id, e)}
-                >
-                  <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
-                </Button>
-              )}
+              &nbsp;
               <Button
                 data-testid={"comment-reply-button"}
                 id={togglerID}
@@ -237,7 +228,19 @@ export default function SinglePostComment(props) {
               >
                 <CommentIcon style={{ fontSize: "small" }} />
               </Button>
-
+              &nbsp;
+              <Button
+                data-testid={"comment-like-button"}
+                style={{
+                  background: likedByUser ? "#653FFD" : "#ffffff",
+                  color: likedByUser ? "#ffffff" : "#653FFD",
+                  borderColor: "#653FFD",
+                }}
+                onClick={likeComment}
+              >
+                <ThumbUp style={{ fontSize: "small" }} />
+              </Button>
+              &nbsp;
               <Button
                 style={{
                   background: "#653FFD",
@@ -249,7 +252,7 @@ export default function SinglePostComment(props) {
                 {likesCount}
                 <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
               </Button>
-
+              &nbsp;
               {singleComment.author === currentUser.id && (
                 <Button
                   color="danger"
@@ -285,6 +288,8 @@ export default function SinglePostComment(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
+        <h4>Users who liked {props.comment.author__username}'s comment</h4>
+          <hr></hr>
           <LikesUsersList
             type="comment"
             getLikesUsersList={getLikesUsersListComment}
