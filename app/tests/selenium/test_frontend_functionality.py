@@ -241,8 +241,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
         self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
         self.run_testcase(self._test_home_page_see_all_clubs_button, True)
-        #Open recommended club
-        #Open recommended book
+        self.run_testcase(self._test_home_page_recommended_book, True)
+        self.run_testcase(self._test_home_page_recommended_club, True)
 
         # Navbar
         self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
@@ -1395,6 +1395,28 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(3) 
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/all_clubs")
 
+    def _test_home_page_recommended_book(self):
+        self.browser.get(f"{self.live_server_url}/home")
+        self.browser.implicitly_wait(15)
+        self.wait_until_element_found('//div[@name="recommended-book"]')
+        recommended_book = self.browser.find_element_by_name("recommended-book")
+        recommended_book_href = recommended_book.find_element_by_xpath(".//a").get_attribute("href")
+        recommended_book.click()
+        self.browser.implicitly_wait(15)
+        sleep(3)
+        self.assertEqual(self.browser.current_url, recommended_book_href)
+
+    def _test_home_page_recommended_club(self):
+        self.browser.get(f"{self.live_server_url}/home")
+        self.browser.implicitly_wait(15)
+        self.wait_until_element_found('//a[@name="recommended-club"]')
+        recommended_club = self.browser.find_element_by_name("recommended-club")
+        recommended_club_href = recommended_club.find_element_by_xpath(".//a").get_attribute("href")
+        recommended_club.click()
+        self.browser.implicitly_wait(15)
+        sleep(3)
+        self.assertEqual(self.browser.current_url, recommended_club_href)
+
     # Clubs recommendations?
 
     def _test_create_club(self, url):
@@ -1635,6 +1657,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//button[.='Edit Profile']")
         self.browser.find_element_by_xpath("//button[.='Edit Profile']").click()
         self.wait_until_element_found("//input[@id='bio']")
+        print("EDITUSERAFTERPROFILE")
         self.browser.find_element_by_id('bio').send_keys(" Edit Bio.")
         self.browser.find_element_by_id('location').send_keys(" Edit Location.")
         self.browser.find_element_by_xpath("//button[.='Save changes']").click()

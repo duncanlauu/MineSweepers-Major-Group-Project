@@ -22,7 +22,7 @@ import IndividualBookCard from "../RecommenderPage/IndividualBookCard"
 
 function IndividualClubCard(props) {
     return(
-        <a href={`/club_profile/${props.id}`}>
+        <a name="recommended-club" href={`/club_profile/${props.id}`}>
             <ClubListItem>
                 <Gravatar email={props.email} size={65} style={{marginBottom: "1rem", marginTop: "1rem"}}/>           
                 <RecommendedClubsText>{props.name}</RecommendedClubsText>
