@@ -28,15 +28,15 @@ const ClubScheduling = () => {
 
     return (
         <>
-            <Row style={{ display: "inline-block", width: "100%" }}>
-                <HeadingText>Meeting History</HeadingText>
+            <Row style={{ display: "inline-block", width: "100%"}}>
+                <HeadingText>All meetings </HeadingText>
                 <Link
                     to={`/scheduling/${club_id}`}
                     style={{ color: "#653FFD", textDecoration: "none", fontSize: "15px" }}
                 >
                     <Button style={buttonStyle}>
                         <img src="../../../static/images/MeetingScheduleIcon.svg" style={{ paddingRight: "10px" }} />
-                        <span>Schedule a Meeting</span>
+                        <span>Schedule a meeting</span>
                     </Button>
                 </Link>
             </Row>
