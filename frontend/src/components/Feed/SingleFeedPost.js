@@ -126,6 +126,7 @@ export default function SingleFeedPost(props) {
                     >
                         <Button
                             id={togglerID}
+                            name="open_comments_button"
                             style={{
                                 height: "4rem",
                                 background: isCommentOpen ? "#653FFD" : "#ffffff",
