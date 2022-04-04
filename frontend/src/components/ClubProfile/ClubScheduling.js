@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router";
-import {Link} from "react-router-dom";
-import {Button, Container, Row} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import { Button, Container, Row } from "reactstrap";
 import axiosInstance from "../../axios";
-import {HeadingText} from "../Login/LoginElements";
+import { HeadingText } from "../Login/LoginElements";
 import IndividualMeetingCard from "./IndividualMeetingCard";
 
 const ClubScheduling = () => {
-    const {club_id} = useParams();
+    const { club_id } = useParams();
     console.log("Club ID on scheduling: " + club_id);
     const [meetings, setMeetings] = useState([]);
 
@@ -15,7 +15,6 @@ const ClubScheduling = () => {
         axiosInstance
             .get(`club_meetings/${club_id}`)
             .then(res => {
-                console.log(res);
                 setMeetings(res.data);
             })
     }, [])
@@ -30,14 +29,14 @@ const ClubScheduling = () => {
 
     return (
         <>
-            <Row style={{display: "inline-block", width: "100%"}}>
+            <Row style={{ display: "inline-block", width: "100%" }}>
                 <HeadingText>Meeting History</HeadingText>
                 <Link
                     to={`/scheduling/${club_id}`}
-                    style={{color: "#653FFD", textDecoration: "none", fontSize: "15px"}}
+                    style={{ color: "#653FFD", textDecoration: "none", fontSize: "15px" }}
                 >
                     <Button style={buttonStyle}>
-                        <img src="../../../static/images/MeetingScheduleIcon.svg" style={{paddingRight: "10px"}}/>
+                        <img src="../../../static/images/MeetingScheduleIcon.svg" style={{ paddingRight: "10px" }} />
                         <span>Schedule a Meeting</span>
                     </Button>
                 </Link>
@@ -49,7 +48,7 @@ const ClubScheduling = () => {
                         name={meeting.name}
                         book_id={meeting.book.ISBN}
                         book={meeting.book.title}
-                        description={meeting.description}/>
+                        description={meeting.description} />
                 )}
             </Container>
         </>

@@ -26,14 +26,22 @@ class ClubsTestCase(APITestCase):
     def test_correct_get_one_club(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ClubSerializer([self.joeClub], many=True).data)
+        serializer = ClubSerializer([self.joeClub], many=True)
+        serializer_with_email = serializer.data
+        for club in serializer_with_email:
+            club['owner_email'] = User.objects.get(pk=club['owner']).email
+        self.assertEqual(response.data, serializer_with_email)
 
     def test_correct_get_more_clubs(self):
         self.jakeClub.visibility = True
         self.jakeClub.save()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ClubSerializer([self.joeClub, self.jakeClub], many=True).data)
+        serializer = ClubSerializer([self.joeClub, self.jakeClub], many=True)
+        serializer_with_email = serializer.data
+        for club in serializer_with_email:
+            club['owner_email'] = User.objects.get(pk=club['owner']).email
+        self.assertEqual(response.data, serializer_with_email)
 
     def test_correct_post(self):
         club_count_before = Club.objects.count()
