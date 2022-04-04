@@ -4,6 +4,7 @@ import {Col, Container, Row} from "reactstrap";
 import {HeadingText, ParaText} from "../CreateClub/CreateClubElements";
 import {MeetingProfile} from "./MeetingPageElements";
 import {downloadCalendar} from "../../downloadCalendar";
+import MainNav from "../Nav/MainNav";
 
 
 export default function Meetings() {
@@ -25,6 +26,9 @@ export default function Meetings() {
     if (meetings.length > 0 && Array.isArray(meetings)) {
         return (
             <div id="ParentDiv">
+                <Row style={{marginBottom: "3rem"}}>
+                    <MainNav/>
+                </Row>
                 <Row>
                 </Row>
                 <Container fluid>
