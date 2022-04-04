@@ -13,7 +13,7 @@ export default function Meetings() {
 
     useEffect(() => {
         getTheMeetings()
-    }, [user]);
+    }, []);
 
     const getTheMeetings = () => {
         axiosInstance

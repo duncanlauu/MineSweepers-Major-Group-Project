@@ -148,7 +148,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText("Likes: 3")).toBeInTheDocument()
+            expect(screen.getByText("3")).toBeInTheDocument()
         })
     })
 

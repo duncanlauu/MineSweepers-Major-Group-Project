@@ -27,7 +27,8 @@ export default function LikesUsersList(props) {
                         </Col>
                         <Col xs="6">
                             <a href={`/user_profile/${user.id}`}>
-                                <h5 className="user_username" style={{ fontFamily:"Source Sans Pro" }}> {user.username} </h5>
+                                <h5 className="user_username"
+                                    style={{fontFamily: "Source Sans Pro"}}> {user.username} </h5>
                             </a>
                         </Col>
                     </Row>

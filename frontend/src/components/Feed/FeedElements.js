@@ -14,7 +14,7 @@ export const ClubPill = styled.div`
     padding-left: 1rem;
     padding-right: 1rem;
     height: 3rem;
-`   
+`
 
 export const ReactionContainer = styled.div`
     display: flex;

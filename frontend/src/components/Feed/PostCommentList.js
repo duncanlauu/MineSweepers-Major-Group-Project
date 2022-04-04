@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
-import {Row, Col, Button, Input} from "reactstrap";
+import {Row, Col, Input} from "reactstrap";
 import SinglePostComment from "./SinglePostComment";
 import {
     CommentLine,
@@ -93,7 +93,9 @@ export default function PostCommentList(props) {
                                 src="../../../static/images/SendMessageIcon.svg"
                                 alt="Post Comment"
                                 style={{ cursor:"pointer", alignSelf:"center", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
-                                onClick={(e) => { uploadComment(e, 0) ; clearInputField() }} />
+                                onClick={(e) => { uploadComment(e, 0) ; clearInputField() }}
+                                data-testid={"comment-submit"}
+                            />
                         </Col>
                     </Row>
                 </div>
