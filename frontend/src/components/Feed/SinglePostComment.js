@@ -11,13 +11,12 @@ import {
 import Gravatar from "react-gravatar";
 import CommentReplyList from "./CommentReplyList";
 import { useNavigate } from "react-router";
-import { CommentLineBox } from "../UserProfile/UserProfileElements";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CommentLineBox } from "../UserProfile/UserProfileElements";
+// import { CommentLineBox } from "../UserProfile/UserProfileElements";
 import { CommentContainer, CommentContent } from "./FeedElements";
 
 export default function SinglePostComment(props) {

@@ -20,6 +20,10 @@ import { useNavigate } from "react-router";
 import { HeadingText } from "../Login/LoginElements";
 import LikesUsersList from "./LikesUsersList";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
+import ThumbUp from "@mui/icons-material/ThumbUp";
+
+
 import {
   ClubPill,
   LikesText,
