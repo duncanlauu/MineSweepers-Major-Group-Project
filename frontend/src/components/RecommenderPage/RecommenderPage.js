@@ -166,8 +166,8 @@ const RecommenderPage = () => {
                     </select><br />
                     <FilterButton onClick={returnTop10Recommendations} data-testId="myTop10Recommendations">My Recommendations</FilterButton><br />
                     <FilterButton onClick={returnGlobalTop10Recommendations} data-testId="globalTop10Recommendations">Global Top 10</FilterButton><br />
-                    {value && <><FilterButton onClick={returnTop10GenreRecommendations} data-testId="genreRecommendation">My {value} Recommendations</FilterButton><br /></>}
-                    {value && <><FilterButton onClick={returnGlobalTop10GenreRecommendations} data-testId="genreRecommendation">Global {value} Top 10</FilterButton><br /></>}
+                    {value && value !== "Select genre" && <><FilterButton onClick={returnTop10GenreRecommendations} data-testId="genreRecommendation">My {value} Recommendations</FilterButton><br /></>}
+                    {value && value !== "Select genre" && <><FilterButton onClick={returnGlobalTop10GenreRecommendations} data-testId="genreRecommendation">Global {value} Top 10</FilterButton><br /></>}
                     <LoadingIndicator />
                     <ul>
                         {bookRecommendations.map(

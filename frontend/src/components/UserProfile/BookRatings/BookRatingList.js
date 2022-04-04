@@ -4,6 +4,7 @@ import SingleBookRating from "./SingleBookRating";
 
 export default function BookRatingList(props) {
     const [ratings, setRatings] = useState([]);
+    const currentUser = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         if (props.requestedUser_id === undefined) {
@@ -44,7 +45,7 @@ export default function BookRatingList(props) {
                 );
             });
         } else {
-            if (props.requestedUser_id === undefined) {
+            if (props.requestedUser_id === currentUser.id) {
                 return <h5> You have not rated anything yet. </h5>;
             } else {
                 return <h5> This user has not rated anything yet. </h5>;
