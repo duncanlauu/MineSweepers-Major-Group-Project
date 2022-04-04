@@ -154,134 +154,134 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             self._close_db_connections()
 
     def test_everything(self):
-        # # Landing Page 
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        # self.run_testcase(self._test_landing_page_log_in_button, False)
-        # self.run_testcase(self._test_landing_page_sign_up_button, False)
+        # Landing Page 
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
+        self.run_testcase(self._test_landing_page_log_in_button, False)
+        self.run_testcase(self._test_landing_page_sign_up_button, False)
 
-        # # Log In Page 
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") 
-        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        # self.run_testcase(self._test_log_in_with_wrong_password, False)
-        # self.run_testcase(self._test_log_in, False)
+        # Log In Page 
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") 
+        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
+        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
+        self.run_testcase(self._test_log_in_with_wrong_password, False)
+        self.run_testcase(self._test_log_in, False)
 
-        # # Sign Up Page
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        # self.run_testcase(self._test_sign_up_with_blank_fields, False) 
-        # self.run_testcase(self._test_sign_up_username_too_short, False) 
-        # self.run_testcase(self._test_sign_up_invalid_email, False)
+        # Sign Up Page
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
+        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
+        self.run_testcase(self._test_sign_up_with_blank_fields, False) 
+        self.run_testcase(self._test_sign_up_username_too_short, False) 
+        self.run_testcase(self._test_sign_up_invalid_email, False)
 
-        # # Sign Up Page and new user Book Rating Page 
-        # self.run_testcase(self._test_sign_up_and_book_rating, False) 
+        # Sign Up Page and new user Book Rating Page 
+        self.run_testcase(self._test_sign_up_and_book_rating, False) 
 
-        # # Home Page
-        # self.run_testcase(self._test_reply_to_comment_on_post, True)
-        # self.run_testcase(self._test_comment_on_post, True)
-        # self.run_testcase(self._test_like_post, True)
-        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
-        # self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
-        # self.run_testcase(self._test_home_page_see_all_clubs_button, True)
+        # Home Page
+        self.run_testcase(self._test_reply_to_comment_on_post, True)
+        self.run_testcase(self._test_comment_on_post, True)
+        self.run_testcase(self._test_like_post, True)
+        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
+        self.run_testcase(self._test_home_page_see_all_clubs_button, True)
         self.run_testcase(self._test_home_page_recommended_book, True)
-        # self.run_testcase(self._test_home_page_recommended_club, True)
+        self.run_testcase(self._test_home_page_recommended_club, True)
 
-        # # Navbar
-        # self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
-        # self.run_testcase(self._test_open_and_close_search_bar, True, "home")
-        # self.run_testcase(self._test_navbar_create_new_post, True, "home")
-        # self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
-        # self.run_testcase(self._test_open_chat_button, True, "home")
-        # self.run_testcase(self._test_open_meetings_page, True, "home")
-        # self.run_testcase(self._test_open_profile_page, True, "home")
-        # self.run_testcase(self._test_log_out_button, True, "home")
+        # Navbar
+        self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
+        self.run_testcase(self._test_open_and_close_search_bar, True, "home")
+        self.run_testcase(self._test_navbar_create_new_post, True, "home")
+        self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
+        self.run_testcase(self._test_open_chat_button, True, "home")
+        self.run_testcase(self._test_open_meetings_page, True, "home")
+        self.run_testcase(self._test_open_profile_page, True, "home")
+        self.run_testcase(self._test_log_out_button, True, "home")
 
-        # # Search Bar
-        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
-        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") 
-        # self.run_testcase(self._test_create_club, True, "all_clubs")
+        # Search Bar
+        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
+        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
+        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") 
+        self.run_testcase(self._test_create_club, True, "all_clubs")
 
-        # # User Page
-        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
-        # self.run_testcase(self._test_edit_user_profile, True) 
-        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) 
-        # self.run_testcase(self._test_edit_post, True) 
-        # self.run_testcase(self._test_delete_post, True) 
-        # self.run_testcase(self._test_accept_friend_request, True) 
-        # self.run_testcase(self._test_reject_friend_request, True) 
-        # self.run_testcase(self._test_delete_friend, True) 
-        # self.run_testcase(self._test_user_profile_suggested_friends, True) 
+        # User Page
+        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
+        self.run_testcase(self._test_edit_user_profile, True) 
+        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) 
+        self.run_testcase(self._test_edit_post, True) 
+        self.run_testcase(self._test_delete_post, True) 
+        self.run_testcase(self._test_accept_friend_request, True) 
+        self.run_testcase(self._test_reject_friend_request, True) 
+        self.run_testcase(self._test_delete_friend, True) 
+        self.run_testcase(self._test_user_profile_suggested_friends, True) 
 
-        # # Club Profile Page As Owner
-        # self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) 
-        # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) 
-        # self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) 
-        # self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) 
-        # self.run_testcase(self._test_schedule_meeting_as_owner, True) 
-        # self.run_testcase(self._test_accept_club_applicant_as_owner, True)
-        # self.run_testcase(self._test_reject_club_applicant_as_owner, True)
-        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
-        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True) 
-        # self.run_testcase(self._test_ban_member_as_owner, True) 
-        # self.run_testcase(self._test_ban_admin_as_owner, True) 
-        # self.run_testcase(self._test_unban_banned_user_as_owner, True) 
-        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) 
+        # Club Profile Page As Owner
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) 
+        self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) 
+        self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) 
+        self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) 
+        self.run_testcase(self._test_schedule_meeting_as_owner, True) 
+        self.run_testcase(self._test_accept_club_applicant_as_owner, True)
+        self.run_testcase(self._test_reject_club_applicant_as_owner, True)
+        self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
+        self.run_testcase(self._test_demote_admin_to_member_as_owner, True) 
+        self.run_testcase(self._test_ban_member_as_owner, True) 
+        self.run_testcase(self._test_ban_admin_as_owner, True) 
+        self.run_testcase(self._test_unban_banned_user_as_owner, True) 
+        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) 
 
-        # # Club Profile Page As Admin
-        # self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) 
-        # self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True)
-        # self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) 
-        # self.run_testcase(self._test_accept_club_applicant_as_admin, True) 
-        # self.run_testcase(self._test_reject_club_applicant_as_admin, True)
-        # self.run_testcase(self._test_ban_member_as_admin, True) 
-        # self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        # Club Profile Page As Admin
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) 
+        self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True)
+        self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) 
+        self.run_testcase(self._test_accept_club_applicant_as_admin, True) 
+        self.run_testcase(self._test_reject_club_applicant_as_admin, True)
+        self.run_testcase(self._test_ban_member_as_admin, True) 
+        self.run_testcase(self._test_unban_banned_user_as_admin, True)
         
-        # # Club Profile Page As Member
-        # self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) 
-        # self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) 
-        # self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) 
+        # Club Profile Page As Member
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) 
+        self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) 
+        self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) 
 
-        # # Club Profile Page As Non-Member
-        # self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) 
-        # self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) 
+        # Club Profile Page As Non-Member
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) 
+        self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) 
 
-        # # All Clubs Page
-        # # self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True)
-        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) 
+        # All Clubs Page
+        # self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True)
+        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) 
         
-        # # Book Profile Page
-        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True) # Works
-        # self.run_testcase(self._test_book_profile_rate_book, True) # Works
-        # self.run_testcase(self._test_book_profile_update_book_rating, True) # Works
-        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) # Works
+        # Book Profile Page
+        self.run_testcase(self._test_book_profile_page_contains_correct_information, True) # Works
+        self.run_testcase(self._test_book_profile_rate_book, True) # Works
+        self.run_testcase(self._test_book_profile_update_book_rating, True) # Works
+        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) # Works
 
-        # # Chat Page
-        # ''' Unable to _test chat frontend functionality (Connecting to websocket) with selenium
-        # due to a python multihtreading error when running ChannelsLiveServerTestCase.
-        # https://github.com/django/channels/issues/1485 '''
-        # self.run_testcase(self._test_chat_page, True) 
+        # Chat Page
+        ''' Unable to _test chat frontend functionality (Connecting to websocket) with selenium
+        due to a python multihtreading error when running ChannelsLiveServerTestCase.
+        https://github.com/django/channels/issues/1485 '''
+        self.run_testcase(self._test_chat_page, True) 
 
-        # # Password Reset
-        # self.run_testcase(self._test_password_reset, False)
+        # Password Reset
+        self.run_testcase(self._test_password_reset, False)
 
-        # # Is Login Protected
-        # self.run_testcase(self._test_log_out_is_login_protected, False) 
-        # self.run_testcase(self._test_sign_up_rating_is_login_protected, False) 
-        # self.run_testcase(self._test_waiting_is_login_protected, False)
-        # self.run_testcase(self._test_home_is_login_protected, False)
-        # self.run_testcase(self._test_club_profile_is_login_protected, False)
-        # self.run_testcase(self._test_create_club_is_login_protected, False)
-        # self.run_testcase(self._test_user_profile_is_login_protected, False)
-        # self.run_testcase(self._test_chat_is_login_protected, False)
-        # self.run_testcase(self._test_scheduling_is_login_protected, False)
-        # self.run_testcase(self._test_meetings_is_login_protected, False)
-        # self.run_testcase(self._test_recommendations_is_login_protected, False)
-        # self.run_testcase(self._test_recommend_clubs_is_login_protected, False)
-        # self.run_testcase(self._test_book_profile_is_login_protected, False)
-        # self.run_testcase(self._test_all_clubs_is_login_protected, False)
+        # Is Login Protected
+        self.run_testcase(self._test_log_out_is_login_protected, False) 
+        self.run_testcase(self._test_sign_up_rating_is_login_protected, False) 
+        self.run_testcase(self._test_waiting_is_login_protected, False)
+        self.run_testcase(self._test_home_is_login_protected, False)
+        self.run_testcase(self._test_club_profile_is_login_protected, False)
+        self.run_testcase(self._test_create_club_is_login_protected, False)
+        self.run_testcase(self._test_user_profile_is_login_protected, False)
+        self.run_testcase(self._test_chat_is_login_protected, False)
+        self.run_testcase(self._test_scheduling_is_login_protected, False)
+        self.run_testcase(self._test_meetings_is_login_protected, False)
+        self.run_testcase(self._test_recommendations_is_login_protected, False)
+        self.run_testcase(self._test_recommend_clubs_is_login_protected, False)
+        self.run_testcase(self._test_book_profile_is_login_protected, False)
+        self.run_testcase(self._test_all_clubs_is_login_protected, False)
 
-        # # Requires Ratings
+        # Requires Ratings
         self.run_testcase(self._test_home_requires_ratings, False)
         self.run_testcase(self._test_club_profile_requires_ratings, False)
         self.run_testcase(self._test_create_club_requires_ratings, False)
