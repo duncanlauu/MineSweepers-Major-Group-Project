@@ -21,10 +21,12 @@ export default function ProfileInfo(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(props)
+    console.log(retrievedCurrentUser.id)
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
-        if (props.otherUserID === retrievedCurrentUser.id) {
+        if (props.otherUserID == retrievedCurrentUser.id) {
           navigate("/user_profile");
         } else {
           getCurrentUser(props.otherUserID);
@@ -88,7 +90,7 @@ export default function ProfileInfo(props) {
         <ProfileInfoContainer>
           <ProfileInfoCard>
             <Row style={{ justifyContent: "center" }}>
-              <Col xs="8">
+              <Col xs="6">
                 <Gravatar
                   email={currentUser.email}
                   size={150}

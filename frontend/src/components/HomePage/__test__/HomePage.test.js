@@ -61,7 +61,27 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(/Clubs/i)).toBeInTheDocument()
+            expect(screen.getByText("Clubs")).toBeInTheDocument()
+        })
+    })
+
+    test("contains club recommendations link", async () => {
+        act(() => {
+            render(routerWrapper(<HomePage/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText("See all club recommendations")).toBeInTheDocument()
+        })
+    })
+
+    test("contains all clubs link", async () => {
+        act(() => {
+            render(routerWrapper(<HomePage/>))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText("See all clubs")).toBeInTheDocument()
         })
     })
 })

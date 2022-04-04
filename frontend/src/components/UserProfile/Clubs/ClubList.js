@@ -5,6 +5,7 @@ import SingleClubRecommendation from "../../ClubRecommendations/SingleClubRecomm
 
 export default function ClubList(props) {
   const [clubs, setClubs] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     getAllClubsOfUser();
@@ -21,15 +22,15 @@ export default function ClubList(props) {
   };
 
   const displayRatings = (e) => {
-    if (clubs) {
+    if (clubs.length > 0) {
       return clubs.map((club) => {
         return <SingleClubRecommendation club={club} />;
       });
     } else {
-      if (props.requestedUser_id == undefined) {
-        return <h5> You have not rated anything yet. </h5>;
+      if (props.requestedUser_id == currentUser.id) {
+        return <h5> You are not part of any clubs yet. </h5>;
       } else {
-        return <h5> This user has not rated anything yet. </h5>;
+        return <h5> This user is not in any club yet.</h5>;
       }
     }
   };
