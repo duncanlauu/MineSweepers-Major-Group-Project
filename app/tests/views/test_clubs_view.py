@@ -57,9 +57,18 @@ class ClubsTestCase(APITestCase):
         self.assertEqual(club_count_after, club_count_before + 1)
         self.assertEqual(chat_count_after, chat_count_before + 1)
 
-    def test_incorrect_post(self):
+    def test_club_post_with_blank_name(self):
         club_count_before = Club.objects.count()
         response = self.client.post(self.url, data={"name": "", "description": "This is a description"})
+        club_count_after = Club.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(club_count_after, club_count_before)
+
+    def test_club_post_with_long_name(self):
+        club_count_before = Club.objects.count()
+        long_name = "This is a name" * 100
+        data = {"name": long_name, "description": "This is a description"}
+        response = self.client.post(self.url, data=data)
         club_count_after = Club.objects.count()
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(club_count_after, club_count_before)

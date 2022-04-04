@@ -74,6 +74,7 @@ export default function CreateClub() {
             .then((res) => {
                 console.log(res)
                 console.log(res.data)
+                navigate('/club_profile/' + res.data.id)
             })
             .catch((e) => {
                 setNameErr(e.response.data.name)
