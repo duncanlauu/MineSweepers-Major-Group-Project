@@ -173,7 +173,6 @@ class AllCommentsView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             if is_post_visible_to_user(user, post):
-                # comments = post.comment_set.values()
                 comments = post.comment_set\
                     .values('id',
                             'author',
@@ -182,6 +181,13 @@ class AllCommentsView(APIView):
                             'post',
                             'content',
                             'created_at')
+                for comment in comments:
+                    comment_object = Comment.objects.get(id=comment['id'])
+                    comment['likesCount'] = comment_object.upvotes.count()
+                    if user in comment_object.upvotes.all():
+                        comment['liked'] = True
+                    else:
+                        comment['liked'] = False
                 return Response({'comments': comments}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -218,12 +224,27 @@ class CommentView(APIView):
             user = request.user
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
-            serializer = CommentSerializer(comment)
             if is_post_visible_to_user(user, post) and comment.post == post:
-                return Response({'comment': serializer.data}, status=status.HTTP_200_OK)
+                serializer = CommentSerializer(comment)
+                response_data = serializer.data.copy()
+                modified_upvotes_list = []
+                for upvote_user_pk in response_data['upvotes']:
+                    upvote_user = User.objects.get(pk=upvote_user_pk)
+                    upvote_user_username = upvote_user.username
+                    upvote_user_email = upvote_user.email
+                    modified_upvotes_list.append(
+                        {"id": upvote_user_pk,
+                         "username": upvote_user_username,
+                         "email": upvote_user_email}
+                    )
+                response_data['upvotes'] = modified_upvotes_list
+                liked = False
+                if user in comment.upvotes.all():
+                    liked = True
+                return Response({'comment': {**response_data, 'liked': liked}}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except Post.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, post_id, comment_id):
@@ -277,7 +298,14 @@ class AllRepliesView(APIView):
                             'comment',
                             'content',
                             'created_at')
-            return Response({'replies': replies}, status=status.HTTP_200_OK)
+                for reply in replies:
+                    reply_object = Reply.objects.get(id=reply['id'])
+                    reply['likesCount'] = reply_object.upvotes.count()
+                    if user in reply_object.upvotes.all():
+                        reply['liked'] = True
+                    else:
+                        reply['liked'] = False
+                return Response({'replies': replies}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -312,9 +340,24 @@ class ReplyView(APIView):
             post = Post.objects.get(id=post_id)
             comment = Comment.objects.get(id=comment_id)
             reply = Reply.objects.get(id=reply_id)
-            serializer = ReplySerializer(reply)
             if is_post_visible_to_user(user, post) and comment.post == post and reply.comment == comment:
-                return Response({'reply': serializer.data}, status=status.HTTP_200_OK)
+                serializer = ReplySerializer(reply)
+                response_data = serializer.data.copy()
+                modified_upvotes_list = []
+                for upvote_user_pk in response_data['upvotes']:
+                    upvote_user = User.objects.get(pk=upvote_user_pk)
+                    upvote_user_username = upvote_user.username
+                    upvote_user_email = upvote_user.email
+                    modified_upvotes_list.append(
+                        {"id": upvote_user_pk,
+                         "username": upvote_user_username,
+                         "email": upvote_user_email}
+                    )
+                response_data['upvotes'] = modified_upvotes_list
+                liked = False
+                if user in reply.upvotes.all():
+                    liked = True
+                return Response({'reply': {**response_data, 'liked': liked}}, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except:
