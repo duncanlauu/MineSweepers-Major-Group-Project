@@ -26,11 +26,15 @@ export default function ProfileInfo(props) {
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
-        if (props.otherUserID == retrievedCurrentUser.id) {
-          navigate("/user_profile");
-        } else {
-          getCurrentUser(props.otherUserID);
-          setIsLoggedInUser(false);
+        if(isNaN(parseInt(props.otherUserID))){
+          navigate("/error/");
+        }else{
+          if (props.otherUserID == retrievedCurrentUser.id) {
+            navigate("/user_profile");
+          } else {
+            getCurrentUser(props.otherUserID);
+            setIsLoggedInUser(false);
+          }
         }
       } else {
         setCurrentUser(retrievedCurrentUser);
