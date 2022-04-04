@@ -9,6 +9,7 @@ import LikesUsersList from "./LikesUsersList";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+
 export default function SingleCommentReply(props) {
   const [singleReply, setSingleReply] = useState("");
   const [singleComment, setSingleComment] = useState("");
@@ -144,14 +145,18 @@ export default function SingleCommentReply(props) {
                 {likesCount}
                 <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
               </Button>
-              &nbsp;
               {singleReply.author === currentUser.id && (
                 <Button
                   color="danger"
                   name={singleReply.id}
                   onClick={(e) => deleteComment(singleReply.id, e)}
+                  style={{
+                    background: "#653FFD",
+                    color: "#ffffff",
+                    borderColor: "#653FFD",
+                  }}
                 >
-                  <DeleteIcon style={{ fontSize: "small" }}></DeleteIcon>
+                  <DeleteIcon></DeleteIcon>
                 </Button>
               )}
             </Col>

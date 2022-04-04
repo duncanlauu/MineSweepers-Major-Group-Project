@@ -20,7 +20,7 @@ import { useNavigate } from "react-router";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function SingleFeedPost(props) {
   const [likesCount, setLikesCount] = useState(props.post.likesCount);
@@ -65,12 +65,12 @@ export default function SingleFeedPost(props) {
 
   const getLikesUsersListPost = (setLikesUsersList) => {
     axiosInstance
-      .get(`posts/${props.post.id}`)
-      .then((res) => {
-        setLikesUsersList(res.data.post.upvotes);
-      })
-      .catch((error) => console.error(error));
-  };
+        .get(`posts/${props.post.id}`)
+        .then((res) => {
+            setLikesUsersList(res.data.post.upvotes);
+        })
+        .catch((error) => console.error(error));
+};
 
   const togglerID = "toggler" + props.post.id;
   const HashtagTogglerId = "#toggler" + props.post.id;
@@ -136,7 +136,6 @@ export default function SingleFeedPost(props) {
             <Button
               id={togglerID}
               style={{
-                height: "3.5rem",
                 background: commentsVisibility ? "#653FFD" : "#ffffff",
                 color: commentsVisibility ? "#ffffff" : "#653FFD",
                 borderColor: "#653FFD",
@@ -148,7 +147,6 @@ export default function SingleFeedPost(props) {
             &nbsp;
             <Button
               style={{
-                height: "3.5rem",
                 background: likedByUser ? "#653FFD" : "#ffffff",
                 color: likedByUser ? "#ffffff" : "#653FFD",
                 borderColor: "#653FFD",
@@ -160,7 +158,6 @@ export default function SingleFeedPost(props) {
             &nbsp;
             <Button
               style={{
-                height: "3.5rem",
                 background: "#653FFD",
                 color: "#ffffff",
                 borderColor: "#653FFD",
@@ -177,7 +174,9 @@ export default function SingleFeedPost(props) {
           toggler={HashtagTogglerId}
           data-testid="all-comments-button"
         >
-          <PostCommentList post={props.post} />
+          {commentsVisibility === true && (
+              <PostCommentList post={props.post} />
+          )}
         </UncontrolledCollapse>
       </Card>
 
@@ -190,10 +189,10 @@ export default function SingleFeedPost(props) {
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
-          <LikesUsersList
-            type="post"
-            getLikesUsersList={getLikesUsersListPost}
-          />
+          <LikesUsersList 
+          type="post"
+          getLikesUsersList={getLikesUsersListPost}
+           />
         </ModalBody>
       </Modal>
     </div>
