@@ -149,7 +149,7 @@ export default function ProfileInfo(props) {
                             width: "80%",
                           }}
                         >
-                          Following
+                          Friends
                         </Button>
                       )}
 
@@ -192,7 +192,7 @@ export default function ProfileInfo(props) {
                             width: "80%",
                           }}
                         >
-                          Follow
+                          Add Friend
                         </Button>
                       )}
                   </Row>

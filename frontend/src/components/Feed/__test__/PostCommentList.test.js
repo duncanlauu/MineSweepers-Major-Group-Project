@@ -50,7 +50,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText("Send")).toBeInTheDocument()
+            expect(screen.getByTestId("comment-submit")).toBeInTheDocument()
         })
     })
 
@@ -96,7 +96,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getAllByText("x").length).toBe(1)
+            expect(screen.getAllByTestId("comment-remove-button").length).toBe(1)
         })
     })
 })

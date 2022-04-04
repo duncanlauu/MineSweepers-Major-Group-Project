@@ -94,7 +94,7 @@ describe("Components exist", () => {
 
         await waitFor(() => {
             for (let i = 1; i <= 3; i++) {
-                const buttons = screen.getAllByText("Likes: 3")
+                const buttons = screen.getAllByText("3")
                 expect(buttons).toHaveLength(3)
             }
         })
