@@ -129,6 +129,14 @@ $ pip3 install numpy
 ## Sources
 + The packages in requirements.txt
 + frontend/src/components/Meetings/Meetings.js lines 30-35 are adapted from https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
++ Integration of Django and React: https://medium.com/codex/how-to-integrate-react-and-django-framework-in-a-simple-way-c8b90f3ce945
++ Protected routes: Authentication (useAuth, requireAuth, authProvider, App.js): https://github.com/gitdagray/react_protected_routes/blob/a16142d7e2ce2269f360541d663e15d731102cb4/src/
+  
+  ### JWT
++ Axios calls with JWT for receiving data from backend: https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
++ Settings: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
++ Blacklisting tokens, creating users: https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/django/users/views.py
++ Mocking axios for testing ( `__mocks__/axios.js`): https://stackoverflow.com/a/70590795/18134517
 
 
 ## Security
