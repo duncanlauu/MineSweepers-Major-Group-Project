@@ -28,7 +28,7 @@ describe("Components exist", () => {
     test("contains profile info", async () => {
         act(() => {
             render(
-                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                <MemoryRouter initialEntries={["/user_profile/2"]}>
                     <Routes>
                         <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
                     </Routes>
@@ -44,7 +44,7 @@ describe("Components exist", () => {
     test("contains posts", async () => {
         act(() => {
             render(
-                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                <MemoryRouter initialEntries={["/user_profile/2"]}>
                     <Routes>
                         <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
                     </Routes>
@@ -60,7 +60,7 @@ describe("Components exist", () => {
     test("contains friends", async () => {
         act(() => {
             render(
-                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                <MemoryRouter initialEntries={["/user_profile/2"]}>
                     <Routes>
                         <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
                     </Routes>
@@ -76,7 +76,7 @@ describe("Components exist", () => {
     test("contains clubs", async () => {
         act(() => {
             render(
-                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                <MemoryRouter initialEntries={["/user_profile/2"]}>
                     <Routes>
                         <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
                     </Routes>
@@ -92,7 +92,7 @@ describe("Components exist", () => {
     test("contains book ratings", async () => {
         act(() => {
             render(
-                <MemoryRouter initialEntries={["/user_profile/1"]}>
+                <MemoryRouter initialEntries={["/user_profile/2"]}>
                     <Routes>
                         <Route path={'/user_profile/:user_id'} element={<OtherUserProfile/>}/>
                     </Routes>

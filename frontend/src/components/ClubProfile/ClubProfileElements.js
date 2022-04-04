@@ -85,6 +85,7 @@ export const MeetingContainer = styled.div`
     padding: 1rem 2rem 1rem 2rem;
     height: 10rem;
     margin-top: 1rem;
+    overflow-y: scroll;
 `
 
 export const MeetingHeading = styled.text`
