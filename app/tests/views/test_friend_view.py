@@ -36,6 +36,10 @@ class FriendsAPITestCase(APITestCase):
         self.assertIn(2, friend_ids)
         self.assertIn(3, friend_ids)
 
+    def test_get_all_other_user_friends_for_invalid_id(self):
+        response = self.client.get(reverse('app:other_user_friends', kwargs={'other_user_id': 100}))
+        self.assertEqual(response.status_code, 400)
+
     def test_delete_friend(self):
         chat_count_before = Chat.objects.count()
         response = self.client.delete(reverse('app:single_friend',
@@ -109,6 +113,10 @@ class FriendsAPITestCase(APITestCase):
         self.assertEqual(friend_count_before + 1, friend_count_after)
         self.assertEqual(chat_count_before + 1, chat_count_after)
         self.assertFalse(FriendRequest.objects.filter(sender=friend, receiver=self.user).exists())
+
+    def test_delete_with_invalid_action(self):
+        response = self.client.delete(reverse('app:friend_requests'), data={'other_user_id': 5, 'action': 'invalid'})
+        self.assertEqual(response.status_code, 400)
 
     def test_accept_incoming_friend_request_when_already_friends(self):
         friend = User.objects.get(pk=2)
