@@ -128,10 +128,10 @@ $ pip3 install numpy
 
 ## Sources
 + The packages in requirements.txt
-+ Messaging: https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
-+ frontend/src/components/Meetings/Meetings.js lines 30-35 are adapted from https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
++ Messaging ( `frontend/src/websocket.js`, `frontend/src/components/Chat`, `app/views/chat_views.py` ) : https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 + Integration of Django and React: https://medium.com/codex/how-to-integrate-react-and-django-framework-in-a-simple-way-c8b90f3ce945
 + Protected routes: Authentication ( `frontend/src/components/hooks/useAuth.js`, `frontend/src/components/RequireAuth/RequireAuth.js`, `frontend/src/components/context/AuthProvider.js` ): https://github.com/gitdagray/react_protected_routes/blob/a16142d7e2ce2269f360541d663e15d731102cb4/src/
++ Downloading Calendar events ( `frontend/src/downloadCalendar.js`, lines 30-35 ): https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
   
   ### JWT
 + Axios calls with JWT for receiving data from backend ( `frontend/src/axios.js` ): https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
