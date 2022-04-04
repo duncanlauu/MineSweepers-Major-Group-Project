@@ -242,9 +242,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
 
         # # Search Bar
-        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
-        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
+        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
+        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
+        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
         # # self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
 
         # # User Page
@@ -360,7 +360,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue(self.club_where_non_member.name in body_text)
         self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
         self.assertTrue("Apply" in body_text)
@@ -407,7 +406,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue(self.club_where_member.name in body_text)
         self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
         self.assertFalse("Apply" in body_text)
@@ -451,19 +449,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
         self.assertTrue("MEETINGS" in body_text)
-        print(1)
         self.assertFalse("Make Owner" in body_text)
         self.assertFalse("Promote" in body_text)
         self.assertFalse("Demote" in body_text)
         self.assertFalse("Ban" in body_text)
         self.assertFalse("Accept" in body_text)
         self.assertFalse("Reject" in body_text)
-        print(2)
         all_club_users = [self.club_where_member.owner]
         all_club_users += self.club_where_member.admins.all()
         all_club_users += self.club_where_member.members.all()
@@ -580,7 +575,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_xpath('//button[.="Profile"]').click()
         self.browser.implicitly_wait(10)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue(self.club_where_admin.name in body_text)
         self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
         self.assertFalse("Apply" in body_text)
@@ -626,8 +620,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
-        # Tab Buttons
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
@@ -638,8 +630,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue("Ban" in body_text)
         self.assertTrue("Accept" in body_text)
         self.assertTrue("Reject" in body_text)
-        # self.assertTrue("Unban" in body_text)
-        # Club users
         all_club_users = [self.club_where_admin.owner]
         all_club_users += self.club_where_admin.admins.all()
         all_club_users += self.club_where_admin.members.all()
@@ -753,7 +743,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         
 
     def _test_ban_member_as_owner(self):
-        print(self.club.members.all())
         number_of_banned_users_before = self.club.banned_users.count()
         number_of_members_before = self.club.members.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
@@ -775,7 +764,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(2)
         number_of_banned_users_after = self.club.banned_users.count()
         number_of_members_after = self.club.members.count()
-        print(self.club.members.all())
         self.assertEqual(number_of_banned_users_before + 1, number_of_banned_users_after)
         self.assertEqual(number_of_members_before - 1, number_of_members_after)
         self.assertTrue(new_banned_user in self.club.banned_users.all())
@@ -876,7 +864,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue(self.club.name in body_text)
         self.assertTrue(self.club.description in body_text)
         self.assertTrue("If you would like to leave the club, please transfer the ownership" in body_text)
@@ -920,7 +907,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
@@ -1097,7 +1083,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(1)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue("Username must consist of at least three alphanumericals" in body_text)
         self.browser.find_element_by_name("username").send_keys("a")
         self.browser.find_element_by_xpath('//button[.="Sign Up"]').click()
