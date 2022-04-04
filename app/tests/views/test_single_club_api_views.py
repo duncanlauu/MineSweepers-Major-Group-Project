@@ -130,6 +130,32 @@ class SingleClubAPITestCase(TestCase):
         self.assertFalse(self.club.members.filter(pk=2).exists())
         self.assertTrue(self.member in self.club.banned_users.all())
 
+    def test_put_promote_member(self):
+        before_member_count = self.club.members.count()
+        before_admin_count = self.club.admins.count()
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 2, 'action': 'promote'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        after_member_count = self.club.members.count()
+        after_admin_count = self.club.admins.count()
+        self.assertEqual(after_member_count, before_member_count - 1)
+        self.assertEqual(after_admin_count, before_admin_count + 1)
+        self.assertFalse(self.club.members.filter(pk=2).exists())
+        self.assertTrue(self.member in self.club.admins.all())
+
+    def test_put_demote_admin(self):
+        before_admin_count = self.club.admins.count()
+        before_member_count = self.club.members.count()
+        response = self.client.put(
+            reverse('app:manage_club', kwargs={'id': 1, 'user_id': 3, 'action': 'demote'}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        after_admin_count = self.club.admins.count()
+        after_member_count = self.club.members.count()
+        self.assertEqual(after_admin_count, before_admin_count - 1)
+        self.assertEqual(after_member_count, before_member_count + 1)
+        self.assertFalse(self.club.admins.filter(pk=3).exists())
+        self.assertTrue(self.member in self.club.members.all())
+
 
     def test_put_ban_admin(self):
         before_admin_count = self.club.admins.count()
@@ -185,7 +211,7 @@ class SingleClubAPITestCase(TestCase):
         self.assertEqual(after_member_count, before_member_count - 1)
 
 
-    def test_put_leave_club_with_member(self):
+    def test_put_leave_club_with_admin(self):
         before_admin_count = self.club.admins.count()
         response = self.client.put(
             reverse('app:manage_club', kwargs={'id': 1, 'user_id': 3, 'action': 'leave'}))
