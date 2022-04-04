@@ -17,10 +17,15 @@ import PostCommentList from "./PostCommentList";
 import Gravatar from "react-gravatar";
 import { PostHeadingText } from "../UserProfile/UserProfileElements";
 import { useNavigate } from "react-router";
-import ThumbUp from "@mui/icons-material/ThumbUp";
-import CommentIcon from "@mui/icons-material/Comment";
+import { HeadingText } from "../Login/LoginElements";
 import LikesUsersList from "./LikesUsersList";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import {
+  ClubPill,
+  LikesText,
+  PostText,
+  ReactionContainer,
+} from "./FeedElements";
 
 export default function SingleFeedPost(props) {
   const [likesCount, setLikesCount] = useState(props.post.likesCount);
@@ -65,12 +70,12 @@ export default function SingleFeedPost(props) {
 
   const getLikesUsersListPost = (setLikesUsersList) => {
     axiosInstance
-        .get(`posts/${props.post.id}`)
-        .then((res) => {
-            setLikesUsersList(res.data.post.upvotes);
-        })
-        .catch((error) => console.error(error));
-};
+      .get(`posts/${props.post.id}`)
+      .then((res) => {
+        setLikesUsersList(res.data.post.upvotes);
+      })
+      .catch((error) => console.error(error));
+  };
 
   const togglerID = "toggler" + props.post.id;
   const HashtagTogglerId = "#toggler" + props.post.id;
@@ -99,19 +104,31 @@ export default function SingleFeedPost(props) {
                   borderRadius: "50px",
                   marginTop: "0rem",
                   marginBottom: "0rem",
+                  cursor: "pointer",
                 }}
               />
             </Col>
-            <Col xs="4">
-              <h5>
-                <b> @{props.post.author__username} </b>
+            <Col xs="4" style={{ paddingRight: "0px" }}>
+              <h5
+                style={{
+                  fontFamily: "Source Sans Pro",
+                  fontWeight: "600",
+                  marginTop: "0.65rem",
+                }}
+              >
+                {props.post.author__username}
               </h5>
             </Col>
-            <Col xs="6" style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Col
+              xs="6"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "0px",
+              }}
+            >
               {props.post.club != null && (
-                <h5>
-                  <b> {props.post.club__name} </b>
-                </h5>
+                <ClubPill>{props.post.club__name}</ClubPill>
               )}
             </Col>
           </Row>
@@ -125,58 +142,63 @@ export default function SingleFeedPost(props) {
           </div>
 
           <CardText>
-            <h5> {props.post.content} </h5>
+            <PostText>{props.post.content}</PostText>
           </CardText>
+        </CardBody>
 
-          <div
+        <div>
+          <Row
             style={{
-              textAlign: "right",
+              display: "flex",
+              float: "right",
+              marginRight: "1rem",
+              marginBottom: "0.5rem",
             }}
           >
-            <Button
-              id={togglerID}
-              style={{
-                background: commentsVisibility ? "#653FFD" : "#ffffff",
-                color: commentsVisibility ? "#ffffff" : "#653FFD",
-                borderColor: "#653FFD",
-              }}
-              onClick={changeCommentsVisibility}
-            >
-              <CommentIcon />
-            </Button>
-            &nbsp;
-            <Button
-              style={{
-                background: likedByUser ? "#653FFD" : "#ffffff",
-                color: likedByUser ? "#ffffff" : "#653FFD",
-                borderColor: "#653FFD",
-              }}
-              onClick={likePost}
-            >
-              <ThumbUp />
-            </Button>
-            &nbsp;
-            <Button
-              style={{
-                background: "#653FFD",
-                color: "#ffffff",
-                borderColor: "#653FFD",
-              }}
-              onClick={changeModalVisibility}
-            >
-              {likesCount}
-              <FavoriteIcon></FavoriteIcon>
-            </Button>
-          </div>
-        </CardBody>
+            <ReactionContainer>
+              <Button
+                id={togglerID}
+                style={{
+                  background: commentsVisibility ? "#653FFD" : "#ffffff",
+                  color: commentsVisibility ? "#ffffff" : "#653FFD",
+                  borderColor: "#653FFD",
+                }}
+                onClick={changeCommentsVisibility}
+              >
+                <CommentIcon />
+              </Button>
+              <Button
+                style={{
+                  background: likedByUser ? "#653FFD" : "#ffffff",
+                  color: likedByUser ? "#ffffff" : "#653FFD",
+                  borderColor: "#653FFD",
+                }}
+                onClick={likePost}
+              >
+                {" "}
+                <ThumbUp />
+              </Button>
+              <Button
+                style={{
+                  background: "#653FFD",
+                  color: "#ffffff",
+                  borderColor: "#653FFD",
+                }}
+                onClick={changeModalVisibility}
+              >
+                {likesCount}
+                <FavoriteIcon></FavoriteIcon>
+              </Button>
+            </ReactionContainer>
+          </Row>
+          <br />
+        </div>
 
         <UncontrolledCollapse
           toggler={HashtagTogglerId}
           data-testid="all-comments-button"
         >
-          {commentsVisibility === true && (
-              <PostCommentList post={props.post} />
-          )}
+          {commentsVisibility === true && <PostCommentList post={props.post} />}
         </UncontrolledCollapse>
       </Card>
 
@@ -185,14 +207,14 @@ export default function SingleFeedPost(props) {
         toggle={() => changeModalVisibility()}
         style={{
           left: 0,
-          top: 100,
+          top: 180,
         }}
       >
         <ModalBody style={{ overflowY: "scroll" }}>
-          <LikesUsersList 
-          type="post"
-          getLikesUsersList={getLikesUsersListPost}
-           />
+          <LikesUsersList
+            type="post"
+            getLikesUsersList={getLikesUsersListPost}
+          />
         </ModalBody>
       </Modal>
     </div>

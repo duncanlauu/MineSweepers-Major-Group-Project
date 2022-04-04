@@ -24,7 +24,7 @@ function IndividualClubCard(props) {
     return(
         <a href={`/club_profile/${props.id}`}>
             <ClubListItem>
-                <Gravatar email={props.email} size={65} style={{marginBottom: "1rem", marginTop: "1rem"}}/>           
+                <Gravatar email={props.email} style={{ borderRadius:"100px" }} />
                 <RecommendedClubsText>{props.name}</RecommendedClubsText>
                 <RecommendedClubMembersText>{props.size} Members</RecommendedClubMembersText>
             </ClubListItem>
