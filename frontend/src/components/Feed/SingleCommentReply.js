@@ -119,42 +119,42 @@ export default function SingleCommentReply(props) {
               </ReplyLineBox>
             </Col>
             <Button
-                data-testid={"reply-like-button"}
-                style={{
-                  background: likedByUser ? "#653FFD" : "#ffffff",
-                  color: likedByUser ? "#ffffff" : "#653FFD",
-                  borderColor: "#653FFD",
-                }}
-                onClick={likeReply}
-              >
-                <ThumbUp style={{ fontSize: "small" }} />
-              </Button>
-              &nbsp;
+              data-testid={"reply-like-button"}
+              style={{
+                background: likedByUser ? "#653FFD" : "#ffffff",
+                color: likedByUser ? "#ffffff" : "#653FFD",
+                borderColor: "#653FFD",
+              }}
+              onClick={likeReply}
+            >
+              <ThumbUp style={{ fontSize: "small" }} />
+            </Button>
+            &nbsp;
+            <Button
+              style={{
+                background: "#653FFD",
+                color: "#ffffff",
+                borderColor: "#653FFD",
+              }}
+              onClick={changeModalVisibility}
+            >
+              {likesCount}
+              <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
+            </Button>
+            {singleReply.author === currentUser.id && (
               <Button
+                color="danger"
+                name={singleReply.id}
+                onClick={(e) => deleteComment(singleReply.id, e)}
                 style={{
                   background: "#653FFD",
                   color: "#ffffff",
                   borderColor: "#653FFD",
                 }}
-                onClick={changeModalVisibility}
               >
-                {likesCount}
-                <FavoriteIcon style={{ fontSize: "small" }}></FavoriteIcon>
+                <DeleteIcon></DeleteIcon>
               </Button>
-              {singleReply.author === currentUser.id && (
-                <Button
-                  color="danger"
-                  name={singleReply.id}
-                  onClick={(e) => deleteComment(singleReply.id, e)}
-                  style={{
-                    background: "#653FFD",
-                    color: "#ffffff",
-                    borderColor: "#653FFD",
-                  }}
-                >
-                  <DeleteIcon></DeleteIcon>
-                </Button>
-              )}
+            )}
           </Row>
         </Col>
       </Row>
@@ -176,6 +176,7 @@ export default function SingleCommentReply(props) {
       </Modal>
     </div>
   );
+}
 
 //   return (
 //     <div className="singleComment" key={singleReply.id}>
