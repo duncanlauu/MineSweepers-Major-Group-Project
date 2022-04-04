@@ -13,6 +13,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
@@ -107,15 +108,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         print_info()
 
         # Train the recommender system model
-        # self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
-        # self.dump_file_path = 'app/files/dump_file'
-        # self.dataframe = get_combined_data(self.csv_file_path)
-        # self.data = get_dataset_from_dataframe(self.dataframe)
-        # self.trainset = get_trainset_from_dataset(self.data)
-        # self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
-        # train_model(self.algo, self.trainset)
-        # self.pred = test_model(self.algo, self.trainset)
-        # dump_trained_model(self.dump_file_path, self.algo, self.pred)
+        self.csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        self.dump_file_path = 'app/files/dump_file'
+        self.dataframe = get_combined_data(self.csv_file_path)
+        self.data = get_dataset_from_dataframe(self.dataframe)
+        self.trainset = get_trainset_from_dataset(self.data)
+        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        train_model(self.algo, self.trainset)
+        self.pred = test_model(self.algo, self.trainset)
+        dump_trained_model(self.dump_file_path, self.algo, self.pred)
 
         # The user used for testing
         self.user = User.objects.get(username='Jeb')
@@ -209,9 +210,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self._close_db_connections()
 
     def test_everything(self):
-        # self._log_in()
-        # sleep(400)
-
         # # Landing Page # DONE
         # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
         # self.run_testcase(self._test_landing_page_log_in_button, False) # Works
@@ -236,18 +234,20 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
         # # Home Page
         # self.page_contains_functional_navbar("home")
-        self.run_testcase(self._test_reply_to_comment_on_post, True)
-        self.run_testcase(self._test_comment_on_post, True)
-        self.run_testcase(self._test_like_post, True)
-        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_clubs_button, True)
+        # self.run_testcase(self._test_reply_to_comment_on_post, True)
+        # self.run_testcase(self._test_comment_on_post, True)
+        # self.run_testcase(self._test_like_post, True)
+        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_clubs_button, True)
+        #Open recommended club
+        #Open recommended book
 
         # # Search Bar
         # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs") # Works
-        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken 
+        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken 
         # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") # Works
-        self.run_testcase(self._test_create_club, True, "all_clubs")  # Works but doens't redirect
+        # self.run_testcase(self._test_create_club, True, "all_clubs")  # Works but doens't redirect
 
         # # User Page
         # self.page_contains_functional_navbar("user_profile")
@@ -258,7 +258,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.run_testcase(self._test_delete_post, True) # Works
         # self.run_testcase(self._test_accept_friend_request, True) # Works
         # self.run_testcase(self._test_reject_friend_request, True) # Works
-        self.run_testcase(self._test_delete_friend, True) # Works
+        # self.run_testcase(self._test_delete_friend, True) # Works
         # self.run_testcase(self._test_user_profile_suggested_friends, True) # Works
 
         # # Club Profile Page
@@ -266,6 +266,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
         # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) # Works
         # self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) # Works
+        self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) # Works
+        self.run_testcase(self._test_schedule_meeting_as_owner, True) # Works
         # self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
         # self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
         # self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
@@ -349,7 +351,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Profile"]') 
         self.browser.find_element_by_xpath('//button[.="Profile"]').click()
         self.browser.implicitly_wait(10)
-        sleep(3)
+        sleep(5)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue(self.club_where_non_member.name in body_text)
         print(body_text)
@@ -910,7 +912,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
         self.browser.implicitly_wait(10)
-        sleep(2)
+        sleep(3)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
@@ -931,6 +933,45 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             self.assertTrue(user.username in body_text)
             self.assertTrue(user.email in body_text)
             self.assertTrue(user.bio[:20] in body_text)
+
+    def _test_club_meetings_page_contains_correct_information_as_owner(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Meetings"]')
+        self.browser.find_element_by_xpath('//button[.="Meetings"]').click()
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Schedule a meeting"]')
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        #Check for meetings??
+
+    def _test_schedule_meeting_as_owner(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Meetings"]')
+        self.browser.find_element_by_xpath('//button[.="Meetings"]').click()
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Schedule a meeting"]')
+        self.browser.find_element_by_xpath('//button[.="Schedule a meeting"]').click()
+        sleep(2)
+        self.browser.implicitly_wait(25)
+        self.wait_until_element_found('//input[@id="name"]')
+        self.browser.find_element_by_id("name").send_keys("New Meeting Name")
+        self.browser.find_element_by_id("description").send_keys("New Meeting Description")
+        book_select = Select(self.browser.find_element_by_id("book-select"))
+        book_select.select_by_index(2)
+        self.browser.find_element_by_id("start_time").send_keys("10102022")
+        self.browser.find_element_by_id("start_time").send_keys(Keys.TAB)
+        self.browser.find_element_by_id("start_time").send_keys("1000")
+        self.browser.find_element_by_id("end_time").send_keys("10102022")
+        self.browser.find_element_by_id("end_time").send_keys(Keys.TAB)
+        self.browser.find_element_by_id("end_time").send_keys("1200")
+        self.browser.find_element_by_id("link").send_keys("www.NewMeetingLink.com")
+        self.browser.find_element_by_xpath('//button[.="Create"]').click()
+        sleep(2)
+        self.browser.implicitly_wait(20)
+        # check db
+
 
 
     # Landing Page
@@ -1323,18 +1364,27 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     # Home Sidepanel
     def _test_home_page_see_all_your_recommendations_button(self):
         self.browser.get(f"{self.live_server_url}/home")
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(15)
         self.wait_until_element_found('//text[.="See all recommendations"]')
         self.browser.find_element(by=By.XPATH, value='//text[.="See all recommendations"]').click()
         sleep(2) # wait for button
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations/")
 
     def _test_home_page_see_all_club_recommendations_button(self):
-
-        pass
+        self.browser.get(f"{self.live_server_url}/home")
+        self.browser.implicitly_wait(15)
+        self.wait_until_element_found('//text[.="See all club recommendations"]')
+        self.browser.find_element(by=By.XPATH, value='//text[.="See all club recommendations"]').click()
+        sleep(2) # wait for button
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommend_clubs")
 
     def _test_home_page_see_all_clubs_button(self):
-        pass
+        self.browser.get(f"{self.live_server_url}/home")
+        self.browser.implicitly_wait(15)
+        self.wait_until_element_found('//text[.="See all clubs"]')
+        self.browser.find_element(by=By.XPATH, value='//text[.="See all clubs"]').click()
+        sleep(2) # wait for button
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/all_clubs")
 
     # Clubs recommendations?
 
