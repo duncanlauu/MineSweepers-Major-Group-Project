@@ -97,7 +97,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Seed the database
         seed_books()
         seed_default_objects()
-        seed_users(40)
+        seed_users(150)
         seed_ratings()
         seed_clubs(10)
         seed_friends()
@@ -261,9 +261,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_create_club, True, "all_clubs")  # Works but doens't redirect
 
         # # User Page
-        # self.page_contains_functional_navbar("user_profile")
         self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True) # Works
-        # #self.run_testcase()# EDIT BUTON TEST HERE
+        self.run_testcase(self._test_edit_user_profile, True) # Works
         self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) # Works
         self.run_testcase(self._test_edit_post, True) # Works
         self.run_testcase(self._test_delete_post, True) # Works
@@ -1628,6 +1627,30 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue(self.user.username in body_text)
         self.assertTrue(self.user.location in body_text)
         self.assertTrue(self.user.bio in body_text)
+
+    def _test_edit_user_profile(self):
+        bio_before = self.user.bio
+        location_before = self.user.location
+        self.browser.get(f"{self.live_server_url}/user_profile")
+        self.wait_until_element_found("//button[.='Edit Profile']")
+        self.browser.find_element_by_xpath("//button[.='Edit Profile']").click()
+        self.wait_until_element_found("//input[@id='bio']")
+        self.browser.find_element_by_id('bio').send_keys(" Edit Bio.")
+        self.browser.find_element_by_id('location').send_keys(" Edit Location.")
+        self.browser.find_element_by_xpath("//button[.='Save changes']").click()
+        bio_after = self.user.bio
+        location_after = self.user.location
+        print(bio_before)
+        print(bio_after)
+        print(location_before)
+        print(location_after)
+
+        edited_user = User.objects.get(pk=self.user.pk)
+        print(edited_user.bio)
+        print(edited_user.location)
+
+       
+
 
 
     def _test_user_profile_suggested_friends(self):
