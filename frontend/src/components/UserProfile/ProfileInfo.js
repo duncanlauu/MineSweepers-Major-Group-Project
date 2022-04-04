@@ -88,7 +88,7 @@ export default function ProfileInfo(props) {
         <ProfileInfoContainer>
           <ProfileInfoCard>
             <Row style={{ justifyContent: "center" }}>
-              <Col xs="8">
+              <Col xs="6">
                 <Gravatar
                   email={currentUser.email}
                   size={150}

@@ -24,7 +24,7 @@ function IndividualClubCard(props) {
     return(
         <a href={`/club_profile/${props.id}`}>
             <ClubListItem>
-                <Gravatar email={props.email}/>
+                <Gravatar email={props.email} size={65} style={{marginBottom: "1rem", marginTop: "1rem"}}/>           
                 <RecommendedClubsText>{props.name}</RecommendedClubsText>
                 <RecommendedClubMembersText>{props.size} Members</RecommendedClubMembersText>
             </ClubListItem>
@@ -158,6 +158,37 @@ const HomePage = () => {
                     </ul>
                     <br/>
                     <Heading2Text>Clubs</Heading2Text>
+                    <br/>
+                    <Row>
+                        <Col xs="7">
+                            <Link to="/recommend_clubs"
+                                style={{
+                                    color: "#653FFD",
+                                    textDecoration: "none",
+                                    fontSize: "15px",
+                                }}
+                            >
+                                <ParaText>
+                                    <IoIosArrowForward/>
+                                    See all club recommendations 
+                                </ParaText>
+                            </Link>
+                        </Col>
+                        <Col xs="5">
+                            <Link to="/all_clubs"
+                                style={{
+                                    color: "#653FFD",
+                                    textDecoration: "none",
+                                    fontSize: "15px",
+                                }}
+                            >
+                                <ParaText>
+                                    <IoIosArrowForward/>
+                                        See all clubs 
+                                </ParaText>
+                            </Link>
+                        </Col>
+                    </Row>
                     <br/>
                     <ul style={{display: "flex", flexDirection: "row"}}>
                         {
