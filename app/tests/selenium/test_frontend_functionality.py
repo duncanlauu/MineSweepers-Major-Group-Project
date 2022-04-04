@@ -211,120 +211,171 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self._close_db_connections()
 
     def test_everything(self):
-        # # Landing Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
-        self.run_testcase(self._test_landing_page_log_in_button, False) # Works
-        self.run_testcase(self._test_landing_page_sign_up_button, False) # Works
+        # # # Landing Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
+        # self.run_testcase(self._test_landing_page_log_in_button, False) # Works
+        # self.run_testcase(self._test_landing_page_sign_up_button, False) # Works
 
-        # # Log In Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") # Works
-        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False) # Works
-        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False) # Works
-        self.run_testcase(self._test_log_in_with_wrong_password, False) # Works
-        self.run_testcase(self._test_log_in, False) # Works
+        # # # Log In Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") # Works
+        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False) # Works
+        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False) # Works
+        # self.run_testcase(self._test_log_in_with_wrong_password, False) # Works
+        # self.run_testcase(self._test_log_in, False) # Works
 
-        # # Sign Up Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up") # Works
-        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False) # Works 
-        self.run_testcase(self._test_sign_up_with_blank_fields, False) # Works
-        self.run_testcase(self._test_sign_up_username_too_short, False) # Works
-        self.run_testcase(self._test_sign_up_invalid_email, False) # Works
+        # # # Sign Up Page # DONE
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up") # Works
+        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False) # Works 
+        # self.run_testcase(self._test_sign_up_with_blank_fields, False) # Works
+        # self.run_testcase(self._test_sign_up_username_too_short, False) # Works
+        # self.run_testcase(self._test_sign_up_invalid_email, False) # Works
 
         # # Sign Up Page and new user Book Rating Page # DONE
-        self.run_testcase(self._test_sign_up_and_book_rating, False) # Works
+        # self.run_testcase(self._test_sign_up_and_book_rating, False) # Works
 
         # # Home Page
         # self.page_contains_functional_navbar("home")
-        self.run_testcase(self._test_reply_to_comment_on_post, True)
-        self.run_testcase(self._test_comment_on_post, True)
-        self.run_testcase(self._test_like_post, True)
-        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_clubs_button, True)
+        # self.run_testcase(self._test_reply_to_comment_on_post, True)
+        # self.run_testcase(self._test_comment_on_post, True)
+        # self.run_testcase(self._test_like_post, True)
+        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_clubs_button, True)
         self.run_testcase(self._test_home_page_recommended_book, True)
-        self.run_testcase(self._test_home_page_recommended_club, True)
+        # self.run_testcase(self._test_home_page_recommended_club, True)
 
         # Navbar
-        self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
-        self.run_testcase(self._test_open_and_close_search_bar, True, "home")
-        self.run_testcase(self._test_navbar_create_new_post, True, "home")
-        self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
-        self.run_testcase(self._test_open_chat_button, True, "home")
-        self.run_testcase(self._test_open_meetings_page, True, "home")
-        self.run_testcase(self._test_open_profile_page, True, "home")
-        self.run_testcase(self._test_log_out_button, True, "home")
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
+        # self.run_testcase(self._test_open_and_close_search_bar, True, "home")
+        # self.run_testcase(self._test_navbar_create_new_post, True, "home")
+        # self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
+        # self.run_testcase(self._test_open_chat_button, True, "home")
+        # self.run_testcase(self._test_open_meetings_page, True, "home")
+        # self.run_testcase(self._test_open_profile_page, True, "home")
+        # self.run_testcase(self._test_log_out_button, True, "home")
 
         # # Search Bar
-        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs") # Works
-        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken 
-        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") # Works
-        self.run_testcase(self._test_create_club, True, "all_clubs")  # Works but doens't redirect
+        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs") # Works
+        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken 
+        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") # Works
+        # self.run_testcase(self._test_create_club, True, "all_clubs")  # Works but doens't redirect
 
         # # User Page
-        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True) # Works
+        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True) # Works
         self.run_testcase(self._test_edit_user_profile, True) # Works
-        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) # Works
-        self.run_testcase(self._test_edit_post, True) # Works
-        self.run_testcase(self._test_delete_post, True) # Works
-        self.run_testcase(self._test_accept_friend_request, True) # Works
-        self.run_testcase(self._test_reject_friend_request, True) # Works
-        self.run_testcase(self._test_delete_friend, True) # Works
-        self.run_testcase(self._test_user_profile_suggested_friends, True) # Works
+        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) # Works
+        # self.run_testcase(self._test_edit_post, True) # Works
+        # self.run_testcase(self._test_delete_post, True) # Works
+        # self.run_testcase(self._test_accept_friend_request, True) # Works
+        # self.run_testcase(self._test_reject_friend_request, True) # Works
+        # self.run_testcase(self._test_delete_friend, True) # Works
+        # self.run_testcase(self._test_user_profile_suggested_friends, True) # Works
 
         # # Club Profile Page
-        # # As Owner
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) # Works
-        self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) # Works
-        self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) # Works
-        self.run_testcase(self._test_schedule_meeting_as_owner, True) # Works
-        self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
-        self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
-        self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
-        self.run_testcase(self._test_demote_admin_to_member_as_owner, True) # Works
-        self.run_testcase(self._test_ban_member_as_owner, True) # Works
-        self.run_testcase(self._test_ban_admin_as_owner, True) # Works
-        self.run_testcase(self._test_unban_banned_user_as_owner, True) # Works
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
+        # # # As Owner
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) # Works
+        # self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) # Works
+        # self.run_testcase(self._test_schedule_meeting_as_owner, True) # Works
+        # self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
+        # self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
+        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
+        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True) # Works
+        # self.run_testcase(self._test_ban_member_as_owner, True) # Works
+        # self.run_testcase(self._test_ban_admin_as_owner, True) # Works
+        # self.run_testcase(self._test_unban_banned_user_as_owner, True) # Works
+        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
 
-        # # As Admin
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) # Works
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True) # Works
-        self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) # Works
-        self.run_testcase(self._test_accept_club_applicant_as_admin, True) # Works
-        self.run_testcase(self._test_reject_club_applicant_as_admin, True) # Works
-        self.run_testcase(self._test_ban_member_as_admin, True) # Works
-        self.run_testcase(self._test_unban_banned_user_as_admin, True) # Works
+        # # # As Admin
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_accept_club_applicant_as_admin, True) # Works
+        # self.run_testcase(self._test_reject_club_applicant_as_admin, True) # Works
+        # self.run_testcase(self._test_ban_member_as_admin, True) # Works
+        # self.run_testcase(self._test_unban_banned_user_as_admin, True) # Works
         
-        # # As Member
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) # Works
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) # Works
-        self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) # Works
+        # # # As Member
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) # Works
 
-        # # As Non-Member
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) # Works
-        self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) # Works
+        # # # As Non-Member
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) # Works
+        # self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) # Works
 
-        # # All Clubs Page
-        # self.page_contains_functional_navbar("all_clubs") # Works kinda but doesn't contribute to total number of tests ran
-        self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True) # Broken NO CLUE HOW MANY CLUBS ARE SUPPOSED TO BE THERE
-        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) # Works
+        # # # All Clubs Page
+        # # self.page_contains_functional_navbar("all_clubs") # Works kinda but doesn't contribute to total number of tests ran
+        # self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True) # Broken NO CLUE HOW MANY CLUBS ARE SUPPOSED TO BE THERE
+        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) # Works
         
-        # # Book Profile Page
-        # # self.page_contains_functional_navbar(f"book_profile/{self.book.pk}")
-        self.run_testcase(self._test_book_profile_page_contains_correct_information, True) # Works
-        self.run_testcase(self._test_book_profile_rate_book, True) # Works
-        self.run_testcase(self._test_book_profile_update_book_rating, True) # Works
-        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) # Works
+        # # # Book Profile Page
+        # # # self.page_contains_functional_navbar(f"book_profile/{self.book.pk}")
+        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True) # Works
+        # self.run_testcase(self._test_book_profile_rate_book, True) # Works
+        # self.run_testcase(self._test_book_profile_update_book_rating, True) # Works
+        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) # Works
 
-        # # Chat Page
-        # ''' Unable to _test chat frontend functionality (Connecting to websocket) with selenium
-        # due to a python multihtreading error when running ChannelsLiveServerTestCase.
-        # https://github.com/django/channels/issues/1485 '''
-        self.run_testcase(self._test_chat_page, True) 
+        # # # Chat Page
+        # # ''' Unable to _test chat frontend functionality (Connecting to websocket) with selenium
+        # # due to a python multihtreading error when running ChannelsLiveServerTestCase.
+        # # https://github.com/django/channels/issues/1485 '''
+        # self.run_testcase(self._test_chat_page, True) 
 
-        # # # # Password Reset
-        self.run_testcase(self._test_password_reset, False) # Works 
+        # # # # # Password Reset
+        # self.run_testcase(self._test_password_reset, False) # Works 
+
+        # Is Login Protected
+        # self.run_testcase(self._test_log_out_is_login_protected, False) 
+        # self.run_testcase(self._test_sign_up_rating_is_login_protected, False) 
+        # self.run_testcase(self._test_waiting_is_login_protected, False)
+        # self.run_testcase(self._test_home_is_login_protected, False)
+        # self.run_testcase(self._test_club_profile_is_login_protected, False)
+        # self.run_testcase(self._test_create_club_is_login_protected, False)
+        # self.run_testcase(self._test_user_profile_is_login_protected, False)
+        # self.run_testcase(self._test_chat_is_login_protected, False)
+        # self.run_testcase(self._test_scheduling_is_login_protected, False)
+        # self.run_testcase(self._test_meetings_is_login_protected, False)
+        # self.run_testcase(self._test_recommendations_is_login_protected, False)
+        # self.run_testcase(self._test_recommend_clubs_is_login_protected, False)
+        # self.run_testcase(self._test_book_profile_is_login_protected, False)
+        # self.run_testcase(self._test_all_clubs_is_login_protected, False)
+
+        # # Requires Ratings
+        # self.run_testcase(self._test_home_requires_rating, False)
+        # self.run_testcase(self._test_club_profile_requires_rating, False)
+        # self.run_testcase(self._test_create_club_requires_rating, False)
+        # self.run_testcase(self._test_user_profile_requires_rating, False)
+        # self.run_testcase(self._test_chat_requires_rating, False)
+        # self.run_testcase(self._test_scheduling_requires_rating, False)
+        # self.run_testcase(self._test_meetings_requires_rating, False)
+        # self.run_testcase(self._test_recommendations_requires_rating, False)
+        # self.run_testcase(self._test_recommend_clubs_requires_rating, False)
+        # self.run_testcase(self._test_book_profile_requires_rating, False)
+        # self.run_testcase(self._test_all_clubs_requires_rating, False)
+
+        # <Route element={<RequireAuth/>}>
+        #                                 <Route path='log_out' element={<Logout/>}/>
+        #                                 <Route path='sign_up/rating' element={<SignUpRating/>}/>
+        #                                 <Route path='waiting' element={<WaitingScreen/>}/>
+        #                                 <Route element={<RequireRatings/>}>
+        #                                     <Route path='home' element={<HomePage/>}/>
+        #                                     <Route path='club_profile/:club_id' element={<ClubProfile/>}/>
+        #                                     <Route path='create_club' element={<CreateClub/>}/>
+        #                                     <Route path='notifications' element={<Notifications/>}/>
+        #                                     <Route path='user_profile/' element={<UserProfile/>}/>
+        #                                     <Route path='user_profile/:user_id' element={<OtherUserProfile/>}/>
+        #                                     <Route path="/chat/" element={<ChatUI/>}/>
+        #                                     <Route path="/chat/:chatID" element={<ChatUI/>}/>
+        #                                     <Route path="/scheduling/:club_id" element={<Scheduling/>}/>
+        #                                     <Route path="/meetings/" element={<Meetings/>}/>
+        #                                     <Route path="/recommendations/" element={<RecommenderPage/>}/>
+        #                                     <Route path='recommend_clubs' element={<ClubRecommendationPage/>}/>
+        #                                     <Route path='book_profile/:book_id' element={<BookProfilePage/>}/>
+        #                                     <Route path="/all_clubs/" element={<ListOfClubs/>}/>
+        #                                 </Route>
+        #                             </Route>
 
         if self.failed_test_cases:
             failed_tests_msg = f"FAILED TEST CASES ({len(self.failed_test_cases)} F / {len(self.succesful_test_cases)} OK):\n"
@@ -354,6 +405,36 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # user profile
 
         # href="/meetings/"
+
+    # Login Required
+    def _test_log_out_is_login_protected(self):
+        pass 
+    def _test_sign_up_rating_is_login_protected(self):
+        pass 
+    def _test_waiting_is_login_protected(self):
+        pass
+    def _test_home_is_login_protected(self):
+        pass
+    def _test_club_profile_is_login_protected(self):
+        pass
+    def _test_create_club_is_login_protected(self):
+        pass
+    def _test_user_profile_is_login_protected(self):
+        pass
+    def _test_chat_is_login_protected(self):
+        pass
+    def _test_scheduling_is_login_protected(self):
+        pass
+    def _test_meetings_is_login_protected(self):
+        pass
+    def _test_recommendations_is_login_protected(self):
+        pass
+    def _test_recommend_clubs_is_login_protected(self):
+        pass
+    def _test_book_profile_is_login_protected(self):
+        pass
+    def _test_all_clubs_is_login_protected(self):
+        pass
 
     # Club Profile as non-member
     def _test_club_profile_contains_correct_information_as_non_member(self):
@@ -1397,10 +1478,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
 
     def _test_home_page_recommended_book(self):
         self.browser.get(f"{self.live_server_url}/home")
+        sleep(5)
+        self.browser.get(f"{self.live_server_url}/home")
         self.browser.implicitly_wait(15)
+        print("F")
         self.wait_until_element_found('//div[@name="recommended-book"]')
+        print("FU")
         recommended_book = self.browser.find_element_by_name("recommended-book")
-        recommended_book_href = recommended_book.find_element_by_xpath(".//a").get_attribute("href")
+        print("FUN")
+        recommended_book_href = recommended_book.get_attribute("href")
+        print("GotToAfterHref")
         recommended_book.click()
         self.browser.implicitly_wait(15)
         sleep(3)
@@ -1411,11 +1498,11 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(15)
         self.wait_until_element_found('//a[@name="recommended-club"]')
         recommended_club = self.browser.find_element_by_name("recommended-club")
-        recommended_club_href = recommended_club.find_element_by_xpath(".//a").get_attribute("href")
+        recommended_club_href = recommended_club.get_attribute("href")
         recommended_club.click()
         self.browser.implicitly_wait(15)
         sleep(3)
-        self.assertEqual(self.browser.current_url, recommended_club_href)
+        self.assertEqual(self.browser.current_url, f"{recommended_club_href}/" )
 
     # Clubs recommendations?
 
@@ -1627,7 +1714,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//text[.='%s']" % book_name)
         self.browser.find_element_by_xpath("//text[.='%s']" % book_name).click()
         sleep(3)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}")
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/book_profile/{self.book.pk}/")
 
     def _test_user_profile_posts_tab_contains_correct_information(self):
         self.browser.get(f"{self.live_server_url}/user_profile")
@@ -1654,13 +1741,18 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         bio_before = self.user.bio
         location_before = self.user.location
         self.browser.get(f"{self.live_server_url}/user_profile")
+        self.browser.implicitly_wait(15)
         self.wait_until_element_found("//button[.='Edit Profile']")
+        print("AYO")
         self.browser.find_element_by_xpath("//button[.='Edit Profile']").click()
-        self.wait_until_element_found("//input[@id='bio']")
+        print("AYO2")
+        self.wait_until_element_found("//textarea[@id='bio']")
         print("EDITUSERAFTERPROFILE")
+        self.browser.find_element_by_id('bio').click()
         self.browser.find_element_by_id('bio').send_keys(" Edit Bio.")
         self.browser.find_element_by_id('location').send_keys(" Edit Location.")
         self.browser.find_element_by_xpath("//button[.='Save changes']").click()
+        sleep(2)
         bio_after = self.user.bio
         location_after = self.user.location
         print(bio_before)
