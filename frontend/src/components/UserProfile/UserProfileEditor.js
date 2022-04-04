@@ -37,6 +37,9 @@ export default function UserProfileEditor(props) {
   const handleEditRequest = (e) => {
     e.preventDefault();
 
+    console.log("User profile editor current user: " + props.currentUser.id)
+    console.log(props.currentUser)
+
     axiosInstance
       .put(`user/get_update/${props.currentUser.id}/`, {
         action: "edit",
@@ -49,6 +52,7 @@ export default function UserProfileEditor(props) {
         bio: formData.bio,
       })
       .then((res) => {
+        localStorage.setItem('user', JSON.stringify(res.data));
         navigate("/home/");
         navigate("/user_profile/");
         console.log("New profile content: ");
