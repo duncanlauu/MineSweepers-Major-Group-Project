@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../axios";
-import {Button, UncontrolledCollapse} from "reactstrap";
+import { Button, UncontrolledCollapse } from "reactstrap";
 import SingleFriendRequest from "./SingleFriendRequest";
-import {FriendLine} from "../UserProfileElements";
+import { FriendLine } from "../UserProfileElements";
 
 export default function FriendRequestList(props) {
     const [myFriendRequests, setFriendRequests] = useState("");
@@ -29,7 +29,7 @@ export default function FriendRequestList(props) {
         if (myFriendRequests.length > 0) {
             return (
                 <div>
-                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <Button
                             color="danger"
                             id="friendRequestToggler"
@@ -45,13 +45,12 @@ export default function FriendRequestList(props) {
                     </div>
                     <UncontrolledCollapse toggler="#friendRequestToggler">
                         {myFriendRequests.map((friendRequest, index) => {
-                            console.log(friendRequest);
                             return (
                                 <FriendLine>
                                     <div
                                         className="friendRequest"
                                         key={friendRequest.sender}
-                                        style={{height: "5rem"}}
+                                        style={{ height: "5rem" }}
                                     >
                                         <SingleFriendRequest
                                             friendRequest={friendRequest}
@@ -63,7 +62,7 @@ export default function FriendRequestList(props) {
                                 </FriendLine>
                             );
                         })}
-                        <hr style={{height: "3px"}}/>
+                        <hr style={{ height: "3px" }} />
                     </UncontrolledCollapse>
                 </div>
             );

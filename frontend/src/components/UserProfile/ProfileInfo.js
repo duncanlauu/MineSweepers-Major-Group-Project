@@ -24,13 +24,15 @@ export default function ProfileInfo(props) {
     if (typeof retrievedCurrentUser.id != "undefined") {
       if (props.otherUserID !== undefined) {
         // edge case when user clicks on oneself.
-        if (props.otherUserID === retrievedCurrentUser.id) {
-          navigate("/user_profile");
-          // setCurrentUser(retrievedCurrentUser)
-          // setIsLoggedInUser(true)
-        } else {
-          getCurrentUser(props.otherUserID);
-          setIsLoggedInUser(false);
+        if(isNaN(parseInt(props.otherUserID))){
+          navigate("/error/");
+        }else{
+          if (props.otherUserID == retrievedCurrentUser.id) {
+            navigate("/user_profile");
+          } else {
+            getCurrentUser(props.otherUserID);
+            setIsLoggedInUser(false);
+          }
         }
       } else {
         setCurrentUser(retrievedCurrentUser);
@@ -47,10 +49,9 @@ export default function ProfileInfo(props) {
           navigate("/error/");
         }
         setCurrentUser(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
         navigate("/error/");
       });
   };
@@ -78,7 +79,6 @@ export default function ProfileInfo(props) {
     axiosInstance
       .delete(`friends/${id}`)
       .then((res) => {
-        console.log(res);
         props.updatePageAfterDeletion();
       })
       .catch((error) => console.error(error));
@@ -90,7 +90,7 @@ export default function ProfileInfo(props) {
         <ProfileInfoContainer>
           <ProfileInfoCard>
             <Row style={{ justifyContent: "center" }}>
-              <Col xs="8">
+              <Col xs="6">
                 <Gravatar
                   email={currentUser.email}
                   size={150}

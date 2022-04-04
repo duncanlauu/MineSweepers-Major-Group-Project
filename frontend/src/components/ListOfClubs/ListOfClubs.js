@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
-import {Container, Row, Col, Button, CardBody, CardTitle, CardSubtitle, Card} from 'reactstrap'
-import {HeadingText} from '../Login/LoginElements'
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col, Button, CardBody, CardTitle, CardSubtitle, Card } from 'reactstrap'
+import { HeadingText } from '../Login/LoginElements'
 import MainNav from '../Nav/MainNav'
 import axiosInstance from '../../axios'
 import Gravatar from 'react-gravatar'
-import {VariableWidthGrid} from 'react-variable-width-grid'
-import {Link} from 'react-router-dom'
+import { VariableWidthGrid } from 'react-variable-width-grid'
+import { Link } from 'react-router-dom'
 
 function ListOfClubs() {
     const [clubs, setClubs] = useState([]);
@@ -15,11 +15,10 @@ function ListOfClubs() {
         axiosInstance
             .get(`clubs/`)
             .then(res => {
-                console.log(res);
                 setClubs(res.data);
             })
             .catch(err => {
-                console.log(err);
+                console.error(err)
             })
     }
 
@@ -28,11 +27,12 @@ function ListOfClubs() {
             if (index % columnsPerRow === 0) {
                 return (
                     <Card key={index}
-                          style={{margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        <Gravatar email={club.owner.email} data-testid="gravatar" style={{borderRadius: "100px", marginTop: "1rem"}}/>
+                        style={{ margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Gravatar email={club.owner_email} data-testid="gravatar"
+                            style={{ borderRadius: "100px", marginTop: "1rem" }} />
                         <CardBody>
                             <CardTitle>{club.name}</CardTitle>
-                            <CardSubtitle>{club.members.length} Members</CardSubtitle>
+                            <CardSubtitle>{(club.members.length + club.admins.length + 1)} Members</CardSubtitle>
                             <Link to={`/club_profile/${club.id}`}>
                                 <Button>Visit Profile</Button>
                             </Link>
@@ -42,11 +42,11 @@ function ListOfClubs() {
             }
             return (
                 <Card key={index}
-                      style={{margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <Gravatar email={club.owner.email} style={{borderRadius: "100px", marginTop: "1rem"}}/>
+                    style={{ margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Gravatar email={club.owner_email} style={{ borderRadius: "100px", marginTop: "1rem" }} />
                     <CardBody>
                         <CardTitle>{club.name}</CardTitle>
-                        <CardSubtitle>{club.members.length} Members</CardSubtitle>
+                        <CardSubtitle>{(club.members.length + club.admins.length + 1)} Members</CardSubtitle>
                         <Link to={`/club_profile/${club.id}`}>
                             <Button>Visit Profile</Button>
                         </Link>
@@ -64,16 +64,16 @@ function ListOfClubs() {
 
     return (
         <Container fluid>
-            <Row style={{marginBottom: "3rem"}}>
-                <MainNav/>
+            <Row style={{ marginBottom: "3rem" }}>
+                <MainNav />
             </Row>
             <Row xs={1} md={columnsPerRow}>
-                <Col xs={2}/>
+                <Col xs={2} />
                 <Col xs={8}>
                     <HeadingText>Club Database</HeadingText>
                     {getColumnsForRow()}
                 </Col>
-                <Col xs={2}/>
+                <Col xs={2} />
             </Row>
         </Container>
     )

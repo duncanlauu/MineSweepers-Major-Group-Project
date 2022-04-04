@@ -5,12 +5,12 @@ import { render } from "react-dom";
 import Login from "./Login/Login"
 import PasswordReset from "./PasswordReset/PasswordReset"
 import PasswordResetConfirm from "./PasswordResetConfirm/PasswordResetConfirm"
+import PasswordResetMailSentConfirmation from "./PasswordResetMailSentConfirmation/PasswordResetMailSentConfirmation";
 import Logout from "./Logout/Logout"
 import ClubProfile from "./ClubProfile/ClubProfile";
 import Error404 from "./Error404/Error404";
 import LandingPage from "./LandingPage/LandingPage";
 import SignUp from "./SignUp/SignUp";
-import ChatWrapper from "./Chat/ChatWrapper.js"
 import HomePage from "./HomePage/HomePage";
 import Notifications from "./Notifications/Notifications";
 import CreateClub from "./CreateClub/CreateClub";
@@ -30,7 +30,7 @@ import RecommenderPage from "./RecommenderPage/RecommenderPage";
 import ListOfClubs from "./ListOfClubs/ListOfClubs";
 import ChatUI from "./Chat/ChatUI";
 import BookProfilePage from "./BookProfilePage/BookProfilePage";
-import PasswordResetMailSentConfirmation from "./PasswordResetMailSentConfirmation/PasswordResetMailSentConfirmation";
+import WaitingScreen from "./Waiting screen/WaitingScreen";
 
 
 export default class App extends Component {
@@ -51,13 +51,16 @@ export default class App extends Component {
                                         <Route path='log_in' element={<Login />} />
                                         <Route path='sign_up' element={<SignUp />} />
                                         <Route path='password_reset' element={<PasswordReset />} />
-                                        <Route path='password_reset/instructions_sent' element={<PasswordResetMailSentConfirmation />} />
-                                        <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirm />} />
+                                        <Route path='password_reset/instructions_sent'
+                                            element={<PasswordResetMailSentConfirmation />} />
+                                        <Route path='password_reset_confirm/:uid/:token'
+                                            element={<PasswordResetConfirm />} />
                                     </Route>
 
                                     <Route element={<RequireAuth />}>
                                         <Route path='log_out' element={<Logout />} />
                                         <Route path='sign_up/rating' element={<SignUpRating />} />
+                                        <Route path='waiting' element={<WaitingScreen />} />
                                         <Route element={<RequireRatings />}>
                                             <Route path='home' element={<HomePage />} />
                                             <Route path='club_profile/:club_id' element={<ClubProfile />} />

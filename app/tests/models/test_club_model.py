@@ -215,6 +215,7 @@ class ClubModelTestCase(TestCase):
         self.club.transfer_ownership(self.admin)
         self.assertEqual(self.club.owner, self.admin)
         self.assertTrue(self.owner in self.club.admins.all())
+        self.assertFalse(self.admin in self.club.admins.all())
 
     def test_add_book(self):
         self.assertEqual(self.club.books.count(), 1)

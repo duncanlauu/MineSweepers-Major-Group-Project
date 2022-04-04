@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
+from django.db import transaction, IntegrityError
 
 from app.models import Club, User, Chat
 from app.serializers import ClubSerializer
@@ -26,14 +27,22 @@ class ClubsTestCase(APITestCase):
     def test_correct_get_one_club(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ClubSerializer([self.joeClub], many=True).data)
+        serializer = ClubSerializer([self.joeClub], many=True)
+        serializer_with_email = serializer.data
+        for club in serializer_with_email:
+            club['owner_email'] = User.objects.get(pk=club['owner']).email
+        self.assertEqual(response.data, serializer_with_email)
 
     def test_correct_get_more_clubs(self):
         self.jakeClub.visibility = True
         self.jakeClub.save()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ClubSerializer([self.joeClub, self.jakeClub], many=True).data)
+        serializer = ClubSerializer([self.joeClub, self.jakeClub], many=True)
+        serializer_with_email = serializer.data
+        for club in serializer_with_email:
+            club['owner_email'] = User.objects.get(pk=club['owner']).email
+        self.assertEqual(response.data, serializer_with_email)
 
     def test_correct_post(self):
         club_count_before = Club.objects.count()
@@ -48,12 +57,35 @@ class ClubsTestCase(APITestCase):
         self.assertEqual(club_count_after, club_count_before + 1)
         self.assertEqual(chat_count_after, chat_count_before + 1)
 
-    def test_incorrect_post(self):
+    def test_club_post_with_blank_name(self):
         club_count_before = Club.objects.count()
         response = self.client.post(self.url, data={"name": "", "description": "This is a description"})
         club_count_after = Club.objects.count()
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(club_count_after, club_count_before)
+
+    def test_club_post_with_long_name(self):
+        club_count_before = Club.objects.count()
+        long_name = "This is a name" * 100
+        data = {"name": long_name, "description": "This is a description"}
+        response = self.client.post(self.url, data=data)
+        club_count_after = Club.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(club_count_after, club_count_before)
+
+    def test_post_with_duplicate_club_name(self):
+        try:
+            self.assertTrue(Club.objects.filter(name=self.joeClub.name).exists())
+            club_count_before = Club.objects.count()
+            with transaction.atomic():
+                data = {"name": self.joeClub.name, "description": "This is a description"}
+                response = self.client.post(self.url, data=data)
+            club_count_after = Club.objects.count()
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(club_count_after, club_count_before)
+            self.assertEqual(Club.objects.filter(name=self.joeClub.name).count(), 1)
+        except IntegrityError:
+            self.fail("IntegrityError raised")
 
     def test_get_clubs_of_valid_user(self):
         response = self.client.get(reverse('app:user_clubs', kwargs={'user_id': 2}))

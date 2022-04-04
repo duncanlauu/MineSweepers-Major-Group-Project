@@ -3,9 +3,9 @@
  */
 
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import {act} from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils';
 import SingleClubRecommendation from "../SingleClubRecommendation";
 import routerWrapper from "../../../test-helpers";
 
@@ -15,16 +15,16 @@ describe("Components exist", () => {
     test("contains club name", async () => {
         act(() => {
             render(routerWrapper(<SingleClubRecommendation club={{
-                "owner": {"email": "user2@example.org"},
+                "owner": { "email": "user2@example.org" },
                 "name": "Club 1",
                 "id": 1,
-                "members": [1,2,3]
-            }}/>))
+                "members": [1, 2, 3]
+            }} />))
         })
 
         await waitFor(() => {
             const clubName = screen.getByText(/Club 1/i)
-                expect(clubName).toBeInTheDocument()
+            expect(clubName).toBeInTheDocument()
         })
     })
 
@@ -34,8 +34,8 @@ describe("Components exist", () => {
                 "owner": 1,
                 "name": "Club 1",
                 "id": 1,
-                "members": [1,2,3]
-            }}/>))
+                "members": [1, 2, 3]
+            }} />))
         })
 
         await waitFor(() => {
@@ -49,8 +49,8 @@ describe("Components exist", () => {
                 "owner": 1,
                 "name": "Club 1",
                 "id": 1,
-                "members": [1,2,3]
-            }}/>))
+                "members": [1, 2, 3]
+            }} />))
         })
 
         await waitFor(() => {

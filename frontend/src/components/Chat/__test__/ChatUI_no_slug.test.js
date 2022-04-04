@@ -9,8 +9,7 @@ import { act } from 'react-dom/test-utils';
 import ChatUI from '../ChatUI';
 import fakeLocalStorage from "../../../fakeLocalStorage";
 import user from "../../../mocksData/getCurrentUser.json";
-import { MemoryRouter } from 'react-router-dom'
-
+import routerWrapper from "../../../test-helpers";
 
 beforeAll(() => {
     Object.defineProperty(window, 'localStorage', {
@@ -37,7 +36,7 @@ jest.mock('react-router-dom', () => ({
 describe('Chat components without any chat openend contains elements', () => {
     test('contains outbox image', async () => {
         act(() => {
-            render(<ChatUI />, { wrapper: MemoryRouter });
+            render(routerWrapper(<ChatUI />));
         })
 
         await waitFor(() => {
@@ -48,7 +47,7 @@ describe('Chat components without any chat openend contains elements', () => {
 
     test('contains placeholder text', async () => {
         act(() => {
-            render(<ChatUI />, { wrapper: MemoryRouter });
+            render(routerWrapper(<ChatUI />));
         })
 
         await waitFor(() => {

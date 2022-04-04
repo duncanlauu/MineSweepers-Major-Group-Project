@@ -1,18 +1,18 @@
 import React from 'react'
-import {Row} from 'reactstrap'
-import {BookText, MeetingContainer, MeetingHeading, MeetingPara} from './ClubProfileElements'
-import {downloadCalendar} from "../../downloadCalendar";
+import { Row } from 'reactstrap'
+import { BookText, MeetingContainer, MeetingHeading, MeetingPara } from './ClubProfileElements'
+import { downloadCalendar } from "../../downloadCalendar";
 
 function IndividualMeetingCard(props) {
     return (
         <Row>
-            <MeetingContainer>
+            <MeetingContainer data-testId='singleMeetingCard'>
                 <MeetingHeading>
                     <div onClick={() => downloadCalendar(props.id)}>{props.name}</div>
-                </MeetingHeading><br/>
+                </MeetingHeading><br />
                 <a href={`/book_profile/${props.book_id}`}>
                     <BookText>{props.book}</BookText>
-                </a><br/>
+                </a><br /> 
                 <MeetingPara>
                     {props.description.length > 220
                         ? props.description.slice(0, 220) + "..."

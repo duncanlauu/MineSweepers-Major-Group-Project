@@ -243,7 +243,7 @@ class ClubManager(models.Manager):
 
 # Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=50, unique=True, blank=False)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
@@ -359,6 +359,8 @@ class Club(models.Model):
     def transfer_ownership(self, user): 
         self.add_member(self.owner)
         self.promote(self.owner)
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.owner = user
 
 

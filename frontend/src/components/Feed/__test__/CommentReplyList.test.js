@@ -32,7 +32,7 @@ describe("Components exist", () => {
                 post={{
                     id: 1,
                 }}
-                currentComment={{
+                comment={{
                     id: 1,
                     author: "author1",
                     author__email: "author1@example.com",
@@ -52,7 +52,7 @@ describe("Components exist", () => {
                 post={{
                     id: 1,
                 }}
-                currentComment={{
+                comment={{
                     id: 1,
                     author: "author1",
                     author__email: "author1@example.com",
@@ -72,7 +72,7 @@ describe("Components exist", () => {
                 post={{
                     id: 1,
                 }}
-                currentComment={{
+                comment={{
                     id: 1,
                     author: "author1",
                     author__email: "author1@example.com",
@@ -94,7 +94,7 @@ describe("Components exist", () => {
                 post={{
                     id: 1,
                 }}
-                currentComment={{
+                comment={{
                     id: 1,
                     author: "author1",
                     author__email: "author1@example.com",
@@ -116,7 +116,7 @@ describe("Components exist", () => {
                 post={{
                     id: 1,
                 }}
-                currentComment={{
+                comment={{
                     id: 1,
                     author: "author1",
                     author__email: "author1@example.com",

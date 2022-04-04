@@ -62,7 +62,7 @@ const OtherUserProfile = () => {
                                         borderRadius: "100px",
                                     }}
                                 >
-                                    <NavItem style={{width: "20%"}}>
+                                    <NavItem style={{width: "25%"}}>
                                         <NavLink
                                             className={classnames({
                                                 active: currentActiveTab === "1",
@@ -77,7 +77,7 @@ const OtherUserProfile = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                    <NavItem style={{width: "20%"}}>
+                                    <NavItem style={{width: "25%"}}>
                                         <NavLink
                                             className={classnames({
                                                 active: currentActiveTab === "2",
@@ -92,7 +92,7 @@ const OtherUserProfile = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                    <NavItem style={{width: "20%"}}>
+                                    <NavItem style={{width: "25%"}}>
                                         <NavLink
                                             className={classnames({
                                                 active: currentActiveTab === "3",
@@ -107,7 +107,7 @@ const OtherUserProfile = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                    <NavItem style={{width: "40%"}}>
+                                    <NavItem style={{width: "25%"}}>
                                         <NavLink
                                             className={classnames({
                                                 active: currentActiveTab === "4",
@@ -117,7 +117,7 @@ const OtherUserProfile = () => {
                                             }}
                                         >
                                             <div style={{textAlign: "center"}}>
-                                                <TabsText>Book ratings</TabsText>
+                                                <TabsText>Ratings</TabsText>
                                             </div>
                                         </NavLink>
                                     </NavItem>

@@ -8,7 +8,7 @@ const baseURL = 'http://127.0.0.1:8000/api/' // this is the basic API url. Exten
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    timeout: 35000, // in case connection is not possible
+    timeout: 120000, // in case connection is not possible
     // Adjusting to the auth header types specified in settings for JWT:
     headers: {
         Authorization: localStorage.getItem('access_token')
@@ -61,7 +61,6 @@ axiosInstance.interceptors.response.use(
 
                 // exp date in token is expressed in seconds, while now() returns milliseconds:
                 const now = Math.ceil(Date.now() / 1000);
-                console.log(tokenParts.exp);
 
                 // Getting the new token.
                 // 1. Post to api
@@ -81,14 +80,14 @@ axiosInstance.interceptors.response.use(
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
-                            console.log(err);
+                            console.error(err);;
                         });
                 } else {
-                    console.log('Refresh token is expired', tokenParts.exp, now);
+                    console.error('Refresh token is expired', tokenParts.exp, now);
                     window.location.href = '/log_in/';
                 }
             } else {
-                console.log('Refresh token not available.');
+                console.error('Refresh token not available.');
                 window.location.href = '/log_in/';
             }
         }

@@ -1,9 +1,23 @@
 import React from 'react'
-import { Container, NavbarBrand, Button, Modal, ModalBody, ModalHeader, Input } from 'reactstrap'
+import {
+    Container,
+    NavbarBrand,
+    Button,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    Input,
+    Dropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from 'reactstrap'
 import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EventAvailable from '@mui/icons-material/EventAvailable';
+import Person from '@mui/icons-material/Person';
 import { NavMenu, SearchBarHeading, SearchContainer, SearchText } from './NavElements';
 import { Link } from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
@@ -19,6 +33,10 @@ import SearchClubCard from "./SearchClubCard";
 class MainNav extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            dropdownOpens: false,
+        }
+        this.changeDropdownVisibility = this.changeDropdownVisibility.bind(this);
         this.state = {
             modal: false,
             search: '',
@@ -37,6 +55,12 @@ class MainNav extends React.Component {
         this.isAuthenticated = this.props.isAuthenticated;
     }
 
+    changeDropdownVisibility() {
+        this.setState({
+            dropdownOpens: !this.state.dropdownOpens
+        })
+    }
+
     toggle() {
         this.setState({
             modal: !this.state.modal
@@ -48,7 +72,6 @@ class MainNav extends React.Component {
             search: e.target.value
 
         });
-        console.log(this.state.search)
     }
 
     changeModalVisibility() {
@@ -58,8 +81,7 @@ class MainNav extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("submitting");
+        e.preventDefault();
 
         trackPromise(
             axiosInstance
@@ -68,8 +90,6 @@ class MainNav extends React.Component {
 
                 })
                 .then((res) => {
-                    console.log(res)
-                    console.log(res.data)
                     this.setState({
                         searchBooks: JSON.parse(res.data)['books'],
                         searchClubs: JSON.parse(res.data)['clubs'],
@@ -133,13 +153,30 @@ class MainNav extends React.Component {
                                 <Link to="/create_club/" style={{ color: "#000" }}>
                                     <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
                                 </Link>
+                                <Link to="/meetings/" style={{ color: "#000" }}>
+                                    <EventAvailable fontSize={"large"} />
+                                </Link>
                                 <Link to="/chat/" style={{ color: "#000" }}>
                                     <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
                                         style={{ marginLeft: "1rem" }} />
                                 </Link>
-                                <Link to="/user_profile/" data-testid={"user-profile"} style={{ color: "#000" }}>
-                                    <AccountCircleIcon fontSize='large' />
-                                </Link>
+
+                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility} style={{ marginLeft: "2rem" }}>
+                                    <DropdownToggle caret style={{ borderRadius: "10px", backgroundColor: "#653FFD" }}>
+                                        <Person fontSize='large' />
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <Link to="/user_profile/" data-testid={"user-profile"} style={{ color: "#000" }}>
+                                            <DropdownItem> <h5>View Profile</h5> </DropdownItem>
+                                        </Link>
+
+                                        <DropdownItem divider />
+
+                                        <Link to="/log_out/" style={{ color: "#000" }}>
+                                            <DropdownItem> Log out </DropdownItem>
+                                        </Link>
+                                    </DropdownMenu>
+                                </Dropdown>
                             </NavMenu>
                         </>
                         : <></>
@@ -186,9 +223,9 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
-                                    <Link to={`/user_profile/${user.id}/`}>
+                                    <a href={`/user_profile/${user.id}/`}>
                                         <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>
@@ -200,10 +237,10 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchClubs.map((club, index) =>
                                 <li key={index}>
-                                    <Link to={`/club_profile/${club.id}/`} onClick={window.location.reload()}>
+                                    <a href={`/club_profile/${club.id}/`}>
                                         <SearchClubCard name={club.name} ownerEmail={club.owner.email}
                                             description={club.description} />
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>
@@ -215,10 +252,10 @@ class MainNav extends React.Component {
                         <ul>
                             {this.state.searchBooks.map((book, index) =>
                                 <li key={index}>
-                                    <Link to={`/book_profile/${book.ISBN}`}>
+                                    <a href={`/book_profile/${book.ISBN}`}>
                                         <SearchBookCard name={book.title} author={book.author}
                                             image={book.image_links_small} />
-                                    </Link>
+                                    </a>
                                 </li>
                             )}
                         </ul>

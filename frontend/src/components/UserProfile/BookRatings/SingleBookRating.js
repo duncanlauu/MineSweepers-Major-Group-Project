@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Row, Col } from "reactstrap";
 import { BookStarsContainer, BookLine, BookNameContainer, ParaText } from "../UserProfileElements";
 import ReactStars from "react-stars";
 import { useNavigate } from "react-router";
-import QuestionMark from "@mui/icons-material/QuestionMark";
 
 export default function SingleBookRating(props) {
-  const [book, setBook] = useState("");
 
   const navigate = useNavigate();
 
   const navigateToBook = (e) => {
     navigate(`/book_profile/${props.book.book__ISBN}`);
-    console.log(props.book)
   };
 
   return (

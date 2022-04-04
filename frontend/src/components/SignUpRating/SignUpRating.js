@@ -1,5 +1,3 @@
-import { Card, CardBody, CardImg } from "reactstrap";
-import Rater from "react-rater";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axiosInstance from "../../axios";
@@ -8,9 +6,6 @@ import {
   Container,
   Row,
   Col,
-  FormGroup,
-  Label,
-  Input,
   Button,
   Navbar,
   NavbarBrand,
@@ -44,15 +39,14 @@ export default function SignUpRating(props) {
               res.data.map((book) => {
                 books.push(book.book);
               });
-              console.log(books);
               setTopBooks(books);
             })
             .catch((err) => {
-              console.log(err);
+              console.error(err)
             });
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err)
         })
     );
   };
@@ -67,18 +61,10 @@ export default function SignUpRating(props) {
           rating: rating * 2,
         })
         .then((res) => {
-          console.log(res);
-          axiosInstance
-            .post("recommender/retrain/")
-            .then(() => {
-              console.log("Retrained");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          navigate("/waiting")
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err)
         });
     }
   };
@@ -86,12 +72,8 @@ export default function SignUpRating(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     createRatings();
-    //await axiosInstance.post("/recommender/retrain", {})
-    console.log(from);
     setHasRated({ hasRated: "true" });
     localStorage.setItem("hasRated", true);
-    // set local storage here as well
-
     setRatings({});
     setTopBooks([]);
     setToggle(true);
@@ -106,7 +88,6 @@ export default function SignUpRating(props) {
     }
     setRatings(ratings);
     setToggle(Object.keys(ratings).length === 0);
-    console.log("submitting", ratings);
   };
 
   const createRows = () => {
@@ -181,7 +162,6 @@ export default function SignUpRating(props) {
               marginBottom: "2rem",
             }}
           >
-            {/* <Col sm={{ size: 10, offset: 5 }} style={{, alignSelf:"center"}}> */}
             <Button
               type="submit"
               className="submit"
@@ -196,7 +176,6 @@ export default function SignUpRating(props) {
             >
               Finish
             </Button>
-            {/* </Col> */}
           </Row>
         </Container>
       </>
@@ -208,7 +187,7 @@ export default function SignUpRating(props) {
   } else {
     return (
       <div id="ParentDiv">
-        <Row></Row>
+        <Row />
         <Container fluid>
           <Row style={{ marginTop: "6rem" }}>
             <Col />

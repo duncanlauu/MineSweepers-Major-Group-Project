@@ -1,13 +1,13 @@
-import React, {useState, useRef} from "react";
-import {Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand} from 'reactstrap'
-import {SignUpContainer, FormLayout} from "./SignUpStyle";
-import {HeadingText, ParaText} from "../Login/LoginElements";
-import {Link} from "react-router-dom";
-import {FaExternalLinkAlt} from 'react-icons/fa'
-import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
+import React, { useState, useRef } from "react";
+import { Container, Row, Col, FormGroup, Label, Input, Button, Navbar, NavbarBrand } from 'reactstrap'
+import { SignUpContainer, FormLayout } from "./SignUpStyle";
+import { HeadingText, ParaText } from "../Login/LoginElements";
+import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import useAuth from '../hooks/useAuth';
 import MainNav from "../Nav/MainNav";
 
@@ -25,7 +25,7 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
-    const {setAuth} = useAuth();
+    const { setAuth } = useAuth();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
@@ -53,7 +53,6 @@ export default function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", formData)
 
         axiosInstance
             .post(`user/sign_up/`, { // the url is expanded to api/user/sign_up/. Creating key-value pairs in JSON format that the API then can work with.
@@ -75,26 +74,25 @@ export default function SignUp() {
                     .then((response) => {
                         const access_token = response.data.access
                         const refresh_token = response.data.refresh
-                        const username = formData.username
                         localStorage.setItem('access_token', access_token) // receiving the tokens from the api
                         localStorage.setItem('refresh_token', refresh_token)
                         axiosInstance.defaults.headers['Authorization'] = // updating the axios instance header with the new access token.
                             'JWT ' + localStorage.getItem('access_token')
 
                         axiosInstance.get('/get_current_user/')
-                        .then(response => { // use .then to make react wait for response
-                            const user = response.data;
-                            localStorage.setItem('user', JSON.stringify(user));
-                            setAuth({ user })
-                        }).catch(error => {
-                            console.log("Error: ", JSON.stringify(error, null, 4));
-                            throw error;
-                        })
+                            .then(response => { // use .then to make react wait for response
+                                const user = response.data;
+                                localStorage.setItem('user', JSON.stringify(user));
+                                setAuth({ user })
+                            }).catch(error => {
+                                console.error("Error: ", JSON.stringify(error, null, 4));
+                                throw error;
+                            })
 
                         navigate("/sign_up/rating/")
                     })
                     .catch((err) => {
-                        console.log(err)
+                        console.error(err)
                     })
             })
             .catch((e) => {
@@ -109,25 +107,24 @@ export default function SignUp() {
             })
     }
 
-    // Todo: move styles to a CSS file?
     return (
-        <div id="ParentDiv" style={{overflowX: "hidden"}}>
+        <div id="ParentDiv" style={{ overflowX: "hidden" }}>
             <Row>
                 <MainNav isAuthenticated={false} />
             </Row>
-            <Container fluid style={{overflowX: "hidden", overflowY: "hidden"}}>
-                <Row style={{marginTop: "3rem"}}>
-                    <Col/>
+            <Container fluid style={{ overflowX: "hidden", overflowY: "hidden" }}>
+                <Row style={{ marginTop: "3rem" }}>
+                    <Col />
                     <Col>
-                        <HeadingText>Create an account</HeadingText><br/>
+                        <HeadingText>Create an account</HeadingText><br />
                         <ParaText>If you already have one, you can log in <Link to="/log_in/" style={{
                             color: "#0057FF",
                             textDecoration: "none"
-                        }}>here <FaExternalLinkAlt style={{height: "15px", color: "#0057FF"}}/>
+                        }}>here <FaExternalLinkAlt style={{ height: "15px", color: "#0057FF" }} />
                         </Link> .
                         </ParaText>
-                        <SignUpContainer style={{overflowY: "scroll", overflowX: "hidden"}}>
-                            <FormLayout> {/*  might have to add more info here */}
+                        <SignUpContainer style={{ overflowY: "scroll", overflowX: "hidden" }}>
+                            <FormLayout>
                                 <Row>
                                     <Col xs="6">
                                         <FormGroup>
@@ -135,9 +132,9 @@ export default function SignUp() {
                                             <Input
                                                 data-testid="first_name"
                                                 id="first_name"
-                                                name="first_name" // name to target from JS
+                                                name="first_name"
                                                 onChange={handleChange}
-                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                             />
                                         </FormGroup>
                                         <div>{firstNameErr}</div>
@@ -150,7 +147,7 @@ export default function SignUp() {
                                                 id="last_name"
                                                 name="last_name"
                                                 onChange={handleChange}
-                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                             />
                                         </FormGroup>
                                         <div>{lastNameErr}</div>
@@ -164,7 +161,7 @@ export default function SignUp() {
                                         id="username"
                                         name="username"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                     />
                                 </FormGroup>
                                 <div>{usernameErr}</div>
@@ -177,26 +174,26 @@ export default function SignUp() {
                                         id="email"
                                         name="email"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                     />
                                 </FormGroup>
                                 <div>{emailErr}</div>
 
                                 <FormGroup>
                                     <Label for="password"><ParaText>Password</ParaText></Label>
-                                    <Container fluid style={{display: "flex", flexDirection: "row", padding: "0px"}}>
+                                    <Container fluid style={{ display: "flex", flexDirection: "row", padding: "0px" }}>
                                         <Input
                                             type={passwordVisible ? "text" : "password"}
                                             id="password"
                                             data-testid="password"
                                             name="password"
                                             onChange={handleChange}
-                                            style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                            style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                         />
                                         <Button
                                             onClick={togglePassword}
-                                            style={{backgroundColor: "#653FFD"}}>
-                                            {passwordVisible ? <BsFillEyeSlashFill/> : <BsFillEyeFill/>}
+                                            style={{ backgroundColor: "#653FFD" }}>
+                                            {passwordVisible ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
                                         </Button>
                                     </Container>
                                 </FormGroup>
@@ -209,7 +206,7 @@ export default function SignUp() {
                                         id="bio"
                                         name="bio"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                     />
                                 </FormGroup>
                                 <div>{bioErr}</div>
@@ -223,7 +220,7 @@ export default function SignUp() {
                                                 id="location"
                                                 name="location"
                                                 onChange={handleChange}
-                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                             />
                                         </FormGroup>
                                         <div>{locationErr}</div>
@@ -237,7 +234,7 @@ export default function SignUp() {
                                                 type="date"
                                                 name="birthday"
                                                 onChange={handleChange}
-                                                style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                                style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                             />
                                         </FormGroup>
                                         <div>{birthdayErr}</div>
@@ -245,12 +242,12 @@ export default function SignUp() {
                                 </Row>
 
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 4}}>
+                                    <Col sm={{ size: 10, offset: 4 }}>
                                         <Button
                                             type="submit"
                                             className="submit"
                                             onClick={handleSubmit}
-                                            style={{backgroundColor: "#653FFD", width: "7rem", marginBottom: "1rem"}}
+                                            style={{ backgroundColor: "#653FFD", width: "7rem", marginBottom: "1rem" }}
                                         >
                                             Sign Up
                                         </Button>
@@ -261,7 +258,7 @@ export default function SignUp() {
                         </SignUpContainer>
 
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         </div>

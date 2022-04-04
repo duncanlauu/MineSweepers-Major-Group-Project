@@ -26,20 +26,16 @@ export default function SignIn() {
     };
 
     const handleSubmit = (e) => {
-
         e.preventDefault()
-        console.log(formData)
-        // axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
             .post(`/auth/users/reset_password/`, {
                 email: formData.email,
             })
-            .then((response) => {
-                console.log(response)
-                navigate("/instructions_sent/") // should go to a webiste that says password reset email sent
+            .then((res) => {
+                navigate("instructions_sent")
             })
-            .catch((e) => {
-                setEmailErr(e.response.data.email)
+            .catch((err) => {
+                setEmailErr(err.response.data.email)
             })
     }
 

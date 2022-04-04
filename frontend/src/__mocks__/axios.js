@@ -34,6 +34,20 @@ import posts from '../mocksData/posts.json'
 import comments from '../mocksData/comments.json'
 import recommended_users from '../mocksData/getTopUserRecommendations.json'
 import userChats from '../mocksData/getUserChats.json'
+import singleClub1_Owner from '../mocksData/getSingleClub1_Owner.json'
+import singleClub3_NotApplied from '../mocksData/getSingleClub3_NotApplied.json'
+import singleClub4_Applied from '../mocksData/getSingleClub4_Applied.json'
+import singleClub2_Member from '../mocksData/getSingleClub2_Member.json'
+import singleClub15_Admin from '../mocksData/getSingleClub15_Admin.json'
+import singleClub10_Banned from '../mocksData/getSingleClub10_Banned.json'
+import clubFeed1_Owner from '../mocksData/getClubFeed1_Owner.json'
+import clubFeed2_Member from '../mocksData/getClubFeed2_Member.json'
+import clubFeed15_Admin from '../mocksData/getClubFeed15_Admin.json'
+import clubMeetings1_Owner from '../mocksData/getClubMeetings1_Owner.json'
+import clubMeetings2_Member from '../mocksData/getClubMeetings2_Member.json'
+import clubMeetings15_Admin from '../mocksData/getClubMeetings15_Admin.json'
+
+
 import books from '../mocksData/books.json'
 
 
@@ -103,6 +117,32 @@ const generateGetResponse = (url) => {
             return { data: ratings2 };
         case `ratings/other_user/2`:
             return { data: ratings2 };
+        case `chat/?username=test`:
+            return { data: userChats }
+        case `singleclub/1`:
+            return { data: singleClub1_Owner }
+        case `singleclub/3`:
+            return { data: singleClub3_NotApplied }
+        case `singleclub/4`:
+            return { data: singleClub4_Applied }
+        case `singleclub/2`:
+            return { data: singleClub2_Member }
+        case `singleclub/15`:
+            return { data: singleClub15_Admin }
+        case `singleclub/10`:
+            return { data: singleClub10_Banned }
+        case `feed/clubs/1`:
+            return { data: clubFeed1_Owner }
+        case `feed/clubs/2`:
+            return { data: clubFeed2_Member }
+        case `feed/clubs/15`:
+            return { data: clubFeed15_Admin }
+        case `club_meetings/1`:
+            return { data: clubMeetings1_Owner }
+        case `club_meetings/2`:
+            return { data: clubMeetings2_Member }
+        case `club_meetings/15`:
+            return { data: clubMeetings15_Admin }
         case `posts/1/comments/1/replies/`:
             return { data: replies };
         case `posts/1/comments/2/replies/`:
@@ -286,6 +326,27 @@ const generatePostResponse = (url, data) => {
 }
 
 // from https://stackoverflow.com/a/70590795/18134517
+const generatePutResponse = (url, data) => {
+    switch (url) {
+        case "user/get_update/1/":
+            if (data['action'] === "edit") {
+                return Promise.resolve({
+                    data: {
+                        password: data.password,
+                        username: data.username,
+                        email: data.email,
+                        first_name: data.first_name,
+                        last_name: data.last_name,
+                        location: data.location,
+                        bio: data.bio,
+                    }
+                })
+            }
+        default:
+            console.log("no matching mock for url ", url)
+            return Promise.resolve({ data: {} });
+    }
+}
 
 export default {
     defaults: {
@@ -320,7 +381,7 @@ export default {
             },
             get: jest.fn((url) => Promise.resolve(generateGetResponse(url))),
             post: jest.fn((url, data) => generatePostResponse(url, data)),
-            put: jest.fn(() => Promise.resolve({ data: {} })),
+            put: jest.fn((url, data) => generatePutResponse(url, data)),
             delete: jest.fn(() => Promise.resolve({ data: {} })),
         }
     }),

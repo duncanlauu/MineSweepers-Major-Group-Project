@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ProfileInfoContainer = styled.div`
-  min-height: 55rem;
+  min-height: 65rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;
@@ -25,7 +25,7 @@ export const ProfileInfoDetails = styled.div`
 `;
 
 export const DataContainer = styled.div`
-  height: 60rem;
+  height: 80rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;
@@ -43,7 +43,7 @@ export const DataContainerCard = styled.div`
 `;
 
 export const DataContainerBelowTabs = styled.div`
-  height: 80%;
+  height: 90%;
   width: 100%;
   background-color: #fff;
   overflow-y: scroll;
@@ -64,7 +64,7 @@ export const FriendLine = styled.div`
 `;
 
 export const FriendRecommenderContainer = styled.div`
-  height: 55rem;
+  height: 65rem;
   width: 100%;
   background-color: #fff;
   border-radius: 10px;
@@ -200,7 +200,6 @@ export const BookStarsContainer = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  overflow-y: scroll;
 `;
 
 export const ParaText = styled.text`
