@@ -70,7 +70,7 @@ export default function PostCommentList(props) {
                 }
 
                 <div style={{display: "flex", justifyContent: "center"}}>
-                    <Row style={{marginTop: "1rem"}}>
+                    <Row style={{marginTop: "1rem", marginLeft:"4rem", display:"flex", alignSelf:"center", alignItems:"center", justifyContent:"center"}}>
                         <Col xs="9">
                             <Input
                                 type="textarea"
@@ -83,22 +83,15 @@ export default function PostCommentList(props) {
                                 style={{
                                     border: "0",
                                     backgroundColor: "#F3F3F3",
-                                    height: "3rem"
                                 }}
                             />
                         </Col>
-                        <Col xs="3">
-                            <Button onClick={(e) => {
-                                uploadComment(e, 0);
-                                clearInputField()
-                            }}
-                                    style={{
-                                        borderRadius: "100px",
-                                        height: "3rem"
-                                    }}
-                            >
-                                <p> Send </p>
-                            </Button>
+                        <Col xs="3" style={{ padding:"0px" }}>
+                            <img
+                                src="../../../static/images/SendMessageIcon.svg"
+                                alt="Post Comment"
+                                style={{ cursor:"pointer", alignSelf:"center", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
+                                onClick={(e) => { uploadComment(e, 0) ; clearInputField() }} />
                         </Col>
                     </Row>
                 </div>

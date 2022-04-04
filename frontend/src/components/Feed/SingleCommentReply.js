@@ -38,11 +38,11 @@ export default function SingleCommentReply(props) {
             <Row>
                 <Col>
                     <Row>
-                        <Col xs="2" style={{
-                            height: "3rem",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "flex-start"
+                        <Col xs="2" 
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "flex-start"
                         }}>
                             <Gravatar email={posterEmail} size={30} onClick={navigateToProfile} style={{
                                 borderRadius: "50px",
@@ -51,19 +51,31 @@ export default function SingleCommentReply(props) {
                             }}
                             />
                         </Col>
-                        <Col xs="9"
-                             style={{height: "3rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Col xs="8"
+                             style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <ReplyLineBox>
-                                <h6> {singleReply.content} </h6>
+                                <h6 style={{ fontFamily:"Source Sans Pro" }}> {singleReply.content} </h6>
                             </ReplyLineBox>
                         </Col>
                         {singleReply.author === currentUser.id  &&
-                            <Col xs="1" style={{display: "flex", justifyContent: "flex-end"}}>
-                                <Button color="danger" name={singleReply.id} onClick={(e) => deleteComment(singleReply.id, e)} 
-                                    style={{height: "3rem", borderTopRightRadius: "100px", borderBottomRightRadius: "100px"}}
-                                >
-                                    <p> x </p>
-                                </Button>
+                            <Col 
+                                xs="2" 
+                                style={{
+                                    display: "flex", 
+                                    justifyContent: "center",
+                                    paddingLeft:"0",
+                                    alignItems:"center"}}>
+                                <img 
+                                    src="../../../static/images/DeleteChatIcon.svg" 
+                                    className={singleReply.id}
+                                    style={{
+                                        height: "1.85rem",
+                                        marginRight:"1rem",
+                                        cursor: "pointer",
+                                        filter: "invert(54%) sepia(45%) saturate(4028%) hue-rotate(328deg) brightness(76%) contrast(90%)"
+                                    }}
+                                    onClick={(e) => deleteComment(singleReply.id, e)}
+                                    alt="Delete" />
                             </Col>
                         }
                     </Row>

@@ -20,6 +20,7 @@ import { useNavigate } from "react-router";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
+import { ClubPill, LikesText, PostText, ReactionContainer } from "./FeedElements"
 
 export default function SingleFeedPost(props) {
     const [likesCount, setLikesCount] = useState(props.post.likesCount);
@@ -90,19 +91,18 @@ export default function SingleFeedPost(props) {
                                     borderRadius: "50px",
                                     marginTop: "0rem",
                                     marginBottom: "0rem",
+                                    cursor: "pointer"
                                 }}
                             />
                         </Col>
-                        <Col xs="4">
-                            <h5>
-                                <b> @{props.post.author__username} </b>
-                            </h5>
+                        <Col xs="4" style={{ paddingRight:"0px" }}>
+                            <h5 style={{ fontFamily:"Source Sans Pro", fontWeight:"600", marginTop:"0.65rem" }}>{props.post.author__username}</h5>
                         </Col>
-                        <Col xs="6" style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Col xs="6" style={{ display: "flex", justifyContent: "flex-end", padding:"0px" }}>
                             {props.post.club != null && (
-                                <h5>
-                                    <b> {props.post.club__name} </b>
-                                </h5>
+                                <ClubPill>
+                                    {props.post.club__name}
+                                </ClubPill>
                             )}
                         </Col>
                     </Row>
@@ -116,14 +116,11 @@ export default function SingleFeedPost(props) {
                     </div>
 
                     <CardText>
-                        <h5> {props.post.content} </h5>
+                        <PostText>{props.post.content}</PostText>
                     </CardText>
-
-                    <div
-                        style={{
-                            textAlign: "right",
-                        }}
-                    >
+                </CardBody>
+                {/* <div
+                    style={{ textAlign: "right" }}>
                         <Button
                             id={togglerID}
                             style={{
@@ -162,8 +159,40 @@ export default function SingleFeedPost(props) {
                         >
                             Likes: {likesCount}
                         </Button>
-                    </div>
-                </CardBody>
+                    </div> */}
+                <div>
+                    <Row style={{ display:"flex", float:"right", marginRight:"1rem", marginBottom:"0.5rem" }}>
+                        <ReactionContainer>
+                            <img 
+                                src="../../../static/images/CommentIcon.svg" 
+                                style={{ height:"2rem", opacity:"80%", marginRight:"1rem", cursor:"pointer" }}
+                                onClick={() => {
+                                    setCommentsVisibility(!commentsVisibility)
+                                }}
+                                id={togglerID} />
+                            {likedByUser
+                                ?
+                                <img 
+                                src="../../../static/images/LikedStateButton.svg" 
+                                alt="Like Button" 
+                                style={{ height:"2rem", cursor:"pointer" }}
+                                onClick={likePost} />
+                                :
+                                <img 
+                                src="../../../static/images/UnlikedStateButton.svg" 
+                                alt="Like Button" 
+                                style={{ height:"2rem", opacity:"80%", cursor:"pointer" }}
+                                onClick={likePost} />
+                            }
+                            <LikesText 
+                                style={{ cursor: "pointer" }}
+                                onClick={changeModalVisibility}>
+                                    {likesCount}
+                            </LikesText>
+                        </ReactionContainer>
+                    </Row>
+                    <br/>
+                </div>
 
                 <UncontrolledCollapse toggler={HashtagTogglerId} data-testid="all-comments-button">
                     {commentsVisibility === true &&
