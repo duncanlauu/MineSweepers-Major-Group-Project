@@ -1,7 +1,7 @@
-import {Card, CardBody, CardImg, CardSubtitle, CardTitle} from "reactstrap";
+import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from "reactstrap";
 import ReactStars from "react-stars";
-import React, {useState} from "react";
-import {Row, Col, Button} from "reactstrap";
+import React, { useState } from "react";
+import { Row, Col, Button } from "reactstrap";
 
 export default function BookRatingCard(props) {
     const title = props.title;
@@ -12,14 +12,11 @@ export default function BookRatingCard(props) {
     const [rate, setRating] = useState(0);
 
     const ratingChanged = (newRating) => {
-        console.log("Initial rating: " + props.initialRating);
-        console.log("Rating changed: " + newRating + " previous rating: " + rate);
         props.parentCallBack([id], newRating);
         setRating(newRating);
     };
 
     const clearRating = () => {
-        console.log("Clearing rating");
         props.parentCallBack([id], 0);
         setRating(0);
     };
@@ -34,20 +31,20 @@ export default function BookRatingCard(props) {
                     border: " 3px solid rgba(0,0,0,.125)",
                 }}
             >
-                <CardImg src={image} top style={{height: "450px"}}/>
+                <CardImg src={image} top style={{ height: "450px" }} />
 
                 <CardBody>
                     <CardTitle tag="h4">{title}</CardTitle>
 
                     <CardSubtitle
-                        style={{marginBottom: "1rem"}}
+                        style={{ marginBottom: "1rem" }}
                         className="mb-2 text-muted"
                         tag="h7"
                     >
                         {author}
                     </CardSubtitle>
 
-                    <Row style={{position: "absolute", bottom: "1rem"}}>
+                    <Row style={{ position: "absolute", bottom: "1rem" }}>
                         <Col xs="8" data-testid="stars">
                             <ReactStars
                                 count={5}
@@ -62,7 +59,7 @@ export default function BookRatingCard(props) {
                                 type="submit"
                                 className="submit"
                                 onClick={clearRating}
-                                style={{backgroundColor: "#653FFD", width: "7rem"}}
+                                style={{ backgroundColor: "#653FFD", width: "7rem" }}
                             >
                                 Clear
                             </Button>

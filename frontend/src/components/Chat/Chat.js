@@ -38,7 +38,6 @@ class ChatClass extends React.Component {
                     this.state.chatID
                 );
             });
-            console.log("initialise Chat: " + this.state.chatID)
             WebSocketInstance.connect(this.state.chatID);
         }
     }
@@ -52,11 +51,9 @@ class ChatClass extends React.Component {
         setTimeout(
             function () {
                 if (WebSocketInstance.state() === 1) {
-                    console.log("Connection is made");
                     callback();
                     return;
                 } else {
-                    console.log("wait for connection...");
                     component.waitForSocketConnection(callback);
                 }
             }, 100);
@@ -92,7 +89,6 @@ class ChatClass extends React.Component {
         axiosInstance
             .delete(`chat/leave/${this.props.chatID}/`)
             .then((res) => {
-                console.log(res)
             })
             .catch(error => console.error(error));
         const newChats = this.props.chats.filter(chat => chat.id !== Number(this.props.chatID));
@@ -132,8 +128,6 @@ class ChatClass extends React.Component {
     }
 
     renderMessages = (messages) => {
-        console.log("renderMessages")
-        console.log(messages)
 
         return messages.map((message, i, arr) => (
             <li
@@ -193,7 +187,6 @@ class ChatClass extends React.Component {
     }
 
     static getDerivedStateFromProps(newProps, prevState) {
-        console.log(newProps.chatID);
 
         if (newProps.chatID !== prevState.chatID) {
             return { chatID: newProps.chatID };

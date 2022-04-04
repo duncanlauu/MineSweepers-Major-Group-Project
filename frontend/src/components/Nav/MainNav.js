@@ -12,19 +12,19 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap'
-import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
+import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import Box from '@mui/material/Box';
-import {IconButton} from '@mui/material';
+import { IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EventAvailable from '@mui/icons-material/EventAvailable';
 import Person from '@mui/icons-material/Person';
-import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from './NavElements';
-import {Link} from 'react-router-dom'
+import { NavMenu, SearchBarHeading, SearchContainer, SearchText } from './NavElements';
+import { Link } from 'react-router-dom'
 import PersonalPostForm from '../UserProfile/PersonalPosts/PersonalPostForm';
 import axiosInstance from '../../axios';
-import {usePromiseTracker} from "react-promise-tracker";
-import {trackPromise} from 'react-promise-tracker';
-import {Oval} from 'react-loader-spinner';
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import { Oval } from 'react-loader-spinner';
 import SearchBookCard from "./SearchBookCard";
 import SearchUserCard from "./SearchUserCard";
 import SearchClubCard from "./SearchClubCard";
@@ -59,7 +59,6 @@ class MainNav extends React.Component {
         this.setState({
             dropdownOpens: !this.state.dropdownOpens
         })
-        console.log(this.state.dropdownOpens)
     }
 
     toggle() {
@@ -73,7 +72,6 @@ class MainNav extends React.Component {
             search: e.target.value
 
         });
-        console.log(this.state.search)
     }
 
     changeModalVisibility() {
@@ -84,17 +82,14 @@ class MainNav extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log("submitting");
 
         trackPromise(
             axiosInstance
                 .get(`search/`, {
-                    params: {search_query: this.state.search}
+                    params: { search_query: this.state.search }
 
                 })
                 .then((res) => {
-                    console.log(res)
-                    console.log(res.data)
                     this.setState({
                         searchBooks: JSON.parse(res.data)['books'],
                         searchClubs: JSON.parse(res.data)['clubs'],
@@ -114,13 +109,13 @@ class MainNav extends React.Component {
                     justifyContent: "space-between"
                 }}>
                     {this.isAuthenticated
-                        ? <Link to="/home/" style={{color: "#000"}}>
+                        ? <Link to="/home/" style={{ color: "#000" }}>
                             <NavbarBrand
-                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                                style={{ fontFamily: "Source Sans Pro", fontWeight: "600" }}>bookgle</NavbarBrand>
                         </Link>
-                        : <Link to="/" style={{color: "#000"}}>
+                        : <Link to="/" style={{ color: "#000" }}>
                             <NavbarBrand
-                                style={{fontFamily: "Source Sans Pro", fontWeight: "600"}}>bookgle</NavbarBrand>
+                                style={{ fontFamily: "Source Sans Pro", fontWeight: "600" }}>bookgle</NavbarBrand>
                         </Link>
                     }
                     {this.isAuthenticated ?
@@ -147,37 +142,37 @@ class MainNav extends React.Component {
                                         ? <SearchText> </SearchText>
                                         : <SearchText>{this.state.search}</SearchText>}
                                     <IconButton type='submit'>
-                                        <BiSearch/>
+                                        <BiSearch />
                                     </IconButton>
                                 </Box>
                             </Button>
                             <NavMenu>
-                                <div onClick={this.changeModalVisibility} style={{cursor: 'pointer'}}>
-                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button'/>
+                                <div onClick={this.changeModalVisibility} style={{ cursor: 'pointer' }}>
+                                    <img src='../../../static/images/NewPostButton.svg' alt='New Post Button' />
                                 </div>
-                                <Link to="/create_club/" style={{color: "#000"}}>
-                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button'/>
+                                <Link to="/create_club/" style={{ color: "#000" }}>
+                                    <img src='../../../static/images/NewClubButton.svg' alt='New Club Button' />
                                 </Link>
-                                <Link to="/meetings/" style={{color: "#000"}}>
+                                <Link to="/meetings/" style={{ color: "#000" }}>
                                     <EventAvailable fontSize={"large"} />
                                 </Link>
-                                <Link to="/chat/" style={{color: "#000"}}>
+                                <Link to="/chat/" style={{ color: "#000" }}>
                                     <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'
-                                         style={{marginLeft: "1rem"}}/>
+                                        style={{ marginLeft: "1rem" }} />
                                 </Link>
 
-                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility} style={{marginLeft:"2rem"}}>
-                                    <DropdownToggle caret style={{borderRadius: "10px", backgroundColor: "#653FFD"}}>
-                                        <Person fontSize='large'/>
+                                <Dropdown isOpen={this.state.dropdownOpens} toggle={this.changeDropdownVisibility} style={{ marginLeft: "2rem" }}>
+                                    <DropdownToggle caret style={{ borderRadius: "10px", backgroundColor: "#653FFD" }}>
+                                        <Person fontSize='large' />
                                     </DropdownToggle>
                                     <DropdownMenu right>
-                                        <Link to="/user_profile/" data-testid={"user-profile"} style={{color: "#000"}}>
+                                        <Link to="/user_profile/" data-testid={"user-profile"} style={{ color: "#000" }}>
                                             <DropdownItem> <h5>View Profile</h5> </DropdownItem>
                                         </Link>
 
-                                        <DropdownItem divider/>
+                                        <DropdownItem divider />
 
-                                        <Link to="/log_out/" style={{color: "#000"}}>
+                                        <Link to="/log_out/" style={{ color: "#000" }}>
                                             <DropdownItem> Log out </DropdownItem>
                                         </Link>
                                     </DropdownMenu>
@@ -198,7 +193,7 @@ class MainNav extends React.Component {
                     <ModalHeader toggle={this.toggle}>
                         <SearchContainer>
                             <Button onClick={this.handleSubmit} style={SearchButtonStyle}>
-                                <BiSearch style={{height: "2rem", width: "2rem"}}/>
+                                <BiSearch style={{ height: "2rem", width: "2rem" }} />
                             </Button>
                             <Input
                                 type='text'
@@ -216,27 +211,27 @@ class MainNav extends React.Component {
                                 onChange={this.handleChange}
                                 value={this.state.search}
                             />
-                            <LoadingIndicator/>
+                            <LoadingIndicator />
                         </SearchContainer>
                     </ModalHeader>
-                    <ModalBody style={{overflowY: "scroll", height: "30rem"}}>
+                    <ModalBody style={{ overflowY: "scroll", height: "30rem" }}>
                         {/* User Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/UserIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Users</SearchBarHeading>
                         </Box>
                         <ul>
                             {this.state.searchUsers.map((user, index) =>
                                 <li key={index}>
                                     <a href={`/user_profile/${user.id}/`}>
-                                        <SearchUserCard username={user.username} email={user.email} bio={user.bio}/>
+                                        <SearchUserCard username={user.username} email={user.email} bio={user.bio} />
                                     </a>
                                 </li>
                             )}
                         </ul>
                         {/* Club Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/ClubIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Clubs</SearchBarHeading>
                         </Box>
                         <ul>
@@ -244,14 +239,14 @@ class MainNav extends React.Component {
                                 <li key={index}>
                                     <a href={`/club_profile/${club.id}/`}>
                                         <SearchClubCard name={club.name} ownerEmail={club.owner.email}
-                                                        description={club.description}/>
+                                            description={club.description} />
                                     </a>
                                 </li>
                             )}
                         </ul>
                         {/* Book Search Results */}
-                        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button'/>
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <img src='../../../static/images/BookIcon.svg' alt='New Club Button' />
                             <SearchBarHeading>Books</SearchBarHeading>
                         </Box>
                         <ul>
@@ -259,7 +254,7 @@ class MainNav extends React.Component {
                                 <li key={index}>
                                     <a href={`/book_profile/${book.ISBN}`}>
                                         <SearchBookCard name={book.title} author={book.author}
-                                                        image={book.image_links_small}/>
+                                            image={book.image_links_small} />
                                     </a>
                                 </li>
                             )}
@@ -277,8 +272,8 @@ class MainNav extends React.Component {
                     }}
                 >
 
-                    <ModalBody style={{overflowY: "scroll"}}>
-                        <PersonalPostForm/>
+                    <ModalBody style={{ overflowY: "scroll" }}>
+                        <PersonalPostForm />
                     </ModalBody>
                 </Modal>
             </div>
@@ -299,7 +294,7 @@ const SearchButtonStyle = {
 }
 
 const LoadingIndicator = (props) => {
-    const {promiseInProgress} = usePromiseTracker();
+    const { promiseInProgress } = usePromiseTracker();
 
     return (
         promiseInProgress &&
@@ -312,7 +307,7 @@ const LoadingIndicator = (props) => {
                 justifyContent: 'center',
                 zIndex: '10'
             }}>
-                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25"/>
+                <Oval color="#653FFD" secondaryColor='#B29FFE' height="25" width="25" />
             </div>
         </Container>
     );

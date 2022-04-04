@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useRef, useReducer} from "react";
-import {Button} from "reactstrap";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../axios";
 import SinglePersonalPost from "./SinglePersonalPost";
 
@@ -18,7 +17,6 @@ export default function PersonalPostList(props) {
         axiosInstance
             .get("posts/")
             .then((res) => {
-                console.log("my posts: " + res.data.posts);
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts);
             })
@@ -29,7 +27,6 @@ export default function PersonalPostList(props) {
         axiosInstance
             .get(`posts/user/${props.requestedUser_id}`)
             .then((res) => {
-                console.log("other user's posts: " + res.data.posts);
                 const allPersonalPosts = res.data.posts;
                 setPersonalPosts(allPersonalPosts);
             })
@@ -42,7 +39,6 @@ export default function PersonalPostList(props) {
 
     const displayPersonalPosts = (e) => {
         if (myPersonalPosts.length > 0) {
-            console.log(myPersonalPosts);
             return myPersonalPosts.map((personalPost, index) => {
                 return (
                     <div key={personalPost.id}>

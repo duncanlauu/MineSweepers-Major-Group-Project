@@ -21,10 +21,7 @@ const ClubProfile = () => {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        console.log(res);
         setClub(res.data.club);
-        console.log("Club Data: ", res.data.club);
-        console.log("Current user is: ", currentUser);
         const currentUserId = currentUser.id;
         if (res.data.club.members.includes(currentUserId)) {
           setMemberStatus("member");
@@ -39,10 +36,9 @@ const ClubProfile = () => {
         } else {
           setMemberStatus("notApplied");
         }
-        console.log("Member status of this user: ", memberStatus);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err)
       });
   }, []);
 

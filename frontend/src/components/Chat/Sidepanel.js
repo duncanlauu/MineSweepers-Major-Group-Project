@@ -17,14 +17,12 @@ export default function Sidepanel(props) {
                 userChats.sort(function (a, b) {
                     return (b.last_update).localeCompare(a.last_update);
                 })
-                console.log(userChats)
                 props.setChats(userChats)
             });
 
     }
 
     const activeChats = props.chats.map(c => {
-        console.log(c)
         return (
             // <Contact
             //     key={c.id}
@@ -64,8 +62,6 @@ export default function Sidepanel(props) {
     function getChatName(chat) {
         let chatName = "undefined";
         if (chat.group_chat == false) {
-            console.log(localStorage.username)
-            console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
                     if (participant.username != localStorage.username) {
@@ -84,8 +80,6 @@ export default function Sidepanel(props) {
     function getChatGravatar(chat) {
         let gravatar = "undefined";
         if (chat.group_chat == false) {
-            console.log(localStorage.username)
-            console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
                     if (participant.username != localStorage.username) {

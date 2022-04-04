@@ -62,14 +62,13 @@ axiosInstance.interceptors.response.use(
 
                 // exp date in token is expressed in seconds, while now() returns milliseconds:
                 const now = Math.ceil(Date.now() / 1000);
-                console.log(tokenParts.exp);
 
                 // Getting the new token.
                 // 1. Post to api
                 // 2. Store new token in local storage
                 if (tokenParts.exp > now) {
                     return axiosInstance
-                        .post('/token/refresh/', {refresh: refreshToken}) // sending request for new access token. Passing the refresh token.
+                        .post('/token/refresh/', { refresh: refreshToken }) // sending request for new access token. Passing the refresh token.
                         .then((response) => {
                             localStorage.setItem('access_token', response.data.access);
                             localStorage.setItem('refresh_token', response.data.refresh);
@@ -82,14 +81,14 @@ axiosInstance.interceptors.response.use(
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
-                            console.log(err);
+                            console.error(err);;
                         });
                 } else {
-                    console.log('Refresh token is expired', tokenParts.exp, now);
+                    console.error('Refresh token is expired', tokenParts.exp, now);
                     window.location.href = '/log_in/';
                 }
             } else {
-                console.log('Refresh token not available.');
+                console.error('Refresh token not available.');
                 window.location.href = '/log_in/';
             }
         }

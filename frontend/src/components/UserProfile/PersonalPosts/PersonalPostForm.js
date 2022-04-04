@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Form,
@@ -10,7 +10,7 @@ import {
     Button,
 } from "reactstrap";
 import axiosInstance from "../../../axios";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 export default function PersonalPostForm(props) {
     const [titleErr, setTitleErr] = useState("");
@@ -62,7 +62,6 @@ export default function PersonalPostForm(props) {
                 navigate("/home/");
             })
             .catch((e) => {
-                console.log(e.response.data);
                 setTitleErr(e.response.data.title);
                 setContentErr(e.response.data.content);
                 setClubIDErr(e.response.data.club_id);
@@ -84,7 +83,6 @@ export default function PersonalPostForm(props) {
                 navigate("/user_profile/");
             })
             .catch((e) => {
-                console.log(e.response.data);
                 setTitleErr(e.response.data.title);
                 setContentErr(e.response.data.content);
                 setClubIDErr(e.response.data.club_id);
@@ -95,19 +93,14 @@ export default function PersonalPostForm(props) {
         axiosInstance
             .get(`clubs/user/${currentUser.id}`)
             .then((res) => {
-                console.log(res.data);
                 const allAvailableClubs = res.data;
                 setAvailableClubs(allAvailableClubs);
-                console.log("the current user is: " + currentUser.id);
-                console.log(availableClubs + "=" + res.data);
             })
             .catch((error) => console.error(error));
     };
 
-    const getClubId = (club) => {
-        console.log(clubData);
+    const getClubId = () => {
         for (let i = 0; i < availableClubs.length; ++i) {
-            console.log(availableClubs[i]);
             if (availableClubs[i]["name"] === clubData) {
                 return availableClubs[i].id;
             }
@@ -120,12 +113,12 @@ export default function PersonalPostForm(props) {
             <Container fluid>
                 <Row>
                     <Col>
-                        <div style={{display: "flex", justifyContent: "center"}}>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
                             {props.personalPost === undefined &&
-                            <h1> Upload Post </h1>
+                                <h1> Upload Post </h1>
                             }
                             {props.personalPost !== undefined &&
-                            <h1> Edit Post </h1>
+                                <h1> Edit Post </h1>
                             }
                         </div>
 
@@ -139,29 +132,29 @@ export default function PersonalPostForm(props) {
                                         </h5>{" "}
                                     </Label>
                                     {props.personalPost === undefined &&
-                                    <Input
-                                        id="title"
-                                        name="title"
-                                        onChange={handleChange}
-                                        style={{
-                                            border: "0",
-                                            backgroundColor: "#F3F3F3",
-                                            borderRadius: "20px",
-                                        }}
-                                    />
+                                        <Input
+                                            id="title"
+                                            name="title"
+                                            onChange={handleChange}
+                                            style={{
+                                                border: "0",
+                                                backgroundColor: "#F3F3F3",
+                                                borderRadius: "20px",
+                                            }}
+                                        />
                                     }
                                     {props.personalPost !== undefined &&
-                                    <Input
-                                        id="title"
-                                        name="title"
-                                        onChange={handleChange}
-                                        style={{
-                                            border: "0",
-                                            backgroundColor: "#F3F3F3",
-                                            borderRadius: "20px",
-                                        }}
-                                        value={formData.title}
-                                    />
+                                        <Input
+                                            id="title"
+                                            name="title"
+                                            onChange={handleChange}
+                                            style={{
+                                                border: "0",
+                                                backgroundColor: "#F3F3F3",
+                                                borderRadius: "20px",
+                                            }}
+                                            value={formData.title}
+                                        />
                                     }
                                 </FormGroup>
                                 <div>{titleErr}</div>
@@ -174,33 +167,33 @@ export default function PersonalPostForm(props) {
                                         </h5>{" "}
                                     </Label>
                                     {props.personalPost === undefined &&
-                                    <Input
-                                        type="textarea"
-                                        rows="5"
-                                        id="content"
-                                        name="content"
-                                        onChange={handleChange}
-                                        style={{
-                                            border: "0",
-                                            backgroundColor: "#F3F3F3",
-                                            borderRadius: "20px",
-                                        }}
-                                    />
+                                        <Input
+                                            type="textarea"
+                                            rows="5"
+                                            id="content"
+                                            name="content"
+                                            onChange={handleChange}
+                                            style={{
+                                                border: "0",
+                                                backgroundColor: "#F3F3F3",
+                                                borderRadius: "20px",
+                                            }}
+                                        />
                                     }
                                     {props.personalPost !== undefined &&
-                                    <Input
-                                        type="textarea"
-                                        rows="5"
-                                        id="content"
-                                        name="content"
-                                        onChange={handleChange}
-                                        style={{
-                                            border: "0",
-                                            backgroundColor: "#F3F3F3",
-                                            borderRadius: "20px",
-                                        }}
-                                        value={formData.content}
-                                    />
+                                        <Input
+                                            type="textarea"
+                                            rows="5"
+                                            id="content"
+                                            name="content"
+                                            onChange={handleChange}
+                                            style={{
+                                                border: "0",
+                                                backgroundColor: "#F3F3F3",
+                                                borderRadius: "20px",
+                                            }}
+                                            value={formData.content}
+                                        />
                                     }
                                 </FormGroup>
                                 <div>{contentErr}</div>
@@ -215,7 +208,7 @@ export default function PersonalPostForm(props) {
                                                         <b> Club </b> (opt.){" "}
                                                     </h5>{" "}
                                                 </Label>
-                                                <br/>
+                                                <br />
                                                 <select
                                                     value={clubData}
                                                     onChange={(e) => setClubData(e.target.value)}
@@ -225,7 +218,7 @@ export default function PersonalPostForm(props) {
                                                         borderRadius: "20px",
                                                     }}
                                                 >
-                                                    <option/>
+                                                    <option />
                                                     {availableClubs.map((club) => (
                                                         <option> {club.name} </option>
                                                     ))}
@@ -237,26 +230,26 @@ export default function PersonalPostForm(props) {
                                 )}
 
                                 <FormGroup>
-                                    <div style={{display: "flex", justifyContent: "center"}}>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
                                         {props.personalPost === undefined &&
-                                        <Button
-                                            type="submit"
-                                            className="submit"
-                                            onClick={handlePostFriendRequest}
-                                            style={{width: "7rem", borderRadius: "50px"}}
-                                        >
-                                            Post!
-                                        </Button>
+                                            <Button
+                                                type="submit"
+                                                className="submit"
+                                                onClick={handlePostFriendRequest}
+                                                style={{ width: "7rem", borderRadius: "50px" }}
+                                            >
+                                                Post!
+                                            </Button>
                                         }
                                         {props.personalPost !== undefined &&
-                                        <Button
-                                            type="submit"
-                                            className="submit"
-                                            onClick={handleEditRequest}
-                                            style={{width: "7rem", borderRadius: "50px"}}
-                                        >
-                                            Save
-                                        </Button>
+                                            <Button
+                                                type="submit"
+                                                className="submit"
+                                                onClick={handleEditRequest}
+                                                style={{ width: "7rem", borderRadius: "50px" }}
+                                            >
+                                                Save
+                                            </Button>
                                         }
                                     </div>
                                 </FormGroup>

@@ -1,5 +1,5 @@
 import axiosInstance from './axios';
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 // custom hook for getting the logged in user
 export default function useGetUser() {
@@ -7,14 +7,14 @@ export default function useGetUser() {
 
     const getUser = (e) => {
         axiosInstance.get('/get_current_user/')
-        .then(response => { // use .then to make react wait for response
-            const user = response.data;
-            setUser(user);
-            return user;
-        }).catch(error => {
-            console.log("Error: ", JSON.stringify(error, null, 4));
-            throw error;
-        })
+            .then(response => { // use .then to make react wait for response
+                const user = response.data;
+                setUser(user);
+                return user;
+            }).catch(error => {
+                console.error("Error: ", JSON.stringify(error, null, 4));
+                throw error;
+            })
     }
 
     useEffect(() => {
