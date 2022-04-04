@@ -1,23 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Row, Col} from "reactstrap";
 import Gravatar from "react-gravatar";
-import axiosInstance from "../../axios";
 
 export default function LikesUsersList(props) {
     const [likesUsersList, setLikesUsersList] = useState([]);
 
     useEffect(() => {
-        getLikesUsersList();
+        props.getLikesUsersList(setLikesUsersList);
     }, []);
-
-    const getLikesUsersList = () => {
-        axiosInstance
-            .get(`posts/${props.post.id}`)
-            .then((res) => {
-                setLikesUsersList(res.data.post.upvotes);
-            })
-            .catch((error) => console.error(error));
-    };
 
     if (likesUsersList.length > 0) {
         return likesUsersList.map((user) => {
@@ -43,6 +33,6 @@ export default function LikesUsersList(props) {
             );
         });
     } else {
-        return <h3> {"This post has no likes yet..."} </h3>;
+        return <h3> {`This ${props.type} has no likes yet...`} </h3>;
     }
 }

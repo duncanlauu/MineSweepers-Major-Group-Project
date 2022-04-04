@@ -287,9 +287,19 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         response = self.client.get(
             reverse('app:all_comments', kwargs={'post_id': 1}))
+        self.assertEqual(response.status_code, 200)
         comments = response.data['comments']
         self.assertEqual(3, len(comments))
-        self.assertEqual(response.status_code, 200)
+        # Check additional liked flag if current logged in user liked the post
+        for comment in comments:
+            comment_object = Comment.objects.get(id=comment['id'])
+            if self.user in comment_object.upvotes.all():
+                self.assertEqual(comment['liked'], True)
+            else:
+                self.assertEqual(comment['liked'], False)
+            # Check likes count
+            self.assertEqual(comment_object.upvotes.count(), comment['likesCount'])
+
 
     def test_get_comment_from_invisible_post(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
@@ -324,9 +334,20 @@ class FeedAPIViewTestCase(APITestCase):
         response = self.client.get(reverse('app:comment', kwargs=args))
         self.assertEqual(response.status_code, 200)
         comment = response.data['comment']
+        actual_comment = Comment.objects.get(id=1)
         self.assertEqual(comment['author'], self.user.id)
         self.assertEqual(comment['post'], 1)
         self.assertEqual(comment['content'], 'This is a test comment.')
+        actual_modified_upvotes = []
+        for user in actual_comment.upvotes.all():
+            actual_modified_upvotes.append(
+                {"id": user.pk,
+                 "username": user.username,
+                 "email": user.email
+                 }
+            )
+        self.assertListEqual(actual_modified_upvotes,
+                            response.data['comment']['upvotes'])
 
     def test_edit_comment_from_post(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -425,6 +446,16 @@ class FeedAPIViewTestCase(APITestCase):
         reply_author_ids = [author['id'] for author in replies]
         self.assertIn(1, reply_author_ids)
         self.assertIn(2, reply_author_ids)
+        # Check additional liked flag if current logged in user liked the post
+        for reply in replies:
+            reply_object = Reply.objects.get(id=reply['id'])
+            if self.user in reply_object.upvotes.all():
+                self.assertEqual(reply['liked'], True)
+            else:
+                self.assertEqual(reply['liked'], False)
+            # Check likes count
+            self.assertEqual(reply_object.upvotes.count(), reply['likesCount'])
+
 
     def test_add_reply_to_comment(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -450,6 +481,16 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(actual_reply.id, returned_reply['id'])
         self.assertEqual(actual_reply.content, returned_reply['content'])
         self.assertEqual(actual_reply.author_id, returned_reply['author'])
+        actual_modified_upvotes = []
+        for user in actual_reply.upvotes.all():
+            actual_modified_upvotes.append(
+                {"id": user.pk,
+                 "username": user.username,
+                 "email": user.email
+                 }
+            )
+        self.assertListEqual(actual_modified_upvotes,
+                            response.data['reply']['upvotes'])
 
     def test_upvote_reply_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
