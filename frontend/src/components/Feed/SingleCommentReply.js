@@ -34,7 +34,7 @@ export default function SingleCommentReply(props) {
     }
 
     return (
-        <div className="singleComment" key={singleReply.id}>
+        <div className="singleComment" style={{ overflow:"hidden" }} key={singleReply.id}>
             <Row>
                 <Col>
                     <Row>
@@ -51,8 +51,7 @@ export default function SingleCommentReply(props) {
                             }}
                             />
                         </Col>
-                        <Col xs="8"
-                             style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Col xs="8">
                             <ReplyLineBox>
                                 <h6 style={{ fontFamily:"Source Sans Pro" }}> {singleReply.content} </h6>
                             </ReplyLineBox>

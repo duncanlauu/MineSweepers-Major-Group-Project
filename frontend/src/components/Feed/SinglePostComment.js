@@ -36,7 +36,7 @@ export default function SinglePostComment(props) {
     const HashtagTogglerId = "#toggler" + singleComment.id;
 
     return (
-        <div className="singleComment" key={singleComment.id}>
+        <div className="singleComment" style={{ overflowX: "hidden" }} key={singleComment.id}>
             <Row>
                 <CommentContainer>
                     <Gravatar

@@ -69,8 +69,8 @@ export default function PostCommentList(props) {
                 </div>
                 }
 
-                <div style={{display: "flex", justifyContent: "center"}}>
-                    <Row style={{marginTop: "1rem", marginLeft:"4rem", display:"flex", alignSelf:"center", alignItems:"center", justifyContent:"center"}}>
+                <div>
+                    <Row style={{marginTop: "1rem", marginLeft:"4rem"}}>
                         <Col xs="9">
                             <Input
                                 type="textarea"
@@ -83,10 +83,11 @@ export default function PostCommentList(props) {
                                 style={{
                                     border: "0",
                                     backgroundColor: "#F3F3F3",
+                                    fontFamily:"Source Sans Pro"
                                 }}
                             />
                         </Col>
-                        <Col xs="3" style={{ padding:"0px" }}>
+                        <Col xs="3" style={{ padding:"0px", display:"flex", alignItems:"center", justifyContent:"flex-start" }}>
                             <img
                                 src="../../../static/images/SendMessageIcon.svg"
                                 alt="Post Comment"

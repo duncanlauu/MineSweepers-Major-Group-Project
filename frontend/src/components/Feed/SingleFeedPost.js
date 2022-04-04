@@ -17,8 +17,7 @@ import PostCommentList from "./PostCommentList";
 import Gravatar from "react-gravatar";
 import { PostHeadingText } from "../UserProfile/UserProfileElements";
 import { useNavigate } from "react-router";
-import ThumbUp from "@mui/icons-material/ThumbUp";
-import CommentIcon from "@mui/icons-material/Comment";
+import {HeadingText} from "../Login/LoginElements"
 import LikesUsersList from "./LikesUsersList";
 import { ClubPill, LikesText, PostText, ReactionContainer } from "./FeedElements"
 
@@ -208,10 +207,11 @@ export default function SingleFeedPost(props) {
                 toggle={() => changeModalVisibility()}
                 style={{
                     left: 0,
-                    top: 100,
+                    top: 180,
                 }}
             >
                 <ModalBody style={{ overflowY: "scroll" }}>
+                    <HeadingText>Liked by</HeadingText>
                     <LikesUsersList post={props.post} />
                 </ModalBody>
             </Modal>

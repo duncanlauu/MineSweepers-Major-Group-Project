@@ -56,7 +56,7 @@ export default function CommentReplyList(props) {
         return (
             <div>
 
-                <div style={{display: "flex", justifyContent: "center"}}>
+                <div>
                     <Row style={{marginBottom: "1rem"}}>
                         <Col xs="9" style={{ padding:"0px" }}>
                             <Input type="textarea" rows="1"
@@ -72,11 +72,11 @@ export default function CommentReplyList(props) {
                                    }}
                             />
                         </Col>
-                        <Col xs="3" style={{ padding:"0px", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                        <Col xs="2" style={{ padding:"0px", display:"flex", alignItems:"center", justifyContent:"flex-start", marginLeft:"1rem" }}>
                             <img
                                 src="../../../static/images/SendMessageIcon.svg"
                                 alt="Post Reply"
-                                style={{ cursor:"pointer", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
+                                style={{ marginLeft:"0px", cursor:"pointer", filter:"invert(38%) sepia(0%) saturate(2835%) hue-rotate(346deg) brightness(93%) contrast(93%)" }}
                                 onClick={(e) => { uploadReply(e, 0) ; clearInputField() }} />
                         </Col>
                     </Row>

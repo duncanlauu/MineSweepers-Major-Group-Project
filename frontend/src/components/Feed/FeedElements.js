@@ -51,7 +51,6 @@ export const UsernameText = styled.text`
 export const CommentContainer = styled.div`
     font-family: "Source Sans Pro";
     background-color: #F2F2F2;
-    width: 100%;
     display: flex;
     flex-direction: row;
     padding: 1rem;
