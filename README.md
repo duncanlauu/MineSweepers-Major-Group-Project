@@ -130,13 +130,13 @@ $ pip3 install numpy
 
 ### Miscellaneous
 + The packages in requirements.txt
-+ Integration of Django and React ( `frontend/babel.config.json`, `frontend/webpack.config.js`, `frontend/templates/frontend/index.html`, `frontend/src/index.js`, ): https://medium.com/codex/how-to-integrate-react-and-django-framework-in-a-simple-way-c8b90f3ce945
++ Integration of Django and React ( `frontend/babel.config.json`, `frontend/webpack.config.js`, `frontend/templates/frontend/index.html`, `frontend/src/index.js` ): https://medium.com/codex/how-to-integrate-react-and-django-framework-in-a-simple-way-c8b90f3ce945
 + Downloading Calendar events ( `frontend/src/downloadCalendar.js`, lines 30-35 ): https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
-+ Password Reset (`bookclub/settings.py`, `app/tests/views/test_email_view.py`, `app/views/email.py`): https://saasitive.com/tutorial/django-rest-framework-reset-password/
++ Password Reset ( `bookclub/settings.py`, `app/tests/views/test_email_view.py`, `app/views/email.py` ): https://saasitive.com/tutorial/django-rest-framework-reset-password/
 
 ### Messaging
-+ Backend Channels (`app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py`): https://channels.readthedocs.io/en/stable/tutorial/index.html
-+ Frontend + Backend: (`app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py`, `frontend/src/components/Chat`, `frontend/src/components/Chat/Contact.js`, `frontend/src/components/Chat/Profile.js`, `frontend/src/components/Chat/Sidepanel.js`, `frontend/src/websocket.js`, ): https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
++ Backend Channels ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py` ): https://channels.readthedocs.io/en/stable/tutorial/index.html
++ Frontend + Backend: ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py`, `frontend/src/components/Chat`, `frontend/src/components/Chat/Contact.js`, `frontend/src/components/Chat/Profile.js`, `frontend/src/components/Chat/Sidepanel.js`, `frontend/src/websocket.js` ): https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 
 ### Authentication
 + Axios calls with JWT for receiving data from backend ( `frontend/src/axios.js` ): https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
@@ -147,7 +147,7 @@ $ pip3 install numpy
 ### Testing
 + Mocking the useParams hook for frontend tests: https://tomalexhughes.com/blog/testing-components-that-use-react-router-hooks
 + Mocking local storage: https://www.codeblocq.com/2021/01/Jest-Mock-Local-Storage/
-+ Mocking axios for testing ( `__mocks__/axios.js`): https://stackoverflow.com/a/70590795/18134517
++ Mocking axios for testing ( `__mocks__/axios.js` ): https://stackoverflow.com/a/70590795/18134517
 
 
 ## Security
