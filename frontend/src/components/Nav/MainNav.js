@@ -16,6 +16,7 @@ import {BiSearch} from "@react-icons/all-files/bi/BiSearch";
 import Box from '@mui/material/Box';
 import {IconButton} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EventAvailable from '@mui/icons-material/EventAvailable';
 import Person from '@mui/icons-material/Person';
 import {NavMenu, SearchBarHeading, SearchContainer, SearchText} from './NavElements';
 import {Link} from 'react-router-dom'
@@ -156,6 +157,9 @@ class MainNav extends React.Component {
                                 </div>
                                 <Link to="/create_club/" style={{color: "#000"}}>
                                     <img src='../../../static/images/NewClubButton.svg' alt='New Club Button'/>
+                                </Link>
+                                <Link to="/meetings/" style={{color: "#000"}}>
+                                    <EventAvailable fontSize={"large"} />
                                 </Link>
                                 <Link to="/chat/" style={{color: "#000"}}>
                                     <img src='../../../static/images/ChatIcon.svg' alt='Open Chats'

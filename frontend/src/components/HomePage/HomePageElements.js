@@ -43,15 +43,15 @@ export const RecommendationInfo = styled.div`
 
 export const ClubListItem = styled.li`
   margin-right: 2rem;
-  height: 10rem;
-  width: 10rem;
+  height: 13rem;
+  width: 11rem;
   border-radius: 5px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 `;
 
 export const BookProfile = styled.div`
