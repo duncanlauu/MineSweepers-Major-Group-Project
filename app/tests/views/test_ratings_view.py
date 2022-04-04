@@ -106,6 +106,12 @@ class RatingsAPIViewTestCase(APITestCase):
         rating_after = BookRating.objects.get(pk=1).rating
         self.assertEqual(rating_before, rating_after)
 
+    def test_put_rating_with_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        rating_data = {'rating': 10}
+        response = self.client.put(reverse('app:rating', kwargs={'rating_id': 1000}), rating_data)
+        self.assertEqual(response.status_code, 400)
+
     def test_delete_rating_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
         response = self.client.delete(reverse('app:rating', kwargs={'rating_id': 1}))
@@ -134,3 +140,13 @@ class RatingsAPIViewTestCase(APITestCase):
         rating_ids = [rating['id'] for rating in response.data]
         actual_rating_ids = [rating.id for rating in other_user_ratings]
         self.assertSetEqual(set(rating_ids), set(actual_rating_ids))
+
+    def test_get_ratings_of_other_users_with_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:other_user_ratings', kwargs={'other_user_id': 1000}))
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_book_ratings_with_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:book_ratings', kwargs={'isbn': "00000002"}))
+        self.assertEqual(response.status_code, 400)

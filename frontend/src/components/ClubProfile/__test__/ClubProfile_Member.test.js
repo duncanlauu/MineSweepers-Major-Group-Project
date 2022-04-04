@@ -323,7 +323,7 @@ describe('User is member', () => {
 
         describe('contains correct components', () => {
 
-            test('shows Meeting History Heading', async () => {
+            test('shows all meetings heading', async () => {
                 act(() => {
                     renderClubProfile(role);
                 })
@@ -331,7 +331,7 @@ describe('User is member', () => {
                 const feedTab = await screen.findByRole('tab', { name: /meetings/i })
                 fireEvent.click(feedTab)
 
-                const heading = screen.getByText(/meeting history/i)
+                const heading = screen.getByText(/all meetings/i)
                 expect(heading).toBeInTheDocument()
             })
 

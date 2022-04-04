@@ -84,6 +84,13 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIsNone(response.data)
 
+    def test_get_other_user_posts_for_non_user(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(
+            reverse('app:other_user_posts', kwargs={'other_user_id': 15}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIsNone(response.data)
+
     # ---------- POST ---------- #
     def test_get_all_posts_of_user(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -185,7 +192,17 @@ class FeedAPIViewTestCase(APITestCase):
                  }
             )
         self.assertListEqual(actual_modified_upvotes,
-                            response.data['post']['upvotes'])
+                             response.data['post']['upvotes'])
+
+    def test_get_post_not_found(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:post', kwargs={'post_id': 100}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_post_not_visible(self):
+        self._log_in_helper(self.user.username, "Password123")
+        response = self.client.get(reverse('app:post', kwargs={'post_id': 4}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_full_edit_post_by_author(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -212,6 +229,38 @@ class FeedAPIViewTestCase(APITestCase):
         edited_post = Post.objects.get(id=1)
         self.assertEqual(edited_post.title, new_title)
         self.assertEqual(edited_post.content, new_content)
+
+    def test_put_post_with_incorrect_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        new_title = 'new post title'
+        new_content = 'new post content'
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 100}), new_post_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_put_post_with_empty_title(self):
+        self._log_in_helper(self.user.username, "Password123")
+        new_title = ''
+        new_content = 'new post content'
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['title'][0], 'This field may not be blank.')
+
+    def test_put_post_with_empty_content(self):
+        self._log_in_helper(self.user.username, "Password123")
+        new_title = 'new post title'
+        new_content = ''
+        new_post_data = {'title': new_title,
+                         'content': new_content, 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:post', kwargs={'post_id': 1}), new_post_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['content'][0], 'This field may not be blank.')
 
     def test_edit_post_not_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
@@ -318,6 +367,36 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertTrue(Comment.objects.filter(
             post_id=1, author=user).exists())
 
+    def test_post_comment_with_invalid_post_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        post_data = {'content': 'test'}
+        comment_count_before = self.post.comment_set.count()
+        response = self.client.post(
+            reverse('app:all_comments', kwargs={'post_id': 1000}), data=post_data)
+        comment_count_after = Post.objects.get(pk=1).comment_set.count()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(comment_count_before, comment_count_after)
+
+    def test_post_comment_under_invisible_post(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        post_data = {'content': 'test'}
+        comment_count_before = self.post.comment_set.count()
+        response = self.client.post(
+            reverse('app:all_comments', kwargs={'post_id': 1}), data=post_data)
+        comment_count_after = Post.objects.get(pk=1).comment_set.count()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(comment_count_before, comment_count_after)
+
+    def test_post_comment_with_empty_content(self):
+        self._log_in_helper(self.user.username, "Password123")
+        post_data = {'content': ''}
+        comment_count_before = self.post.comment_set.count()
+        response = self.client.post(
+            reverse('app:all_comments', kwargs={'post_id': 1}), data=post_data)
+        comment_count_after = Post.objects.get(pk=1).comment_set.count()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(comment_count_before, comment_count_after)
+
     def test_get_single_comment_from_post(self):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
@@ -328,6 +407,18 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(comment['post'], 1)
         self.assertEqual(comment['content'], 'This is a test comment.')
 
+    def test_get_single_comment_from_invisible_post(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        response = self.client.get(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_single_comment_from_invalid_post_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1000, 'comment_id': 1}
+        response = self.client.get(reverse('app:comment', kwargs=args))
+        self.assertEqual(response.status_code, 400)
+
     def test_edit_comment_from_post(self):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1}
@@ -336,6 +427,23 @@ class FeedAPIViewTestCase(APITestCase):
             reverse('app:comment', kwargs=args), data=comment_data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['content'], 'new test content')
+
+    def test_edit_comment_from_invalid_post_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1000, 'comment_id': 1}
+        comment_data = {'content': 'new test content', 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), data=comment_data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_edit_post_with_empty_content(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1}
+        comment_data = {'content': '', 'action': 'edit'}
+        response = self.client.put(
+            reverse('app:comment', kwargs=args), data=comment_data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data['content'], ['This field may not be blank.'])
 
     def test_upvote_comment_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
@@ -426,19 +534,51 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertIn(1, reply_author_ids)
         self.assertIn(2, reply_author_ids)
 
+    def test_get_all_replies_from_comment_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1000}
+        response = self.client.get(reverse('app:all_replies', kwargs=args))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_add_reply_to_comment(self):
         self._log_in_helper(self.user.username, "Password123")
         comment_data = {'content': 'test reply'}
         args = {'post_id': 1, 'comment_id': 1}
         reply_count_before = Comment.objects.get(pk=1).reply_set.count()
-        response = self.client.post(
-            reverse('app:all_replies', kwargs=args), comment_data)
+        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
         reply_count_after = Comment.objects.get(pk=1).reply_set.count()
         self.assertEqual(response.status_code, 201)
         self.assertEqual(reply_count_before + 1, reply_count_after)
         new_reply = Reply.objects.get(pk=response.data['id'])
         self.assertEqual(new_reply.content, 'test reply')
         self.assertEqual(new_reply.author_id, response.data['author'])
+
+    def test_add_reply_to_comment_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        comment_data = {'content': 'test reply'}
+        args = {'post_id': 1, 'comment_id': 1000}
+        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_add_reply_to_comment_with_empty_content(self):
+        self._log_in_helper(self.user.username, "Password123")
+        comment_data = {'content': ''}
+        args = {'post_id': 1, 'comment_id': 1}
+        reply_count_before = Comment.objects.get(pk=1).reply_set.count()
+        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
+        reply_count_after = Comment.objects.get(pk=1).reply_set.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(reply_count_before, reply_count_after)
+
+    def test_add_reply_to_post_invisible_to_non_author(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        comment_data = {'content': 'test reply'}
+        args = {'post_id': 1, 'comment_id': 1}
+        reply_count_before = Comment.objects.get(pk=1).reply_set.count()
+        response = self.client.post(reverse('app:all_replies', kwargs=args), comment_data)
+        reply_count_after = Comment.objects.get(pk=1).reply_set.count()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(reply_count_before, reply_count_after)
 
     def test_get_single_reply_from_a_comment(self):
         self._log_in_helper(self.user.username, "Password123")
@@ -451,12 +591,23 @@ class FeedAPIViewTestCase(APITestCase):
         self.assertEqual(actual_reply.content, returned_reply['content'])
         self.assertEqual(actual_reply.author_id, returned_reply['author'])
 
+    def test_get_single_reply_from_a_comment_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1000}
+        response = self.client.get(reverse('app:reply', kwargs=args))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_single_reply_from_a_comment_with_invisible_post(self):
+        self._log_in_helper(self.non_friend_user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        response = self.client.get(reverse('app:reply', kwargs=args))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_upvote_reply_by_author(self):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 2}
         upvote_before = Reply.objects.get(id=2).upvotes.count()
-        response = self.client.put(
-            reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=2).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
@@ -465,8 +616,7 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes.count()
-        response = self.client.put(
-            reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before - 1, upvote_after)
@@ -475,18 +625,29 @@ class FeedAPIViewTestCase(APITestCase):
         self._log_in_helper(self.other_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes.count()
-        response = self.client.put(
-            reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 200)
         upvote_after = Reply.objects.get(id=1).upvotes.count()
         self.assertEqual(upvote_before + 1, upvote_after)
+
+    def test_put_reply_with_invalid_id(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1000}
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_put_reply_with_empty_content(self):
+        self._log_in_helper(self.user.username, "Password123")
+        args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "edit", "content": ""})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['content'][0], "This field may not be blank.")
 
     def test_upvote_reply_by_unauthorized_user(self):
         self._log_in_helper(self.non_friend_user.username, "Password123")
         args = {'post_id': 1, 'comment_id': 1, 'reply_id': 1}
         upvote_before = Reply.objects.get(id=1).upvotes
-        response = self.client.put(
-            reverse('app:reply', kwargs=args), {"action": "upvote"})
+        response = self.client.put(reverse('app:reply', kwargs=args), {"action": "upvote"})
         self.assertEqual(response.status_code, 400)
         upvote_after = Reply.objects.get(id=1).upvotes
         self.assertEqual(upvote_before, upvote_after)
@@ -545,3 +706,9 @@ class FeedAPIViewTestCase(APITestCase):
         post_ids = [post['id'] for post in response.data['posts']]
         self.assertEqual(len(actual_post_ids), len(post_ids))
         self.assertSetEqual(set(actual_post_ids), set(post_ids))
+
+    def test_get_club_feed_for_invalid_club(self):
+        self._log_in_helper(self.other_user.username, "Password123")
+        response = self.client.get(
+            reverse('app:club_feed', kwargs={'club_id': 1000}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
