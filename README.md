@@ -133,6 +133,7 @@ $ pip3 install numpy
 + Integration of Django and React ( `frontend/babel.config.json`, `frontend/webpack.config.js`, `frontend/templates/frontend/index.html`, `frontend/src/index.js` ): https://medium.com/codex/how-to-integrate-react-and-django-framework-in-a-simple-way-c8b90f3ce945
 + Downloading Calendar events ( `frontend/src/downloadCalendar.js`, lines 30-35 ): https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
 + Password Reset ( `bookclub/settings.py`, `app/tests/views/test_email_view.py`, `app/views/email.py` ): https://saasitive.com/tutorial/django-rest-framework-reset-password/
++ Search (`app/views/search_view.py`) : https://www.codingforentrepreneurs.com/blog/a-multiple-model-django-search-engine
 
 ### Messaging
 + Backend Channels ( `app/routing.py`, `bookclub/asgi.py`, `app/consumers.py`, `app/views/chat_views.py` ): https://channels.readthedocs.io/en/stable/tutorial/index.html
