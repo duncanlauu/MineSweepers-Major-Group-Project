@@ -1,4 +1,4 @@
-# MineSweepers-Major-Group-Project
+# MineSweepers
 
 ## Team members:
 Vedeesh Bali<br />
