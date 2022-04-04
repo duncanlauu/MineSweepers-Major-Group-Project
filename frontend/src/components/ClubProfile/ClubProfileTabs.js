@@ -10,7 +10,7 @@ import LandingProfile from "./LandingProfile";
 import ClubScheduling from "./ClubScheduling";
 
 function TabPanel(props) {
-    const {children, value, index, ...other} = props;
+    const { children, value, index, ...other } = props;
 
     return (
         <div
@@ -21,7 +21,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box sx={{p: 3}}>
+                <Box sx={{ p: 3 }}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -45,15 +45,14 @@ function a11yProps(index) {
 function ClubProfileTabs(props) {
     const [value, setValue] = React.useState(0);
     const memberStatus = props.memberStatus;
-    console.log("Member status is: ", memberStatus);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     return (
-        <Box sx={{width: "100%"}}>
-            <Box sx={{borderBottom: 1, borderColor: "divider"}}>
+        <Box sx={{ width: "100%" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
                     <Tab label="Profile" {...a11yProps(0)} />
                     {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned") && (
@@ -69,24 +68,24 @@ function ClubProfileTabs(props) {
             </Box>
             <TabPanel value={value} index={0}>
                 <LandingProfile memberStatus={memberStatus} setMemberStatus={props.setMemberStatus}
-                                user_id={props.user_id}/>
+                    user_id={props.user_id} />
             </TabPanel>
 
             {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned") && (
                 <TabPanel value={value} index={1}>
-                    <ClubApplicants memberStatus={memberStatus} club={props.club}/>
+                    <ClubApplicants memberStatus={memberStatus} club={props.club} />
                 </TabPanel>
             )}
 
             {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned") && (
                 <TabPanel value={value} index={2}>
-                    <ClubFeed/>
+                    <ClubFeed />
                 </TabPanel>
             )}
 
             {(memberStatus !== "notApplied" && memberStatus !== "applied" && memberStatus !== "banned") && (
                 <TabPanel value={value} index={3}>
-                    <ClubScheduling/>
+                    <ClubScheduling />
                 </TabPanel>
             )}
         </Box>

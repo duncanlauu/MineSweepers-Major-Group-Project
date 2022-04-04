@@ -47,7 +47,6 @@ function ClubApplicants(props) {
     const memberStatus = props.memberStatus;
 
     const { club_id } = useParams();
-    console.log("Club ID on Members Page: " + club_id);
 
     useEffect(() => {
         axiosInstance
@@ -64,7 +63,7 @@ function ClubApplicants(props) {
                 setBannedUsers(res.data.banned_users);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }, [club]);
 
@@ -195,11 +194,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 
@@ -208,11 +206,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 
@@ -221,11 +218,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 
@@ -234,12 +230,11 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
                 window.location.reload();
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
 
     }
@@ -249,11 +244,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/${action}/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 
@@ -261,11 +255,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/promote/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 
@@ -273,11 +266,10 @@ function ClubApplicants(props) {
         axiosInstance
             .put(`singleclub/${id}/demote/${user_id}`, {})
             .then((res) => {
-                console.log(res);
                 setClub(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }
 

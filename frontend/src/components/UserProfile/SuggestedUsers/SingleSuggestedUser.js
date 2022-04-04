@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Row, Col} from "reactstrap";
+import {Row, Col, Button} from "reactstrap";
 import Gravatar from "react-gravatar";
 import {SuggestedUserLine, SuggestedUserText, SuggestedUserNameContainer} from "../UserProfileElements";
 import {useNavigate} from "react-router";
@@ -51,8 +51,16 @@ export default function SingleSuggestedUser(props) {
                             alignItems: "center",
                         }}
                     >
-                        <SuggestedUserNameContainer onClick={navigateToProfile}>
-                            <SuggestedUserText>{suggestedUserName}</SuggestedUserText>
+                        <SuggestedUserNameContainer>
+                            <SuggestedUserText>
+                                <a
+                                    href={`#`}
+                                    onClick={navigateToProfile}
+                                    style={{color: "#585858"}}
+                                >
+                                    {suggestedUserName}
+                                </a>
+                            </SuggestedUserText>
                         </SuggestedUserNameContainer>
                     </Col>
                 </Row>

@@ -105,7 +105,8 @@ class User(AbstractUser):
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
-            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
+            FriendRequest.objects.filter(
+                Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
 
             new_chat = Chat.objects.create()
             new_chat.participants.add(self)
@@ -150,9 +151,6 @@ class Post(models.Model):
             self.upvotes.add(user)
         self.save()
 
-    def get_upvotes(self):
-        return self.upvotes.count()
-
 
 class Response(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -167,9 +165,6 @@ class Response(models.Model):
         else:
             self.upvotes.add(user)
         self.save()
-
-    def get_upvotes(self):
-        return self.upvotes.count()
 
     class Meta:
         abstract = True
@@ -202,7 +197,8 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=50, primary_key=True)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=50, blank=False)
-    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)], blank=False)
+    publication_date = models.PositiveIntegerField(validators=[MaxValueValidator(datetime.datetime.today().year)],
+                                                   blank=False)
     publisher = models.CharField(max_length=50)
     image_links_large = models.CharField(max_length=500)
     image_links_medium = models.CharField(max_length=500)
@@ -243,7 +239,7 @@ class ClubManager(models.Manager):
 
 # Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=50, unique=True, blank=False)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
@@ -266,16 +262,16 @@ class Club(models.Model):
             self.club_chat.participants.add(self.owner)
             self.club_chat.save()
 
-    def add_member(self, user): 
+    def add_member(self, user):
         if user in self.applicants.all():
             self.applicants.remove(user)
         if user in self.admins.all():
-            self.admins.remove(user)    
+            self.admins.remove(user)
         user.add_club(self)
         self.members.add(user)
         self.club_chat.participants.add(user)
 
-    def remove_member(self, user): 
+    def remove_member(self, user):
         if user in self.members.all():
             self.members.remove(user)
         if self in user.clubs.all():
@@ -283,36 +279,36 @@ class Club(models.Model):
         if user in self.club_chat.participants.all():
             self.club_chat.participants.remove(user)
 
-    def member_count(self): 
+    def member_count(self):
         return self.members.count()
 
-    def promote(self, user): 
+    def promote(self, user):
         self.admins.add(user)
         if user in self.members.all():
             self.members.remove(user)
 
-    def demote(self, user): 
+    def demote(self, user):
         if user in self.admins.all():
             self.admins.remove(user)
         self.members.add(user)
 
-    def admin_count(self): 
+    def admin_count(self):
         return self.admins.count()
 
-    def add_applicant(self, user): 
+    def add_applicant(self, user):
         self.applicants.add(user)
 
-    def remove_applicant(self, user): 
+    def remove_applicant(self, user):
         if user in self.applicants.all():
             self.applicants.remove(user)
 
-    def applicant_count(self): 
+    def applicant_count(self):
         return self.applicants.count()
 
-    def total_people_count(self): 
+    def total_people_count(self):
         return self.members.count() + self.admins.count() + 1
 
-    def add_banned_user(self, user): 
+    def add_banned_user(self, user):
         if self in user.clubs.all():
             user.remove_club(self)
         if user in self.members.all():
@@ -323,30 +319,30 @@ class Club(models.Model):
         if user in self.club_chat.participants.all():
             self.club_chat.participants.remove(user)
 
-    def remove_banned_user(self, user):  
+    def remove_banned_user(self, user):
         if user in self.banned_users.all():
             self.banned_users.remove(user)
 
-    def banned_user_count(self):  
+    def banned_user_count(self):
         return self.banned_users.count()
 
-    def add_book(self, book): 
+    def add_book(self, book):
         self.books.add(book)
 
-    def remove_book(self, book): 
+    def remove_book(self, book):
         if book in self.books.all():
             self.books.remove(book)
 
-    def book_count(self): 
+    def book_count(self):
         return self.books.count()
 
-    def switch_visibility(self): 
+    def switch_visibility(self):
         self.visibility = not self.visibility
 
-    def switch_public(self): 
+    def switch_public(self):
         self.public = not self.public
 
-    def leave_club(self, user): 
+    def leave_club(self, user):
         if user in self.members.all():
             self.members.remove(user)
         if user in self.admins.all():
@@ -356,7 +352,7 @@ class Club(models.Model):
         if user in self.club_chat.participants.all():
             self.club_chat.participants.remove(user)
 
-    def transfer_ownership(self, user): 
+    def transfer_ownership(self, user):
         self.add_member(self.owner)
         self.promote(self.owner)
         if user in self.admins.all():
@@ -368,9 +364,6 @@ class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.author.username
 
 
 class Chat(models.Model):

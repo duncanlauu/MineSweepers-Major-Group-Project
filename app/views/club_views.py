@@ -23,17 +23,20 @@ class Clubs(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        if type(request.data) == QueryDict:
-            partial_club = request.data.dict()
-        else:
-            partial_club = request.data
-        partial_club['owner'] = request.user.id
-        serializer = ClubSerializer(data=partial_club)
-        if serializer.is_valid():
-            new_club = serializer.save()
-            if new_club:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            if type(request.data) == QueryDict:
+                partial_club = request.data.dict()
+            else:
+                partial_club = request.data
+            partial_club['owner'] = request.user.id
+            serializer = ClubSerializer(data=partial_club)
+            if serializer.is_valid():
+                new_club = serializer.save()
+                if new_club:
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserClubView(APIView):
@@ -135,7 +138,7 @@ class SingleClub(APIView):
 
             else:
                 return Response(data='Invalid action', status=status.HTTP_400_BAD_REQUEST)
-        except KeyError:
+        except (User.DoesNotExist, KeyError, Club.DoesNotExist):
             return Response(data='Invalid parameters', status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):

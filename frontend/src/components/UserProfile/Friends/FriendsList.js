@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../axios";
 import SingleFriend from "./SingleFriend";
 
@@ -40,7 +40,6 @@ export default function FriendsList(props) {
 
     const displayFriends = (e) => {
         if (myFriends.length > 0) {
-            console.log(myFriends);
             return myFriends.map((friend, index) => {
                 return (
                     <div className="friend" key={friend.id}>
