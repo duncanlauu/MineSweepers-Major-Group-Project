@@ -74,7 +74,7 @@ export default function PostCommentList(props) {
         )}
 
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Row style={{ marginTop: "1rem" }}>
+          <Row style={{ marginTop: "1rem", marginBottom: "1rem" }}>
             <Col xs="9">
               <Input
                 type="textarea"

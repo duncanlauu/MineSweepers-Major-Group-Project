@@ -90,7 +90,7 @@ export default function CommentReplyList(props) {
             return (
               <div
                 key={reply.id}
-                style={{ height: "7rem", marginBottom: "1rem" }}
+                style={{ height: "3rem", marginBottom: "1rem" }}
               >
                 <ReplyLine>
                   <SingleCommentReply

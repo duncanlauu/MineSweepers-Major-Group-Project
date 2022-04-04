@@ -179,7 +179,11 @@ export default function SinglePostComment(props) {
           <div>
             <hr style={{ marginTop: "0rem" }} />
             <Row>
+                <Col xs="2"></Col>
+                <Col xs="8">
               <CommentReplyList comment={singleComment} post={props.post} />
+              </Col>
+              <Col xs="2"></Col>
             </Row>
           </div>
         </UncontrolledCollapse>
