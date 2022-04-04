@@ -165,7 +165,7 @@ const HomePage = () => {
                                 <li>
                                     <IndividualClubCard 
                                         id={club.id}
-                                        email={getOwnerEmail(club.club.owner)}
+                                        email={club.email}
                                         name={club.club.name} 
                                         size={club.club.admins.length + club.club.members.length + 1} />
                                 </li>

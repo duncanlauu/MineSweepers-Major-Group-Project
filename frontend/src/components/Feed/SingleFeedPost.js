@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axiosInstance from "../../axios";
 import {
     Card,
@@ -15,8 +15,8 @@ import {
 } from "reactstrap";
 import PostCommentList from "./PostCommentList";
 import Gravatar from "react-gravatar";
-import {PostHeadingText} from "../UserProfile/UserProfileElements";
-import {useNavigate} from "react-router";
+import { PostHeadingText } from "../UserProfile/UserProfileElements";
+import { useNavigate } from "react-router";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import LikesUsersList from "./LikesUsersList";
@@ -67,7 +67,7 @@ export default function SingleFeedPost(props) {
     const HashtagTogglerId = "#toggler" + props.post.id;
 
     return (
-        <div className="feedPost" key={props.post.id}>
+        <div className="feedPost" key={props.post.id} data-testId="singleFeedPost">
             <Card
                 style={{
                     marginBottom: "1rem",
@@ -98,7 +98,7 @@ export default function SingleFeedPost(props) {
                                 <b> @{props.post.author__username} </b>
                             </h5>
                         </Col>
-                        <Col xs="6" style={{display: "flex", justifyContent: "flex-end"}}>
+                        <Col xs="6" style={{ display: "flex", justifyContent: "flex-end" }}>
                             {props.post.club != null && (
                                 <h5>
                                     <b> {props.post.club__name} </b>
@@ -109,7 +109,7 @@ export default function SingleFeedPost(props) {
                 </CardHeader>
 
                 <CardBody>
-                    <div style={{display: "flex", justifyContent: "center"}}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <CardTitle>
                             <PostHeadingText>{props.post.title}</PostHeadingText>
                         </CardTitle>
@@ -136,7 +136,7 @@ export default function SingleFeedPost(props) {
                                 setCommentsVisibility(!commentsVisibility)
                             }}
                         >
-                            <CommentIcon/>
+                            <CommentIcon />
                         </Button>
                         &nbsp;
                         <Button
@@ -149,7 +149,7 @@ export default function SingleFeedPost(props) {
                             }}
                             onClick={likePost}
                         >
-                            <ThumbUp/>
+                            <ThumbUp />
                         </Button>
                         &nbsp;
                         <Button
@@ -168,9 +168,9 @@ export default function SingleFeedPost(props) {
 
                 <UncontrolledCollapse toggler={HashtagTogglerId} data-testid="all-comments-button">
                     {commentsVisibility === true &&
-                    <div style={{maxHeight: "25rem", marginBottom: "2rem"}}>
-                        <PostCommentList post={props.post}/>
-                    </div>
+                        <div style={{ maxHeight: "25rem", marginBottom: "2rem" }}>
+                            <PostCommentList post={props.post} />
+                        </div>
                     }
                 </UncontrolledCollapse>
             </Card>
@@ -183,8 +183,8 @@ export default function SingleFeedPost(props) {
                     top: 100,
                 }}
             >
-                <ModalBody style={{overflowY: "scroll"}}>
-                    <LikesUsersList post={props.post}/>
+                <ModalBody style={{ overflowY: "scroll" }}>
+                    <LikesUsersList post={props.post} />
                 </ModalBody>
             </Modal>
         </div>

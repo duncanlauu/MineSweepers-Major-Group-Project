@@ -21,6 +21,7 @@
     + Using random set of books from a given genre
     + Using the clubs' books
 
-### Use the optimal algorithm with optimal parameters (as found in the evaluator tool)
+### Use the optimal algorithm with default parameters (as found and explained in the evaluator tool)
 
-+ SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
++ SVD(n_epochs=30, lr_all=0.004, reg_all=0.03) - the best performing algorithm
++ SVD() - the default algorithm (very similar results and significantly faster)

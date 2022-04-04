@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import User, Club, Book, Chat, Message, FriendRequest, Post
+from app.models import User, Club, Book, Chat, Message, FriendRequest, Post, Meeting
 
 
 # Register your models here.
@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
 
     list_display = [
-        'username', 'first_name', 'last_name', 'email', 'location'
+        'username', 'first_name', 'last_name', 'email', 'location', 'id'
     ]
 
 @admin.register(Club)
@@ -44,3 +44,9 @@ class Post(admin.ModelAdmin):
     list_display = [
         "title", "content", "created_at"
     ]
+@admin.register(Meeting)
+class Meeting(admin.ModelAdmin):
+    list_display = [
+        "name", "club", "book", "time"
+    ]
+    

@@ -13,6 +13,7 @@ const LandingProfile = (props) => {
   const [club, setClub] = useState(null);
   const [readingHistory, setReadingHistory] = useState([]);
   const [ownerDetails, setOwnerDetails] = useState(null);
+  const user_id = props.user_id;
 
   const memberStatus = props.memberStatus;
 
@@ -22,7 +23,7 @@ const LandingProfile = (props) => {
   function IndividualBookCard(props) {
     return (
       <Row>
-        <BookProfile>
+        <BookProfile data-testId="IndividualBookCard">
           <Col xs={2}>
             <img src={props.imageURL} alt="Book Cover" />
           </Col>
@@ -41,9 +42,7 @@ const LandingProfile = (props) => {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        console.log(res);
         setClub(res.data);
-        console.log(res.data.books);
       })
       .catch((err) => {
         console.log(err);
@@ -84,7 +83,7 @@ const LandingProfile = (props) => {
   let buttonState =
     memberStatus === "notApplied" ? "Apply" : "Withdraw Application";
 
-  function applyToClub(id, user_id, e) {
+  function applyToClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/apply/${user_id}`, {})
       .then((res) => {
@@ -96,7 +95,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function withdrawApplication(id, user_id, e) {
+  function withdrawApplication(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/reject/${user_id}`, {})
       .then((res) => {
@@ -108,7 +107,7 @@ const LandingProfile = (props) => {
       });
   }
 
-  function leaveClub(id, user_id, e) {
+  function leaveClub(id, user_id) {
     axiosInstance
       .put(`singleclub/${id}/leave/${user_id}`, {})
       .then((res) => {
@@ -148,9 +147,9 @@ const LandingProfile = (props) => {
           >
             {buttonState}
           </Button>
-        )}  
-        {(memberStatus === "admin" || memberStatus === "member" ) && (
-          <Button onClick={(e) => leaveClub(club_id, user)} style={leaveStyle}>
+        )}
+        {(memberStatus === "admin" || memberStatus === "member") && (
+          <Button onClick={(e) => leaveClub(club_id, user_id)} style={leaveStyle}>
             Leave Club
           </Button>
         )}
@@ -173,12 +172,13 @@ const LandingProfile = (props) => {
         </h3>
       </Row>
       {club.books.map(book =>
-        <IndividualBookCard 
-          imageURL={book.image_links_small} 
-          isbn={book.ISBN} 
-          title={book.title} 
-          author={book.author} 
-          year={book.publication_date} />
+        <IndividualBookCard
+          imageURL={book.image_links_small}
+          isbn={book.ISBN}
+          title={book.title}
+          author={book.author}
+          year={book.publication_date}
+        />
       )}
     </Container>
   );

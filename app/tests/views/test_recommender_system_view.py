@@ -38,7 +38,7 @@ class RecommenderAPITestCase(APITestCase):
         self.dataframe = get_combined_data(self.csv_file_path)
         self.data = get_dataset_from_dataframe(self.dataframe)
         self.trainset = get_trainset_from_dataset(self.data)
-        self.algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+        self.algo = SVD()
         train_model(self.algo, self.trainset)
         self.pred = test_model(self.algo, self.trainset)
         dump_trained_model(self.dump_file_path, self.algo, self.pred)

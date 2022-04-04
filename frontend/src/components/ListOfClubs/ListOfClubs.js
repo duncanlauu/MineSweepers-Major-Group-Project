@@ -29,10 +29,11 @@ function ListOfClubs() {
                 return (
                     <Card key={index}
                           style={{margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        <Gravatar email={club.owner.email} data-testid="gravatar" style={{borderRadius: "100px", marginTop: "1rem"}}/>
+                        <Gravatar email={club.owner_email} data-testid="gravatar"
+                                  style={{borderRadius: "100px", marginTop: "1rem"}}/>
                         <CardBody>
                             <CardTitle>{club.name}</CardTitle>
-                            <CardSubtitle>{club.members.length} Members</CardSubtitle>
+                            <CardSubtitle>{(club.members.length + club.admins.length + 1)} Members</CardSubtitle>
                             <Link to={`/club_profile/${club.id}`}>
                                 <Button>Visit Profile</Button>
                             </Link>
@@ -43,10 +44,10 @@ function ListOfClubs() {
             return (
                 <Card key={index}
                       style={{margin: "1rem", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <Gravatar email={club.owner.email} style={{borderRadius: "100px", marginTop: "1rem"}}/>
+                    <Gravatar email={club.owner_email} style={{borderRadius: "100px", marginTop: "1rem"}}/>
                     <CardBody>
                         <CardTitle>{club.name}</CardTitle>
-                        <CardSubtitle>{club.members.length} Members</CardSubtitle>
+                        <CardSubtitle>{(club.members.length + club.admins.length + 1)} Members</CardSubtitle>
                         <Link to={`/club_profile/${club.id}`}>
                             <Button>Visit Profile</Button>
                         </Link>
