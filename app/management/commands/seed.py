@@ -208,7 +208,7 @@ def seed_ratings():
                 book=book,
                 rating=random.randint(1, 10)
             )
-        print(f'Created all reviews for {user}')
+        #print(f'Created all reviews for {user}')
     print('----- ALL RATINGS INSERTED TO DATABASE -----')
 
 
@@ -236,7 +236,7 @@ def seed_clubs(num_of_clubs=15):
             club = generate_club_books(club, random.randint(
                 min_num_of_books, max_num_of_books), books)
             club.save()
-            print(f'{i + 1}/{num_of_clubs} club has been created')
+            #print(f'{i + 1}/{num_of_clubs} club has been created')
         except IntegrityError:
             print("This club name was already taken")
 
@@ -258,7 +258,7 @@ def seed_friends():
             chat = Chat.objects.create() 
             chat.participants.set([user, friend]) 
         user.save()
-        print(f'Created all friends for {user}')
+        #print(f'Created all friends for {user}')
 
 
 def seed_friend_requests():
@@ -273,7 +273,7 @@ def seed_friend_requests():
             num_of_friend_requests, user)
         for non_friend in potential_non_friends:
             user.send_friend_request(non_friend)
-        print(f'Created all friend requests for {user}')
+        #print(f'Created all friend requests for {user}')
 
 
 def seed_meetings():
@@ -301,7 +301,7 @@ def seed_feed():
         for i in range(0, num_of_posts):
             post = create_post(user, faker)
             seed_comments_and_replies(post, user)
-        print(f'Created all posts for {user}')
+        #print(f'Created all posts for {user}')
 
 
 def seed_comments_and_replies(post, user):
@@ -315,7 +315,7 @@ def seed_comments_and_replies(post, user):
         for i in range(0, num_of_comments):
             comment = create_comment(friend, faker, post)
             seed_replies(comment, user)
-        print(f'Created all comments for {friend}')
+        #print(f'Created all comments for {friend}')
 
 
 def seed_replies(comment, user):
@@ -328,7 +328,7 @@ def seed_replies(comment, user):
             min_number_of_replies, max_number_of_replies)
         for i in range(0, num_of_replies):
             create_reply(friend, faker, comment)
-        print(f'Created all replies for {friend}')
+        #print(f'Created all replies for {friend}')
 
 def seed_messages():
     """Seed a number of messages per chat"""
@@ -351,7 +351,7 @@ def seed_messages():
                 if(num_of_messages_to_generate == 0):
                     print(f'Created all messages for {chat}')
                     break
-    print(f'Created all messages for all chats')
+    #print(f'Created all messages for all chats')
 
 
 def create_user(faker, books):

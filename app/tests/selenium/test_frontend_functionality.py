@@ -213,40 +213,39 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # sleep(400)
 
         # # Landing Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        self.run_testcase(self._test_landing_page_log_in_button, False)
-        self.run_testcase(self._test_landing_page_sign_up_button, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
+        self.run_testcase(self._test_landing_page_log_in_button, False) # Works
+        self.run_testcase(self._test_landing_page_sign_up_button, False) # Works
 
         # # Log In Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in")
-        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        self.run_testcase(self._test_log_in_with_wrong_password, False)
-        self.run_testcase(self._test_log_in, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") # Works
+        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False) # Works
+        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False) # Works
+        self.run_testcase(self._test_log_in_with_wrong_password, False) # Works
+        self.run_testcase(self._test_log_in, False) # Works
 
         # # Sign Up Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        self.run_testcase(self._test_sign_up_with_blank_fields, False)
-        self.run_testcase(self._test_sign_up_username_too_short, False)
-        self.run_testcase(self._test_sign_up_invalid_email, False)
+        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up") # Works
+        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False) # Works 
+        self.run_testcase(self._test_sign_up_with_blank_fields, False) # Works
+        self.run_testcase(self._test_sign_up_username_too_short, False) # Works
+        self.run_testcase(self._test_sign_up_invalid_email, False) # Works
 
         # # Sign Up Page and new user Book Rating Page # DONE
-        self.run_testcase(self._test_sign_up_and_book_rating, False)
+        self.run_testcase(self._test_sign_up_and_book_rating, False) # BROKEN
 
         # # Home Page
-        self.page_contains_functional_navbar("home")
-        self.run_testcase(self._test_reply_to_comment_on_post, True)
-        self.run_testcase(self._test_comment_on_post, True)
-        self.run_testcase(self._test_like_post, True)
-        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        # self.page_contains_functional_navbar("home")
+        # self.run_testcase(self._test_reply_to_comment_on_post, True)
+        # self.run_testcase(self._test_comment_on_post, True)
+        # self.run_testcase(self._test_like_post, True)
+        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
 
         # # Search Bar
-        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
-        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
-        self.run_testcase(self._test_navbar_new_post, True, "all_clubs") # Probably broken # CAN BE DELETED OR REPLACED FOR ONE WHERE WE ADD CLUB ID
-        self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
+        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
+        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
+        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
+        # # self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
 
         # # User Page
         # self.page_contains_functional_navbar("user_profile")
@@ -282,35 +281,37 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_meetings_tab() # Meeting history not implemented yet
         # self._test_schedule_a_meeting() #needs recommender system trained
 
-        # As Owner
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
-        self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
-        self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
-        self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
-        self.run_testcase(self._test_demote_admin_to_member_as_owner, True) # Works
-        self.run_testcase(self._test_ban_member_as_owner, True) # Works
-        self.run_testcase(self._test_ban_admin_as_owner, True) # Works
-        self.run_testcase(self._test_unban_banned_user_as_owner, True) # Works
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
-        
+        # # As Owner
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) # Works
+        # self.run_testcase(self._test_accept_club_applicant_as_owner, True) # Works
+        # self.run_testcase(self._test_reject_club_applicant_as_owner, True) # Works
+        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True) # Works
+        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True) # Works
+        # self.run_testcase(self._test_ban_member_as_owner, True) # Works
+        # self.run_testcase(self._test_ban_admin_as_owner, True) # Works
+        # self.run_testcase(self._test_unban_banned_user_as_owner, True) # Works
+        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
 
         # # As Admin
         # Test that there are no make owner, promote, demote buttons
-        self.run_testcase(self._test_accept_club_applicant_as_admin, True) # Works
-        self.run_testcase(self._test_reject_club_applicant_as_admin, True) # Works
-        self.run_testcase(self._test_ban_member_as_admin, True) # Works
-        self.run_testcase(self._test_unban_banned_user_as_admin, True) # Works
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) # Works
+        # self.run_testcase(self._test_accept_club_applicant_as_admin, True) # Works
+        # self.run_testcase(self._test_reject_club_applicant_as_admin, True) # Works
+        # self.run_testcase(self._test_ban_member_as_admin, True) # Works
+        # self.run_testcase(self._test_unban_banned_user_as_admin, True) # Works
         
         # As Member
-        # Test that there are no make owner, promote, ban, unban, remove buttons, accept, reject buttons
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) # Works
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) # Works
+        self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) # Works
 
         # As Non-Member
-        # Test apply to club
-        # Test that there are no buttons for members and so on
-
-
-
-        # add one for can't apply to club where member
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) # Works
+        self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) # Works
 
         # # # All Clubs Page
         # self.page_contains_functional_navbar("all_clubs")
@@ -349,6 +350,128 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, url)
         self.run_testcase(self._test_open_chat_button, True, url)
         # self._test_log_out_button(url)
+
+    # Club Profile as non-member
+    def _test_club_profile_contains_correct_information_as_non_member(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Profile"]') 
+        self.browser.find_element_by_xpath('//button[.="Profile"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue(self.club_where_non_member.name in body_text)
+        self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
+        self.assertTrue("Apply" in body_text)
+        self.assertFalse("Leave Club" in body_text)
+        self.assertTrue("PROFILE" in body_text)
+        self.assertFalse("MEMBERS" in body_text)
+        self.assertFalse("FEED" in body_text)
+        self.assertFalse("MEETINGS" in body_text)
+        club_book_history = self.club_where_non_member.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
+
+    def _test_club_profile_apply_and_withdraw_application_as_non_member(self):
+        number_of_applicants_before = self.club_where_non_member.applicants.count()
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Profile"]') 
+        self.browser.find_element_by_xpath('//button[.="Profile"]').click()
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Apply"]')
+        self.browser.find_element_by_xpath('//button[.="Apply"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        number_of_applicants_after = self.club_where_non_member.applicants.count()
+        self.assertEqual(number_of_applicants_before + 1, number_of_applicants_after)
+        self.assertTrue(self.user in self.club_where_non_member.applicants.all())
+        self.wait_until_element_found('//button[.="Withdraw Application"]')
+        self.browser.find_element_by_xpath('//button[.="Withdraw Application"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        number_of_applicants_after_withdraw = self.club_where_non_member.applicants.count()
+        self.assertEqual(number_of_applicants_before, number_of_applicants_after_withdraw)
+        self.assertFalse(self.user in self.club_where_non_member.applicants.all())
+
+
+    # Club Progile as Member
+    def _test_club_profile_contains_correct_information_as_member(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_member.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Profile"]') 
+        self.browser.find_element_by_xpath('//button[.="Profile"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue(self.club_where_member.name in body_text)
+        self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
+        self.assertFalse("Apply" in body_text)
+        self.assertTrue("Leave Club" in body_text)
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        club_book_history = self.club_where_member.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
+
+    def _test_club_feed_contains_correct_information_as_member(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_member.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Feed"]')
+        self.browser.find_element_by_xpath('//button[.="Feed"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        club_posts = Post.objects.filter(club=self.club_where_member.pk).values()
+        for post in club_posts:
+            author_username = User.objects.get(pk=post['author_id']).username
+            post_content = post['content'].replace('\n', ' ')
+            self.assertTrue(author_username in body_text) 
+            self.assertTrue(post['title'] in body_text)
+            self.assertTrue(post_content in body_text)
+
+    def _test_club_members_contains_correct_information_as_member(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_member.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        sleep(30)
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        print(1)
+        self.assertFalse("Make Owner" in body_text)
+        self.assertFalse("Promote" in body_text)
+        self.assertFalse("Demote" in body_text)
+        self.assertFalse("Ban" in body_text)
+        self.assertFalse("Accept" in body_text)
+        self.assertFalse("Reject" in body_text)
+        print(2)
+        all_club_users = [self.club_where_member.owner]
+        all_club_users += self.club_where_member.admins.all()
+        all_club_users += self.club_where_member.members.all()
+        all_club_users += self.club_where_member.applicants.all()
+        for user in all_club_users:
+            self.assertTrue(user.username in body_text)
+            self.assertTrue(user.email in body_text)
+            self.assertTrue(user.bio[:20] in body_text)
 
     # Club Profile Page as Admin
     def _test_accept_club_applicant_as_admin(self):
@@ -450,8 +573,84 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue(new_banned_user in self.club_where_admin.banned_users.all())
         self.assertFalse(new_banned_user in self.club_where_admin.members.all())
 
-    # Club Profile Page as Owner
+    def _test_club_profile_contains_correct_information_as_admin(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Profile"]') # added later
+        self.browser.find_element_by_xpath('//button[.="Profile"]').click()
+        self.browser.implicitly_wait(10)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue(self.club_where_admin.name in body_text)
+        self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
+        self.assertFalse("Apply" in body_text)
+        self.assertTrue("Leave Club" in body_text)
+        # Tab Buttons
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        # Book History
+        club_book_history = self.club_where_admin.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
+    def _test_club_feed_contains_correct_information_as_admin(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Feed"]') # added later
+        self.browser.find_element_by_xpath('//button[.="Feed"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        # Tab Buttons
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        club_posts = Post.objects.filter(club=self.club_where_admin.pk).values()
+        for post in club_posts:
+            author_username = User.objects.get(pk=post['author_id']).username
+            post_content = post['content'].replace('\n', ' ')
+            self.assertTrue(author_username in body_text) 
+            self.assertTrue(post['title'] in body_text)
+            self.assertTrue(post_content in body_text)
+
+    def _test_club_members_contains_correct_information_as_admin(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        # Tab Buttons
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        self.assertFalse("Make Owner" in body_text)
+        self.assertFalse("Promote" in body_text)
+        self.assertFalse("Demote" in body_text)
+        self.assertTrue("Ban" in body_text)
+        self.assertTrue("Accept" in body_text)
+        self.assertTrue("Reject" in body_text)
+        # self.assertTrue("Unban" in body_text)
+        # Club users
+        all_club_users = [self.club_where_admin.owner]
+        all_club_users += self.club_where_admin.admins.all()
+        all_club_users += self.club_where_admin.members.all()
+        all_club_users += self.club_where_admin.applicants.all()
+        all_club_users += self.club_where_admin.banned_users.all()
+        for user in all_club_users:
+            self.assertTrue(user.username in body_text)
+            self.assertTrue(user.email in body_text)
+            self.assertTrue(user.bio[:20] in body_text)
+
+    # Club Profile Page as Owner
     def _test_accept_club_applicant_as_owner(self):
         number_of_members_before = self.club.members.count()
         number_of_applicants_before = self.club.applicants.count()
@@ -681,18 +880,67 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue(self.club.name in body_text)
         self.assertTrue(self.club.description in body_text)
         self.assertTrue("If you would like to leave the club, please transfer the ownership" in body_text)
+        self.assertFalse("Apply" in body_text)
         self.assertFalse("Leave Club" in body_text)
-        # Tab Buttons
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
         self.assertTrue("MEETINGS" in body_text)
-        # Book History
         club_book_history = self.club.books.all()
         for book in club_book_history:
             self.assertTrue(book.title in body_text)
             self.assertTrue(book.author in body_text)
             self.assertTrue(str(book.publication_date) in body_text)
+
+    def _test_club_feed_contains_correct_information_as_owner(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Feed"]') # added later
+        self.browser.find_element_by_xpath('//button[.="Feed"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        club_posts = Post.objects.filter(club=self.club.pk).values()
+        for post in club_posts:
+            author_username = User.objects.get(pk=post['author_id']).username
+            post_content = post['content'].replace('\n', ' ')
+            self.assertTrue(author_username in body_text) 
+            self.assertTrue(post['title'] in body_text)
+            self.assertTrue(post_content in body_text)
+
+    def _test_club_members_contains_correct_information_as_owner(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Members"]')
+        self.browser.find_element_by_xpath('//button[.="Members"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue("PROFILE" in body_text)
+        self.assertTrue("MEMBERS" in body_text)
+        self.assertTrue("FEED" in body_text)
+        self.assertTrue("MEETINGS" in body_text)
+        self.assertTrue("Make Owner" in body_text)
+        self.assertTrue("Promote" in body_text)
+        self.assertTrue("Demote" in body_text)
+        self.assertTrue("Ban" in body_text)
+        self.assertTrue("Accept" in body_text)
+        self.assertTrue("Reject" in body_text)
+        all_club_users = [self.club.owner]
+        all_club_users += self.club.admins.all()
+        all_club_users += self.club.members.all()
+        all_club_users += self.club.applicants.all()
+        all_club_users += self.club.banned_users.all()
+        for user in all_club_users:
+            self.assertTrue(user.username in body_text)
+            self.assertTrue(user.email in body_text)
+            self.assertTrue(user.bio[:20] in body_text)
+
 
     # Landing Page
     def _test_boogkle_logo_redirects_to_landing_page(self, url):
@@ -903,6 +1151,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(2)
         self.browser.find_element_by_xpath('//button[.="Finish"]').click()
         self.browser.implicitly_wait(10)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/waiting")
+        self.wait_until_element_found("//a[@href='/home/']", 50)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
 
@@ -1404,119 +1654,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # check db that it deleted post
 
 
-    
-
-
-
-    def _test_page_has_navbar(self, url):
-        self.browser.get(f"{self.live_server_url}/{url}")
-        pass
-        # sleep(1)
-        # body_text = self.browser.find_element_by_tag_name("body").text
-        # print(body_text)
-        # self.assertTrue("Invalid username/password" in body_text)
-
-    def _test_page_does_not_have_navbar(self, url):
-        pass
- 
-    
-
-    def _test_logo_button_goes_to_landing_page_when_not_logged_in(self, url):
-        # self.browser.get(f"{self.live_server_url}/")
-        # self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        # self.wait_until_element_found("//button[.='Log In']")
-        self.browser.get(f"{self.live_server_url}/{url}")
-        logo_button = self.browser.find_element_by_xpath('//a[.="bookgle"]')
-        logo_button.click()
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
-
-
-
-
-    
-
-
-    
-
-
-    def _test_log_out(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in/']")
-        self.wait_until_element_found("//a[@href='/sign_up/']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        self.wait_until_element_found("//button[.='New Club']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-        # Navigate to LOG OUT with buttons (NOT Implemented in frontend yet?)
-        self.browser.get(f"{self.live_server_url}/log_out")
-        self.wait_until_element_found("//a[@href='/log_in/']")
-        self.wait_until_element_found("//a[@href='/sign_up/']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
-        # Check that logged out??
-
-    def _test_recommendations_page(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in/']")
-        self.wait_until_element_found("//a[@href='/sign_up/']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        # Navigate to Recommendations page
-        self.wait_until_element_found("//a[@href='/recommendations/']")
-        self.browser.find_element_by_xpath("//a[@href='/recommendations/']").click()
-        self.wait_until_element_found("//text[.='Books For You']") 
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/recommendations/")
-        # Needs to be seeded for this to work but _test for recommendations ?
-        # Maybe _test for response time also?
-
-    # def _test_logo_navigates_to_home(self):
-    #     pass
-
-    # def _test_logo_in_log_in_navigates_to_log_in(self):
-    #     pass
-
-    # def _test_log_in_has_link_to_sign_up(self):
-    #     pass
-
-    # def _test_sign_up_has_link_to_log_in(self):
-    #     pass
-
-    # def _test_club_list(self):
-    #     pass
-
-    def _test_user_profile(self):
-        self.browser.get(f"{self.live_server_url}/")
-        self.assertEquals(self.browser.title, "Bookgle")
-        self.wait_until_element_found("//a[@href='/log_in/']")
-        self.wait_until_element_found("//a[@href='/sign_up/']")
-        self.browser.find_element_by_xpath("//a[@href='/log_in/']").click()
-        self.wait_until_element_found("//button[.='Log In']")
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        # Log in
-        self.browser.find_element_by_name("username").send_keys(self.login_data['username'])
-        self.browser.find_element_by_name("password").send_keys(self.login_data['password'])
-        self.browser.find_element_by_xpath('//button[.="Log In"]').click()
-        # Navigate to Friends Page with buttons (NOT Implemented in frontend yet?)
-        self.browser.get(f"{self.live_server_url}/user_profile")
-
-    # def _test_page_redicrects_to_log_in_when_not_logged_in(self):
-    #     pass
-
-    def _test_scheduling_page(self):
-        pass
-
     def _test_chat_page(self):
         '''
         Unable to _test chat frontend functionality (Connecting to websocket) with selenium
@@ -1526,22 +1663,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # Test navigation to page, selecting chats
         pass
 
-    def _test_meetings_page(self):
-        pass
 
-    # def _test_recommend_clubs_page(self):
-    #     # ???
-    #     pass
-
-
-    def _test_search_bar(self):
-        pass
-
-    def _test_404_page(self):
-        # go to non_existent_url
-        self.browser.get(f"{self.live_server_url}/non_existent_url")
-        # find a link to homepage ? or home?
-        pass
 
     def _test_password_reset(self):
         new_password = "NewPassword123"
@@ -1586,7 +1708,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
 
     # Helpers
-
     def _log_in(self):
         self.browser.get(f"{self.live_server_url}/log_in/")
         self.browser.implicitly_wait(10)
@@ -1597,20 +1718,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         username_input.send_keys(self.login_data['username'])
         password_input.send_keys(self.login_data['password'])
         log_in_button.click()
-        sleep(3) # Wait for page to load
+        sleep(3)
         self.browser.implicitly_wait(10)
         self.assertNotEqual(self.browser.current_url, f"{self.live_server_url}/log_in/")
-        # make method to wait a little
-        # self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
-
-# XPath is a very flexible and powerful tool. For example, you can:
-# Select elements by ID: "//input[@id='id_title']"
-# Select elements by any other attribute: "//div[@aria-label='Blank']"
-# Select elements by innerText: "//button[.='Save']"
-# Select elements by CSS class and innerText: "//button[contains(@class,'btn-primary')][.='Save']"
-# Select the first element by innerText: "(//button[.='yes'])[1]"
-
-    #from source: --
 
     def wait_until_element_found(self, xpath, time=15):
         WebDriverWait(self.browser, timeout=time).until(
