@@ -269,7 +269,7 @@ export default function SinglePostComment(props) {
           <div>
             <hr style={{ marginTop: "0rem" }} />
             <Col xs="2"></Col>
-            <Col xs="8">
+            <Col xs="11">
               <CommentReplyList comment={singleComment} post={props.post} />
             </Col>
           </div>

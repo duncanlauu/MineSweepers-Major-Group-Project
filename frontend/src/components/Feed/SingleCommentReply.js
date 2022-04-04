@@ -91,6 +91,7 @@ export default function SingleCommentReply(props) {
       <Row>
         <Col>
           <Row>
+            <div style={{ display:"flex", flexDirection:"row" }}>
             <Col
               xs="2"
               style={{
@@ -111,13 +112,14 @@ export default function SingleCommentReply(props) {
               />
             </Col>
             <Col xs="8">
-              <ReplyLineBox>
+              <ReplyLineBox style={{ alignItems:"center" }}>
                 <h6 style={{ fontFamily: "Source Sans Pro" }}>
                   {" "}
                   {singleReply.content}{" "}
                 </h6>
               </ReplyLineBox>
             </Col>
+            <div style={{ display:"flex", flexDirection:"row" }}>
             <Button
               data-testid={"reply-like-button"}
               style={{
@@ -155,6 +157,8 @@ export default function SingleCommentReply(props) {
                 <DeleteIcon></DeleteIcon>
               </Button>
             )}
+            </div>
+            </div>
           </Row>
         </Col>
       </Row>

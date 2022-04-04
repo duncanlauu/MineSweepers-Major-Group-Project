@@ -83,7 +83,8 @@ export default function PostCommentList(props) {
                                 style={{
                                     border: "0",
                                     backgroundColor: "#F3F3F3",
-                                    fontFamily:"Source Sans Pro"
+                                    fontFamily:"Source Sans Pro",
+                                    marginBottom:"1rem"
                                 }}
                             />
                         </Col>
