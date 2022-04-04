@@ -195,7 +195,7 @@ const HomePage = () => {
                             recommendedClubs.map(club =>
                                 <li>
                                     <IndividualClubCard 
-                                        id={club.id}
+                                        id={club.club.id}
                                         email={club.email}
                                         name={club.club.name} 
                                         size={club.club.admins.length + club.club.members.length + 1} />
