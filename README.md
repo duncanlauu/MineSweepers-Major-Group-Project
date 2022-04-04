@@ -1,14 +1,14 @@
 # MineSweepers-Major-Group-Project
 
 ## Team members:
-Vedeesh Bali
-Mikolaj Deja
-Patrik Horsky
-Duncan Lau
-Valentin Magis
-Eduard Orlow
-Yonathan Setiawan
-Simon Virag
+Vedeesh Bali<br />
+Mikolaj Deja<br />
+Patrik Horsky<br />
+Duncan Lau<br />
+Valentin Magis<br />
+Eduard Orlow<br />
+Yonathan Setiawan<br />
+Simon Virag<br />
 
 ## General remarks
 This is a book club project. In this repo, we have the web-based social networking platform, integrated with the recommender
@@ -64,7 +64,7 @@ but you should have access to it as it's on GitHub.
 For the chat functionality, you need to install and run Redis.
 The installation instructions for that are [here](https://redis.io/docs/getting-started/)
 
-Run all tests with:
+Run all backend tests with:
 
 ```
 $ python3 manage.py test
@@ -72,6 +72,12 @@ $ python3 manage.py test
 
 Here you might see if the installation process was correct. If the test_websocket_chat_consumer.py has some errors that
 probably means that Redis is not running.
+
+Run all frontend tests with:
+```
+$ cd frontend
+$ npm run test
+```
 
 Run the server and access the application:
 
@@ -99,13 +105,13 @@ use the django shell
 ```
 $ python3 manage.py shell
 ```
-and get a user from there (for instance:
+and get a user from there, for instance:
 ```python
 from app.models import User
 print(User.objects.all()[5].username) 
 # This gives you the username of the 5th user, you can replace the index with whatever you want (up to the number of users)
 ```
-). You can then log in as that person.
+You can then log in as that person.
 
 All users have randomly generated clubs, meetings, book ratings, posts, and friends.
 
@@ -123,3 +129,8 @@ $ pip3 install numpy
 ## Sources
 + The packages in requirements.txt
 + frontend/src/components/Meetings/Meetings.js lines 30-35 are adapted from https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
+
+
+## Security
+We made the applications security realistic by utilising the industry standard statless authentication system with JWT.
+When logging in, the user recieves an access and refresh token. Every request to the backend that requires a user to be authenticated checks the validity of the access token. 
