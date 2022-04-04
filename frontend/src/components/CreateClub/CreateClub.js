@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router";
-import {Container, Row, Col, FormGroup, Label, Input, Button} from 'reactstrap'
-import {SignUpContainer, FormLayout, HeadingText, ParaText, RadioHeading, RadioPara} from "./CreateClubElements";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { Container, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
+import { SignUpContainer, FormLayout, HeadingText, ParaText, RadioHeading, RadioPara } from "./CreateClubElements";
 import axiosInstance from '../../axios'
 import MainNav from '../Nav/MainNav'
 
@@ -38,10 +38,10 @@ export default function CreateClub() {
         setVisibilityValue(!visibilityValue);
     }
 
-    const RadioButton = ({card, value, onClick}) => {
+    const RadioButton = ({ card, value, onClick }) => {
         return (
             <label>
-                <input type="radio" checked={value} onClick={onClick}/>
+                <input type="radio" checked={value} onClick={onClick} />
                 {card}
             </label>
         );
@@ -49,12 +49,12 @@ export default function CreateClub() {
 
     function DropdownCard(props) {
         return (
-            <Container fluid style={{display: 'flex', flexDirection: 'row'}}>
+            <Container fluid style={{ display: 'flex', flexDirection: 'row' }}>
                 <Col xs={3}>
-                    <img src={props.imageURL} alt="Privacy Settings"/>
+                    <img src={props.imageURL} alt="Privacy Settings" />
                 </Col>
-                <Col xs={9} style={{padding: '0px'}}>
-                    <RadioHeading>{props.setting}</RadioHeading><br/>
+                <Col xs={9} style={{ padding: '0px' }}>
+                    <RadioHeading>{props.setting}</RadioHeading><br />
                     <RadioPara>{props.desc}</RadioPara>
                 </Col>
             </Container>
@@ -71,10 +71,6 @@ export default function CreateClub() {
                 visibility: visibilityValue,
                 public: privacyValue
             })
-            .then((res) => {
-                console.log(res)
-                console.log(res.data)
-            })
             .catch((e) => {
                 setNameErr(e.response.data.name)
                 setDescriptionErr(e.response.data.description)
@@ -82,17 +78,17 @@ export default function CreateClub() {
     }
 
     return (
-        <div id="ParentDiv" style={{overflow: "hidden"}}>
+        <div id="ParentDiv" style={{ overflow: "hidden" }}>
             <Row>
                 <MainNav />
             </Row>
             <Container fluid>
-                <Row style={{marginTop: "6rem"}}>
-                    <Col/>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
                     <Col>
                         <HeadingText>Create a Club</HeadingText>
-                        <ParaText/>
-                        <SignUpContainer style={{overflowY: 'scroll', overflowX: 'hidden'}}>
+                        <ParaText />
+                        <SignUpContainer style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
                             <FormLayout> {/*  might have to add more info here */}
                                 <FormGroup>
                                     <Label for="name"><ParaText>Name</ParaText></Label>
@@ -101,7 +97,7 @@ export default function CreateClub() {
                                         data-testid="name"
                                         name="name"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                     />
                                 </FormGroup>
                                 <div data-testid="name-errors">{nameErr}</div>
@@ -114,7 +110,7 @@ export default function CreateClub() {
                                         data-testid="description"
                                         name="description"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
                                     />
                                 </FormGroup>
                                 <div>{descriptionErr}</div>
@@ -128,8 +124,8 @@ export default function CreateClub() {
                                             <DropdownCard
                                                 imageURL="../../../static/images/PrivacyTrue.svg"
                                                 setting="Private"
-                                                desc="Users will not be able to join your club without your approval."/>
-                                        }/>
+                                                desc="Users will not be able to join your club without your approval." />
+                                        } />
                                     <RadioButton
                                         onClick={handlePrivacyChange}
                                         value={privacyValue === true}
@@ -138,8 +134,8 @@ export default function CreateClub() {
                                                 data-testid="privacy-public"
                                                 imageURL="../../../static/images/PrivacyFalse.svg"
                                                 setting="Public"
-                                                desc="Allows access to any user who wishes to join the club."/>
-                                        }/>
+                                                desc="Allows access to any user who wishes to join the club." />
+                                        } />
                                 </FormGroup>
 
                                 <FormGroup>
@@ -152,8 +148,8 @@ export default function CreateClub() {
                                                 data-testid="visibility-visible"
                                                 imageURL="../../../static/images/VisibilityTrue.svg"
                                                 setting="Visible"
-                                                desc="Your club will be visible in searches and the database."/>
-                                        }/>
+                                                desc="Your club will be visible in searches and the database." />
+                                        } />
                                     <RadioButton
                                         onClick={handleVisibilityChange}
                                         value={visibilityValue === false}
@@ -161,17 +157,17 @@ export default function CreateClub() {
                                             <DropdownCard
                                                 imageURL="../../../static/images/VisibilityFalse.svg"
                                                 setting="Invisible"
-                                                desc="Your club will be invisible to all users. It cannot be searched or seen in the database."/>
-                                        }/>
+                                                desc="Your club will be invisible to all users. It cannot be searched or seen in the database." />
+                                        } />
                                 </FormGroup>
 
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 4}}>
+                                    <Col sm={{ size: 10, offset: 4 }}>
                                         <Button
                                             type="submit"
                                             className="submit"
                                             onClick={handleSubmit}
-                                            style={{backgroundColor: "#653FFD", width: "7rem"}}
+                                            style={{ backgroundColor: "#653FFD", width: "7rem" }}
                                         >
                                             Create
                                         </Button>
@@ -182,7 +178,7 @@ export default function CreateClub() {
                         </SignUpContainer>
 
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         </div>

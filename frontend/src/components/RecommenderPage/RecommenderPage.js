@@ -11,9 +11,6 @@ import IndividualBookCard from './IndividualBookCard'
 
 const RecommenderPage = () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        console.log("User ID: " + user.id);
-    }
 
     const [value, setValue] = useState('');
 
@@ -34,11 +31,10 @@ const RecommenderPage = () => {
         axiosInstance
             .get(`genres?n=10`)
             .then(res => {
-                console.log(res);
                 setGenres(res.data);
             })
             .catch(err => {
-                console.log(err);
+                console.error(err)
             })
     }
 
@@ -76,11 +72,10 @@ const RecommenderPage = () => {
             axiosInstance
                 .get(`recommender/0/10/${user.id}/top_n/`)
                 .then(res => {
-                    console.log(res);
                     setBookRecommendations(res.data);
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.error(err);
                 })
         );
     }
@@ -90,11 +85,10 @@ const RecommenderPage = () => {
             axiosInstance
                 .get(`recommender/0/10/top_n_global/`)
                 .then(res => {
-                    console.log(res);
                     setBookRecommendations(res.data)
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.error(err);
                 }));
     }
 
@@ -102,23 +96,19 @@ const RecommenderPage = () => {
         const genre = value;
         axiosInstance
             .post(`recommender/0/10/top_n_global_for_genre/${genre}/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
 
+            .catch(err => {
+                console.error(err);
             })
 
         trackPromise(
             axiosInstance
                 .get(`recommender/0/10/top_n_global_for_genre/${genre}/`)
                 .then(res => {
-                    console.log(res);
                     setBookRecommendations(res.data)
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.error(err);
                 }));
     }
 
@@ -126,22 +116,18 @@ const RecommenderPage = () => {
         const genre = value;
         axiosInstance
             .post(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`, {})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                console.error(err);
             })
 
         trackPromise(
             axiosInstance
                 .get(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`)
                 .then(res => {
-                    console.log(res);
                     setBookRecommendations(res.data)
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.error(err);
                 })
         );
     }

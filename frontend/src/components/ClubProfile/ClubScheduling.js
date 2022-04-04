@@ -8,7 +8,6 @@ import IndividualMeetingCard from "./IndividualMeetingCard";
 
 const ClubScheduling = () => {
     const { club_id } = useParams();
-    console.log("Club ID on scheduling: " + club_id);
     const [meetings, setMeetings] = useState([]);
 
     useEffect(() => {
