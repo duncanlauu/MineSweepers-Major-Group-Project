@@ -1,15 +1,13 @@
-import React, {useState} from 'react'
-import {Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand} from 'reactstrap'
-import {HeadingText, LoginContainer, ParaText} from './PasswordResetConfirmElements'
-import {FaExternalLinkAlt} from 'react-icons/fa'
+import React, { useState } from 'react'
+import { Col, Container, FormGroup, Input, Label, Row, Button } from 'reactstrap'
+import { HeadingText, LoginContainer, ParaText } from './PasswordResetConfirmElements'
 
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
-import {useParams} from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import MainNav from '../Nav/MainNav'
 
-// https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
-export default function SignIn() {
+export default function PasswordResetConfirm() {
     let params = useParams()
 
     const navigate = useNavigate();
@@ -33,12 +31,6 @@ export default function SignIn() {
     const handleSubmit = (e) => {
 
         e.preventDefault()
-        console.log(formData)
-        console.log(params)
-        // uid = useParams()["uid"]
-        // console.log(params["uid"]);
-        // users/reset_password_confirm/"
-        // axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
             .post(`/auth/users/reset_password_confirm/`, {
                 uid: params["uid"],
@@ -48,12 +40,10 @@ export default function SignIn() {
 
             })
             .then((response) => {
-                console.log(response)
                 navigate("/log_in/") // should go to a webiste that says password reset succesful and ask you to log in
                 //or maybe even log you out if you are logged in
             })
             .catch((e) => {
-                console.log(e.response.data)
                 setNewPasswordErr(e.response.data.new_password)
                 setReNewPasswordErr(e.response.data.re_new_password)
                 if (e.response.data.non_field_errors) setReNewPasswordErr(e.response.data.non_field_errors)
@@ -61,24 +51,24 @@ export default function SignIn() {
     }
 
     return (
-        <div style={{ overflow:"hidden" }}>
+        <div style={{ overflow: "hidden" }}>
             <Row>
                 <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <Row style={{marginTop: "6rem"}}>
-                    <Col/>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
                     <Col>
-                        <HeadingText>Password Reset</HeadingText><br/>
+                        <HeadingText>Password Reset</HeadingText><br />
                         <LoginContainer>
-                            <form style={{ width:"80%" }}>
+                            <form style={{ width: "80%" }}>
                                 <FormGroup>
                                     <Label><ParaText>New Password</ParaText></Label>
                                     <Input
                                         data-testid="new_password"
                                         name="new_password"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3", fontFamily: "Source Sans Pro" }}
                                     />
                                 </FormGroup>
                                 <div data-testid="new_password_errors">{newPasswordErr}</div>
@@ -88,24 +78,24 @@ export default function SignIn() {
                                         name="re_new_password"
                                         data-testid="re_new_password"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3", fontFamily:"Source Sans Pro"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3", fontFamily: "Source Sans Pro" }}
                                     />
                                 </FormGroup>
                                 <div data-testid="re_new_password_errors">{ReNewPasswordErr}</div>
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 4}}>
-                                        <Button 
-                                            type="submit" 
+                                    <Col sm={{ size: 10, offset: 4 }}>
+                                        <Button
+                                            type="submit"
                                             onClick={handleSubmit}
-                                            style={{backgroundColor: "#653FFD", marginTop:"1rem"}}>
-                                                Reset
+                                            style={{ backgroundColor: "#653FFD", marginTop: "1rem" }}>
+                                            Reset
                                         </Button>
                                     </Col>
                                 </FormGroup>
                             </form>
                         </LoginContainer>
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         </div>

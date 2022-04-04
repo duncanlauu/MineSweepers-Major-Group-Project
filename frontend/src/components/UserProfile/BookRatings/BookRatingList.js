@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../axios";
 import SingleBookRating from "./SingleBookRating";
 
@@ -21,7 +21,7 @@ export default function BookRatingList(props) {
                 const allRatings = res.data.ratings;
                 setRatings(allRatings);
             })
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
     };
 
     const getAllRatingsOfOtherUser = () => {
@@ -31,12 +31,11 @@ export default function BookRatingList(props) {
                 const allRatings = res.data;
                 setRatings(allRatings);
             })
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
     };
 
     const displayRatings = (e) => {
         if (ratings) {
-            console.log("Ratings", ratings);
             return ratings.map((ratedBook) => {
                 return (
                     <SingleBookRating

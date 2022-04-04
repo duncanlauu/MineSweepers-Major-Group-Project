@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../axios";
-import {Container, Col, Row} from "reactstrap";
+import { Container, Col, Row } from "reactstrap";
 import {
     ClubListItem,
     FeedContainer,
@@ -13,18 +13,18 @@ import {
 } from "./HomePageElements";
 import Gravatar from "react-gravatar";
 import MainNav from "../Nav/MainNav";
-import {Link} from "react-router-dom";
-import {ParaText} from "./HomePageElements";
-import {IoIosArrowForward} from "react-icons/io";
+import { Link } from "react-router-dom";
+import { ParaText } from "./HomePageElements";
+import { IoIosArrowForward } from "react-icons/io";
 
 import FeedPostList from "../Feed/FeedPostList";
 import IndividualBookCard from "../RecommenderPage/IndividualBookCard"
 
 function IndividualClubCard(props) {
-    return(
+    return (
         <a href={`/club_profile/${props.id}`}>
             <ClubListItem>
-                <Gravatar email={props.email} size={65} style={{marginBottom: "1rem", marginTop: "1rem"}}/>           
+                <Gravatar email={props.email} size={65} style={{ marginBottom: "1rem", marginTop: "1rem" }} />
                 <RecommendedClubsText>{props.name}</RecommendedClubsText>
                 <RecommendedClubMembersText>{props.size} Members</RecommendedClubMembersText>
             </ClubListItem>
@@ -33,12 +33,12 @@ function IndividualClubCard(props) {
 }
 
 function SelectRandomClubs(arr) {
-    const displayClubs = arr.sort(() => 0.5 - Math.random()).slice(0,3);
+    const displayClubs = arr.sort(() => 0.5 - Math.random()).slice(0, 3);
     return displayClubs;
 }
 
 function SelectRandomBooks(arr) {
-    const displayBooks = arr.sort(() => 0.5 - Math.random()).slice(0,2)
+    const displayBooks = arr.sort(() => 0.5 - Math.random()).slice(0, 2)
     return displayBooks;
 }
 
@@ -63,26 +63,23 @@ const HomePage = () => {
                 .get(`recommender/0/10/${currentUser.id}/top_n_clubs_top_club_books/`)
                 .then((res) => {
                     if (res.data.length === 0) {
-                        console.log("Calculated all recommendations");
                         precomputeRecommenderResults();
                     }
                     setRecommendedClubs(SelectRandomClubs(res.data));
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((err) => {
+                    console.error(err);
                 });
             axiosInstance
                 .get(`recommender/0/10/top_n_global/`)
                 .then((res) => {
                     if (res.data.length === 0) {
-                        console.log("Calculated global recommendations");
                         precomputeGlobalTop();
                     }
-                    console.log(SelectRandomBooks(res.data));
                     setRecommendedBooks(SelectRandomBooks(res.data));
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((err) => {
+                    console.error(err);
                 });
         }
     }, []);
@@ -90,42 +87,36 @@ const HomePage = () => {
     const precomputeRecommenderResults = () => {
         axiosInstance
             .post(`recommender/0/20/${currentUser.id}/precompute_all/`, {})
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
+            .catch((err) => {
+                console.error(err);
             });
     };
 
     const precomputeGlobalTop = () => {
         axiosInstance
             .post(`recommender/0/10/top_n_global/`)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
+            .catch((err) => {
+                console.error(err);
             });
     };
 
     return (
         <Container fluid>
-            <Row style={{marginBottom: "3rem"}}>
-                <MainNav/>
+            <Row style={{ marginBottom: "3rem" }}>
+                <MainNav />
             </Row>
             <Row>
-                <Col/>
+                <Col />
                 <Col xs={5}>
                     <FeedContainer>
-                        <FeedPostList/>
+                        <FeedPostList />
                     </FeedContainer>
                 </Col>
                 <Col xs={4}>
                     <HeadingText>Our Recommendations</HeadingText>
-                    <br/>
+                    <br />
                     <Heading2Text>Books</Heading2Text>
-                    <br/>
+                    <br />
                     <Link
                         to="/recommendations/"
                         style={{
@@ -135,11 +126,11 @@ const HomePage = () => {
                         }}
                     >
                         <ParaText>
-                            <IoIosArrowForward/>
+                            <IoIosArrowForward />
                             See all recommendations
                         </ParaText>
                     </Link>
-                    <ul style={{display: "flex", flexDirection: "column"}}>
+                    <ul style={{ display: "flex", flexDirection: "column" }}>
                         {
                             recommendedBooks.map(book =>
                                 <li>
@@ -156,9 +147,9 @@ const HomePage = () => {
                             )
                         }
                     </ul>
-                    <br/>
+                    <br />
                     <Heading2Text>Clubs</Heading2Text>
-                    <br/>
+                    <br />
                     <Row>
                         <Col xs="7">
                             <Link to="/recommend_clubs"
@@ -169,8 +160,8 @@ const HomePage = () => {
                                 }}
                             >
                                 <ParaText>
-                                    <IoIosArrowForward/>
-                                    See all club recommendations 
+                                    <IoIosArrowForward />
+                                    See all club recommendations
                                 </ParaText>
                             </Link>
                         </Col>
@@ -183,28 +174,28 @@ const HomePage = () => {
                                 }}
                             >
                                 <ParaText>
-                                    <IoIosArrowForward/>
-                                        See all clubs 
+                                    <IoIosArrowForward />
+                                    See all clubs
                                 </ParaText>
                             </Link>
                         </Col>
                     </Row>
-                    <br/>
-                    <ul style={{display: "flex", flexDirection: "row"}}>
+                    <br />
+                    <ul style={{ display: "flex", flexDirection: "row" }}>
                         {
                             recommendedClubs.map(club =>
                                 <li>
-                                    <IndividualClubCard 
+                                    <IndividualClubCard
                                         id={club.club.id}
                                         email={club.email}
-                                        name={club.club.name} 
+                                        name={club.club.name}
                                         size={club.club.admins.length + club.club.members.length + 1} />
                                 </li>
                             )
                         }
                     </ul>
                 </Col>
-                <Col/>
+                <Col />
             </Row>
         </Container>
     );

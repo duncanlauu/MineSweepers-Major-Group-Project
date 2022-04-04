@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Container, Row, Col, Button} from "reactstrap";
-import {useParams} from "react-router";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Button } from "reactstrap";
+import { useParams } from "react-router";
 import axiosInstance from "../../axios";
 import BookProfileCard from "./BookProfileCard";
 import MainNav from "../Nav/MainNav";
-import {Card, CardSubtitle, CardTitle} from "reactstrap";
-import {useNavigate} from "react-router";
+import { Card, CardSubtitle, CardTitle } from "reactstrap";
+import { useNavigate } from "react-router";
 
 const BookProfilePage = () => {
-    const {book_id} = useParams();
+    const { book_id } = useParams();
     const [book, setBook] = useState(null);
     const [toggle, setToggle] = useState(true);
     const [clearable, setClearable] = useState(true);
@@ -21,13 +21,10 @@ const BookProfilePage = () => {
         axiosInstance
             .get(`books/${book_id}`)
             .then((res) => {
-                console.log(res);
                 setBook(res.data);
-                console.log("Book Data: ");
-                console.log(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
 
         axiosInstance
@@ -36,9 +33,7 @@ const BookProfilePage = () => {
                 let rated_books = [];
                 for (let i = 0; i < res.data.ratings.length; i++) {
                     rated_books.push(res.data.ratings[i]);
-                    console.log(i);
                 }
-                console.log(rated_books);
 
                 rated_books.forEach((rated_book) => {
                     if (rated_book.book__ISBN === book_id) {
@@ -49,15 +44,13 @@ const BookProfilePage = () => {
                     }
                 });
 
-                console.log("out of mapping");
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err)
             });
     }, []);
 
     const handleChange = (rate) => {
-        console.log("new rating in profile " + rate);
         setRatings(rate);
 
         if (rate === 0) {
@@ -69,32 +62,23 @@ const BookProfilePage = () => {
 
     const handleSubmit = async (e) => {
         if (clearable) {
-            console.log("new rating" + rating + " for book " + book_id);
             axiosInstance
                 .post("/ratings/", {
                     book: book_id,
                     rating: rating * 2,
                 })
-                .then((res) => {
-                    console.log(res);
-                })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err)
                 });
         } else {
-            console.log("update rating");
             axiosInstance
                 .put(`/ratings/${previousRating.id}/`, {
                     rating: rating * 2,
                 })
-                .then((res) => {
-                    console.log(res);
-                })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err)
                 });
         }
-        console.log("previous rating: " + previousRating.rating);
         setPreviousRating(rating);
         setClearable(false);
     };
@@ -107,8 +91,8 @@ const BookProfilePage = () => {
 
     return (
         <div>
-            <Row style={{marginBottom: "3rem"}}>
-                <MainNav/>
+            <Row style={{ marginBottom: "3rem" }}>
+                <MainNav />
             </Row>
             <Container fluid>
                 <Row
@@ -145,9 +129,9 @@ const BookProfilePage = () => {
                             {clearable ? "Submit rating" : "Update rating"}
                         </Button>
                     </Col>
-                    <Col xs="1"/>
+                    <Col xs="1" />
                     <Col xs="5" style={{}}>
-                        <Card style={{padding: "1rem", borderRadius: "25px"}}>
+                        <Card style={{ padding: "1rem", borderRadius: "25px" }}>
                             <CardTitle
                                 data-testid="title"
                                 tag="h1"
@@ -159,16 +143,16 @@ const BookProfilePage = () => {
                             >
                                 {book.title}
                             </CardTitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="author">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="author">
                                 Author: {book.author}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="publicationDate">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="publicationDate">
                                 Date: {book.publication_date}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="genre">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="genre">
                                 Genre: {book.genre}
                             </CardSubtitle>
-                            <CardSubtitle tag="h2" style={{padding: "2rem"}} data-testid="publisher">
+                            <CardSubtitle tag="h2" style={{ padding: "2rem" }} data-testid="publisher">
                                 Publisher: {book.publisher}
                             </CardSubtitle>
                         </Card>

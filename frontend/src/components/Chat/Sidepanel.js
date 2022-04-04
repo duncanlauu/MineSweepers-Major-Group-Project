@@ -17,23 +17,13 @@ export default function Sidepanel(props) {
                 userChats.sort(function (a, b) {
                     return (b.last_update).localeCompare(a.last_update);
                 })
-                console.log(userChats)
                 props.setChats(userChats)
             });
 
     }
 
     const activeChats = props.chats.map(c => {
-        console.log(c)
         return (
-            // <Contact
-            //     key={c.id}
-            //     name={getChatName(c)}
-            //     gravatar={getChatGravatar(c)}
-            //     chatURL={`/chat/${c.id}`}
-            //     lastMessage={c.last_message}
-            //     lastUpdated={c.last_updated}
-            // />
             <div key={c.id}>
                 {getChatName(c) == "Bookgle User (Left the chat)"
                     ?
@@ -64,8 +54,6 @@ export default function Sidepanel(props) {
     function getChatName(chat) {
         let chatName = "undefined";
         if (chat.group_chat == false) {
-            console.log(localStorage.username)
-            console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
                     if (participant.username != localStorage.username) {
@@ -84,8 +72,6 @@ export default function Sidepanel(props) {
     function getChatGravatar(chat) {
         let gravatar = "undefined";
         if (chat.group_chat == false) {
-            console.log(localStorage.username)
-            console.log(chat.participants.length)
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
                     if (participant.username != localStorage.username) {
@@ -108,29 +94,6 @@ export default function Sidepanel(props) {
 
     return (
         <div id="sidepanel" style={{ height: "100%", overflowY: "scroll" }}>
-            <div id="profile">
-                {/* <div className="wrap">
-                    <ImageDiv>
-                        <img id="profile-img" style={{ height:"100%", width:"100%" }} src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="Profile Image"/>
-                    </ImageDiv>
-                    <Gravatar email='blah@blah.com' style={{ borderRadius:"100px" }} />
-                    <p>Lorem Ipsum</p>
-                    <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                    <div id="status-options">
-                        <ul>
-                            <li id="status-online" className="active"><span className="status-circle"></span>
-                                <p>Online</p></li>
-                            <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
-                            <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
-                            <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
-                        </ul>
-                    </div>
-                </div> */}
-            </div>
-            {/* <div id="search">
-                <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..."/>
-            </div> */}
             <div id="contacts">
                 <ul>
                     {activeChats.length === 0 ? <>You have no active chats.</> : activeChats}
