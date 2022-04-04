@@ -282,6 +282,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self._test_schedule_a_meeting() #needs recommender system trained
 
         # As Owner
+        self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True)
         self.run_testcase(self._test_accept_club_applicant_as_owner, True)
         self.run_testcase(self._test_reject_club_applicant_as_owner, True)
         self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
@@ -407,7 +408,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Unban"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
@@ -430,12 +431,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Ban"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Promote" in individual_user_card_text):
+            if("Ban" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
         new_banned_user_username = member_individual_user_card.find_element_by_name("username-text").text
@@ -456,12 +457,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Remove"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Promote" in individual_user_card_text):
+            if("Remove" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
         new_removed_user_username = member_individual_user_card.find_element_by_name("username-text").text
@@ -506,7 +507,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        self.wait_until_element_found('//button[.="Accept"]')
+        self.wait_until_element_found('//button[.="Reject"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         applicant_user_card = None
         for individual_user_card in individual_user_cards:
@@ -530,7 +531,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Unban"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
@@ -553,12 +554,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Remove"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Promote" in individual_user_card_text):
+            if("Remove" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
         new_removed_user_username = member_individual_user_card.find_element_by_name("username-text").text
@@ -576,12 +577,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Ban"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Demote" in individual_user_card_text):
+            if("Ban" in individual_user_card_text):
                 admin_individual_user_card = individual_user_card
                 break
         new_banned_user_username = admin_individual_user_card.find_element_by_name("username-text").text
@@ -604,12 +605,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Ban"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
-            if("Promote" in individual_user_card_text):
+            if("Ban" in individual_user_card_text):
                 member_individual_user_card = individual_user_card
                 break
         new_banned_user_username = member_individual_user_card.find_element_by_name("username-text").text
@@ -631,7 +632,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        sleep(1)
+        self.wait_until_element_found('//button[.="Promote"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
@@ -648,8 +649,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         number_of_members_after = len(self.club.members.all())
         self.assertEqual(number_of_admins_after, number_of_admins_before + 1)
         self.assertEqual(number_of_members_after, number_of_members_before - 1)
-        self.assertFalse(new_promoted_user in self.club.admins.all())
-        self.assertTrue(new_promoted_user in self.club.members.all())
+        self.assertTrue(new_promoted_user in self.club.admins.all())
+        self.assertFalse(new_promoted_user in self.club.members.all())
 
     def _test_demote_admin_to_member_as_owner(self):
         number_of_admins_before = len(self.club.admins.all())
@@ -658,8 +659,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        # sleep(1)
-        self.wait_until_element_found('//div[@name="individual-user-card"]')
+        self.wait_until_element_found('//button[.="Demote"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
@@ -686,9 +686,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Members"]')
-        self.browser.find_element_by_xpath('//button[.="Members"]').click()
-        # sleep(1)
-        self.wait_until_element_found('//div[@name="individual-user-card"]')
+        self.wait_until_element_found('//button[.="Make Owner"]')
         individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
@@ -703,7 +701,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         club_owner_after = self.club.owner
         self.assertNotEqual(club_owner_before, club_owner_after)
         self.assertEqual(club_owner_after, new_owner)
-        # self.assertFalse(new_owner in self.club.admins.all())
+        self.assertFalse(new_owner in self.club.admins.all())
         self.assertTrue(self.user in self.club.admins.all())
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.wait_until_element_found('//button[.="Leave Club"]')
@@ -711,8 +709,17 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertFalse(self.user in self.club.admins.all())
         self.assertFalse(self.user in self.club.members.all())
 
-    def _test_club_profile_does_not_contains_leave_button_as_owner(self):
-        pass
+    def _test_club_profile_contains_correct_information_as_owner(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found('//button[.="Profile"]') # added later
+        self.browser.find_element_by_xpath('//button[.="Profile"]').click()
+        self.browser.implicitly_wait(10)
+        sleep(2)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
+        self.assertTrue(self.club.name in body_text)
+        self.assertTrue(self.club.description in body_text)
 
 
 
