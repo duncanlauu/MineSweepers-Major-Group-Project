@@ -23,7 +23,7 @@ const LandingProfile = (props) => {
   function IndividualBookCard(props) {
     return (
       <Row>
-        <BookProfile>
+        <BookProfile data-testId="IndividualBookCard">
           <Col xs={2}>
             <img src={props.imageURL} alt="Book Cover" />
           </Col>
@@ -42,9 +42,7 @@ const LandingProfile = (props) => {
     axiosInstance
       .get(`singleclub/${club_id}`)
       .then((res) => {
-        console.log(res);
         setClub(res.data);
-        console.log(res.data.books);
       })
       .catch((err) => {
         console.log(err);
@@ -143,14 +141,14 @@ const LandingProfile = (props) => {
             onClick={(e) =>
               memberStatus === "notApplied"
                 ? applyToClub(club_id, user_id)
-                : withdrawApplication(club_id, user_id )
+                : withdrawApplication(club_id, user_id)
             }
             style={memberStatus === "notApplied" ? applyStyle : appliedStyle}
           >
             {buttonState}
           </Button>
-        )}  
-        {(memberStatus === "admin" || memberStatus === "member" ) && (
+        )}
+        {(memberStatus === "admin" || memberStatus === "member") && (
           <Button onClick={(e) => leaveClub(club_id, user_id)} style={leaveStyle}>
             Leave Club
           </Button>
@@ -174,12 +172,13 @@ const LandingProfile = (props) => {
         </h3>
       </Row>
       {club.books.map(book =>
-        <IndividualBookCard 
-          imageURL={book.image_links_small} 
-          isbn={book.ISBN} 
-          title={book.title} 
-          author={book.author} 
-          year={book.publication_date} />
+        <IndividualBookCard
+          imageURL={book.image_links_small}
+          isbn={book.ISBN}
+          title={book.title}
+          author={book.author}
+          year={book.publication_date}
+        />
       )}
     </Container>
   );

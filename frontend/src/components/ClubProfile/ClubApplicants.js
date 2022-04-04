@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     BioText,
     ClubProfile,
@@ -6,10 +6,10 @@ import {
     NameText,
     UsernameText,
 } from "./ClubProfileElements";
-import {Button, Col} from "reactstrap";
+import { Button, Col } from "reactstrap";
 import Gravatar from "react-gravatar";
-import {HeadingText} from "../Login/LoginElements";
-import {useParams} from "react-router-dom";
+import { HeadingText } from "../Login/LoginElements";
+import { useParams } from "react-router-dom";
 import axiosInstance from "../../axios";
 
 const managementButtonStyle = {
@@ -46,7 +46,7 @@ function ClubApplicants(props) {
     const [bannedUsers, setBannedUsers] = useState([]);
     const memberStatus = props.memberStatus;
 
-    const {club_id} = useParams();
+    const { club_id } = useParams();
     console.log("Club ID on Members Page: " + club_id);
 
     useEffect(() => {
@@ -78,20 +78,20 @@ function ClubApplicants(props) {
         const memberStatus = props.memberStatus;
 
         return (
-            <ClubProfile>
+            <ClubProfile data-testId="individualMemberCard">
                 <Col xs={3}>
                     <Gravatar
                         email={props.email}
                         size={70}
-                        style={{borderRadius: "100%"}}
+                        style={{ borderRadius: "100%" }}
                     />
                 </Col>
                 <Col xs={6}>
                     <a href={`/user_profile/${props.userId}`}>
                         <UsernameText>{props.username}</UsernameText>
                     </a>
-                    <br/>
-                    <NameText>{props.email}</NameText><br/>
+                    <br />
+                    <NameText>{props.email}</NameText><br />
                     <BioText>{props.bio === undefined ? props.bio : (props.bio.substring(0, 45) + (props.bio.length > 45 ? '...' : ""))}</BioText>
                 </Col>
                 <Col
@@ -283,7 +283,7 @@ function ClubApplicants(props) {
 
     return (
         <>
-            <MemberListHeading>Owner</MemberListHeading>
+            <MemberListHeading data-testId="ownerMemberCard">Owner</MemberListHeading>
             <IndividualMemberCard
                 username={owner.username}
                 email={owner.email}
@@ -298,7 +298,7 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {admins.map((admin) => (
-                    <li key={admin}>
+                    <li data-testId="adminMemberCard" key={admin}>
                         <IndividualMemberCard
                             username={admin.username}
                             email={admin.email}
@@ -311,13 +311,13 @@ function ClubApplicants(props) {
                 ))}
             </ul>
             {members.length > 0 ? (
-                <MemberListHeading>Members</MemberListHeading>
+                <MemberListHeading data-testId="membersTitle">Members</MemberListHeading>
             ) : (
                 <></>
             )}
             <ul>
                 {members.map((member) => (
-                    <li key={member}>
+                    <li data-testId="memberMemberCard" key={member}>
                         <IndividualMemberCard
                             username={member.username}
                             email={member.email}
@@ -336,7 +336,7 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {applicants.map((applicant, index) => (
-                    <li key={applicant}>
+                    <li data-testId="applicantMemberCard" key={applicant}>
                         <IndividualMemberCard
                             username={applicant.username}
                             email={applicant.email}
@@ -355,8 +355,8 @@ function ClubApplicants(props) {
             )}
             <ul>
                 {bannedUsers.map((bannedUser) => (
-                    <li key={bannedUser}>
-                        <div style={{opacity: "60%"}}>
+                    <li data-testId="bannedMemberCard" key={bannedUser}>
+                        <div style={{ opacity: "60%" }}>
                             <IndividualMemberCard
                                 username={bannedUser.username}
                                 isBanned={true}

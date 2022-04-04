@@ -1,0 +1,26 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "author": 132,
+            "author__username": "declan89",
+            "author__email": "oroberts@example.net",
+            "club": 2,
+            "club__name": "West Guyview Book Club",
+            "title": "Blanditiis velit neque nulla perspiciatis.",
+            "content": "Ratione quis tenetur officia eligendi. Ipsum praesentium eveniet quia perspiciatis in.\nTenetur est vel sed consequuntur alias. Veniam non dignissimos. Beatae aspernatur eos esse facere nam.\nLaboriosam sapiente quam consectetur. Numquam odit nostrum unde provident. Repudiandae iste excepturi odit quod modi nostrum.",
+            "created_at": "2022-03-31T10:58:49.985054Z"
+        },
+        {
+            "id": 2,
+            "author": 3,
+            "author__username": "Bob",
+            "author__email": "bob@example.org",
+            "club": 2,
+            "club__name": "West Guyview Book Club",
+            "title": "Quos eligendi odit rem.",
+            "content": "Quibusdam explicabo dolorum numquam. Debitis occaecati iusto eligendi.",
+            "created_at": "2022-03-31T10:56:50.164003Z"
+        }
+    ]
+}

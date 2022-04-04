@@ -1,0 +1,59 @@
+{
+    "posts": [
+        {
+            "id": 154,
+            "author": 98,
+            "author__username": "ruthfrench",
+            "author__email": "holtelliott@example.com",
+            "club": 15,
+            "club__name": "Hayesberg Book Club",
+            "title": "Iste rerum beatae.",
+            "content": "Enim illum perspiciatis aut. Maiores nostrum eaque.",
+            "created_at": "2022-03-31T10:58:20.630506Z"
+        },
+        {
+            "id": 131,
+            "author": 83,
+            "author__username": "catherine17",
+            "author__email": "paula72@example.org",
+            "club": 15,
+            "club__name": "Hayesberg Book Club",
+            "title": "Placeat dolore maxime cumque ad dolorem.",
+            "content": "Voluptas inventore dolorum vitae tempore. Est quam debitis non perspiciatis odio cumque. Debitis voluptatibus reiciendis tempore ratione quidem.\nAperiam adipisci saepe possimus. Laboriosam repudiandae laudantium temporibus nisi quibusdam.",
+            "created_at": "2022-03-31T10:58:09.352293Z"
+        },
+        {
+            "id": 110,
+            "author": 71,
+            "author__username": "pearcedamian",
+            "author__email": "stephenwatson@example.org",
+            "club": 15,
+            "club__name": "Hayesberg Book Club",
+            "title": "Temporibus occaecati culpa exercitationem magnam accusantium velit veniam.",
+            "content": "Magnam fugit natus eaque atque ullam. Maiores pariatur iusto sed nam quis cum.\nBeatae ullam aut fugiat repellat dolorum. Doloremque aliquam facilis doloremque.\nExplicabo aperiam illo ipsa dignissimos. Reprehenderit recusandae sit accusamus totam. Accusantium saepe atque provident atque suscipit.\nItaque quae ab cumque facilis. Occaecati enim dolor illo sit et accusamus. Iusto culpa iusto dicta.",
+            "created_at": "2022-03-31T10:57:55.786347Z"
+        },
+        {
+            "id": 49,
+            "author": 33,
+            "author__username": "vwilliams",
+            "author__email": "hwebb@example.org",
+            "club": 15,
+            "club__name": "Hayesberg Book Club",
+            "title": "Maxime quisquam provident eaque ea.",
+            "content": "Animi doloremque id totam. Culpa assumenda distinctio quos laudantium. Vitae repudiandae cum inventore.\nDicta ut quos necessitatibus doloremque nemo est. Sint aliquam aliquid culpa voluptatum.\nReprehenderit laboriosam est.\nCulpa eum suscipit id qui. Molestias voluptas dolores iure at aliquam.",
+            "created_at": "2022-03-31T10:57:13.380172Z"
+        },
+        {
+            "id": 1,
+            "author": 1,
+            "author__username": "Jeb",
+            "author__email": "jeb@example.org",
+            "club": 15,
+            "club__name": "Hayesberg Book Club",
+            "title": "Voluptas adipisci molestiae amet.",
+            "content": "Perferendis aliquid necessitatibus pariatur minus fugiat. Adipisci repudiandae facere aliquid illum.\nQuam vel mollitia quidem perspiciatis fugit. Vel iure quod.\nVelit error sapiente inventore nihil nulla commodi. Asperiores tempora quaerat illum nihil.\nCorrupti facere cum. Architecto ipsam aliquam nam.",
+            "created_at": "2022-03-31T10:56:46.480783Z"
+        }
+    ]
+}
