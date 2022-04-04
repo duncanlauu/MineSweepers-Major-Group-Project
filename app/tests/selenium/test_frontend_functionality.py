@@ -213,26 +213,26 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # sleep(400)
 
         # # Landing Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
-        self.run_testcase(self._test_landing_page_log_in_button, False) # Works
-        self.run_testcase(self._test_landing_page_sign_up_button, False) # Works
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "") # Works
+        # self.run_testcase(self._test_landing_page_log_in_button, False) # Works
+        # self.run_testcase(self._test_landing_page_sign_up_button, False) # Works
 
         # # Log In Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") # Works
-        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False) # Works
-        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False) # Works
-        self.run_testcase(self._test_log_in_with_wrong_password, False) # Works
-        self.run_testcase(self._test_log_in, False) # Works
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") # Works
+        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False) # Works
+        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False) # Works
+        # self.run_testcase(self._test_log_in_with_wrong_password, False) # Works
+        # self.run_testcase(self._test_log_in, False) # Works
 
         # # Sign Up Page # DONE
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up") # Works
-        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False) # Works 
-        self.run_testcase(self._test_sign_up_with_blank_fields, False) # Works
-        self.run_testcase(self._test_sign_up_username_too_short, False) # Works
-        self.run_testcase(self._test_sign_up_invalid_email, False) # Works
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up") # Works
+        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False) # Works 
+        # self.run_testcase(self._test_sign_up_with_blank_fields, False) # Works
+        # self.run_testcase(self._test_sign_up_username_too_short, False) # Works
+        # self.run_testcase(self._test_sign_up_invalid_email, False) # Works
 
         # # Sign Up Page and new user Book Rating Page # DONE
-        self.run_testcase(self._test_sign_up_and_book_rating, False) # BROKEN
+        self.run_testcase(self._test_sign_up_and_book_rating, False) # Works
 
         # # Home Page
         # self.page_contains_functional_navbar("home")
@@ -245,42 +245,21 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
         self.run_testcase(self._test_search_bar_find_club, True, "all_clubs") # Broken on frontend when clicking on search button
         self.run_testcase(self._test_search_bar_find_book, True, "all_clubs")
-        # # self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
+        self.run_testcase(self._test_navbar_create_club, True, "all_clubs")  # Probably broken # Broken redirect on front end
 
         # # User Page
         # self.page_contains_functional_navbar("user_profile")
-        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
+        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
         # #self.run_testcase()# EDIT BUTON TEST HERE
-        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
-        # self.run_testcase(self._test_edit_post, True)
-        # self.run_testcase(self._test_delete_post, True)
-        # self.run_testcase(self._test_accept_friend_request, True) # BROKEN
-        # self.run_testcase(self._test_reject_friend_request, True) # BROKEN
-        # self.run_testcase(self._test_delete_friend, True)
-        # self.run_testcase(self._test_user_profile_suggested_friends, True)
+        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True)
+        self.run_testcase(self._test_edit_post, True)
+        self.run_testcase(self._test_delete_post, True)
+        self.run_testcase(self._test_accept_friend_request, True) # BROKEN
+        self.run_testcase(self._test_reject_friend_request, True) # BROKEN
+        self.run_testcase(self._test_delete_friend, True)
+        self.run_testcase(self._test_user_profile_suggested_friends, True)
 
-        # Club Profile Page
-        
-        # self.page_contains_functional_navbar(f"club_profile/{self.club.pk}/")
-        # self.run_testcase(self._test_club_profile_contains_correct_information , True)
-        # self.run_testcase(self._test_club_feed_tab_contains_correct_information , True)
-        # # Contains corect book history
-        # self.run_testcase(self._test_members_tab_contains_correct_information, True)
-
-        # self._test_club_profile_contains_correct_information()
-        # self._test_club_feed_tab_contains_correct_information()
-        # self._test_apply_to_club() # apply to club where not member
-        # self._test_members_tab_contains_correct_information()
-        # Accept applicant
-        # Reject applicant
-        # Remove member
-        # Ban member
-        # Make owener out of officer
-        # Ban officer
-        # self._test_feed_tab_contains_correct_information()
-        # self._test_meetings_tab() # Meeting history not implemented yet
-        # self._test_schedule_a_meeting() #needs recommender system trained
-
+        ## Club Profile Page
         # # As Owner
         # self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) # Works
         # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) # Works
@@ -295,7 +274,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) # Works
 
         # # As Admin
-        # Test that there are no make owner, promote, demote buttons
         # self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) # Works
         # self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True) # Works
         # self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) # Works
@@ -307,26 +285,26 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         # As Member
         # self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) # Works
         # self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) # Works
-        self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) # Works
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) # Works
 
         # As Non-Member
-        self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) # Works
-        self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) # Works
+        # self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) # Works
+        # self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) # Works
 
-        # # # All Clubs Page
-        # self.page_contains_functional_navbar("all_clubs")
-        # self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
-        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
+        # All Clubs Page
+        self.page_contains_functional_navbar("all_clubs")
+        self.run_testcase(self._test_all_clubs_page_contains_all_visible_clubs, True)
+        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True)
         
         # # # Book Profile Page
         # self.page_contains_functional_navbar(f"book_profile/{self.book.pk}")
-        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
-        # self.run_testcase(self._test_book_profile_rate_book, True)
-        # self.run_testcase(self._test_book_profile_update_book_rating, True)
-        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
+        self.run_testcase(self._test_book_profile_page_contains_correct_information, True)
+        self.run_testcase(self._test_book_profile_rate_book, True)
+        self.run_testcase(self._test_book_profile_update_book_rating, True)
+        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True)
 
         # # # Password Reset
-        # self.run_testcase(self._test_password_reset, False)
+        self.run_testcase(self._test_password_reset, False)
 
         if self.failed_test_cases:
             failed_tests_msg = f"FAILED TEST CASES ({len(self.failed_test_cases)} F / {len(self.succesful_test_cases)} OK):\n"
