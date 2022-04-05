@@ -79,7 +79,7 @@ Mocking more complex components and especially interacting with them turned out 
 
 #### Selenium
 To complement Jest Frontend testing as well as to replace some manual testing we used Selenium to test the frontend functionality.
-Since this testing is done from backend we are able to check for changes in the database after executing actions on the frontend.
+Because this testing is done from backend we are able to check for changes in the database after executing actions on the frontend.
 At the time of writing we have 87 tests (all passing).
 
 You can run the tests by running:
@@ -92,14 +92,14 @@ $ RUN_HEADLESS=False python3 manage.py test app.tests.selenium._test_frontend_fu
 ```
 
 We test:
-+ that the user is able to navigate through the application.
-+ form functionality like signup, create_club and more work correctly.
-+ button functionality, for example that the like button adds a like to database.
-+ if pages that are login required behave redirect to log in.
++ that navigating the application works as intended.
++ form functionality such as signup, create_club and more work correctly.
++ that buttons function as intended.
++ if pages that are login required redirect to log in.
 + if pages that require having rated books redirect to ratings.
 + dynamic data such as the number of books displayed.
 
-We realised that Selenium testing can be very hard to maintain, that's why we decided to focus on the most important parts of our applications.
+We realised that a Selenium test suits can be very hard to maintain, that's why we decided to use them mainly for the most important parts of our application.
 
 Due to having to seed the database and train the AI model we had to use the approach of running everything out of one test case, and implemented
 a custom funcitonality for running individual test cases.
