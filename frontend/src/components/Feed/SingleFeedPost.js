@@ -159,6 +159,7 @@ export default function SingleFeedPost(props) {
           >
             <ReactionContainer>
               <Button
+                name="open_comments_button"
                 id={togglerID}
                 style={{
                   background: commentsVisibility ? "#653FFD" : "#ffffff",
@@ -171,6 +172,7 @@ export default function SingleFeedPost(props) {
               </Button>
               &nbsp;
               <Button
+                name="like-button"
                 style={{
                   background: likedByUser ? "#653FFD" : "#ffffff",
                   color: likedByUser ? "#ffffff" : "#653FFD",

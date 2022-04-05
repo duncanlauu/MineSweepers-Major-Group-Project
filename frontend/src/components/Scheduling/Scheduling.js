@@ -174,6 +174,7 @@ export default function Scheduling() {
                                         > Book </Label>
                                         <br/>
                                         <select
+                                            id="book-select"
                                             value={bookData}
                                             onChange={(e) => setBookData(e.target.value)}
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}

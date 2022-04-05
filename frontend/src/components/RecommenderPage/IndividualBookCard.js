@@ -4,7 +4,7 @@ import { BookHeading, BookProfile, RatingPill, RatingsText, YearAuthorInfo } fro
 
 function IndividualBookCard(props) {
     return (
-        <Row>
+        <Row name="recommended-book">
             <BookProfile>
                 <Col xs={2}>
                     <img src={props.imageURL} alt="Book Cover" />
