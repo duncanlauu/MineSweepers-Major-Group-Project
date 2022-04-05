@@ -64,10 +64,26 @@ but you should have access to it as it's on GitHub.
 For the chat functionality, you need to install and run Redis.
 The installation instructions for that are [here](https://redis.io/docs/getting-started/)
 
-Run all tests with:
+To run selenium tests you need to download a chrome webdriver according to the chrome version installed
+on your computer and add it to the PATH. ChromeDriver can be downloaded [here](https://sites.google.com/chromium.org/driver/)
+ChromeDriver [Setup instructions](https://sites.google.com/chromium.org/driver/getting-started?authuser=0)
+
+Run all normal backend tests with:
 
 ```
 $ python3 manage.py test
+```
+
+Run all selenium frontend functionality tests in headless mode with: (Reasons for splitting them up described in testing.md)
+
+```
+$ python3 manage.py test app.tests.selenium._test_frontend_functionality
+```
+
+Or to run them in a mode where you can see the browser during test execution use:
+
+```
+$ RUN_HEADLESS=False python3 manage.py test app.tests.selenium._test_frontend_functionality
 ```
 
 Here you might see if the installation process was correct. If the test_websocket_chat_consumer.py has some errors that
