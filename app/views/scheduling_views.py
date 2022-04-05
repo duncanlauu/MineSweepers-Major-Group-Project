@@ -57,7 +57,7 @@ class SchedulingView(APIView):
                         start_time=request.data['start_time'],
                         end_time=request.data['end_time']
                     )
-                    data['time_id'] = time.pk
+                    data['time'] = time.pk
                 data['link'] = request.data['link']
                 serializer = MeetingSerializer(data=data)
                 if serializer.is_valid():
