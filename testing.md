@@ -64,7 +64,7 @@ $ cd frontend
 $ npm run test
 ```
 
-To decouple frontend testing from the backend. we mock the backend API calls in the frontend tests by mocking the axios library. 
+To decouple frontend testing from the backend, we mock the backend API calls in the frontend tests by mocking the axios library. 
 We created a mockData folder which contains fake data, returned as JSON. 
 We test:
 + for existence and non-existence of that data in the React.
@@ -78,4 +78,48 @@ Mocking more complex components and especially interacting with them turned out 
 
 
 #### Selenium
-To be added
+To complement Jest Frontend testing as well as to replace some manual testing we used Selenium to test the frontend functionality.
+Because this testing is done from backend we are able to check for changes in the database after executing actions on the frontend.
+At the time of writing we have 87 tests (all passing).
+
+You can run the tests by running:
+```
+$ python3 manage.py test app.tests.selenium._test_frontend_functionality
+```
+or to run with a visible browser:
+```
+$ RUN_HEADLESS=False python3 manage.py test app.tests.selenium._test_frontend_functionality
+```
+
+We test:
++ that navigating the application works as intended.
++ form functionality such as signup, create_club and more work correctly.
++ that buttons function as intended.
++ if pages that are login required redirect to log in.
++ if pages that require having rated books redirect to ratings.
++ dynamic data such as the number of books displayed.
+
+We realised that a Selenium test suits can be very hard to maintain, that's why we decided to use them mainly for the most important parts of our application.
+
+Due to having to seed the database and train the AI model we had to use the approach of running everything out of one test case, and implemented
+a custom funcitonality for running individual test cases.
+
+
+## Coverage
+
+To get coverage for the backend and API calls tests you can run the following command:
+```
+$ coverage run --source='.' manage.py test
+```
+If you want to get the coverage for the frontend tests you can run the following command:
+```
+$ cd frontend
+$ npm run test -- --coverage --watchAll=false
+```
+
+### Comments:
+The backend coverage shows very high coverage for the API calls and the backend itself.
+
+
+The frontend coverage with jest is misleading, since we don't perform the actual axios calls and some of the functions
+are not run. When you go on to have a look at the files, you'll see that the components are tested rather thoroughly.
