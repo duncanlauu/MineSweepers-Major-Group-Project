@@ -1,10 +1,9 @@
-from time import sleep
 from django.test import LiveServerTestCase
-from django.conf import settings
-
-from app.models import FriendRequest, Meeting, User, Club, Chat, Book, Post, BookRating, Comment, Reply
 from django.core.management import call_command
 from django.core import mail
+from datetime import datetime
+from time import sleep
+from app.models import FriendRequest, Meeting, User, Club, Chat, Book, Post, BookRating, Comment, Reply
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -12,8 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-
-from datetime import datetime
+from selenium.webdriver.common.action_chains import ActionChains
 
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, test_model, dump_trained_model, load_trained_model
@@ -24,10 +22,8 @@ from surprise import SVD
 from django.db import connections
 import os
 
-from selenium.webdriver.common.action_chains import ActionChains
 
-class MyException(Exception):
-    pass
+
     
 
 class FrontendFunctionalityTest(LiveServerTestCase):
@@ -154,145 +150,155 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             self._close_db_connections()
 
     def test_everything(self):
-        # Landing Page 
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
-        self.run_testcase(self._test_landing_page_log_in_button, False)
-        self.run_testcase(self._test_landing_page_sign_up_button, False)
+        # # Landing Page 
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "")
+        # self.run_testcase(self._test_landing_page_log_in_button, False)
+        # self.run_testcase(self._test_landing_page_sign_up_button, False)
 
-        # Log In Page 
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") 
-        self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
-        self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
-        self.run_testcase(self._test_log_in_with_wrong_password, False)
-        self.run_testcase(self._test_log_in, False)
+        # # Log In Page 
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "log_in") 
+        # self.run_testcase(self._text_sign_up_here_button_redirects_to_sign_up, False)
+        # self.run_testcase(self._test_forgot_password_button_redirects_to_password_reset, False)
+        # self.run_testcase(self._test_log_in_with_wrong_password, False)
+        # self.run_testcase(self._test_log_in, False)
 
-        # Sign Up Page
-        self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
-        self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
-        self.run_testcase(self._test_sign_up_with_blank_fields, False) 
-        self.run_testcase(self._test_sign_up_username_too_short, False) 
-        self.run_testcase(self._test_sign_up_invalid_email, False)
+        # # Sign Up Page
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_landing_page, False, "sign_up")
+        # self.run_testcase(self._test_log_in_here_button_redirects_to_log_in, False)
+        # self.run_testcase(self._test_sign_up_with_blank_fields, False) 
+        # self.run_testcase(self._test_sign_up_username_too_short, False) 
+        # self.run_testcase(self._test_sign_up_invalid_email, False)
 
-        # Sign Up Page and new user Book Rating Page 
-        self.run_testcase(self._test_sign_up_and_book_rating, False) 
+        # # Sign Up Page and new user Book Rating Page 
+        # self.run_testcase(self._test_sign_up_and_book_rating, False) 
 
         # Home Page
         self.run_testcase(self._test_reply_to_comment_on_post, True)
         self.run_testcase(self._test_comment_on_post, True)
         self.run_testcase(self._test_like_post, True)
-        self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
-        self.run_testcase(self._test_home_page_see_all_clubs_button, True)
-        self.run_testcase(self._test_home_page_recommended_book, True)
-        self.run_testcase(self._test_home_page_recommended_club, True)
+        # self.run_testcase(self._test_home_page_see_all_your_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_club_recommendations_button, True)
+        # self.run_testcase(self._test_home_page_see_all_clubs_button, True)
+        # self.run_testcase(self._test_home_page_recommended_book, True)
+        # self.run_testcase(self._test_home_page_recommended_club, True)
 
         # Navbar
-        self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
-        self.run_testcase(self._test_open_and_close_search_bar, True, "home")
-        self.run_testcase(self._test_navbar_create_new_post, True, "home")
-        self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
-        self.run_testcase(self._test_open_chat_button, True, "home")
-        self.run_testcase(self._test_open_meetings_page, True, "home")
-        self.run_testcase(self._test_open_profile_page, True, "home")
-        self.run_testcase(self._test_log_out_button, True, "home")
+        # self.run_testcase(self._test_boogkle_logo_redirects_to_home_when_logged_in, True, "home")
+        # self.run_testcase(self._test_open_and_close_search_bar, True, "home")
+        # self.run_testcase(self._test_navbar_create_new_post, True, "home")
+        # self.run_testcase(self._test_navbar_create_new_club_post, True, "home")
+        # self.run_testcase(self._test_new_club_button_redirects_to_create_club, True, "home")
+        # self.run_testcase(self._test_open_chat_button, True, "home")
+        # self.run_testcase(self._test_open_meetings_page, True, "home")
+        # self.run_testcase(self._test_open_profile_page, True, "home")
+        # self.run_testcase(self._test_log_out_button, True, "home")
 
-        # Search Bar
-        self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
-        self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
-        self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") 
-        self.run_testcase(self._test_create_club, True, "all_clubs")
+        # # Search Bar
+        # self.run_testcase(self._test_search_bar_find_user, True, "all_clubs")
+        # self.run_testcase(self._test_search_bar_find_club, True, "all_clubs")
+        # self.run_testcase(self._test_search_bar_find_book, True, "all_clubs") 
 
-        # User Page
-        self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
-        self.run_testcase(self._test_edit_user_profile, True) 
-        self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) 
-        self.run_testcase(self._test_edit_post, True) 
-        self.run_testcase(self._test_delete_post, True) 
-        self.run_testcase(self._test_accept_friend_request, True) 
-        self.run_testcase(self._test_reject_friend_request, True) 
-        self.run_testcase(self._test_delete_friend, True) 
-        self.run_testcase(self._test_user_profile_suggested_friends, True) 
+        # # Create Club
+        # self.run_testcase(self._test_create_club, True, "all_clubs")
 
-        # Club Profile Page As Owner
+        # # User Page
+        # self.run_testcase(self._test_user_profile_user_profile_cotains_correct_information, True)
+        # self.run_testcase(self._test_edit_user_profile, True) 
+        # self.run_testcase(self._test_user_profile_posts_tab_contains_correct_information, True) 
+        # self.run_testcase(self._test_edit_post, True) 
+        # self.run_testcase(self._test_delete_post, True) 
+        # self.run_testcase(self._test_accept_friend_request, True) 
+        # self.run_testcase(self._test_reject_friend_request, True) 
+        # self.run_testcase(self._test_delete_friend, True) 
+        # self.run_testcase(self._test_user_profile_suggested_friends, True) 
+
+        # # Recommendations Page
+        # self.run_testcase(self._test_recommendations_page_my_recommendations , True)
+        # self.run_testcase(self._test_recommendations_global_top_ten , True)
+        self.run_testcase(self._test_recommendations_my_genre_recommendations , True)
+        self.run_testcase(self._test_recommendations_global_genre_ten , True)
+
+        # # Club Profile Page As Owner
         self.run_testcase(self._test_club_profile_contains_correct_information_as_owner , True) 
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) 
-        self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) 
-        self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) 
-        self.run_testcase(self._test_schedule_meeting_as_owner, True) 
-        self.run_testcase(self._test_accept_club_applicant_as_owner, True)
-        self.run_testcase(self._test_reject_club_applicant_as_owner, True)
-        self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
-        self.run_testcase(self._test_demote_admin_to_member_as_owner, True) 
-        self.run_testcase(self._test_ban_member_as_owner, True) 
-        self.run_testcase(self._test_ban_admin_as_owner, True) 
-        self.run_testcase(self._test_unban_banned_user_as_owner, True) 
-        self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) 
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_owner, True) 
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_owner, True) 
+        # self.run_testcase(self._test_club_meetings_page_contains_correct_information_as_owner, True) 
+        # self.run_testcase(self._test_schedule_meeting_as_owner, True) 
+        # self.run_testcase(self._test_accept_club_applicant_as_owner, True)
+        # self.run_testcase(self._test_reject_club_applicant_as_owner, True)
+        # self.run_testcase(self._test_promote_member_to_admin_as_owner, True)
+        # self.run_testcase(self._test_demote_admin_to_member_as_owner, True) 
+        # self.run_testcase(self._test_ban_member_as_owner, True) 
+        # self.run_testcase(self._test_ban_admin_as_owner, True) 
+        # self.run_testcase(self._test_unban_banned_user_as_owner, True) 
+        # self.run_testcase(self._test_transfer_ownership_to_admin_and_leave_club, True) 
 
-        # Club Profile Page As Admin
+        # # Club Profile Page As Admin
         self.run_testcase(self._test_club_profile_contains_correct_information_as_admin, True) 
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True)
-        self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) 
-        self.run_testcase(self._test_accept_club_applicant_as_admin, True) 
-        self.run_testcase(self._test_reject_club_applicant_as_admin, True)
-        self.run_testcase(self._test_ban_member_as_admin, True) 
-        self.run_testcase(self._test_unban_banned_user_as_admin, True)
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_admin, True)
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_admin, True) 
+        # self.run_testcase(self._test_accept_club_applicant_as_admin, True) 
+        # self.run_testcase(self._test_reject_club_applicant_as_admin, True)
+        # self.run_testcase(self._test_ban_member_as_admin, True) 
+        # self.run_testcase(self._test_unban_banned_user_as_admin, True)
         
-        # Club Profile Page As Member
+        # # Club Profile Page As Member
         self.run_testcase(self._test_club_profile_contains_correct_information_as_member, True) 
-        self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) 
-        self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) 
+        # self.run_testcase(self._test_club_feed_contains_correct_information_as_member, True) 
+        # self.run_testcase(self._test_club_members_contains_correct_information_as_member, True) 
 
-        # Club Profile Page As Non-Member
+        # # Club Profile Page As Non-Member
         self.run_testcase(self._test_club_profile_contains_correct_information_as_non_member, True) 
         self.run_testcase(self._test_club_profile_apply_and_withdraw_application_as_non_member, True) 
 
-        # All Clubs Page
-        # self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True)
-        self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) 
+        # # All Clubs Page
+        self.run_testcase(self._test_all_clubs_page_contains_all_clubs, True)
+        # self.run_testcase(self._test_all_clubs_page_visit_club_profile, True) 
         
-        # Book Profile Page
-        self.run_testcase(self._test_book_profile_page_contains_correct_information, True) # Works
-        self.run_testcase(self._test_book_profile_rate_book, True) # Works
-        self.run_testcase(self._test_book_profile_update_book_rating, True) # Works
-        self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) # Works
+        # # Book Profile Page
+        # self.run_testcase(self._test_book_profile_page_contains_correct_information, True) 
+        # self.run_testcase(self._test_book_profile_rate_book, True) 
+        # self.run_testcase(self._test_book_profile_update_book_rating, True) 
+        # self.run_testcase(self._test_book_profile_see_your_recommendations_button, True) 
 
-        # Chat Page
-        ''' Unable to _test chat frontend functionality (Connecting to websocket) with selenium
-        due to a python multihtreading error when running ChannelsLiveServerTestCase.
-        https://github.com/django/channels/issues/1485 '''
-        self.run_testcase(self._test_chat_page, True) 
+        # # Chat Page
+        # ''' Unable to test chat frontend functionality (Connecting to websocket) with selenium
+        # due to a python multihtreading error when running ChannelsLiveServerTestCase.
+        # https://github.com/django/channels/issues/1485 '''
+        # self.run_testcase(self._test_chat_page, True) 
+        self.run_testcase(self._test_chat_page_contains_correct_number_of_chats, True)
 
-        # Password Reset
-        self.run_testcase(self._test_password_reset, False)
+        # # Password Reset
+        # self.run_testcase(self._test_password_reset, False)
 
-        # Is Login Protected
-        self.run_testcase(self._test_log_out_is_login_protected, False) 
-        self.run_testcase(self._test_sign_up_rating_is_login_protected, False) 
-        self.run_testcase(self._test_waiting_is_login_protected, False)
-        self.run_testcase(self._test_home_is_login_protected, False)
-        self.run_testcase(self._test_club_profile_is_login_protected, False)
-        self.run_testcase(self._test_create_club_is_login_protected, False)
-        self.run_testcase(self._test_user_profile_is_login_protected, False)
-        self.run_testcase(self._test_chat_is_login_protected, False)
-        self.run_testcase(self._test_scheduling_is_login_protected, False)
-        self.run_testcase(self._test_meetings_is_login_protected, False)
-        self.run_testcase(self._test_recommendations_is_login_protected, False)
-        self.run_testcase(self._test_recommend_clubs_is_login_protected, False)
-        self.run_testcase(self._test_book_profile_is_login_protected, False)
-        self.run_testcase(self._test_all_clubs_is_login_protected, False)
+        # # Is Login Protected
+        # self.run_testcase(self._test_log_out_is_login_protected, False) 
+        # self.run_testcase(self._test_sign_up_rating_is_login_protected, False) 
+        # self.run_testcase(self._test_waiting_is_login_protected, False)
+        # self.run_testcase(self._test_home_is_login_protected, False)
+        # self.run_testcase(self._test_club_profile_is_login_protected, False)
+        # self.run_testcase(self._test_create_club_is_login_protected, False)
+        # self.run_testcase(self._test_user_profile_is_login_protected, False)
+        # self.run_testcase(self._test_chat_is_login_protected, False)
+        # self.run_testcase(self._test_scheduling_is_login_protected, False)
+        # self.run_testcase(self._test_meetings_is_login_protected, False)
+        # self.run_testcase(self._test_recommendations_is_login_protected, False)
+        # self.run_testcase(self._test_recommend_clubs_is_login_protected, False)
+        # self.run_testcase(self._test_book_profile_is_login_protected, False)
+        # self.run_testcase(self._test_all_clubs_is_login_protected, False)
 
-        # Requires Ratings
-        self.run_testcase(self._test_home_requires_ratings, False)
-        self.run_testcase(self._test_club_profile_requires_ratings, False)
-        self.run_testcase(self._test_create_club_requires_ratings, False)
-        self.run_testcase(self._test_user_profile_requires_ratings, False)
-        self.run_testcase(self._test_chat_requires_ratings, False)
-        self.run_testcase(self._test_scheduling_requires_ratings, False)
-        self.run_testcase(self._test_meetings_requires_ratings, False)
-        self.run_testcase(self._test_recommendations_requires_ratings, False)
-        self.run_testcase(self._test_recommend_clubs_requires_ratings, False)
-        self.run_testcase(self._test_book_profile_requires_ratings, False)
-        self.run_testcase(self._test_all_clubs_requires_ratings, False)
+        # # Requires Ratings
+        # self.run_testcase(self._test_home_requires_ratings, False)
+        # self.run_testcase(self._test_club_profile_requires_ratings, False)
+        # self.run_testcase(self._test_create_club_requires_ratings, False)
+        # self.run_testcase(self._test_user_profile_requires_ratings, False)
+        # self.run_testcase(self._test_chat_requires_ratings, False)
+        # self.run_testcase(self._test_scheduling_requires_ratings, False)
+        # self.run_testcase(self._test_meetings_requires_ratings, False)
+        # self.run_testcase(self._test_recommendations_requires_ratings, False)
+        # self.run_testcase(self._test_recommend_clubs_requires_ratings, False)
+        # self.run_testcase(self._test_book_profile_requires_ratings, False)
+        # self.run_testcase(self._test_all_clubs_requires_ratings, False)
 
         if self.failed_test_cases:
             failed_tests_msg = f"FAILED TEST CASES ({len(self.failed_test_cases)} F / {len(self.succesful_test_cases)} OK):\n"
@@ -304,161 +310,83 @@ class FrontendFunctionalityTest(LiveServerTestCase):
                     failed_tests_msg += f", ({test_case_url})"
                 failed_tests_msg += "\n"
             print(self.error_message_report)
-            raise MyException(failed_tests_msg)
+            raise TestException(failed_tests_msg)
         else:
             print(f"All ({len(self.succesful_test_cases)}) tests passed!")
 
-    # Login Required
-    def _test_log_out_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/log_out/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    # Recommendations Page
+    def _test_recommendations_page_my_recommendations(self):
+        self.browser.get(self.live_server_url + "/recommendations/")
+        self.browser.implicitly_wait(10)
+        self.browser.find_element_by_xpath("//button[.='My Recommendations']").click()
+        self.wait_until_element_found("//div[@name='recommended-book']", 40)
+        book_recommendations = self.browser.find_elements_by_xpath("//div[@name='recommended-book']")
+        self.assertEqual(len(book_recommendations), 10)
+        first_book_recommendation = book_recommendations[0]
+        first_book_recommendation_link = first_book_recommendation.find_element_by_tag_name('a')
+        first_book_recommendation_href = first_book_recommendation_link.get_attribute('href')
+        first_book_recommendation_link.click()
+        sleep(5)
+        self.assertEqual(self.browser.current_url, f"{first_book_recommendation_href}/")
 
-    def _test_sign_up_rating_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/sign_up/rating")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    def _test_recommendations_global_top_ten(self):
+        self.browser.get(self.live_server_url + "/recommendations/")
+        self.browser.implicitly_wait(10)
+        self.browser.find_element_by_xpath("//button[.='Global Top 10']").click()
+        self.wait_until_element_found("//div[@name='recommended-book']", 40)
+        book_recommendations = self.browser.find_elements_by_xpath("//div[@name='recommended-book']")
+        self.assertEqual(len(book_recommendations), 10)
+        first_book_recommendation = book_recommendations[0]
+        first_book_recommendation_link = first_book_recommendation.find_element_by_tag_name('a')
+        first_book_recommendation_href = first_book_recommendation_link.get_attribute('href')
+        first_book_recommendation_link.click()
+        sleep(5)
+        self.assertEqual(self.browser.current_url, f"{first_book_recommendation_href}/")
 
-    def _test_waiting_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/waiting")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    def _test_recommendations_my_genre_recommendations(self):
+        self.browser.get(self.live_server_url + "/recommendations/")
+        self.browser.implicitly_wait(10)
+        book_genre_select = Select(self.browser.find_element_by_tag_name('select'))
+        sleep(5)
+        book_genre_select.select_by_index(1)
+        self.wait_until_element_found("//button[@data-testid='genreRecommendation']")
+        self.browser.find_element_by_xpath("//button[@data-testid='genreRecommendation']").click()
+        self.wait_until_element_found("//div[@name='recommended-book']", 40)
+        book_recommendations = self.browser.find_elements_by_xpath("//div[@name='recommended-book']")
+        self.assertEqual(len(book_recommendations), 10)
+        first_book_recommendation = book_recommendations[0]
+        first_book_recommendation_link = first_book_recommendation.find_element_by_tag_name('a')
+        first_book_recommendation_href = first_book_recommendation_link.get_attribute('href')
+        first_book_recommendation_link.click()
+        sleep(5)
+        self.assertEqual(self.browser.current_url, f"{first_book_recommendation_href}/")
 
-    def _test_home_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/home")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    def _test_recommendations_global_genre_ten(self):
+        self.browser.get(self.live_server_url + "/recommendations/")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found("//select[@name='genre-select']")
+        sleep(5)
+        book_genre_select = Select(self.browser.find_element_by_name("genre-select"))
+        book_genre_select.select_by_index(1)
+        self.wait_until_element_found("//button[@data-testid='genreRecommendation']")
+        genre_recommendations_buttons = self.browser.find_elements_by_xpath("//button[@data-testid='genreRecommendation']")
+        genre_recommendations_buttons[1].click()
+        self.wait_until_element_found("//div[@name='recommended-book']", 40)
+        book_recommendations = self.browser.find_elements_by_xpath("//div[@name='recommended-book']")
+        self.assertEqual(len(book_recommendations), 10)
+        first_book_recommendation = book_recommendations[0]
+        first_book_recommendation_link = first_book_recommendation.find_element_by_tag_name('a')
+        first_book_recommendation_href = first_book_recommendation_link.get_attribute('href')
+        first_book_recommendation_link.click()
+        sleep(5)
+        self.assertEqual(self.browser.current_url, f"{first_book_recommendation_href}/")
 
-    def _test_club_profile_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+    
 
-    def _test_create_club_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/create_club")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_user_profile_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/user_profile/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_chat_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/chat/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_scheduling_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/scheduling/{self.club.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_meetings_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/meetings/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_recommendations_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/recommendations/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_recommend_clubs_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/recommend_clubs/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_book_profile_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    def _test_all_clubs_is_login_protected(self):
-        self.browser.get(f"{self.live_server_url}/all_clubs/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
-
-    # Ratings Required
-    def _test_home_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/home")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_club_profile_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_create_club_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/create_club")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_user_profile_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/user_profile/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_chat_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/chat/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_scheduling_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/scheduling/{self.club.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_meetings_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/meetings/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_recommendations_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/recommendations/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_recommend_clubs_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/recommend_clubs/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_book_profile_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    def _test_all_clubs_requires_ratings(self):
-        self._log_in_user_without_ratings()
-        sleep(1)
-        self.browser.get(f"{self.live_server_url}/all_clubs/")
-        sleep(1)
-        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
-
-    # Club Profile as non-member
+    # Club Profile as Non-Member
     def _test_club_profile_contains_correct_information_as_non_member(self):
+        if(self.user in self.club_where_non_member.applicants.all()):
+            self.club_where_non_member.applicants.remove(self.user)
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Profile"]') 
@@ -466,34 +394,33 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(5)
         body_text = self.browser.find_element_by_tag_name("body").text
-        self.assertTrue(self.club_where_non_member.name in body_text)
         print(body_text)
-        print("Club Profile as non-member1")
+        self.assertTrue(self.club_where_non_member.name in body_text)
         self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
-        print("Club Profile as non-member2")
         self.assertTrue("Apply" in body_text)
-        print("Club Profile as non-member3")
         self.assertFalse("Leave Club" in body_text)
-        print("Club Profile as non-member4")
         self.assertTrue("PROFILE" in body_text)
         self.assertFalse("MEMBERS" in body_text)
         self.assertFalse("FEED" in body_text)
         self.assertFalse("MEETINGS" in body_text)
-        print("Club Profile as non-member5")
-        # club_book_history = self.club_where_non_member.books.all()
-        # for book in club_book_history:
-        #     self.assertTrue(book.title in body_text)
-        #     self.assertTrue(book.author in body_text)
-        #     self.assertTrue(str(book.publication_date) in body_text)
-        # print("Club Profile as non-member6")
+        # DELETE
+        club_book_history = self.club_where_non_member.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
     def _test_club_profile_apply_and_withdraw_application_as_non_member(self):
+        if(self.user in self.club_where_non_member.applicants.all()):
+            self.club_where_non_member.applicants.remove(self.user)
         number_of_applicants_before = self.club_where_non_member.applicants.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Profile"]') 
         self.browser.find_element_by_xpath('//button[.="Profile"]').click()
         self.browser.implicitly_wait(10)
+        body_text = self.browser.find_element_by_tag_name("body").text
+        print(body_text)
         self.wait_until_element_found('//button[.="Apply"]')
         self.browser.find_element_by_xpath('//button[.="Apply"]').click()
         self.browser.implicitly_wait(10)
@@ -510,7 +437,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertFalse(self.user in self.club_where_non_member.applicants.all())
 
 
-    # Club Progile as Member
+    # Club Profile as Member
     def _test_club_profile_contains_correct_information_as_member(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_member.pk}/")
         self.browser.implicitly_wait(10)
@@ -527,11 +454,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
         self.assertTrue("MEETINGS" in body_text)
-        # club_book_history = self.club_where_member.books.all()
-        # for book in club_book_history:
-        #     self.assertTrue(book.title in body_text)
-        #     self.assertTrue(book.author in body_text)
-        #     self.assertTrue(str(book.publication_date) in body_text)
+        # DELETE
+        club_book_history = self.club_where_member.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
     def _test_club_feed_contains_correct_information_as_member(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_member.pk}/")
@@ -689,7 +617,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(3)
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         self.assertTrue(self.club_where_admin.name in body_text)
         self.assertFalse("If you would like to leave the club, please transfer the ownership" in body_text)
         self.assertFalse("Apply" in body_text)
@@ -699,11 +626,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertTrue("FEED" in body_text)
         self.assertTrue("MEETINGS" in body_text)
         print("got here")
-        # club_book_history = self.club_where_admin.books.all()
-        # for book in club_book_history:
-        #     self.assertTrue(book.title in body_text)
-        #     self.assertTrue(book.author in body_text)
-        #     self.assertTrue(str(book.publication_date) in body_text)
+        # DELETE
+        club_book_history = self.club_where_admin.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
     def _test_club_feed_contains_correct_information_as_admin(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_admin.pk}/")
@@ -713,7 +641,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         sleep(2)
         body_text = self.browser.find_element_by_tag_name("body").text
-        # Tab Buttons
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
@@ -973,36 +900,31 @@ class FrontendFunctionalityTest(LiveServerTestCase):
     def _test_club_profile_contains_correct_information_as_owner(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
-        self.wait_until_element_found('//button[.="Profile"]') # added later
+        self.wait_until_element_found('//button[.="Profile"]') 
         self.browser.find_element_by_xpath('//button[.="Profile"]').click()
         self.browser.implicitly_wait(10)
         sleep(4)
         body_text = self.browser.find_element_by_tag_name("body").text
         self.assertTrue(self.club.name in body_text)
-        # self.assertTrue(self.club.description in body_text)
-        print("owner1")
         self.assertTrue("If you would like to leave the club, please transfer the ownership" in body_text)
-        print("owner2")
         self.assertFalse("Apply" in body_text)
-        print("owner3")
         self.assertFalse("Leave Club" in body_text)
-        print("owner4")
         self.assertTrue("PROFILE" in body_text)
         self.assertTrue("MEMBERS" in body_text)
         self.assertTrue("FEED" in body_text)
         self.assertTrue("MEETINGS" in body_text)
-        print("owner5")
-        # club_book_history = self.club.books.all()
-        # for book in club_book_history:
-        #     self.assertTrue(book.title in body_text)
-        #     print("owner6")
-        #     self.assertTrue(book.author in body_text)
-        #     self.assertTrue(str(book.publication_date) in body_text)
+        # DELETE
+        club_book_history = self.club.books.all()
+        for book in club_book_history:
+            self.assertTrue(book.title in body_text)
+            print("owner6")
+            self.assertTrue(book.author in body_text)
+            self.assertTrue(str(book.publication_date) in body_text)
 
     def _test_club_feed_contains_correct_information_as_owner(self):
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
-        self.wait_until_element_found('//button[.="Feed"]') # added later
+        self.wait_until_element_found('//button[.="Feed"]') 
         self.browser.find_element_by_xpath('//button[.="Feed"]').click()
         self.browser.implicitly_wait(10)
         sleep(2)
@@ -1055,12 +977,12 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Schedule a meeting"]')
         body_text = self.browser.find_element_by_tag_name("body").text
-        print(body_text)
         meeting_cards = self.browser.find_elements_by_xpath('//div[@data-testid="singleMeetingCard"]')
-        print(len(meeting_cards))
         self.assertEqual(Meeting.objects.filter(club=self.club).count(), len(meeting_cards))
 
     def _test_schedule_meeting_as_owner(self):
+        club_meetings = Meeting.objects.filter(club=self.club)
+        number_of_meetings_before = club_meetings.count()
         self.browser.get(f"{self.live_server_url}/club_profile/{self.club.pk}/")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found('//button[.="Meetings"]')
@@ -1085,9 +1007,8 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_xpath('//button[.="Create"]').click()
         sleep(2)
         self.browser.implicitly_wait(20)
-        # check db
-
-
+        number_of_meetings_after = club_meetings.count()
+        self.assertEqual(number_of_meetings_before + 1, number_of_meetings_after)
 
     # Landing Page
     def _test_boogkle_logo_redirects_to_landing_page(self, url):
@@ -1315,7 +1236,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         sleep(4)
-        # self.wait_until_element_found("//button[@name='search-bar']")
         self.browser.find_element_by_name("search-bar").click()
         self.browser.implicitly_wait(10)
         self.browser.find_element_by_name("search-bar-input").send_keys("J")
@@ -1342,7 +1262,23 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.assertEqual(number_of_posts_after, number_of_posts_before + 1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
 
-    # Make a test where select club for post
+    def _test_navbar_create_new_club_post(self, url):
+        number_of_posts_before = Post.objects.count()
+        self.browser.get(f"{self.live_server_url}/{url}")
+        self.browser.implicitly_wait(10)
+        self.wait_until_element_found("//img[@alt='New Post Button']")
+        self.browser.find_element_by_xpath("//img[@alt='New Post Button']").click()
+        self.wait_until_element_found("//button[.='Post!']")
+        self.browser.find_element_by_name("title").send_keys("New Post Title From ")
+        self.browser.find_element_by_name("content").send_keys("New Post Content From ")
+        club_select = Select(self.browser.find_element_by_tag_name('select'))
+        club_select.select_by_index(1)
+        self.browser.find_element_by_xpath("//button[.='Post!']").click()
+        sleep(2)
+        number_of_posts_after = Post.objects.count()
+        self.assertEqual(number_of_posts_after, number_of_posts_before + 1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
+
 
     def _test_new_club_button_redirects_to_create_club(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
@@ -1353,19 +1289,16 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_id("description").send_keys("New Club Description!!")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/create_club/")
 
-    # Create club page tests
-
     def _test_open_chat_button(self, url):
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//img[@alt='Open Chats']")
         self.browser.find_element_by_xpath("//img[@alt='Open Chats']").click()
         self.browser.implicitly_wait(10)
-        # self.wait_until_element_found("//img[@alt='Send Icon']")
-        sleep(2) #maybe wait for send messages text or something
+        sleep(2)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/chat/")
 
-    def _test_open_profile_page(self, url): #data-testid="PersonIcon"
+    def _test_open_profile_page(self, url): 
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[@class='dropdown-toggle btn btn-secondary']")
@@ -1375,10 +1308,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//a[@href='/user_profile/']")
         self.browser.find_element_by_xpath("//a[@href='/user_profile/']").click()
         self.browser.implicitly_wait(10)
-        sleep(2) #maybe wait for send messages text or something
+        sleep(2)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/user_profile/")
 
-    def _test_log_out_button(self, url): #data-testid="PersonIcon"
+    def _test_log_out_button(self, url): 
         self.browser.get(f"{self.live_server_url}/{url}")
         self.browser.implicitly_wait(10)
         self.wait_until_element_found("//button[@class='dropdown-toggle btn btn-secondary']")
@@ -1388,7 +1321,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//a[@href='/log_out/']")
         self.browser.find_element_by_xpath("//a[@href='/log_out/']").click()
         self.browser.implicitly_wait(10)
-        sleep(2) #maybe wait for send messages text or something
+        sleep(2)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/")
 
     def _test_open_meetings_page(self, url):
@@ -1397,7 +1330,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//a[@href='/meetings/']")
         self.browser.find_element_by_xpath("//a[@href='/meetings/']").click()
         self.browser.implicitly_wait(10)
-        sleep(2) #maybe wait for send messages text or something
+        sleep(2)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/meetings/")
 
     def _test_open_user_profile_button(self, url):
@@ -1423,13 +1356,13 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found("//div[@class='singleComment']", 30)
         comments = first_post.find_elements_by_xpath(".//div[@class='singleComment']")
         first_comment = comments[0]
-        first_comment.find_element_by_xpath(".//button[.='Reply']").click()
+        first_comment.find_element_by_xpath(".//button[@data-testid='comment-reply-button']").click()
         self.browser.implicitly_wait(10)
         sleep(1)
         first_comment.find_element_by_name("myReply").send_keys("New Reply To Comment")
-        first_comment.find_element_by_xpath("//p[.=' Send ']").click()
+        first_comment.find_element_by_xpath("//img[@alt='Post Reply']").click()
         self.browser.implicitly_wait(10)
-        sleep(10)
+        sleep(5)
         number_of_replies_after = Reply.objects.count()
         self.assertEquals(number_of_replies_after, number_of_replies_before + 1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
@@ -1446,9 +1379,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         first_post_view_all_comments_button.click()
         self.wait_until_element_found("//div[@class='singleComment']", 30)
         self.browser.find_element_by_name("myComment").send_keys("New Comment")
-        send_buttons = first_post.find_elements_by_xpath(".//p[.=' Send ']")
-        send_buttons[-1].click()
-        sleep(10)
+        send_buttons = first_post.find_elements_by_xpath("//img[@alt='Post Comment']")
+        send_buttons[0].click()
+        sleep(5)
         number_of_comments_after = Comment.objects.count()
         self.assertEqual(number_of_comments_after, number_of_comments_before + 1)
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home/")
@@ -1671,15 +1604,10 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.get(f"{self.live_server_url}/all_clubs")
         self.wait_until_element_found("//button[.='Visit Profile']")
         id_to_club_object = {}
-        all_visible_clubs = list(Club.objects.filter(public=True, visibility=True)) #list(Club.objects.all())#list(Club.objects.filter(visibility=True))
+        all_visible_clubs = list(Club.objects.filter(visibility=True))
         for club in all_visible_clubs:
             id_to_club_object[club.id] = club
-
-        body_text = self.browser.find_element(by=By.TAG_NAME, value="body").text
-        print(body_text)
-
         club_cards = self.browser.find_elements_by_class_name("card-body")
-        print("all_clubs1")
         self.assertEqual(len(club_cards), len(all_visible_clubs))
         for club_card in club_cards:
             club_card_club_name = club_card.find_element(by=By.CLASS_NAME, value="card-title").text
@@ -1689,11 +1617,9 @@ class FrontendFunctionalityTest(LiveServerTestCase):
             club_card_href = club_card_a_element.get_attribute('href')
             club_card_id = club_card_href.split('/')[-1]
             club_object = id_to_club_object.pop(int(club_card_id))
+            club_object_total_members = club_object.members.count() + club_object.admins.count() + 1
             self.assertEqual(club_card_club_name, club_object.name)
-            print("all_clubs2")
-            self.assertEqual(club_card_number_of_members, club_object.members.count())
-            print("all_clubs3")
-            
+            self.assertEqual(club_card_number_of_members, club_object_total_members)
         self.assertFalse(id_to_club_object)
 
 
@@ -1866,7 +1792,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         number_of_posts_after = Post.objects.count()
         self.assertEqual(number_of_posts_before - 1, number_of_posts_after)
 
-
+    # Chat Page 
     def _test_chat_page(self):
         self.browser.get(f"{self.live_server_url}/chat/")
         all_contacts = self.browser.find_elements_by_xpath("//a[@test-name='contact-card']")
@@ -1877,7 +1803,15 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         sleep(1)
         self.assertEqual(self.browser.current_url, f"{first_chat_contact_href}")
         sleep(10)
+    
+    def _test_chat_page_contains_correct_number_of_chats(self):
+        all_user_chats = self.user.chats.all()
+        self.browser.get(f"{self.live_server_url}/chat/")
+        all_contacts = self.browser.find_elements_by_xpath("//a[@test-name='contact-card']")
+        self.assertEqual(len(all_contacts), len(all_user_chats))
+        
 
+    # Password Reset
     def _test_password_reset(self):
         new_password = "NewPassword123"
         self.browser.get(f"{self.live_server_url}/")
@@ -1914,6 +1848,156 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.browser.find_element_by_xpath('//button[.="Log In"]').click()
         self.wait_until_element_found("//div[@class='SingleFeedPost']")
         self.assertEqual(self.browser.current_url, f"{self.live_server_url}/home")
+
+    # Login Required
+    def _test_log_out_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/log_out/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_sign_up_rating_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/sign_up/rating")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_waiting_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/waiting")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_home_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/home")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_club_profile_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_create_club_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/create_club")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_user_profile_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/user_profile/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_chat_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/chat/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_scheduling_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/scheduling/{self.club.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_meetings_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/meetings/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_recommendations_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/recommendations/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_recommend_clubs_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/recommend_clubs/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_book_profile_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    def _test_all_clubs_is_login_protected(self):
+        self.browser.get(f"{self.live_server_url}/all_clubs/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/log_in")
+
+    # Ratings Required
+    def _test_home_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/home")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_club_profile_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/club_profile/{self.club_where_non_member.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_create_club_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/create_club")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_user_profile_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/user_profile/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_chat_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/chat/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_scheduling_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/scheduling/{self.club.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_meetings_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/meetings/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_recommendations_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/recommendations/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_recommend_clubs_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/recommend_clubs/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_book_profile_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/book_profile/{self.book.pk}/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
+    def _test_all_clubs_requires_ratings(self):
+        self._log_in_user_without_ratings()
+        sleep(1)
+        self.browser.get(f"{self.live_server_url}/all_clubs/")
+        sleep(1)
+        self.assertEqual(self.browser.current_url, f"{self.live_server_url}/sign_up/rating")
+
 
     # Helpers
     def _log_in(self):
@@ -1989,3 +2073,6 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         is_in_club = is_in_club or user in club.admins.all()
         is_in_club = is_in_club or user == club.owner
         return is_in_club
+
+class TestException(Exception):
+    pass
