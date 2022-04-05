@@ -142,6 +142,7 @@ const RecommenderPage = () => {
                 <Col xs={6}>
                     <HeadingText>Books For You</HeadingText><br />
                     <select
+                        name="genre-select"
                         style={selectStyle}
                         value={value}
                         onChange={(e) => setValue(e.target.value)}>

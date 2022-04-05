@@ -310,7 +310,7 @@ describe('User is member', () => {
                 const feedTab = await screen.findByRole('tab', { name: /feed/i })
                 fireEvent.click(feedTab)
 
-                const title = await screen.findByRole('heading', { name: /ratione quis tenetur officia eligendi\. ipsum praesentium eveniet quia perspiciatis in\.\ntenetur est vel sed consequuntur alias\. veniam non dignissimos\. beatae aspernatur eos esse facere nam\.\nlaboriosam sapiente quam consectetur\. numquam odit nostrum unde provident\. repudiandae iste excepturi odit quod modi nostrum\./i })
+                const title = await screen.findByText(/ratione quis tenetur officia eligendi/i)
                 expect(title).toBeInTheDocument()
             })
         })

@@ -25,6 +25,7 @@ export default function SingleSuggestedUser(props) {
     return (
         <div
             className="friend"
+            name="suggested-friend"
             key={currentSuggestedUser.id}
             style={{marginBottom: "1rem", marginTop: "1rem"}}
         >

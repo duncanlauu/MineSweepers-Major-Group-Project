@@ -64,7 +64,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText("x")).toBeInTheDocument()
+            expect(screen.getByTestId("reply-delete-button")).toBeInTheDocument()
         })
     })
 
@@ -78,7 +78,7 @@ describe("Components exist", () => {
         })
 
         await waitFor(() => {
-            expect(screen.queryByText("x")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("reply-delete-button")).not.toBeInTheDocument()
         })
     })
 })
