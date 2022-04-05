@@ -204,3 +204,11 @@ to be authenticated checks the validity of the access token. If it is invalid, t
 ## Design system
 
 Our group utilised this [design system](https://www.figma.com/proto/XT6zTlhEBBHkbUnse0FcsQ/Minesweepers-Group-Project%3A-Design-System?node-id=1%3A2&scaling=scale-down-width&page-id=0%3A1) for the frontend.
+
+
+## Browser support
+This application is tested in the following browsers:
+Google Chrome
+Firefox
+
+Safari sometimes has issues with authentication, we recommend using Google Chrome.
