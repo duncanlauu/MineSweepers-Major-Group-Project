@@ -8,8 +8,8 @@ from rest_framework import status
 from app.serializers import ClubSerializer, UserSerializer, BookSerializer
 import json
 
-
-# source : https://www.codingforentrepreneurs.com/blog/a-multiple-model-django-search-engine
+# Search Django database with query LookUp
+# https://www.codingforentrepreneurs.com/blog/a-multiple-model-django-search-engine
 
 class SearchView(ListView, APIView):
     """This is an API for search"""
