@@ -501,7 +501,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Accept"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         applicant_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -526,7 +526,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Accept"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         applicant_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -550,7 +550,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Unban"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -573,7 +573,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Ban"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -666,7 +666,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Accept"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         applicant_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -691,7 +691,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Reject"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         applicant_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -715,7 +715,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Unban"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -738,7 +738,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Demote"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -765,7 +765,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Promote"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -792,7 +792,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Promote"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         member_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -818,7 +818,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Demote"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text
@@ -844,7 +844,7 @@ class FrontendFunctionalityTest(LiveServerTestCase):
         self.wait_until_element_found('//button[.="Members"]')
         self.browser.find_element(by=By.XPATH, value='//button[.="Members"]').click()
         self.wait_until_element_found('//button[.="Make Owner"]')
-        individual_user_cards = self.browser.find_elements_by_name("individual-user-card")
+        individual_user_cards = self.browser.find_element(by=By.NAME, value="individual-user-card")
         admin_individual_user_card = None
         for individual_user_card in individual_user_cards:
             individual_user_card_text = individual_user_card.text

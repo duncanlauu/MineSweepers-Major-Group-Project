@@ -1741,5 +1741,5 @@ staticfiles
 frontend/coverage/*
 
 # auto generated react files
-# package-lock.json
-# frontend/static/frontend/main.js
+package-lock.json
+frontend/static/frontend/main.js

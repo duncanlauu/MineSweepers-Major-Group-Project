@@ -100,12 +100,9 @@ DATABASES = {
         'OPTIONS': {
             'timeout': 20,
         },
-        'TEST': { # test database settings
-            'NAME': 'mytestdatabase', # test database name
+        'TEST': {
+            'NAME': 'mytestdatabase',
         },
-    #     'TEST': {
-    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3.test'), # There only for Selenium test to not throw table locked error?
-    #    },
     }
 }
 
