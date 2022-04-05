@@ -212,3 +212,8 @@ Google Chrome
 Firefox
 
 Safari sometimes has issues with authentication, we recommend using Google Chrome.
+
+## Deployment
+As the deadline for deployment is 15th April, we don't have the newest version up yet. We have an early version deployed on Heroku
+https://book-club-minesweepers.herokuapp.com
+We hope that updating to the newest version won't change the link.
