@@ -78,7 +78,7 @@ Run all backend tests with:
 $ python3 manage.py test
 ```
 
-Run all selenium frontend functionality tests in headless mode with: (Reasons for splitting them up described in testing.md)
+Run all selenium frontend functionality tests in headless mode with:
 
 ```
 $ python3 manage.py test app.tests.selenium._test_frontend_functionality
