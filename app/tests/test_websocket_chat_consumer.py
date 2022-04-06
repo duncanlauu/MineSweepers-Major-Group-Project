@@ -10,6 +10,8 @@ from channels.routing import URLRouter
 
 
 class WebsocketConsumerTest(TransactionTestCase):
+    """Tests Websocket Chat Consumer"""
+
     fixtures = [
         'app/tests/fixtures/default_user.json',
         'app/tests/fixtures/default_chat.json',
@@ -17,6 +19,10 @@ class WebsocketConsumerTest(TransactionTestCase):
         'app/tests/fixtures/other_users.json',
         'app/tests/fixtures/other_chats.json',
         'app/tests/fixtures/other_messages.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/default_book.json',
+        'app/tests/fixtures/other_books.json',
     ]
 
     default_chat_url = "ws/chat/1/"
@@ -84,6 +90,15 @@ class WebsocketConsumerTest(TransactionTestCase):
         number_of_chat_messages_after = await self._get_chat_messages_count(self.default_chat)
         self.assertEqual(number_of_chat_messages_after, number_of_chat_messages_before + 1)
 
+        await communicator.disconnect()
+
+    @pytest.mark.asyncio
+    async def test_disconnect(self):
+        communicator = WebsocketCommunicator(
+            application=self.application, path=self.default_chat_url
+        )
+        connected, subprotocol = await communicator.connect()
+        assert connected
         await communicator.disconnect()
 
     @database_sync_to_async

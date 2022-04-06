@@ -1,189 +1,182 @@
-import React, { useState } from 'react'
-import Gravatar from 'react-gravatar'
-import { Button, Container, Row, Col } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col } from 'reactstrap'
 import axiosInstance from '../../axios'
-import useGetUser from '../../helpers'
 import { HeadingText } from '../Login/LoginElements'
-import Nav from '../Nav/Nav'
-import { BookProfile, FilterButton, RecommenderContainer } from './RecommenderPageElements'
+import MainNav from '../Nav/MainNav'
+import { FilterButton } from './RecommenderPageElements'
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
-import {Oval} from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
+import IndividualBookCard from './IndividualBookCard'
 
 
 const RecommenderPage = () => {
-  const user = useGetUser();
-  if (user) {
-    console.log("User ID: " + user.id);
-  }
+    const user = JSON.parse(localStorage.getItem('user'));
 
-  const [value, setValue] = useState('');
+    const [value, setValue] = useState('');
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  }
+    const [bookRecommendations, setBookRecommendations] = useState([]);
+    const [genres, setGenres] = useState([]);
 
-  const [bookRecommendations, setBookRecommendations] = useState([]);
+    const selectStyle = {
+        backgroundColor: "#fff",
+        fontFamily: "Source Sans Pro",
+        height: "3rem",
+        width: "fit-content",
+        borderRadius: "100px",
+        border: "3px solid #653ffd",
+        paddingLeft: "1rem"
+    }
 
-  const LoadingIndicator = (props) => {
-
-    const { promiseInProgress } = usePromiseTracker();
-
-      return (
-          promiseInProgress &&
-          <Container>
-            <div style={{
-                display: 'flex',
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <Oval color="#653FFD" secondaryColor='#B29FFE' height="100" width="100" />
-            </div>
-          </Container>
-      )
-  }
-
-  function returnTop10Recommendations() {
-    axiosInstance
-      .post(`recommender/0/10/${user.id}/top_n/`, {})
-      .then(res => {
-        console.log(res);
-        setBookRecommendations(res.data)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-
-    trackPromise(
+    function getGenres() {
         axiosInstance
-        .get(`recommender/0/10/${user.id}/top_n/`)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    );
-  }
-
-  function returnGlobalTop10Recommendations() {
-    axiosInstance
-      .post(`recommender/0/10/top_n_global/`, {})
-      .then(res => {
-        console.log(res);
-        setBookRecommendations(res.data)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-
-    trackPromise(
-        axiosInstance
-        .get(`recommender/0/10/top_n_global/`)
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => {
-            console.log(error);
-      }));
-  }
-
-  function returnGlobalTop10FictionRecommendations() {
-    axiosInstance
-      .post(`recommender/0/10/top_n_global_for_genre/fiction/`, {})
-      .then(res => {
-        console.log(res);
-        setBookRecommendations(res.data)
-      })
-      .catch(error => {
-        console.log(error);
-
-      })
-
-    trackPromise(
-        axiosInstance
-        .get(`recommender/0/10/top_n_global_for_genre/fiction/`)
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => {
-            console.log(error);
-      }));
-  }
-
-  function returnFictionRecommendations() {
-    axiosInstance
-    .post(`recommender/0/10/${user.id}/top_n_for_genre/fiction/`, {})
-    .then(res => {
-      console.log(res);
-      setBookRecommendations(res.data)
-    })
-    .catch(error => {
-      console.log(error);
-    })
-
-    trackPromise(
-        axiosInstance
-            .get(`recommender/0/10/${user.id}/top_n_for_genre/fiction/`)
+            .get(`genres?n=10`)
             .then(res => {
-            console.log(res);
+                setGenres(res.data);
             })
-            .catch(error => {
-            console.log(error);
+            .catch(err => {
+                console.error(err)
             })
-    );
-  }
+    }
 
-  //DELETE THIS
-  function retrainModel() {
-    axiosInstance
-      .post(`recommender/retrain/`, {})
-      .then(res => {
-        console.log(res);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    useEffect(() => {
+        setBookRecommendations([])
+    }, [value]);
 
-  }
+    useEffect(() => {
+        getGenres();
+    }, [])
 
-  return (
-    <Container fluid>
-      <Row style={{ marginBottom: "3rem" }}>
-        <Nav />
-      </Row>
-      <Row>
-      <Col />
-        <Col xs={6}>
-          <HeadingText>Books For You</HeadingText><br />
-          <FilterButton onClick={retrainModel}>Retrain Model</FilterButton><br />
-          <FilterButton onClick={returnFictionRecommendations}>My Genre Recommendations</FilterButton><br />
-          <FilterButton onClick={returnTop10Recommendations}>My Recommendations</FilterButton><br />
-          <FilterButton onClick={returnGlobalTop10Recommendations}>Global Top 10</FilterButton><br />
-          <FilterButton onClick={returnGlobalTop10FictionRecommendations}>Global Genre Top 10</FilterButton><br />
-          <LoadingIndicator />
-          
-            <ul>
-              {bookRecommendations.map(
-                bookRecommendation =>
-                  <li>
-                    <BookProfile>
-                      <Col xs={3}>
-                        <Gravatar email='blah@blah.com' />
-                      </Col>
-                      <Col xs={9}>
-                        {bookRecommendation[0]}
-                      </Col>
-                    </BookProfile>
-                  </li>
-              )}
-            </ul>
-        </Col>
-        <Col />
-        </Row>
-    </Container>
-  )
+    const LoadingIndicator = (props) => {
+
+        const { promiseInProgress } = usePromiseTracker();
+
+        return (
+            promiseInProgress &&
+            <Container>
+                <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: '10'
+                }}>
+                    <Oval color="#653FFD" secondaryColor='#B29FFE' height="70" width="70" />
+                </div>
+            </Container>
+        )
+    }
+
+    function returnTop10Recommendations() {
+        trackPromise(
+            axiosInstance
+                .get(`recommender/0/10/${user.id}/top_n/`)
+                .then(res => {
+                    setBookRecommendations(res.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        );
+    }
+
+    function returnGlobalTop10Recommendations() {
+        trackPromise(
+            axiosInstance
+                .get(`recommender/0/10/top_n_global/`)
+                .then(res => {
+                    setBookRecommendations(res.data)
+                })
+                .catch(err => {
+                    console.error(err);
+                }));
+    }
+
+    function returnGlobalTop10GenreRecommendations() {
+        const genre = value;
+        axiosInstance
+            .post(`recommender/0/10/top_n_global_for_genre/${genre}/`, {})
+
+            .catch(err => {
+                console.error(err);
+            })
+
+        trackPromise(
+            axiosInstance
+                .get(`recommender/0/10/top_n_global_for_genre/${genre}/`)
+                .then(res => {
+                    setBookRecommendations(res.data)
+                })
+                .catch(err => {
+                    console.error(err);
+                }));
+    }
+
+    function returnTop10GenreRecommendations() {
+        const genre = value;
+        axiosInstance
+            .post(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`, {})
+            .catch(err => {
+                console.error(err);
+            })
+
+        trackPromise(
+            axiosInstance
+                .get(`recommender/0/10/${user.id}/top_n_for_genre/${genre}/`)
+                .then(res => {
+                    setBookRecommendations(res.data)
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        );
+    }
+
+    return (
+        <Container fluid>
+            <Row style={{ marginBottom: "3rem" }}>
+                <MainNav />
+            </Row>
+            <Row>
+                <Col />
+                <Col xs={6}>
+                    <HeadingText>Books For You</HeadingText><br />
+                    <select
+                        name="genre-select"
+                        style={selectStyle}
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}>
+                        <option>Select genre</option>
+                        {genres.map(genre =>
+                            <option data-testId="genre-selection" key={genre} value={genre}>{genre}</option>
+                        )}
+                    </select><br />
+                    <FilterButton onClick={returnTop10Recommendations} data-testId="myTop10Recommendations">My Recommendations</FilterButton><br />
+                    <FilterButton onClick={returnGlobalTop10Recommendations} data-testId="globalTop10Recommendations">Global Top 10</FilterButton><br />
+                    {value && value !== "Select genre" && <><FilterButton onClick={returnTop10GenreRecommendations} data-testId="genreRecommendation">My {value} Recommendations</FilterButton><br /></>}
+                    {value && value !== "Select genre" && <><FilterButton onClick={returnGlobalTop10GenreRecommendations} data-testId="genreRecommendation">Global {value} Top 10</FilterButton><br /></>}
+                    <LoadingIndicator />
+                    <ul>
+                        {bookRecommendations.map(
+                            (bookRecommendation, index) =>
+                                <li data-testId="book-recommendation" key={index}>
+                                    <IndividualBookCard
+                                        imageURL={bookRecommendation['book']['image_links_small']}
+                                        isbn={bookRecommendation['book']['ISBN']}
+                                        title={bookRecommendation['book']['title']}
+                                        author={bookRecommendation['book']['author']}
+                                        rating={bookRecommendation['weighted_rating']}
+                                        numberOfRatings={bookRecommendation['number_of_ratings']}
+                                        year={bookRecommendation['book']['publication_date']} />
+                                </li>
+                        )
+                        }
+                    </ul>
+                </Col>
+                <Col />
+            </Row>
+        </Container>
+    )
 }
 
 export default RecommenderPage

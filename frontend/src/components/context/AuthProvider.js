@@ -1,13 +1,19 @@
 import React, { createContext, useEffect, useState } from "react";
+import axiosInstance from "../../axios";
 
 const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }) => { // children are the components nested inside the auth provider
-    const [auth, setAuth] = useState({ user: localStorage.getItem('username') });
+export const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState({ user: localStorage.user ? JSON.parse(localStorage.getItem('user')) : {} });
 
     useEffect(() => {
-        const user = localStorage.getItem('username')
-        setAuth({ user: user })
+        axiosInstance.get('/get_current_user/')
+            .then(response => {
+                const user = response.data;
+                setAuth({ user: user })
+            }).catch(error => {
+                setAuth({ user: {} })
+            })
     }, [])
 
     return (

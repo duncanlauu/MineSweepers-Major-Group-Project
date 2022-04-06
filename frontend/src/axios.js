@@ -8,7 +8,7 @@ const baseURL = 'https://book-club-minesweepers.herokuapp.com/api/' // this is t
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    timeout: 35000, // in case connection is not possible
+    timeout: 120000, // in case connection is not possible
     // Adjusting to the auth header types specified in settings for JWT:
     headers: {
         Authorization: localStorage.getItem('access_token')
@@ -21,7 +21,6 @@ const axiosInstance = axios.create({
 
 
 // Documentation on interceptors: https://axios-http.com/docs/interceptors
-// From https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/axios.js
 // when access token becomes invalid, send the refresh token to the api to receive a new access token.
 
 axiosInstance.interceptors.response.use(
@@ -62,14 +61,13 @@ axiosInstance.interceptors.response.use(
 
                 // exp date in token is expressed in seconds, while now() returns milliseconds:
                 const now = Math.ceil(Date.now() / 1000);
-                console.log(tokenParts.exp);
 
                 // Getting the new token.
                 // 1. Post to api
                 // 2. Store new token in local storage
                 if (tokenParts.exp > now) {
                     return axiosInstance
-                        .post('/token/refresh/', {refresh: refreshToken}) // sending request for new access token. Passing the refresh token.
+                        .post('/token/refresh/', { refresh: refreshToken }) // sending request for new access token. Passing the refresh token.
                         .then((response) => {
                             localStorage.setItem('access_token', response.data.access);
                             localStorage.setItem('refresh_token', response.data.refresh);
@@ -82,14 +80,14 @@ axiosInstance.interceptors.response.use(
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
-                            console.log(err);
+                            console.error(err);;
                         });
                 } else {
-                    console.log('Refresh token is expired', tokenParts.exp, now);
+                    console.error('Refresh token is expired', tokenParts.exp, now);
                     window.location.href = '/log_in/';
                 }
             } else {
-                console.log('Refresh token not available.');
+                console.error('Refresh token not available.');
                 window.location.href = '/log_in/';
             }
         }

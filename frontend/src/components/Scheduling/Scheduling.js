@@ -2,23 +2,34 @@ import React, {useState, useEffect} from "react";
 import axiosInstance from "../../axios";
 import {Button, Col, Container, FormGroup, Input, Label, Row} from "reactstrap";
 import {FormLayout, HeadingText, ParaText, SchedulingContainer} from "./SchedulingElements";
-import useGetUser from "../../helpers";
 import {useNavigate, useParams} from "react-router";
 import {usePromiseTracker, trackPromise} from "react-promise-tracker";
 import {Oval} from 'react-loader-spinner';
+import {findDOMNode} from "react-dom";
 
 
 export default function Scheduling() {
     const navigate = useNavigate()
     const {club_id} = useParams();
-    console.log("Club ID: " + club_id);
 
-    const user = useGetUser();
+    const user = JSON.parse(localStorage.getItem('user'));
     const [books, setBooks] = useState([]);
     const [bookData, setBookData] = useState([]);
 
+    const [nameErr, setNameErr] = useState('')
+    const [descriptionErr, setDescriptionErr] = useState('')
+    const [bookErr, setBookErr] = useState('')
+    const [startTimeErr, setStartTimeErr] = useState('')
+    const [endTimeErr, setEndTimeErr] = useState('')
+    const [linkErr, setLinkErr] = useState('')
+
+    let gotRecommendation = false;
+
     useEffect(() => {
-        getRecommendedBooks();
+        if (!gotRecommendation) {
+            gotRecommendation = true;
+            getRecommendedBooks();
+        }
     }, []);
 
     const getRecommendedBooks = () => {
@@ -29,7 +40,6 @@ export default function Scheduling() {
                         axiosInstance
                             .get(`recommender/0/10/${club_id}/top_n_for_club/`, {})
                             .then((res) => {
-                                    console.log(res)
                                     let book_list = []
                                     for (let i = 0; i < res.data.length; ++i) {
                                         book_list.push({id: res.data[i]['book']['ISBN'], name: res.data[i]['book']['title']})
@@ -82,8 +92,6 @@ export default function Scheduling() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("submitting", formData)
-
 
         axiosInstance
             .post(`scheduling/`, {
@@ -91,27 +99,46 @@ export default function Scheduling() {
                 description: formData.description,
                 club: club_id,
                 organiser: user.id,
-                book: bookData,
+                book: findBookISBN(bookData),
                 start_time: formData.start_time,
                 end_time: formData.end_time,
                 link: formData.link
             })
             .then((res) => {
-                console.log(res.data)
                 navigate(`/club_profile/${club_id}`)
             })
+            .catch((e) => {
+                setNameErr(e.response.data.name)
+                setDescriptionErr(e.response.data.description)
+                setBookErr(e.response.data.book)
+                setStartTimeErr(e.response.data.start_time)
+                setEndTimeErr(e.response.data.end_time)
+                setLinkErr(e.response.data.link)
+            })
+    }
+
+    const findBookISBN = () => {
+        for (let i = 0; i < books.length; ++i) {
+            if (books[i]['name'] === bookData) {
+                return books[i]['id'];
+            }
+        }
+        return "hello";
     }
 
     if (books.length > 0) {
         return (
-            <div id="ParentDiv">
+            <div
+                id="ParentDiv"
+                data-testid="form"
+            >
                 <Row>
                 </Row>
                 <Container fluid>
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                            <HeadingText>Create a meeting</HeadingText>
+                            <HeadingText id={"header"}>Create a meeting</HeadingText>
                             <ParaText/>
                             <SchedulingContainer>
                                 <FormLayout>
@@ -125,6 +152,7 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{nameErr}</div>
 
                                     <FormGroup>
                                         <Label for="description"> Description </Label>
@@ -136,6 +164,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{descriptionErr}</div>
+
 
                                     <FormGroup>
                                         <Label
@@ -144,6 +174,7 @@ export default function Scheduling() {
                                         > Book </Label>
                                         <br/>
                                         <select
+                                            id="book-select"
                                             value={bookData}
                                             onChange={(e) => setBookData(e.target.value)}
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
@@ -154,6 +185,8 @@ export default function Scheduling() {
                                             )}
                                         </select>
                                     </FormGroup>
+                                    <div>{bookErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="start_time"> Start time </Label>
@@ -166,6 +199,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{startTimeErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="end_time"> End time </Label>
@@ -178,6 +213,8 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{endTimeErr}</div>
+
 
                                     <FormGroup>
                                         <Label for="link"> Meeting link </Label>
@@ -189,6 +226,7 @@ export default function Scheduling() {
                                             style={{border: "0", backgroundColor: "#F3F3F3"}}
                                         />
                                     </FormGroup>
+                                    <div>{linkErr}</div>
 
 
                                     <FormGroup>
@@ -222,9 +260,7 @@ export default function Scheduling() {
                     <Row style={{marginTop: "6rem"}}>
                         <Col/>
                         <Col>
-                            <HeadingText
-                                data-testid="waiting_message"
-                            >Please wait for the book recommendations</HeadingText>
+                            <HeadingText>Please wait for the book recommendations</HeadingText>
                             <LoadingIndicator/>
                         </Col>
                         <Col/>

@@ -105,7 +105,8 @@ class User(AbstractUser):
         if request_exists and not is_friend:
             self.add_friend(other_user)
             other_user.add_friend(self)
-            FriendRequest.objects.filter(Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
+            FriendRequest.objects.filter(
+                Q(sender=self, receiver=other_user) | Q(sender=other_user, receiver=self)).delete()
 
             new_chat = Chat.objects.create()
             new_chat.participants.add(self)
@@ -136,53 +137,33 @@ class Post(models.Model):
         "Club", on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=100, blank=False)
     content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(User, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image_link = models.CharField(max_length=500, blank=True)
-    book_link = models.CharField(max_length=500, blank=True)
 
     class Meta:
         ordering = ['-created_at']
 
-    def upvote_post(self):
-        self.upvotes += 1
-        self.save()
-
-    def downvote_post(self):
-        self.downvotes += 1
-        self.save()
-
-    def modify_image_link(self, link):
-        self.image_link = link
-        self.save()
-
-    def modify_book_link(self, link):
-        self.book_link = link
-        self.save()
-
-    def modify_content(self, new_content):
-        self.content = new_content
-        self.save()
-
-    def modify_title(self, new_title):
-        self.title = new_title
+    def upvote_post(self, user):
+        upvote_exist = self.upvotes.filter(username=user.username).exists()
+        if upvote_exist:
+            self.upvotes.remove(user)
+        else:
+            self.upvotes.add(user)
         self.save()
 
 
 class Response(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, blank=False)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(User, related_name='%(class)s_upvotes', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def upvote(self):
-        self.upvotes += 1
-        self.save()
-
-    def downvote(self):
-        self.downvotes += 1
+    def upvote(self, user):
+        upvote_exist = self.upvotes.filter(username=user.username).exists()
+        if upvote_exist:
+            self.upvotes.remove(user)
+        else:
+            self.upvotes.add(user)
         self.save()
 
     class Meta:
@@ -191,9 +172,6 @@ class Response(models.Model):
 
 class Comment(Response):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
-    def add_reply(self, reply):
-        self.reply_set.add(reply)
 
 
 class Reply(Response):
@@ -261,7 +239,7 @@ class ClubManager(models.Manager):
 
 # Club class
 class Club(models.Model):
-    name = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=50, unique=True, blank=False)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # ? not sure how to test this
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
@@ -285,23 +263,34 @@ class Club(models.Model):
             self.club_chat.save()
 
     def add_member(self, user):
+        if user in self.applicants.all():
+            self.applicants.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)
         user.add_club(self)
         self.members.add(user)
-        self.club_chat.participants.add(user)  # might need to be moved TBD
+        self.club_chat.participants.add(user)
 
     def remove_member(self, user):
-        user.remove_club(self)
-        self.members.remove(user)
-        self.club_chat.participants.remove(user)  # might need to be moved TBD
+        if user in self.members.all():
+            self.members.remove(user)
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
     def member_count(self):
         return self.members.count()
 
-    def add_admin(self, user):
+    def promote(self, user):
         self.admins.add(user)
+        if user in self.members.all():
+            self.members.remove(user)
 
-    def remove_admin(self, user):
-        self.admins.remove(user)
+    def demote(self, user):
+        if user in self.admins.all():
+            self.admins.remove(user)
+        self.members.add(user)
 
     def admin_count(self):
         return self.admins.count()
@@ -310,7 +299,8 @@ class Club(models.Model):
         self.applicants.add(user)
 
     def remove_applicant(self, user):
-        self.applicants.remove(user)
+        if user in self.applicants.all():
+            self.applicants.remove(user)
 
     def applicant_count(self):
         return self.applicants.count()
@@ -319,12 +309,19 @@ class Club(models.Model):
         return self.members.count() + self.admins.count() + 1
 
     def add_banned_user(self, user):
-        user.remove_club(self)
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.members.all():
+            self.members.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.banned_users.add(user)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
     def remove_banned_user(self, user):
-        user.add_club(self)
-        self.banned_users.remove(user)
+        if user in self.banned_users.all():
+            self.banned_users.remove(user)
 
     def banned_user_count(self):
         return self.banned_users.count()
@@ -333,7 +330,8 @@ class Club(models.Model):
         self.books.add(book)
 
     def remove_book(self, book):
-        self.books.remove(book)
+        if book in self.books.all():
+            self.books.remove(book)
 
     def book_count(self):
         return self.books.count()
@@ -344,25 +342,28 @@ class Club(models.Model):
     def switch_public(self):
         self.public = not self.public
 
-    def remove_user_from_club(self, user):
-        self.members.remove(user)
-        self.admins.remove(user)
-        self.applicants.remove(user)
-        self.banned_users.remove(user)
+    def leave_club(self, user):
+        if user in self.members.all():
+            self.members.remove(user)
+        if user in self.admins.all():
+            self.admins.remove(user)
+        if self in user.clubs.all():
+            user.remove_club(self)
+        if user in self.club_chat.participants.all():
+            self.club_chat.participants.remove(user)
 
     def transfer_ownership(self, user):
-        self.add_admin(self.owner)
+        self.add_member(self.owner)
+        self.promote(self.owner)
+        if user in self.admins.all():
+            self.admins.remove(user)
         self.owner = user
 
 
-# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.author.username
 
 
 class Chat(models.Model):

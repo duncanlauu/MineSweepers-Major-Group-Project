@@ -1,0 +1,29 @@
+{
+  "incoming": [
+    {
+      "sender__email": "test1@test.org",
+      "sender__username": "test1",
+      "sender": 1
+    },
+    {
+      "sender__email": "test2@test.org",
+      "sender__username": "test2",
+      "sender": 2
+    },
+    {
+      "sender__email": "test3@test.org",
+      "sender__username": "test3",
+      "sender": 3
+    },
+    {
+      "sender__email": "test4@test.org",
+      "sender__username": "test4",
+      "sender": 4
+    },
+    {
+      "sender__email": "test5@test.org",
+      "sender__username": "test5",
+      "sender": 5
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-// Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 class WebSocketService {
     static instance = null;
     callbacks = {};
@@ -26,10 +25,6 @@ class WebSocketService {
       this.socketRef.onerror = e => {
         console.log(e.message);
       };
-      // this.socketRef.onclose = () => {
-      //   console.log("WebSocket closed let's reopen");
-      //   this.connect();
-      // };
     }
   
     disconnect() {
@@ -48,7 +43,6 @@ class WebSocketService {
         this.callbacks[command](parsedData.messages);
       }
       if (command === 'new_message') {
-        // this.callbacks[command](parsedData.messages);
         this.callbacks[command](parsedData.message);
       }
     }

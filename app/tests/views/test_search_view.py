@@ -5,7 +5,7 @@ import json
 from rest_framework import status
 from django.urls import reverse
 from app.management.commands.seed import seed_books, seed_clubs, seed_ratings, seed_users
-from app.models import User, Club
+from app.models import User
 from rest_framework.test import APIClient, APITestCase
 
 
@@ -45,19 +45,14 @@ class SearchTestCase(APITestCase):
         self.assertLessEqual(len(results['books']), 10)
         self.assertLessEqual(len(results['users']), 10)
         self.assertLessEqual(len(results['clubs']), 10)
-        self.assertEqual(len(results['recommended_clubs']), Club.objects.count())
-        self.assertEqual(len(results['recommended_users']), 20)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def _test_get_with_gibberish_query(self):
         response = self.client.get(self.url, {'search_query': 'dafgshj'})
-        # This recommends some clubs even though the search query is gibberish (using user's liked books)
         results = json.loads(response.data)
         self.assertEqual(len(results['books']), 0)
         self.assertEqual(len(results['users']), 0)
         self.assertEqual(len(results['clubs']), 0)
-        self.assertEqual(len(results['recommended_clubs']), Club.objects.count())
-        self.assertEqual(len(results['recommended_users']), 20)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def _test_get_with_empty_query(self):

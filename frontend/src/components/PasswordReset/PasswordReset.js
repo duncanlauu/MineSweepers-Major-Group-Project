@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import {Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand} from 'reactstrap'
-import {HeadingText, LoginContainer, ParaText} from './PasswordResetElements'
-import {FaExternalLinkAlt} from 'react-icons/fa'
+import React, { useState } from 'react'
+import { Col, Container, FormGroup, Input, Label, Row, Button, Navbar, NavbarBrand } from 'reactstrap'
+import { HeadingText, LoginContainer, ParaText } from './PasswordResetElements'
 
 import axiosInstance from '../../axios'
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
+import MainNav from '../Nav/MainNav'
 
 
 // https://github.com/veryacademy/YT-Django-DRF-Simple-Blog-Series-JWT-Part-3/blob/master/react/blogapi/src/components/login.js
@@ -13,6 +13,8 @@ export default function SignIn() {
     const initialFormData = Object.freeze({
         email: '',
     });
+
+    const [emailErr, setEmailErr] = useState('')
 
     const [formData, updateFormData] = useState(initialFormData)
 
@@ -24,58 +26,56 @@ export default function SignIn() {
     };
 
     const handleSubmit = (e) => {
-
         e.preventDefault()
-        console.log(formData)
-        // axiosInstance.defaults.baseURL = '/auth/';
         axiosInstance
             .post(`/auth/users/reset_password/`, {
                 email: formData.email,
             })
-            .then((response) => {
-                console.log(response)
-                navigate("/home") // should go to a webiste that says password reset email sent
+            .then((res) => {
+                navigate("instructions_sent")
+            })
+            .catch((err) => {
+                setEmailErr(err.response.data.email)
             })
     }
 
     return (
-        <div>
+        <div style={{ overflow: "hidden" }}>
             <Row>
-                <Navbar color="light" expand="md" light>
-                    <NavbarBrand href="/">
-                        <h1> bookgle </h1>
-                    </NavbarBrand>
-                </Navbar>
+                <MainNav isAuthenticated={false} />
             </Row>
             <Container fluid>
-                <Row style={{marginTop: "6rem"}}>
-                    <Col/>
+                <Row style={{ marginTop: "6rem" }}>
+                    <Col />
                     <Col>
-                        <HeadingText>Password Reset</HeadingText><br/>
-                        <ParaText>Enter you email address:<FaExternalLinkAlt
-                            style={{height: "15px", color: "#0057FF"}}/> .</ParaText>
-
+                        <HeadingText>Forgot your Password?</HeadingText><br />
+                        <ParaText>Don't worry, it happens to the best of us.</ParaText>
                         <LoginContainer>
-                            <form>
+                            <form style={{ width: "80%" }}>
                                 <FormGroup>
-                                    <Label>Email</Label>
+                                    <Label><ParaText>Email</ParaText></Label>
                                     <Input
                                         name="email"
+                                        data-testid="email"
                                         onChange={handleChange}
-                                        style={{border: "0", backgroundColor: "#F3F3F3"}}
+                                        style={{ border: "0", backgroundColor: "#F3F3F3" }}
+                                        required
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col sm={{size: 10, offset: 4}}>
-                                        <Button type="submit" onClick={handleSubmit}
-                                                style={{backgroundColor: "#653FFD", width: "7rem"}}>Send Reset
-                                            Email</Button>
+                                    <Col sm={{ size: 10, offset: 3 }}>
+                                        <Button
+                                            type="submit"
+                                            onClick={handleSubmit}
+                                            style={{ backgroundColor: "#653FFD" }}>
+                                            Send Reset Email
+                                        </Button>
                                     </Col>
                                 </FormGroup>
                             </form>
                         </LoginContainer>
                     </Col>
-                    <Col/>
+                    <Col />
                 </Row>
             </Container>
         </div>

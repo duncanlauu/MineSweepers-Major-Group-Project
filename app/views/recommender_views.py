@@ -6,13 +6,13 @@ from surprise import SVD
 
 from app.models import BookRecommendation, BookRecommendationForClub, GlobalBookRecommendation, UserRecommendation, \
     Club, ClubRecommendation, User, Book
-from app.recommender_system.books_recommender import get_global_top_n, get_top_between_m_and_n, \
+from app.recommender_system.books_recommender import get_top_between_m_and_n, \
     get_top_between_m_and_n_for_genre, get_top_between_m_and_n_for_club, get_top_between_m_and_n_for_club_for_genre, \
     get_global_top_between_m_and_n_for_genre, get_global_top_between_m_and_n
 from app.recommender_system.file_management import load_trained_model, get_combined_data, get_dataset_from_dataframe, \
     get_trainset_from_dataset, generate_pred_set, train_model, dump_trained_model, test_model
 from app.recommender_system.people_recommender import get_top_between_m_and_n_users_by_favourite_books, \
-    get_top_between_m_and_n_users_double_random, get_top_between_m_and_n_users_for_a_genre, \
+    get_top_between_m_and_n_users_random, get_top_between_m_and_n_users_for_a_genre, \
     get_top_between_m_and_n_clubs_using_top_items_for_a_user, get_top_between_m_and_n_clubs_using_random_items, \
     get_top_between_m_and_n_clubs_for_a_genre, get_top_between_m_and_n_clubs_using_clubs_books
 from app.serializers import BookRecommendationSerializer, ClubRecommendationSerializer, \
@@ -101,12 +101,14 @@ class RecommenderAPI(APIView):
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='top_user_books').order_by('diff'))[
                           m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_random_books':
                 m = kwargs['m']
                 n = kwargs['n']
                 uid = kwargs['id']
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='random_books').order_by('diff'))[m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_genre_books':
                 m = kwargs['m']
                 n = kwargs['n']
@@ -115,6 +117,7 @@ class RecommenderAPI(APIView):
                 ratings = list(
                     ClubRecommendation.objects.filter(user=uid, method='genre_books ' + genre).order_by('diff'))[m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             elif action == 'top_n_clubs_top_club_books':
                 m = kwargs['m']
                 n = kwargs['n']
@@ -122,6 +125,7 @@ class RecommenderAPI(APIView):
                 ratings = list(ClubRecommendation.objects.filter(user=uid, method='top_club_books').order_by('diff'))[
                           m:n]
                 serializer = ClubRecommendationSerializer(ratings, many=True)
+                return Response(add_owner_email(serializer), status=status.HTTP_200_OK)
             else:
                 return Response(data='You need to provide a correct action', status=status.HTTP_404_NOT_FOUND)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -141,7 +145,7 @@ class RecommenderAPI(APIView):
 
         try:
             if action == 'retrain':
-                algo = SVD(n_epochs=30, lr_all=0.004, reg_all=0.03)
+                algo = SVD()
                 train_model(algo, trainset)
                 pred = test_model(algo, trainset)
                 dump_trained_model(dump_file_name, algo, pred)
@@ -207,7 +211,7 @@ class RecommenderAPI(APIView):
                 uid = kwargs['id']
                 n = kwargs['n']
                 clear_previous_user_recommendations(uid, 'random_books')
-                top_n = get_top_between_m_and_n_users_double_random(uid, trainset, algo, m, n)
+                top_n = get_top_between_m_and_n_users_random(uid, trainset, algo, m, n)
                 save_user_recommendations(top_n, uid, method='random_books')
             elif action == 'top_n_users_genre_books':
                 m = kwargs['m']
@@ -250,11 +254,36 @@ class RecommenderAPI(APIView):
                 clear_previous_club_recommendations(uid, 'top_club_books')
                 top_n = get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n)
                 save_club_recommendations(top_n, uid, method='top_club_books')
+            elif action == 'precompute_all':
+                m = kwargs['m']
+                uid = kwargs['id']
+                n = kwargs['n']
+                clear_previous_book_recommendations(uid)
+                top_n_1 = get_top_between_m_and_n(uid, trainset, algo, m, n)
+                save_book_recommendations(top_n_1, uid)
+                clear_previous_user_recommendations(uid, 'random_books')
+                top_n_2 = get_top_between_m_and_n_users_random(uid, trainset, algo, m, n)
+                save_user_recommendations(top_n_2, uid, method='random_books')
+                clubs = list(Club.objects.all())
+                clear_previous_club_recommendations(uid, 'top_club_books')
+                top_n_3 = get_top_between_m_and_n_clubs_using_clubs_books(uid, algo, clubs, m, n)
+                save_club_recommendations(top_n_3, uid, method='top_club_books')
+                top_n = top_n_1
+                top_n.extend(top_n_2)
+                top_n.extend(top_n_3)
             else:
                 return Response(data='You need to provide a correct action', status=status.HTTP_404_NOT_FOUND)
             return Response(data=top_n, status=status.HTTP_200_OK)
         except KeyError:
             return Response(data='You need to provide correct parameters', status=status.HTTP_404_NOT_FOUND)
+
+
+def add_owner_email(serializer):
+    serializer_with_email = serializer.data
+    for recommendation in serializer_with_email:
+        recommendation['email'] = User.objects.get(pk=recommendation['club']['owner']).email
+
+    return serializer_with_email
 
 
 def save_book_recommendations(top_n, uid, genre='Unspecified'):

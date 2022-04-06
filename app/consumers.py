@@ -1,13 +1,12 @@
-# Messaging based on https://www.youtube.com/playlist?list=PLLRM7ROnmA9EnQmnfTgUzCfzbbnc-oEbZ
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import Message
-from app.views.chat_views import get_user, get_current_chat, get_all_messages
-
+from app.helpers import get_user, get_all_messages, get_current_chat
 
 class ChatConsumer(WebsocketConsumer):
-
+    """Django Channels Chat Consumer"""
+    
     def fetch_messages(self, data):
         request_user = get_user(data['username'])
         current_chat = get_current_chat(data['chatId'])
@@ -44,6 +43,7 @@ class ChatConsumer(WebsocketConsumer):
         return {
             'id': message.id,
             'author': message.author.username,
+            'gravatar': message.author.email,
             'content': message.content,
             'timestamp': str(message.timestamp)
         }

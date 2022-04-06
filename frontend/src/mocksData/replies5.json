@@ -1,0 +1,34 @@
+{
+  "replies": [
+    {
+      "id": 1,
+      "author": 1,
+      "author__email": "author1@example.com",
+      "content": "Reply 1"
+    },
+    {
+      "id": 2,
+      "author": 2,
+      "author__email": "author2@example.com",
+      "content": "Reply 2"
+    },
+    {
+      "id": 3,
+      "author": 3,
+      "author__email": "author3@example.com",
+      "content": "Reply 3"
+    },
+    {
+      "id": 4,
+      "author": 4,
+      "author__email": "author4@example.com",
+      "content": "Reply 4"
+    },
+    {
+      "id": 5,
+      "author": 5,
+      "author__email": "author5@example.com",
+      "content": "Reply 5"
+    }
+  ]
+}

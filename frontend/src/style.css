@@ -13,6 +13,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+*:focus {
+    outline: 0;
+}
+
 <<<<<<< HEAD
   .errmsg {
     background-color: lightpink;
@@ -697,8 +701,8 @@ body {
 }
 
 #frame .content .messages ul li.sent p {
-    background: #435f7a;
-    color: #f5f5f5;
+    background: #E6E4E4;
+    color: #000;
 }
 
 #frame .content .messages ul li.replies img {
@@ -707,7 +711,8 @@ body {
 }
 
 #frame .content .messages ul li.replies p {
-    background: #f5f5f5;
+    background: #653FFD;
+    color: #fff;
     float: right;
 }
 

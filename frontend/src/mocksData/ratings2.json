@@ -1,0 +1,14 @@
+[
+  {
+    "book__ISBN": "0195153448",
+    "book__image_links_small": "Link 1",
+    "book__title": "Title 1",
+    "rating": 5
+  },
+  {
+    "book__ISBN": "0195153448",
+    "book__image_links_small": "Link 2",
+    "book__title": "Title 2",
+    "rating": 3
+  }
+]

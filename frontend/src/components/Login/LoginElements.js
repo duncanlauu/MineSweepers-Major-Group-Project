@@ -17,7 +17,7 @@ export const ParaText = styled.text`
 
 export const LoginContainer = styled.div`
     background-color: #FFF;
-    height: 23rem;
+    height: 25rem;
     width: 40rem;
     border-radius: 10px;
     margin-top: 1rem;

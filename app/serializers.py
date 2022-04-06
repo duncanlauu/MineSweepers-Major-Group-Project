@@ -22,13 +22,18 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def update(self, validated_data, **kwargs):
-        password = validated_data.pop('password', None)
-        instance = self.Meta.model.get(id=validated_data['id'])
-        if password is not None:
-            instance.set_password(password)
-        for k, v in validated_data.items():
-            setattr(instance, k, v)
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.location = validated_data.get('location', instance.location)
+        instance.birthday = validated_data.get('birthday', instance.birthday)
+        instance.liked_books.set(validated_data.get('liked_books', instance.liked_books.all()))
+        instance.read_books.set(validated_data.get('read_books', instance.read_books.all()))
+        instance.clubs.set(validated_data.get('clubs', instance.clubs.all()))
+        instance.friends.set(validated_data.get('friends', instance.friends.all()))
         instance.save()
         return instance
 
@@ -48,7 +53,7 @@ class ClubSerializer(serializers.ModelSerializer):
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username')
+        fields = ('id', 'username', 'email')
 
 
 class SimpleMessageSerializer(serializers.ModelSerializer):
@@ -130,6 +135,8 @@ class BookRatingSerializer(serializers.ModelSerializer):
 
 
 class MeetingSerializer(serializers.ModelSerializer):
+    book = BookSerializer(required=False)
+
     class Meta:
         model = Meeting
         fields = '__all__'

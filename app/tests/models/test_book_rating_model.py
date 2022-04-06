@@ -11,11 +11,17 @@ class BookRatingModelTest(TestCase):
         'app/tests/fixtures/default_book_rating.json',
         'app/tests/fixtures/default_book.json',
         'app/tests/fixtures/default_user.json',
-        'app/tests/fixtures/other_users.json'
+        'app/tests/fixtures/other_users.json',
+        'app/tests/fixtures/default_club.json',
+        'app/tests/fixtures/other_clubs.json',
+        'app/tests/fixtures/other_books.json'
     ]
 
     def setUp(self):
         self.book_rating = BookRating.objects.get(pk=1)
+
+    def test_valid_book_rating(self):
+        self._assert_book_rating_is_valid()
 
     def test_user_cannot_be_null(self):
         self.book_rating.user = None

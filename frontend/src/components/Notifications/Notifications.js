@@ -1,7 +1,7 @@
 import React from 'react'
 import {Container, Col, Row} from 'reactstrap'
 import {HeadingText, ParaText} from '../HomePage/HomePageElements'
-import Nav from '../Nav/Nav'
+import MainNav from '../Nav/MainNav'
 import {Heading3Text, NotifBar, NotifDate, NotificationsContainer} from './NotificationsElements'
 import Gravatar from 'react-gravatar'
 
@@ -9,7 +9,7 @@ const Notifications = () => {
     return (
         <Container fluid>
             <Row style={{marginBottom: "3rem"}}>
-                <Nav/>
+                <MainNav/>
             </Row>
             <Row>
                 <Col/>
