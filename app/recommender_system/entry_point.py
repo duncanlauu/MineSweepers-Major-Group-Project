@@ -85,7 +85,7 @@ def recommender_system_tests():
     # print("Uploaded to S3")
 
     # Download file from S3
-    s3.download_file(os.environ.get('S3_BUCKET_NAME', None), 'dump_file',
+    s3.download_file(os.environ.get('S3_BUCKET_NAME', None), 'app/files/dump_file',
          'app/files/dump_file')
 
     print("Downloaded from S3")
