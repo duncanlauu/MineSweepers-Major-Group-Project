@@ -170,7 +170,7 @@ def seed_books():
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
-def seed_users(number=25):
+def seed_users(number=20):
     """Seed all the users
 
     NOTE: Takes about a minute on a macbook air
@@ -307,29 +307,55 @@ def seed_feed():
 
 def seed_comments_and_replies(post, user):
     """Helper to seed a number of comments and replies for a post"""
-    min_number_of_comments = 0
-    max_number_of_comments = 1
+    min_number_of_comments = 1
+    max_number_of_comments = 2
+    num_of_comments = random.randint(
+            min_number_of_comments, max_number_of_comments)
     faker = Faker('en_GB')
     for friend in user.friends.all():
-        num_of_comments = random.randint(
-            min_number_of_comments, max_number_of_comments)
-        for i in range(0, num_of_comments):
-            comment = create_comment(friend, faker, post)
-            seed_replies(comment, user)
-        print(f'Created all comments for {friend}')
+        if(num_of_comments <= 0):
+            break
+        comment = create_comment(friend, faker, post)
+        seed_replies(comment, user)
+        num_of_comments -= 1
+        print(f'Created all comments for {post}')
+
+
+
+
+    # faker = Faker('en_GB')
+    # for friend in user.friends.all():
+    #     num_of_comments = random.randint(
+    #         min_number_of_comments, max_number_of_comments)
+    #     for i in range(0, num_of_comments):
+    #         comment = create_comment(friend, faker, post)
+    #         seed_replies(comment, user)
+    #     print(f'Created all comments for {friend}')
 
 
 def seed_replies(comment, user):
     """Helper to seed a number of replies for a comment"""
-    min_number_of_replies = 0
-    max_number_of_replies = 1
+    min_number_of_replies = 1
+    max_number_of_replies = 2
+    num_of_replies = random.randint(
+            min_number_of_replies, max_number_of_replies)
     faker = Faker('en_GB')
     for friend in user.friends.all():
-        num_of_replies = random.randint(
-            min_number_of_replies, max_number_of_replies)
-        for i in range(0, num_of_replies):
-            create_reply(friend, faker, comment)
-        print(f'Created all replies for {friend}')
+        if(num_of_replies <= 0):
+            break
+        create_reply(friend, faker, comment)
+        num_of_replies -= 1
+        print(f'Created all replies for {comment}')
+    
+    # min_number_of_replies = 0
+    # max_number_of_replies = 1
+    # faker = Faker('en_GB')
+    # for friend in user.friends.all():
+    #     num_of_replies = random.randint(
+    #         min_number_of_replies, max_number_of_replies)
+    #     for i in range(0, num_of_replies):
+    #         create_reply(friend, faker, comment)
+    #     print(f'Created all replies for {friend}')
 
 def seed_messages():
     """Seed a number of messages per chat"""
