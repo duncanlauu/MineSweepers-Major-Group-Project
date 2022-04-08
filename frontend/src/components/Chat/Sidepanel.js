@@ -58,7 +58,7 @@ export default function Sidepanel(props) {
         if (chat.group_chat == false) {
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != localStorage.user.username) {
+                    if (participant.username != JSON.parse(localStorage.getItem('user')).username) {
                         chatName = participant.username;
                     }
                 }
@@ -76,7 +76,7 @@ export default function Sidepanel(props) {
         if (chat.group_chat == false) {
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != localStorage.user.username) {
+                    if (participant.username != JSON.parse(localStorage.getItem('user')).username) {
                         gravatar = participant.email
                     }
                 }

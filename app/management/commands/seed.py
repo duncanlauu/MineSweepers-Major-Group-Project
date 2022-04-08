@@ -146,7 +146,6 @@ def seed_books():
     """
 
     # Load data from csv file
-    # filepath = 'app/files/BX_Books_genres.csv'
     filepath = 'app/files/BX-Book-genres-deployed.csv'
     df = read_csv(filepath, na_filter=False)
     # Insert to database
@@ -170,7 +169,7 @@ def seed_books():
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
-def seed_users(number=20):
+def seed_users(number=22):
     """Seed all the users
 
     NOTE: Takes about a minute on a macbook air
@@ -196,7 +195,7 @@ def seed_ratings():
     """Seed a random number of ratings for each user"""
 
     min_num_of_ratings = 4
-    max_num_of_ratings = 12
+    max_num_of_ratings = 15
 
     users = User.objects.all()
     for user in users:
@@ -336,8 +335,8 @@ def seed_replies(comment, user):
 
 def seed_messages():
     """Seed a number of messages per chat"""
-    min_number_of_messages = 1
-    max_number_of_messages = 2
+    min_number_of_messages = 2
+    max_number_of_messages = 3
     all_chats = Chat.objects.all()
     faker = Faker('en_GB')
     for chat in all_chats:
