@@ -58,7 +58,7 @@ export default function Sidepanel(props) {
         if (chat.group_chat == false) {
             if (chat.participants.length == 2) {
                 for (const participant of chat.participants) {
-                    if (participant.username != localStorage.username) {
+                    if (participant.username != localStorage.user.username) {
                         chatName = participant.username;
                     }
                 }
@@ -73,28 +73,20 @@ export default function Sidepanel(props) {
 
     function getChatGravatar(chat) {
         let gravatar = "undefined";
-        console.log("rendering sidepanel")
-        console.log(chat)
         if (chat.group_chat == false) {
-            console.log("group chat false")
             if (chat.participants.length == 2) {
-                console.log("participants length 2")
                 for (const participant of chat.participants) {
-                    if (participant.username != localStorage.username) {
-                        console.log("participant username not equal to localstorage username")
+                    if (participant.username != localStorage.user.username) {
                         gravatar = participant.email
                     }
                 }
             } else if (chat.participants.length == 1) {
-                console.log("participants length 1")
                 gravatar = chat.participants[0].email
             }
         } else {
-            console.log("group chat true")
             if (chat.owner_gravatar != "") {
                 gravatar = chat.owner_gravatar
             } else {
-                console.log("owner gravatar is empty")
                 gravatar = chat.participants[0].email
             }
         }
