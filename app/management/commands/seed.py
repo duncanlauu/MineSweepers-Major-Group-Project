@@ -170,7 +170,7 @@ def seed_books():
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
-def seed_users(number=30):
+def seed_users(number=25):
     """Seed all the users
 
     NOTE: Takes about a minute on a macbook air
@@ -196,7 +196,7 @@ def seed_ratings():
     """Seed a random number of ratings for each user"""
 
     min_num_of_ratings = 4
-    max_num_of_ratings = 10
+    max_num_of_ratings = 12
 
     users = User.objects.all()
     for user in users:
@@ -217,13 +217,13 @@ def seed_clubs(num_of_clubs=8):
     """Seed a number of clubs in the application"""
 
     min_num_of_members = 2
-    max_num_of_members = 15
+    max_num_of_members = 8
     min_num_of_admins = 1
     max_num_of_admins = 3
     min_num_of_applicants = 3
-    max_num_of_applicants = 7
+    max_num_of_applicants = 5
     min_num_of_books = 5
-    max_num_of_books = 25
+    max_num_of_books = 15
     faker = Faker('en_GB')
     books = list(Book.objects.all())
 
@@ -246,7 +246,7 @@ def seed_friends():
     """Seed a number of friends"""
 
     min_number_of_friends = 2
-    max_number_of_friends = 6
+    max_number_of_friends = 5
     for user in User.objects.all():
         num_of_friends = random.randint(
             min_number_of_friends, max_number_of_friends)
@@ -334,7 +334,7 @@ def seed_replies(comment, user):
 def seed_messages():
     """Seed a number of messages per chat"""
     min_number_of_messages = 1
-    max_number_of_messages = 3
+    max_number_of_messages = 2
     all_chats = Chat.objects.all()
     faker = Faker('en_GB')
     for chat in all_chats:
@@ -420,8 +420,8 @@ def create_meeting(club, faker, counter):
 def create_post(user, faker):
     """Create a post"""
 
-    min_num_of_likes = 5
-    max_num_of_likes = 15
+    min_num_of_likes = 1
+    max_num_of_likes = 7
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
     friends = list(user.friends.all())
     random.shuffle(friends)
@@ -453,8 +453,8 @@ def create_post(user, faker):
 def create_comment(user, faker, post):
     """Create a comment"""
 
-    min_num_of_likes = 5
-    max_num_of_likes = 15
+    min_num_of_likes = 1
+    max_num_of_likes = 5
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
     friends = list(user.friends.all())
     random.shuffle(friends)
@@ -473,8 +473,8 @@ def create_comment(user, faker, post):
 def create_reply(user, faker, comment):
     """Create a reply"""
 
-    min_num_of_likes = 5
-    max_num_of_likes = 15
+    min_num_of_likes = 1
+    max_num_of_likes = 5
     num_of_likes = random.randint(min_num_of_likes, max_num_of_likes)
     friends = list(user.friends.all())
     random.shuffle(friends)
