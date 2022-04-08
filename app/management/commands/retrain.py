@@ -32,7 +32,7 @@ def retrain_the_model():
 
 
 class Command(BaseCommand):
-    """A class for creating the deployment version of dataset"""
+    """A class for retraining the model and updating the recommendations"""
 
     def handle(self, *args, **options):
         start = time.time()
