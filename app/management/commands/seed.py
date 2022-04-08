@@ -170,7 +170,7 @@ def seed_books():
     print('----- ALL BOOKS INSERTED TO DATABASE -----')
 
 
-def seed_users(number=60):
+def seed_users(number=30):
     """Seed all the users
 
     NOTE: Takes about a minute on a macbook air
@@ -196,7 +196,7 @@ def seed_ratings():
     """Seed a random number of ratings for each user"""
 
     min_num_of_ratings = 4
-    max_num_of_ratings = 20
+    max_num_of_ratings = 10
 
     users = User.objects.all()
     for user in users:
@@ -213,7 +213,7 @@ def seed_ratings():
     print('----- ALL RATINGS INSERTED TO DATABASE -----')
 
 
-def seed_clubs(num_of_clubs=10):
+def seed_clubs(num_of_clubs=8):
     """Seed a number of clubs in the application"""
 
     min_num_of_members = 2
@@ -246,7 +246,7 @@ def seed_friends():
     """Seed a number of friends"""
 
     min_number_of_friends = 2
-    max_number_of_friends = 10
+    max_number_of_friends = 6
     for user in User.objects.all():
         num_of_friends = random.randint(
             min_number_of_friends, max_number_of_friends)
@@ -266,7 +266,7 @@ def seed_friend_requests():
     """Seed a number of friend requests"""
 
     min_number_of_friend_requests = 2
-    max_number_of_friend_requests = 10
+    max_number_of_friend_requests = 6
     for user in User.objects.all():
         num_of_friend_requests = random.randint(
             min_number_of_friend_requests, max_number_of_friend_requests)
@@ -281,7 +281,7 @@ def seed_meetings():
     """Seed a number of meetings"""
 
     min_number_of_meetings = 1
-    max_number_of_meetings = 8
+    max_number_of_meetings = 5
     faker = Faker('en_GB')
     for club in Club.objects.all():
         num_of_meetings = random.randint(
@@ -333,8 +333,8 @@ def seed_replies(comment, user):
 
 def seed_messages():
     """Seed a number of messages per chat"""
-    min_number_of_messages = 2
-    max_number_of_messages = 5
+    min_number_of_messages = 1
+    max_number_of_messages = 3
     all_chats = Chat.objects.all()
     faker = Faker('en_GB')
     for chat in all_chats:
