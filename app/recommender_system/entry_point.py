@@ -71,23 +71,26 @@ def recommender_system_tests():
 
     # Dump algorithm and reload it.
     file_name = 'app/files/dump_file'
-    dump_trained_model(file_name, algo, predictions)
-    loaded_predictions, loaded_algo = load_trained_model(file_name)
-
+    # dump_trained_model(file_name, algo, predictions)
+    # loaded_predictions, loaded_algo = load_trained_model(file_name)
 
 
     s3 = boto3.client('s3',
                   aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID', None),
                   aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY', None), )
 
-# // ...... Get your file or open file ......
-# file_name = your_file_here
-# // ......
+    # s3.upload_file(file_name, os.environ.get('S3_BUCKET_NAME', None),
+    #     '%s/%s' % ('app/files', 'dump_file'))
 
-    s3.upload_file(file_name, os.environ.get('S3_BUCKET_NAME', None),
-        '%s/%s' % ('app/files', 'dump_file'))
+    # print("Uploaded to S3")
 
-    print("Uploaded to S3")
+    # Download file from S3
+    s3.download_file(os.environ.get('S3_BUCKET_NAME', None), 'dump_file',
+         'app/files/dump_file')
+
+    print("Downloaded from S3")
+
+    loaded_predictions, loaded_algo = load_trained_model(file_name)
 
 
 
