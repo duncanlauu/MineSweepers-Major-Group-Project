@@ -40,3 +40,4 @@ class Command(BaseCommand):
         retrain_the_model()
         end = time.time()
         print('Time taken to retrain the model: '.format(end - start))
+        return 
