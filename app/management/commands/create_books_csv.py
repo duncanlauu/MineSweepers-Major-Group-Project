@@ -1,4 +1,4 @@
-# use the top n global to get 4k books and save all the info in a csv
+# use the top n global to get 3k books and save all the info in a csv
 import pandas as pd
 from django.core.management import BaseCommand
 
@@ -24,14 +24,26 @@ def create_books_file():
         rows['Book-Author'].append(book.author)
         rows['Year-Of-Publication'].append(book.publication_date)
         rows['Publisher'].append(book.publisher)
-        rows['Image-URL-S'].append(book.image_links_small)
-        rows['Image-URL-M'].append(book.image_links_medium)
-        rows['Image-URL-L'].append(book.image_links_large)
+        rows['Image-URL-S'].append(fix_url(book.image_links_small))
+        rows['Image-URL-M'].append(fix_url(book.image_links_medium))
+        rows['Image-URL-L'].append(fix_url(book.image_links_large))
         rows['Genre'].append(book.genre)
     filtered_file_path = 'app/files/BX-Book-genres-deployed.csv'
     dataframe = pd.DataFrame.from_dict(rows)
     print(dataframe)
     dataframe.to_csv(index=False, path_or_buf=filtered_file_path)
+
+
+def fix_url(url):
+    """
+    Change the url to be https
+
+    Chrome replaced http with https in the address which was breaking all the images. I found this
+    https://stackoverflow.com/questions/40430694/how-to-access-amazon-images-with-https-awsecommerceservice
+    and it seems to help
+    """
+
+    return url.replace("http://images.amazon.com", "https://images-na.ssl-images-amazon.com")
 
 
 class Command(BaseCommand):
