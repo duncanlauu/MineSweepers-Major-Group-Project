@@ -137,7 +137,7 @@ class RecommenderAPI(APIView):
             return Response(data='You need to provide an action', status=status.HTTP_404_NOT_FOUND)
         action = kwargs['action']
 
-        csv_file_path = 'app/files/BX-Book-Ratings-filtered.csv'
+        csv_file_path = 'app/files/BX-Book-Ratings-deployed.csv'
         dump_file_name = 'app/files/dump_file'
         dataframe = get_combined_data(csv_file_path)
         data = get_dataset_from_dataframe(dataframe)
