@@ -5,15 +5,7 @@ from django.core.management import BaseCommand
 from app.models import Book
 from app.recommender_system.books_recommender import get_global_top_n
 from app.recommender_system.file_management import get_combined_data, get_dataset_from_dataframe, \
-    get_trainset_from_dataset, get_dataframe_from_file
-
-
-def create_ratings_file():
-    file_path = 'app/files/BX-Book-Ratings.csv'
-    filtered_file_path = 'app/files/BX-Book-Ratings-deployed.csv'
-    ratings = get_dataframe_from_file(file_path)
-    print(ratings)
-    ratings.to_csv(index=False, path_or_buf=filtered_file_path)
+    get_trainset_from_dataset
 
 
 def create_books_file():
@@ -46,5 +38,4 @@ class Command(BaseCommand):
     """A class for creating the deployment version of dataset"""
 
     def handle(self, *args, **options):
-        # create_books_file()
-        create_ratings_file()
+        create_books_file()
